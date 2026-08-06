@@ -13,9 +13,25 @@
 
 {{ component('nubesdk-slot', { type: "before_footer" }) }}
 
-<footer class="js-hide-footer-while-scrolling display-when-content-ready" data-store="footer">
+<footer class="js-hide-footer-while-scrolling display-when-content-ready yamuna-footer" data-store="footer">
 	<div class="container-fluid px-md-5">
 		<div class="row element-footer">
+
+			{# Yamuna brand and social networks #}
+			<div class="col-md mb-4 yamuna-footer-brand">
+				{{ component('logos/logo', {
+					logo_size: 'large',
+					container_classes: { logo_img_container: 'yamuna-footer-logo' },
+					logo_img_classes: 'yamuna-footer-logo-img',
+					logo_text_classes: 'h3 mb-0 yamuna-footer-logo-text'
+				}) }}
+
+				{% if has_social_network %}
+					<div class="yamuna-footer-social">
+						{% include "snipplets/social/social-links.tpl" with {'circle': true} %}
+					</div>
+				{% endif %}
+			</div>
 			
 			{% if template != 'password' %}
 
@@ -65,37 +81,6 @@
 
 			{% endif %}
 			
-			{# Social #}
-	 		{% if has_social_network %}
-
-				<div class="col-md mb-4{% if template == 'password' %} text-center{% endif %}">
-					{% if settings.footer_social_title %}
-						<h4 class="h3">{{ settings.footer_social_title }}</h4>
-					{% endif %}
-					{% include "snipplets/social/social-links.tpl" with {'circle': true} %}
-				</div>
-
-			{% elseif show_help %}
-
-				<div class="col-md mb-4{% if template == 'password' %} text-center{% endif %}">
-					{% if settings.footer_social_title %}
-						<h4 class="h3">{{ settings.footer_social_title }}</h4>
-					{% endif %}
-
-					{# Social icons that work as examples #}
-					<a class="social-icon-rounded">
-						<svg class="icon-inline icon-lg"><use xlink:href="#facebook-f"/></svg>
-					</a>
-					<a class="social-icon-rounded">
-						<svg class="icon-inline icon-lg"><use xlink:href="#instagram"/></svg>
-					</a>
-					<a class="social-icon-rounded">
-						<svg class="icon-inline icon-lg"><use xlink:href="#twitter"/></svg>
-			        </a>
-				</div>
-
-			{% endif %}
-
 		</div>
 
 		{% if template != 'password' %}

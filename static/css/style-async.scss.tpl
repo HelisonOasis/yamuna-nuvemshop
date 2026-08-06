@@ -1854,3 +1854,138 @@ body.compensate-for-scrollbar{overflow:hidden}.fancybox-active{height:auto}.fanc
 .display-when-content-ready{
   display: block!important;
 }
+
+{# Yamuna footer #}
+footer.yamuna-footer {
+  margin-top: 0;
+  padding-top: 58px;
+  color: #f3f3f3;
+  background: #4a1d3a;
+}
+
+footer.yamuna-footer a,
+footer.yamuna-footer .contact-link,
+footer.yamuna-footer .contact-item-icon {
+  color: #f3f3f3;
+  fill: #f3f3f3;
+}
+
+footer.yamuna-footer .element-footer {
+  margin-bottom: 28px;
+}
+
+footer.yamuna-footer .yamuna-footer-brand {
+  min-width: 180px;
+}
+
+footer.yamuna-footer .yamuna-footer-logo {
+  max-width: 170px;
+  margin: 0 0 22px;
+  padding: 0;
+  text-align: left;
+}
+
+footer.yamuna-footer .yamuna-footer-logo-img {
+  max-width: 160px;
+  max-height: 92px;
+  margin: 0;
+  filter: brightness(0) invert(1);
+}
+
+footer.yamuna-footer .yamuna-footer-logo-text {
+  color: #fff;
+}
+
+footer.yamuna-footer .yamuna-footer-social {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+footer.yamuna-footer .social-icon-rounded {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  line-height: 18px;
+  border-radius: 0;
+  background: transparent;
+  fill: #fff;
+}
+
+footer.yamuna-footer .social-icon-rounded .icon-inline {
+  width: 18px;
+  height: 18px;
+}
+
+footer.yamuna-footer .h3,
+footer.yamuna-footer h4 {
+  margin: 0 0 16px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+footer.yamuna-footer .footer-menu {
+  margin: 0;
+}
+
+footer.yamuna-footer .footer-menu-item {
+  margin-bottom: 9px;
+}
+
+footer.yamuna-footer .footer-menu-link,
+footer.yamuna-footer .contact-info,
+footer.yamuna-footer .contact-link {
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+footer.yamuna-footer .contact-item {
+  margin-bottom: 10px;
+}
+
+footer.yamuna-footer .divider {
+  margin: 0 0 25px;
+  border-color: #a31460;
+  opacity: 1;
+}
+
+footer.yamuna-footer .footer-payments-shipping-logos img {
+  max-height: 22px;
+  margin: 2px 4px 2px 0;
+}
+
+footer.yamuna-footer .footer-logo img {
+  max-height: 48px;
+}
+
+footer.yamuna-footer .footer-legal {
+  padding: 17px 0;
+  color: #f3f3f3;
+  background: #38142f;
+  font-size: 11px;
+}
+
+footer.yamuna-footer .footer-legal a,
+footer.yamuna-footer .powered-by-logo svg {
+  color: #f3f3f3;
+  fill: #f3f3f3;
+}
+
+@media (min-width: 768px) {
+  footer.yamuna-footer .yamuna-footer-brand {
+    flex: 0 0 22%;
+    max-width: 22%;
+  }
+
+  footer.yamuna-footer .element-footer > .col,
+  footer.yamuna-footer .element-footer > .col-md {
+    flex-grow: 0;
+  }
+
+  footer.yamuna-footer .footer-payments-shipping-logos .row {
+    align-items: center;
+  }
+}
