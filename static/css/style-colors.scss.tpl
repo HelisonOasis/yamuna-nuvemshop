@@ -105,6 +105,25 @@ $body-font: {{ settings.font_rest | raw }};
     border: 1px solid $primary-color;
   }
 }
+
+{# Yamuna: cookie consent banner #}
+body .js-notification-cookie-banner.notification-primary {
+  background-color: #571c3f;
+  color: #fff;
+}
+
+body .js-notification-cookie-banner.notification-primary .btn-secondary,
+body .js-notification-cookie-banner.notification-primary .btn-secondary.invert {
+  color: #fff;
+  border-color: #fff;
+  background-color: transparent;
+}
+
+body .js-notification-cookie-banner.notification-primary .btn-secondary:hover,
+body .js-notification-cookie-banner.notification-primary .btn-secondary:focus {
+  color: #571c3f;
+  background-color: #fff;
+}
 .svg-icon-text{
   fill: $main-foreground;
   &.svg-circle{
