@@ -1568,6 +1568,19 @@ input::-webkit-outer-spin-button{
   background: #fff;
 }
 
+.head-main.head-primary {
+  color: #4a1d3a;
+  fill: #a31460;
+  background: #fff;
+}
+
+.head-main.head-primary a:not(.btn-primary),
+.head-main.head-primary .svg-icon-text,
+.head-main.head-primary .utilities-item svg {
+  color: #a31460;
+  fill: #a31460;
+}
+
 .head-main .utilities-item,
 .head-main .utilities-item svg,
 .head-main .logo-text,
