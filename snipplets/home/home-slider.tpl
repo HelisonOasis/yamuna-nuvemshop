@@ -54,12 +54,12 @@
 
 										{% if has_text %}
 											<div class="swiper-text swiper-{{ slide.color }}">	
-												{% if slide.description %}
-													<div class="swiper-description {% if has_auto_height_slider and not has_mobile_slider %}font-small font-md-normal mb-md-3 mb-2{% else %}mb-3{% endif %}">{{ slide.description }}</div>
-												{% endif %}
-												{% if slide.title %}
-													<div class="swiper-title{% if has_auto_height_slider and not has_mobile_slider %} swiper-title-small{% endif %}">{{ slide.title }}</div>
-												{% endif %}
+										{% if slide.title %}
+											<div class="swiper-title{% if has_auto_height_slider and not has_mobile_slider %} swiper-title-small{% endif %}">{{ slide.title }}</div>
+										{% endif %}
+										{% if slide.description %}
+											<div class="swiper-description {% if has_auto_height_slider and not has_mobile_slider %}font-small font-md-normal mb-md-3 mb-2{% else %}mb-3{% endif %}">{{ slide.description }}</div>
+										{% endif %}
 												{% if slide.button and slide.link %}
 													<div class="btn btn-primary btn-small swiper-btn {% if has_auto_height_slider and not has_mobile_slider %} btn-extra-small btn-extra-small-md mt-md-4 mt-2  px-md-4{% else %}mt-4 px-4{% endif %}">{{ slide.button }}</div>
 												{% endif %}

@@ -681,6 +681,48 @@ p{
   line-height: 30px;
 }
 
+{# Yamuna home: desktop hero content overlay #}
+@media (min-width: 768px) {
+  [data-store="home-slider"] .section-slider {
+    height: 700px;
+  }
+
+  [data-store="home-slider"] .swiper-text {
+    top: auto;
+    right: auto;
+    bottom: 61px;
+    left: 0;
+    width: 439px;
+    min-height: 248px;
+    padding: 30px 83px;
+    text-align: left;
+    transform: none;
+    border-radius: 0 40px 40px 0;
+    background: #fff;
+  }
+
+  [data-store="home-slider"] .swiper-title {
+    margin-bottom: 6px;
+    font-size: 32px;
+    line-height: 38px;
+    font-weight: 800;
+  }
+
+  [data-store="home-slider"] .swiper-description {
+    margin-bottom: 16px;
+    font-size: 24px;
+    line-height: 30px;
+    letter-spacing: 0;
+  }
+
+  [data-store="home-slider"] .swiper-btn {
+    min-width: 234px;
+    padding: 16px 48px;
+    border-radius: 38px;
+    font-size: 18px;
+  }
+}
+
 {# /* // Lists */ #}
 
 .list {

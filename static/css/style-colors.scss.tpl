@@ -1173,6 +1173,23 @@ input::-webkit-outer-spin-button{
   top: 50%;
 }
 
+{# Yamuna home: desktop hero content overlay #}
+@media (min-width: 768px) {
+  [data-store="home-slider"] .swiper-text {
+    top: auto;
+    color: #4a1d3a;
+  }
+
+  [data-store="home-slider"] .swiper-title {
+    color: #a31460;
+  }
+
+  [data-store="home-slider"] .swiper-btn {
+    background: #238482;
+    color: #fff;
+  }
+}
+
 .swiper-dark {
   color: $main-foreground;
   .swiper-btn {
