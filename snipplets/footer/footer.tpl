@@ -3,6 +3,7 @@
 
 {% set has_footer_menu = settings.footer_menu and settings.footer_menu_show %}
 {% set has_footer_menu_secondary = settings.footer_menu_secondary and settings.footer_menu_secondary_show %}
+{% set has_footer_menu_tertiary = settings.footer_menu_tertiary and settings.footer_menu_tertiary_show %}
 {% set has_footer_about = settings.footer_about_show and (settings.footer_about_title or settings.footer_about_description) %}
 {% set has_payment_logos = settings.payments %}
 {% set has_shipping_logos = settings.shipping %}
@@ -69,6 +70,22 @@
 					</div>
 				{% endif %}
 
+				{# Foot Nav Tertiary #}
+				{% if has_footer_menu_tertiary %}
+					<div class="col">
+						{% if settings.footer_menu_tertiary_title %}
+							<h4 class="h3">{{ settings.footer_menu_tertiary_title }}</h4>
+						{% endif %}
+						<ul class="footer-menu">
+							{% for item in menus[settings.footer_menu_tertiary] %}
+								<li class="footer-menu-item">
+									<a class="footer-menu-link" href="{{ item.url }}" {% if item.url | is_external %}target="_blank"{% endif %}>{{ item.name }}</a>
+								</li>
+							{% endfor %}
+						</ul>
+					</div>
+				{% endif %}
+
 				{# Contact info #}
 				{% if has_footer_contact_info %}
 					<div class="col-md mb-4">
@@ -78,6 +95,15 @@
 						{% include "snipplets/contact-links.tpl" %}
 					</div>
 				{% endif %}
+
+				<div class="col yamuna-footer-account">
+					<h4 class="h3">{{ 'Minha conta' | translate }}</h4>
+					<ul class="footer-menu">
+						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.customer_home_url }}">{{ 'Meus pedidos' | translate }}</a></li>
+						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.customer_home_url }}">{{ 'Minha conta' | translate }}</a></li>
+						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.customer_register_url }}">{{ 'Criar conta' | translate }}</a></li>
+					</ul>
+				</div>
 
 			{% endif %}
 			

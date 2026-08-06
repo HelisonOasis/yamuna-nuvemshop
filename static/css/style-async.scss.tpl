@@ -1982,7 +1982,7 @@ footer.yamuna-footer .powered-by-logo svg {
 
   footer.yamuna-footer .element-footer > .col,
   footer.yamuna-footer .element-footer > .col-md {
-    flex-grow: 0;
+    flex-grow: 1;
   }
 
   footer.yamuna-footer .footer-payments-shipping-logos .row {
