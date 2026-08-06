@@ -1563,6 +1563,11 @@ input::-webkit-outer-spin-button{
   background: #fff;
 }
 
+.head-main.head-light {
+  color: #4a1d3a;
+  background: #fff;
+}
+
 .head-main .utilities-item,
 .head-main .utilities-item svg,
 .head-main .logo-text,
@@ -1961,6 +1966,11 @@ footer h4 {
 }
 
 .footer-legal {
+  background: #4a1d3a;
+  color: #f3f3f3;
+}
+
+footer .footer-legal {
   background: #4a1d3a;
   color: #f3f3f3;
 }
