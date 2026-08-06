@@ -1557,6 +1557,46 @@ input::-webkit-outer-spin-button{
   fill: $main-background;
 }
 
+{# Yamuna brand header and footer #}
+.head-main {
+  color: #4a1d3a;
+  background: #fff;
+}
+
+.head-main .utilities-item,
+.head-main .utilities-item svg,
+.head-main .logo-text,
+.head-main .search-btn {
+  color: #a31460;
+  fill: #a31460;
+}
+
+.head-main .form-control {
+  border-color: #a31460;
+  color: #4a1d3a;
+}
+
+.head-main .form-control::placeholder {
+  color: #9e929e;
+}
+
+@media (min-width: 768px) {
+  .head-main .nav-row {
+    max-width: 1088px;
+    margin: 0 auto;
+    border-radius: 54px;
+    background: #a31460;
+    box-shadow: 4px 4px 4px -2px rgba(0, 0, 0, .25);
+  }
+
+  .head-main .nav-desktop-list > .nav-item > .nav-list-link,
+  .head-main .nav-desktop-list > .nav-item > .nav-item-container > .nav-list-link,
+  .head-main .nav-desktop-list > .nav-item > .nav-item-container > .nav-list-arrow > i {
+    color: #fff;
+    fill: #fff;
+  }
+}
+
 {# /* // Header */ #}
 
 .head-light{
@@ -1899,6 +1939,34 @@ footer {
   .contact-item-icon {
     fill: $footer-foreground-color;
   }
+}
+
+footer {
+  color: #f3f3f3;
+  background: #571c3f;
+}
+
+footer a,
+footer .contact-link,
+footer .contact-item-icon {
+  color: #f3f3f3;
+  fill: #f3f3f3;
+}
+
+footer .h3,
+footer h4 {
+  color: #fff;
+  font-family: 'Dosis', sans-serif;
+  font-weight: 700;
+}
+
+.footer-legal {
+  background: #4a1d3a;
+  color: #f3f3f3;
+}
+
+.footer-legal a {
+  color: #f3f3f3;
 }
 
 .social-icon-rounded {
