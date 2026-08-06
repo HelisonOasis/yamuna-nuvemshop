@@ -1281,6 +1281,41 @@ input::-webkit-outer-spin-button{
   line-height: 1.2;
 }
 
+{# Yamuna home: native product card layout #}
+.yamuna-home-products .item {
+  background: #fff;
+  border: 0;
+  box-shadow: none;
+}
+
+.yamuna-home-products .item-link,
+.yamuna-home-products .item-name,
+.yamuna-home-products .item-price {
+  color: #4a1d3a;
+}
+
+.yamuna-home-products .item-name {
+  font-family: 'Dosis', sans-serif;
+  font-weight: 600;
+}
+
+.yamuna-home-products .item-price {
+  font-family: 'Dosis', sans-serif;
+  font-weight: 600;
+}
+
+.yamuna-home-products .item-actions .btn-primary {
+  border-color: #238482;
+  background: #238482;
+  color: #fff;
+}
+
+.yamuna-home-products .item-actions .btn-secondary {
+  border-color: #238482;
+  background: #fff;
+  color: #238482;
+}
+
 .service-icon {
   fill: $main-foreground;
 }

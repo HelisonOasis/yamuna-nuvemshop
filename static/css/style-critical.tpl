@@ -1446,6 +1446,69 @@ p{
   max-width: none;
 }
 
+{# Yamuna home: native product card layout #}
+.yamuna-home-products .item {
+  height: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.yamuna-home-products .item-image {
+  height: auto;
+  max-height: none;
+  margin: 24px 28px 0;
+  aspect-ratio: 1 / 1;
+}
+
+.yamuna-home-products .item-image img {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: contain;
+}
+
+.yamuna-home-products .item-description {
+  padding: 20px 28px 10px;
+}
+
+.yamuna-home-products .item-name {
+  margin-bottom: 8px;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.yamuna-home-products .item-price-container {
+  margin-bottom: 0;
+}
+
+.yamuna-home-products .item-price {
+  font-size: 24px;
+  line-height: 30px;
+}
+
+.yamuna-home-products .item-actions {
+  display: block;
+  visibility: visible;
+  height: auto;
+  margin: 0;
+  padding: 0 28px 24px;
+  opacity: 1;
+}
+
+.yamuna-home-products .item-actions > div {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+}
+
+.yamuna-home-products .item-actions .btn {
+  min-height: 48px;
+  margin: 0 0 8px;
+  padding: 12px 20px;
+  border-radius: 24px;
+}
+
 .service-icon {
   margin: 10px 0;
 }
