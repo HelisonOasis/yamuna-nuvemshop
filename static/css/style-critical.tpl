@@ -1388,6 +1388,22 @@ p{
   padding: 50px 0;
 }
 
+{# Yamuna home: benefits bar #}
+[data-store="banner-services"] .section-informative-banners {
+  padding: 24px 0;
+}
+
+[data-store="banner-services"] .service-item {
+  margin: 0;
+}
+
+[data-store="banner-services"] .yamuna-benefit-icon {
+  display: block;
+  width: 36px;
+  height: 36px;
+  max-width: none;
+}
+
 .service-icon {
   margin: 10px 0;
 }

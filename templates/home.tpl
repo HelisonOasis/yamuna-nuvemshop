@@ -1,6 +1,6 @@
 {% set has_main_slider = settings.slider and settings.slider is not empty %}
 {% set has_mobile_slider = settings.toggle_slider_mobile and settings.slider_mobile and settings.slider_mobile is not empty %}
-{% set has_informative_banners = settings.banner_services and (settings.banner_services_01_title or settings.banner_services_02_title or settings.banner_services_03_title or settings.banner_services_04_title) %}
+{% set has_informative_banners = settings.banner_services and (settings.banner_services_01_title or settings.banner_services_02_title or settings.banner_services_03_title or settings.banner_services_04_title or settings.banner_services_05_title) %}
 {% set has_category_banners =  settings.banner_01_show or settings.banner_02_show or settings.banner_03_show %}
 {% set has_welcome =  settings.welcome_message %}
 {% set has_institutional_message = settings.institutional_message or settings.institutional_text %}

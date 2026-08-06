@@ -58,6 +58,7 @@ banner_services_01_icon = shipping
 banner_services_02_icon = card
 banner_services_03_icon = security
 banner_services_04_icon = returns
+banner_services_05_icon = card
 continue_buying = 1
 home_order_position_0 = slider
 home_order_position_1 = informatives

@@ -1,5 +1,5 @@
 {% macro for_each_banner_include(template) %}
-    {% for index in 1..4 %}
+    {% for index in 1..5 %}
         {% set banner = 'banner_services_0' ~ index %}
 
         {% set banner_services_image = "#{banner}.jpg" | has_custom_image %}

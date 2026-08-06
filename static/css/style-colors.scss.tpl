@@ -1239,6 +1239,31 @@ input::-webkit-outer-spin-button{
   background: rgba($main-foreground, .1);
 }
 
+{# Yamuna home: benefits bar #}
+[data-store="banner-services"] .section-informative-banners {
+  margin: 0;
+  background: rgba(#c0bbc3, .2);
+  color: #1b1a21;
+}
+
+[data-store="banner-services"] .service-item {
+  color: #1b1a21;
+}
+
+[data-store="banner-services"] .service-item h3 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+[data-store="banner-services"] .service-item p {
+  font-family: 'Dosis', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
 .service-icon {
   fill: $main-foreground;
 }

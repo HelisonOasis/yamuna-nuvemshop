@@ -516,6 +516,22 @@ Página de inicio
 	i18n_input
 		name = banner_services_04_url
 		description = Link
+	subtitle
+		subtitle = BANNER 5
+	dropdown
+		name = banner_services_05_icon
+		description = Icone
+		values
+			card = Cartoes de credito
+	i18n_input
+		name = banner_services_05_title
+		description = Titulo
+	i18n_input
+		name = banner_services_05_description
+		description = Descricao
+	i18n_input
+		name = banner_services_05_url
+		description = Link
 
 	collapse
 		title = Mensaje de bienvenida
