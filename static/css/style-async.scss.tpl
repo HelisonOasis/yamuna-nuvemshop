@@ -1889,7 +1889,6 @@ footer.yamuna-footer .yamuna-footer-logo-img {
   max-width: 160px;
   max-height: 92px;
   margin: 0;
-  filter: brightness(0) invert(1);
 }
 
 footer.yamuna-footer .yamuna-footer-logo-text {

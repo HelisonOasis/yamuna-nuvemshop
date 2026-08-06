@@ -1,4 +1,4 @@
-{% set has_social_network = store.facebook or store.twitter or store.pinterest or store.instagram or store.tiktok or store.youtube %}
+{% set has_social_network = store.facebook or store.twitter or store.pinterest or store.instagram or store.tiktok or store.youtube or store.whatsapp %}
 {% set has_footer_contact_info = (store.whatsapp or store.phone or store.email or store.address or store.blog) and settings.footer_contact_show %}          
 
 {% set has_footer_menu = settings.footer_menu and settings.footer_menu_show %}
@@ -20,16 +20,18 @@
 
 			{# Yamuna brand and social networks #}
 			<div class="col-md mb-4 yamuna-footer-brand">
-				{{ component('logos/logo', {
-					logo_size: 'large',
-					container_classes: { logo_img_container: 'yamuna-footer-logo' },
-					logo_img_classes: 'yamuna-footer-logo-img',
-					logo_text_classes: 'h3 mb-0 yamuna-footer-logo-text'
-				}) }}
+				<div class="yamuna-footer-logo">
+					<img class="yamuna-footer-logo-img" src="{{ 'images/yamuna/logo-yamuna-branco.png' | static_url }}" alt="{{ store.name }}" />
+				</div>
 
 				{% if has_social_network %}
 					<div class="yamuna-footer-social">
 						{% include "snipplets/social/social-links.tpl" with {'circle': true} %}
+						{% if store.whatsapp %}
+							<a class="social-icon-rounded" href="{{ store.whatsapp }}" target="_blank" aria-label="WhatsApp {{ store.name }}">
+								<svg class="icon-inline icon-lg"><use xlink:href="#whatsapp"/></svg>
+							</a>
+						{% endif %}
 					</div>
 				{% endif %}
 			</div>
