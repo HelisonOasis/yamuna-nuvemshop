@@ -1974,6 +1974,13 @@ footer.yamuna-footer .powered-by-logo svg {
 }
 
 @media (min-width: 768px) {
+  footer.yamuna-footer > .container-fluid,
+  footer.yamuna-footer .footer-legal > .container-fluid {
+    max-width: 1536px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
   footer.yamuna-footer .yamuna-footer-brand {
     flex: 0 0 22%;
     max-width: 22%;
