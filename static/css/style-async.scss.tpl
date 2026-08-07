@@ -1887,8 +1887,9 @@ footer.yamuna-footer .yamuna-footer-logo {
 }
 
 footer.yamuna-footer .yamuna-footer-logo-img {
-  max-width: 174px;
-  max-height: 92px;
+  width: 174px;
+  max-width: 100%;
+  height: auto;
   margin: 0;
 }
 
