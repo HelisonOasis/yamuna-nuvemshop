@@ -1881,9 +1881,9 @@ footer.yamuna-footer .yamuna-footer-brand {
 
 footer.yamuna-footer .yamuna-footer-logo {
   max-width: 174px;
-  margin: 0 0 48px;
+  margin: 0 auto 48px;
   padding: 0;
-  text-align: left;
+  text-align: center;
 }
 
 footer.yamuna-footer .yamuna-footer-logo-img {
@@ -1901,21 +1901,15 @@ footer.yamuna-footer .yamuna-footer-social {
   display: flex;
   gap: 12px;
   align-items: center;
+  justify-content: center;
 }
 
-footer.yamuna-footer .social-icon-rounded {
+footer.yamuna-footer .yamuna-footer-social a,
+footer.yamuna-footer .yamuna-footer-social img {
   width: 20px;
   height: 20px;
   margin: 0;
-  line-height: 20px;
-  border-radius: 0;
-  background: transparent;
-  fill: #fff;
-}
-
-footer.yamuna-footer .social-icon-rounded .icon-inline {
-  width: 20px;
-  height: 20px;
+  display: block;
 }
 
 footer.yamuna-footer .h3,

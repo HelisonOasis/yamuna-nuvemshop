@@ -26,11 +26,17 @@
 
 				{% if has_social_network %}
 					<div class="yamuna-footer-social">
-						{% include "snipplets/social/social-links.tpl" with {'circle': true} %}
+						{% if store.facebook %}
+							<a href="{{ store.facebook }}" target="_blank" aria-label="Facebook {{ store.name }}"><img src="{{ 'images/yamuna/facebook.svg' | static_url }}" alt="Facebook" /></a>
+						{% endif %}
+						{% if store.instagram %}
+							<a href="{{ store.instagram }}" target="_blank" aria-label="Instagram {{ store.name }}"><img src="{{ 'images/yamuna/instagram.svg' | static_url }}" alt="Instagram" /></a>
+						{% endif %}
+						{% if store.youtube %}
+							<a href="{{ store.youtube }}" target="_blank" aria-label="YouTube {{ store.name }}"><img src="{{ 'images/yamuna/youtube.svg' | static_url }}" alt="YouTube" /></a>
+						{% endif %}
 						{% if store.whatsapp %}
-							<a class="social-icon-rounded" href="{{ store.whatsapp }}" target="_blank" aria-label="WhatsApp {{ store.name }}">
-								<svg class="icon-inline icon-lg"><use xlink:href="#whatsapp"/></svg>
-							</a>
+							<a href="{{ store.whatsapp }}" target="_blank" aria-label="WhatsApp {{ store.name }}"><img src="{{ 'images/yamuna/whatsapp.svg' | static_url }}" alt="WhatsApp" /></a>
 						{% endif %}
 					</div>
 				{% endif %}
