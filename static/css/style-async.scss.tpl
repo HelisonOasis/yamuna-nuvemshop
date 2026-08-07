@@ -1861,6 +1861,7 @@ footer.yamuna-footer {
   padding-top: 58px;
   color: #f3f3f3;
   background: #4a1d3a;
+  font-family: 'Dosis', sans-serif;
 }
 
 footer.yamuna-footer a,
@@ -1879,14 +1880,14 @@ footer.yamuna-footer .yamuna-footer-brand {
 }
 
 footer.yamuna-footer .yamuna-footer-logo {
-  max-width: 170px;
-  margin: 0 0 22px;
+  max-width: 174px;
+  margin: 0 0 48px;
   padding: 0;
   text-align: left;
 }
 
 footer.yamuna-footer .yamuna-footer-logo-img {
-  max-width: 160px;
+  max-width: 174px;
   max-height: 92px;
   margin: 0;
 }
@@ -1902,27 +1903,27 @@ footer.yamuna-footer .yamuna-footer-social {
 }
 
 footer.yamuna-footer .social-icon-rounded {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   margin: 0;
-  line-height: 18px;
+  line-height: 20px;
   border-radius: 0;
   background: transparent;
   fill: #fff;
 }
 
 footer.yamuna-footer .social-icon-rounded .icon-inline {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 }
 
 footer.yamuna-footer .h3,
 footer.yamuna-footer h4 {
   margin: 0 0 16px;
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.5;
   text-transform: uppercase;
 }
 
@@ -1931,18 +1932,19 @@ footer.yamuna-footer .footer-menu {
 }
 
 footer.yamuna-footer .footer-menu-item {
-  margin-bottom: 9px;
+  margin-bottom: 4px;
 }
 
 footer.yamuna-footer .footer-menu-link,
 footer.yamuna-footer .contact-info,
 footer.yamuna-footer .contact-link {
-  font-size: 13px;
-  line-height: 1.35;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.5;
 }
 
 footer.yamuna-footer .contact-item {
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 }
 
 footer.yamuna-footer .divider {
@@ -1964,7 +1966,8 @@ footer.yamuna-footer .footer-legal {
   padding: 17px 0;
   color: #f3f3f3;
   background: #38142f;
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 300;
 }
 
 footer.yamuna-footer .footer-legal a,
