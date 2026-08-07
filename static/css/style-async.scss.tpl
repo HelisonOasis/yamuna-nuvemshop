@@ -1948,9 +1948,64 @@ footer.yamuna-footer .divider {
   opacity: 1;
 }
 
+footer.yamuna-footer .yamuna-footer-payment-bar {
+  align-items: center;
+  margin-bottom: 0;
+  padding: 24px 0;
+  border-top: 1px solid #a31460;
+  border-bottom: 1px solid #a31460;
+}
+
+footer.yamuna-footer .footer-payments-shipping-logos .row {
+  margin-bottom: 0 !important;
+}
+
+footer.yamuna-footer .footer-payments-shipping-logos .h3 {
+  margin-bottom: 0;
+}
+
 footer.yamuna-footer .footer-payments-shipping-logos img {
   max-height: 22px;
   margin: 2px 4px 2px 0;
+}
+
+footer.yamuna-footer .yamuna-footer-security-content,
+footer.yamuna-footer .yamuna-footer-security-logos {
+  display: flex;
+  align-items: center;
+}
+
+footer.yamuna-footer .yamuna-footer-security-content {
+  justify-content: flex-end;
+  gap: 42px;
+}
+
+footer.yamuna-footer .yamuna-footer-security-content .h3 {
+  margin: 0;
+}
+
+footer.yamuna-footer .yamuna-footer-security-logos {
+  gap: 16px;
+}
+
+footer.yamuna-footer .yamuna-footer-security-logos img {
+  display: block;
+  object-fit: contain;
+}
+
+footer.yamuna-footer .yamuna-security-google {
+  width: 101px;
+  height: 26px;
+}
+
+footer.yamuna-footer .yamuna-security-site {
+  width: 68px;
+  height: 32px;
+}
+
+footer.yamuna-footer .yamuna-security-ssl {
+  width: 57px;
+  height: 41px;
 }
 
 footer.yamuna-footer .footer-logo img {
@@ -1960,7 +2015,7 @@ footer.yamuna-footer .footer-logo img {
 footer.yamuna-footer .footer-legal {
   padding: 17px 0;
   color: #f3f3f3;
-  background: #38142f;
+  background: #4a1d3a;
   font-size: 12px;
   font-weight: 300;
 }
@@ -1991,5 +2046,26 @@ footer.yamuna-footer .powered-by-logo svg {
 
   footer.yamuna-footer .footer-payments-shipping-logos .row {
     align-items: center;
+  }
+
+  footer.yamuna-footer .yamuna-footer-payment-bar > .col-md-9 {
+    flex: 0 0 55%;
+    max-width: 55%;
+  }
+
+  footer.yamuna-footer .yamuna-footer-payment-bar > .yamuna-footer-security {
+    flex: 0 0 45%;
+    max-width: 45%;
+  }
+}
+
+@media (max-width: 767px) {
+  footer.yamuna-footer .yamuna-footer-security-content {
+    justify-content: flex-start;
+    gap: 20px;
+  }
+
+  footer.yamuna-footer .yamuna-footer-security {
+    margin-top: 25px;
   }
 }

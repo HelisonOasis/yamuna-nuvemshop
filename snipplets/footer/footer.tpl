@@ -121,9 +121,7 @@
 
 			{% if has_shipping_payment_logos or has_seal_logos %}
 
-				<div class="divider mb-5"></div>
-
-				<div class="row element-footer">
+				<div class="row element-footer yamuna-footer-payment-bar">
 
 					{# Logos Payments and Shipping #}
 			 		{% if has_shipping_payment_logos %}
@@ -152,6 +150,17 @@
 							</div>
 						</div>
 					{% endif %}
+
+					<div class="col-md-3 yamuna-footer-security">
+						<div class="yamuna-footer-security-content">
+							<h4 class="h3">Segurança</h4>
+							<div class="yamuna-footer-security-logos">
+								<img class="yamuna-security-google" src="{{ 'images/yamuna/security-google.svg' | static_url }}" alt="Google Safe Browsing" />
+								<img class="yamuna-security-site" src="{{ 'images/yamuna/security-site.svg' | static_url }}" alt="Site seguro" />
+								<img class="yamuna-security-ssl" src="{{ 'images/yamuna/security-ssl.svg' | static_url }}" alt="SSL seguro" />
+							</div>
+						</div>
+					</div>
 
 					{# AFIP - EBIT - Custom Seal #}
 					{% if has_seal_logos %}
@@ -207,6 +216,7 @@
 	            <div class="col-md-9 text-md-left mb-3 mb-md-0">
 	                <div class="d-inline-block mr-md-2">
 	                   {{ "Copyright {1} - {2}. Todos los derechos reservados." | translate( (store.business_name ? store.business_name : store.name) ~ (store.business_id ? ' - ' ~ store.business_id : ''), "now" | date('Y') ) }}
+	                   {% if store.address %} - {{ store.address }}{% endif %}
 	                </div>
 	                {{ component('claim-info', {
 							container_classes: "d-md-inline-block mt-md-0 mt-3",
