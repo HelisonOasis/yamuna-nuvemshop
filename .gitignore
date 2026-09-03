@@ -7,6 +7,9 @@ node_modules/
 npm-debug.log*
 *.log
 
+# Extratos temporários de revisão da PDP.
+_pdp_*_edits*.txt
+
 # Arquivos do sistema/editor.
 .DS_Store
 Thumbs.db
