@@ -1,4 +1,14 @@
 {% set show_thumbs = product.media_count > 1 or product.video_url %}
+{% if product.media_count > 0 %}
+    <div class="yamuna-product-gallery-desktop">
+        {% for media in product.media if media.isImage %}
+            <a href="{{ media | product_image_url('4k') }}" data-fancybox="product-gallery" class="yamuna-product-gallery-item">
+                <img src="{{ media | product_image_url('huge') }}" alt="{{ media.alt }}" loading="{{ loop.first ? 'eager' : 'lazy' }}" {% if loop.first %}fetchpriority="high"{% endif %} />
+            </a>
+        {% endfor %}
+    </div>
+{% endif %}
+<div class="yamuna-product-gallery-mobile d-lg-none">
 <div class="row" data-store="product-image-{{ product.id }}"> 
 	{% if show_thumbs %}
 		<div class="col-2 d-none d-md-block">
@@ -66,4 +76,5 @@
 		    <div class="js-swiper-product-pagination swiper-pagination swiper-pagination-white h5 font-weight-normal d-block d-md-none"></div>
 		</div>
 	{% endif %}
+</div>
 </div>

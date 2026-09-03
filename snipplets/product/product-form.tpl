@@ -4,15 +4,25 @@
 	{% block page_header_text %}{{ product.name }}{% endblock page_header_text %}
 {% endembed %}
 
-{# Product price #}
+{# Product price and Figma price-card options #}
 {% set is_subscription_only_product = product.isSubscribable() and product.isSubscriptionOnly() %}
 
 {{ component('nubesdk-slot', { type: "before_product_detail_price" }) }}
 
 {% if not is_subscription_only_product %}
-    <div class="js-price-container price-container mb-4" data-store="product-price-{{ product.id }}" data-combined-discount="{{ product.isPromotionEligibleForCombinedDiscount ? 'true' : 'false' }}">
+    {% set buy_three_unit_price = product.price * 0.95 %}
+    {% set payment_discount_rate = product.maxPaymentDiscount.value / 100 %}
+    {% set unit_pix_price = product.price * (1 - payment_discount_rate) %}
+    {% set buy_three_pix_price = buy_three_unit_price * (1 - payment_discount_rate) %}
+    {% set max_installments = product.get_max_installments(false) %}
+    <div class="yamuna-pdp-price-cards" data-yamuna-pix-discount="{{ product.maxPaymentDiscount.value }}">
+    <div class="js-price-container price-container mb-4 yamuna-pdp-price-card yamuna-pdp-price-card-unit" data-store="product-price-{{ product.id }}" data-combined-discount="{{ product.isPromotionEligibleForCombinedDiscount ? 'true' : 'false' }}">
         <span class="d-inline-block">
             <h4 id="compare_price_display" class="js-compare-price-display price-compare font-weight-normal mb-0" {% if not product.compare_at_price or not product.display_price %}style="display:none;"{% else %} style="display:block;"{% endif %}>{% if product.compare_at_price and product.display_price %}{{ product.compare_at_price | money }}{% endif %}</h4>
+        </span>
+        <span class="yamuna-pdp-price-card-meta" aria-label="Condicoes de pagamento">
+            <span class="yamuna-pdp-price-card-pix"><span data-yamuna-unit-pix-price>{{ unit_pix_price | money }}</span> no pix</span>
+            <span class="yamuna-pdp-price-card-installments">ou ate {% if max_installments and max_installments.installment > 1 %}{{ max_installments.installment }}{% else %}12{% endif %}x no cartao</span>
         </span>
         <span class="d-inline-flex align-items-center">
             <h2 class="js-price-display text-primary mb-0" id="price_display" {% if not product.display_price %}style="display:none;"{% endif %} data-product-price="{{ product.price }}">{% if product.display_price %}{{ product.price | money }}{% endif %}</h2>
@@ -61,6 +71,20 @@
                 discount_percentage_classes: 'ml-2 label label-small label-accent m-0',
             })
         }}
+    </div>
+    <button class="yamuna-pdp-price-card yamuna-pdp-price-card-buy-three" type="button" data-yamuna-buy-three aria-label="Selecionar 3 unidades">
+        <span class="yamuna-pdp-price-card-heading">Compre 3</span>
+        <span class="yamuna-pdp-price-card-discount" aria-hidden="true">
+            <img src="{{ 'images/yamuna/pdp-buy-three-discount.svg' | static_url }}" alt="" />
+            <strong>5%</strong><small>OFF</small>
+        </span>
+        <span class="yamuna-pdp-price-card-body">
+            <strong class="yamuna-pdp-buy-three-price" data-buy-three-price>{{ buy_three_unit_price | money }}</strong>
+            <span class="yamuna-pdp-price-card-unit-label">preco<br />unitario</span>
+            <span class="yamuna-pdp-price-card-pix"><span data-buy-three-pix-price>{{ buy_three_pix_price | money }}</span> no pix</span>
+            <span class="yamuna-pdp-price-card-installments">ou ate {% if max_installments and max_installments.installment > 1 %}{{ max_installments.installment }}{% else %}12{% endif %}x no cartao</span>
+        </span>
+    </button>
     </div>
 {% endif %}
 
@@ -372,4 +396,3 @@
 {# Product payments details #}
 
 {% include 'snipplets/product/product-payment-details.tpl' %}
-
