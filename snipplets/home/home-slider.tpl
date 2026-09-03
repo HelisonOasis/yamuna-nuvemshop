@@ -4,6 +4,22 @@
 {% set use_smaller_thumbs = (has_auto_height_slider and not has_mobile_slider) or has_mobile_slider %}
 
 {% if not mobile %}
+	<style>
+		.js-home-main-slider-container .js-swiper-home-pagination .swiper-pagination-bullet,
+		.js-home-slider-mobile .js-swiper-home-pagination-mobile .swiper-pagination-bullet {
+			background-color: #fff !important;
+			background-image: none !important;
+			opacity: .7 !important;
+		}
+		.js-home-main-slider-container .js-swiper-home-pagination .swiper-pagination-bullet-active,
+		.js-home-slider-mobile .js-swiper-home-pagination-mobile .swiper-pagination-bullet-active {
+			background-color: #fff !important;
+			opacity: 1 !important;
+		}
+	</style>
+{% endif %}
+
+{% if not mobile %}
 <div class="js-home-main-slider-container {% if not has_main_slider %}hidden{% endif %}">
 {% endif %}
 	<div class="js-live-preview-home-slider-container {% if mobile %}js-home-mobile-slider{% else %}js-home-main-slider{% endif %}-visibility {% if has_main_slider and has_mobile_slider %}{% if mobile %}d-md-none{% else %}d-none d-md-block{% endif %}{% elseif not settings.toggle_slider_mobile and mobile %}hidden{% endif %} {% if not settings.slider_full %} mt-4{% endif %} mb-4">
@@ -16,6 +32,11 @@
 								{% set slider = settings.slider_mobile %}
 							{% else %}
 								{% set slider = settings.slider %}
+							{% endif %}
+							{# Keep hero navigation testable when the store has only one configured slide. #}
+							{% set hero_controls_demo = slider | length == 1 %}
+							{% if hero_controls_demo %}
+								{% set slider = slider | merge(slider) %}
 							{% endif %}
 							{% for slide in slider %}
 								<div class="swiper-slide slide-container">
@@ -65,6 +86,18 @@
 												{% endif %}
 											</div>
 										{% endif %}
+
+										{% if loop.first or hero_controls_demo %}
+											<div class="yamuna-home-hero-overlay">
+												<h2 class="yamuna-home-hero-overlay-title">Creme de Castanhas</h2>
+												<p class="yamuna-home-hero-overlay-description"><span class="yamuna-home-hero-copy-desktop">Feitos em moinho de pedra<br>para um sabor fabuloso</span><span class="yamuna-home-hero-copy-mobile">Feitos em moinho de pedra para<br>um sabor fabuloso</span></p>
+												{% if slide.link %}
+													<span class="yamuna-home-hero-overlay-button">Compre agora</span>
+												{% else %}
+													<a class="yamuna-home-hero-overlay-button" href="{{ '/produtos' | setting_url }}">Compre agora</a>
+												{% endif %}
+											</div>
+										{% endif %}
 									</div>
 									{% if slide.link %}
 										</a>
@@ -79,11 +112,11 @@
 								{% endfor %}
 							{% endif %}
 						</div>
-						<div class="js-swiper-home-control js-swiper-home-prev{% if mobile %}-mobile{% endif %} swiper-button-prev d-none d-md-block svg-circle svg-circle-big svg-icon-text{% if settings.icons_solid %} svg-solid{% endif %}">
-							<svg class="icon-inline icon-2x mr-1 icon-flip-horizontal"><use xlink:href="#chevron"/></svg>
+						<div class="js-swiper-home-control js-swiper-home-prev{% if mobile %}-mobile{% endif %} swiper-button-prev d-none d-md-block" aria-label="Slide anterior">
+							<img class="yamuna-home-hero-arrow-icon" src="{{ 'images/yamuna/hero-arrow-prev.svg' | static_url }}" alt="" style="transform: scaleX(-1);">
 						</div>
-						<div class="js-swiper-home-control js-swiper-home-next{% if mobile %}-mobile{% endif %} swiper-button-next d-none d-md-block svg-circle svg-circle-big svg-icon-text{% if settings.icons_solid %} svg-solid{% endif %}">
-							<svg class="icon-inline icon-2x ml-1"><use xlink:href="#chevron"/></svg>
+						<div class="js-swiper-home-control js-swiper-home-next{% if mobile %}-mobile{% endif %} swiper-button-next d-none d-md-block" aria-label="Próximo slide">
+							<img class="yamuna-home-hero-arrow-icon" src="{{ 'images/yamuna/hero-arrow-next.svg' | static_url }}" alt="">
 						</div>
 					</div>
 				</div>

@@ -23,21 +23,21 @@
     {% set sections_products = sections.primary.products %}
     {% set section_name = 'primary' %}
     {% set highlighted_products_setting_name = 'featured' %}
-    {% set section_title = settings.featured_products_title %}
+{% set section_title = 'Os mais vendidos' %}
     {% set section_format = settings.featured_products_format %}
 {% endif %}
 {% if new_products %}
     {% set sections_products = sections.new.products %}
     {% set section_name = 'new' %}
     {% set highlighted_products_setting_name = 'new' %}
-    {% set section_title = settings.new_products_title %}
+    {% set section_title = 'Promoções' %}
     {% set section_format = settings.new_products_format %}
 {% endif %}
 {% if sale_products %}
     {% set sections_products = sections.sale.products %}
     {% set section_name = 'sale' %}
     {% set highlighted_products_setting_name = 'sale' %}
-    {% set section_title = settings.sale_products_title %}
+    {% set section_title = 'Encontre o ama' %}
     {% set section_format = settings.sale_products_format %}
 {% endif %}
 
@@ -65,6 +65,7 @@
         {% if use_slider %}
                     </div>
                 </div>
+                <div class="js-swiper-{{ highlighted_products_setting_name }}-pagination products-carousel-pagination swiper-pagination"></div>
             </div>
         {% endif %}
 
@@ -93,12 +94,12 @@
         {% endif %}
 
         {% if use_slider %}
-            <div class="js-swiper-{{ highlighted_products_setting_name }}-prev swiper-button-prev d-none d-md-block svg-circle svg-circle-big svg-icon-text{% if settings.icons_solid %} svg-solid{% endif %}">
+            <button type="button" class="js-swiper-{{ highlighted_products_setting_name }}-prev swiper-button-prev svg-circle svg-circle-big svg-icon-text{% if settings.icons_solid %} svg-solid{% endif %}" aria-label="Produto anterior">
                 <svg class="icon-inline icon-2x mr-1 icon-flip-horizontal"><use xlink:href="#chevron"/></svg>
-            </div>
-            <div class="js-swiper-{{ highlighted_products_setting_name }}-next swiper-button-next d-none d-md-block svg-circle svg-circle-big svg-icon-text{% if settings.icons_solid %} svg-solid{% endif %}">
+            </button>
+            <button type="button" class="js-swiper-{{ highlighted_products_setting_name }}-next swiper-button-next svg-circle svg-circle-big svg-icon-text{% if settings.icons_solid %} svg-solid{% endif %}" aria-label="Próximo produto">
                 <svg class="icon-inline icon-2x ml-1"><use xlink:href="#chevron"/></svg>
-            </div>
+            </button>
         {% endif %}
     </div>
 </div>

@@ -48,7 +48,7 @@
                         {% if banner_url %}
                             <a class="textbanner-link" href="{{ banner_url | setting_url }}"{% if banner_title %} title="{{ banner_title }}" aria-label="{{ banner_title }}"{% else %} title="{{ 'Banner de' | translate }} {{ store.name }}" aria-label="{{ 'Banner de' | translate }} {{ store.name }}"{% endif %}>
                         {% endif %}
-                        <div class="textbanner-image" {% if not banner_image %}style="display:none"{% endif %}>
+                        <div class="textbanner-image {% if has_banner_text %}overlay{% endif %}" {% if not banner_image %}style="display:none"{% endif %}>
                             <img 
                                 {% if not apply_lazy_load %}fetchpriority="high"{% endif %}
                                 {% if banner_image %}
@@ -65,10 +65,14 @@
                             {% if apply_lazy_load and banner_image %}
                                 <div class="placeholder-fade"></div>
                             {% endif %}
-                        </div>
-                        <div class="textbanner-text{% if settings.theme_rounded %} textbanner-text-primary{% endif %}" {% if not has_banner_text %}style="display:none"{% endif %}>
-                            <h3 class="h2 mb-0 js-category-banner-title-{{ loop.index }}" {% if not banner_title %}style="display:none"{% endif %}>{{ banner_title }}</h3>
-                            <div class="textbanner-paragraph js-category-banner-description-{{ loop.index }}" {% if not banner_description %}style="display:none"{% endif %}>{{ banner_description }}</div>
+                            <div class="textbanner-text over-image" {% if not has_banner_text %}style="display:none"{% endif %}>
+                                <h3 class="h2 mb-0 js-category-banner-title-{{ loop.index }}" {% if not banner_title %}style="display:none"{% endif %}>{{ banner_title }}</h3>
+                                <div class="textbanner-paragraph js-category-banner-description-{{ loop.index }}" {% if not banner_description %}style="display:none"{% endif %}>{{ banner_description }}</div>
+                                <span class="btn btn-secondary btn-small invert mt-3 js-category-banner-button js-category-banner-button-{{ loop.index }}">
+                                    <img class="category-banner-button-icon" src="{{ 'images/yamuna/home-spot-bag-teal.svg' | static_url }}" alt="" aria-hidden="true" />
+                                    {{ 'Comprar' | translate }}
+                                </span>
+                            </div>
                         </div>
                         {% if banner_url %}
                             </a>

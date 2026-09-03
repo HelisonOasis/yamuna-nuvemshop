@@ -14,6 +14,196 @@
 
 {% set show_component_help = params.preview %}
 
+{# This scoped fallback keeps the mobile module aligned while the async stylesheet is refreshed by the CDN. #}
+<style>
+  html,
+  body,
+  body.template-home,
+  body.template-home .background-main {
+    background-color: #fff !important;
+  }
+
+  /* Keep the mobile hero behind its persistent header while the async CSS is cached. */
+  @media (max-width: 1023px) {
+    body.template-home .head-main,
+    body.template-home .head-main.head-fix {
+      position: fixed !important;
+      top: 0 !important;
+      right: 0 !important;
+      left: 0 !important;
+      z-index: 1050 !important;
+      height: 80px !important;
+      padding-top: 0 !important;
+      overflow: visible !important;
+    }
+
+    body.template-home .head-main::after {
+      position: absolute !important;
+      top: calc(100% - 1px) !important;
+      right: 0 !important;
+      left: 0 !important;
+      z-index: 1 !important;
+      display: block !important;
+      width: 100% !important;
+      height: 96px !important;
+      content: '' !important;
+      pointer-events: none !important;
+      background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, .96) 13%, rgba(255, 255, 255, .82) 31%, rgba(255, 255, 255, .55) 55%, rgba(255, 255, 255, .24) 78%, rgba(255, 255, 255, 0) 100%) !important;
+    }
+
+    body.template-home .head-main .yamuna-header-mobile,
+    body.template-home .head-main .yamuna-mobile-search {
+      position: relative;
+      z-index: 2;
+    }
+  }
+
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products > .col-12 > .h1 {
+    margin-bottom: 24px !important;
+  }
+
+  @media (min-width: 768px) {
+    .section-banners-home[data-store="home-banner-categories"] [class*="js-category-banner-title-"] {
+      color: #fff !important;
+      font-family: 'Dosis', sans-serif !important;
+      font-size: 36px !important;
+      font-weight: 600 !important;
+      line-height: 1.28 !important;
+    }
+  }
+
+  /* Keep the two product CTAs below the price while the compiled CSS refreshes. */
+  @media (min-width: 768px) {
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image {
+      height: 360px;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-description {
+      padding: 5px 6.73% 0 !important;
+    }
+  }
+
+  /* Shared Figma product-card spot for "Os mais vendidos", Promoções and Lançamentos. */
+  @media (min-width: 1200px) {
+    [data-store^="home-products-"].section-featured-home .container {
+      max-width: 1312px !important;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-slide {
+      width: 429.333px !important;
+      height: 580px !important;
+      padding: 0 6.6667px !important;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item,
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .js-product-container {
+      height: 580px !important;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item {
+      overflow: hidden;
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image {
+      height: 360px !important;
+      margin: 24px 6.73% 0 !important;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions {
+      right: auto !important;
+      left: 50% !important;
+      width: 360px !important;
+      transform: translateX(-50%) !important;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions .btn {
+      width: 360px !important;
+      min-height: 40px !important;
+      height: 40px !important;
+      padding: 0 24px !important;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .section-yamuna-category-slider {
+      padding-bottom: 42px !important;
+    }
+
+    /* The platform's generated product-card CSS adds this image frame after
+       the critical stylesheet. Keep Yamuna's mobile spot borderless. */
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image {
+      border: 0 !important;
+    }
+
+    [data-store="home-image-text-module"] {
+      padding: 0 12px;
+    }
+
+    [data-store="home-image-text-module"] .js-banner-container {
+      width: 100% !important;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    [data-store="home-image-text-module"] .js-textbanner .row {
+      border-radius: 16px;
+    }
+
+    [data-store="home-image-text-module"] .js-textbanner-text {
+      top: auto;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 100% !important;
+      height: 32px;
+      min-height: 32px;
+      padding: 0 8px 0 22px;
+      border-radius: 24px;
+    }
+
+    [data-store="home-image-text-module"] .textbanner-title {
+      font-size: 14px;
+    }
+
+    [data-store="home-image-text-module"] .js-textbanner-text .btn {
+      width: auto;
+      min-width: 91px;
+      min-height: 24px;
+      padding: 0 10px;
+      font-family: 'Dosis', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+    }
+  }
+
+  @media (max-width: 767px) {
+    [data-store="home-image-text-module"] .js-home-modules.section-banners-home {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    [data-store="home-image-text-module"] .js-textbanner-text {
+      height: clamp(40px, 4.7vw, 48px);
+      min-height: clamp(40px, 4.7vw, 48px);
+      padding: 0 clamp(10px, 1.5vw, 16px) 0 clamp(24px, 3vw, 30px);
+    }
+
+    [data-store="home-image-text-module"] .textbanner-title {
+      font-size: clamp(16px, 1.9vw, 18px);
+    }
+
+    [data-store="home-image-text-module"] .js-textbanner-text .btn {
+      min-width: clamp(108px, 12.3vw, 126px);
+      min-height: clamp(28px, 3.2vw, 32px);
+      font-size: clamp(15px, 1.7vw, 16px);
+    }
+  }
+
+</style>
+
 {% if show_component_help %}
 	{% include "snipplets/svg/empty-placeholders.tpl" %}
 {% endif %}
@@ -27,13 +217,47 @@
 		{% set section = 'home_order_position_' ~ i %}
 		{% set section_select = attribute(settings,"#{section}") %}
 
-		{% if section_select not in newArray %}
-
+		{% if section_select not in newArray and section_select not in ['instafeed', 'newsletter', 'promotional', 'sale'] %}
 			{% include 'snipplets/home/home-section-switch.tpl' %}
 			{% set newArray = newArray|merge([section_select]) %}
 
+			{# Product-family quick links live below the benefits bar. #}
+			{% if section_select == 'informatives' %}
+				{% include 'snipplets/home/home-category-slider.tpl' %}
+			{% endif %}
+
+			{# Keep the promotion carousel directly after the featured products carousel. #}
+			{% if section_select == 'products' and 'sale' not in newArray %}
+				{# Brand statement separates the first and second product carousels. #}
+				{% include 'snipplets/home/home-information-banner.tpl' %}
+				{% set section_select = 'sale' %}
+				{% include 'snipplets/home/home-section-switch.tpl' %}
+				{% set newArray = newArray|merge(['sale']) %}
+			{% endif %}
+
 		{% endif %}
 	{% endfor %}
+
+	{# Reserved space for the future blog section. #}
+	{% include 'snipplets/home/home-content-placeholders.tpl' with {'placeholder': 'blog'} %}
+
+	{# Show the native Instagram feed here once its token is configured. #}
+	{% if has_instafeed %}
+		{% set section_select = 'instafeed' %}
+		{% include 'snipplets/home/home-section-switch.tpl' %}
+	{% else %}
+		{% include 'snipplets/home/home-content-placeholders.tpl' with {'placeholder': 'instagram'} %}
+	{% endif %}
+
+	{# Promotional banners stay after the blog and Instagram sections. #}
+	{% set section_select = 'promotional' %}
+	{% include 'snipplets/home/home-section-switch.tpl' %}
+
+	{# Static customer testimonials migrated from the Wake storefront. #}
+	{% include 'snipplets/home/home-testimonials.tpl' %}
+
+	{% set section_select = 'newsletter' %}
+	{% include 'snipplets/home/home-section-switch.tpl' %}
 
 	{#  **** Hidden Sections ****  #}
 	{% if show_component_help %}

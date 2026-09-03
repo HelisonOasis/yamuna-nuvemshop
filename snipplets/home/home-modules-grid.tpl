@@ -19,7 +19,8 @@
 
 			{% for slide in section_banner %}
 
-				{% set has_banner_text = slide.title or slide.description or slide.button %}
+				{% set yamuna_module_title = loop.index == 1 ? 'Cosméticos naturais' : (loop.index == 2 ? 'Alimentos saudáveis' : 'Ver mais') %}
+				{% set has_banner_text = true %}
 
 				{% set banner_size_classes = section_same_size  ? 'textbanner-image-equal-size textbanner-image-equal-size-md' : 'p-0' %}
 				{% set banner_image_size_classes =  section_same_size ? 'textbanner-image-background' : 'img-fluid d-block w-100' %}
@@ -64,15 +65,8 @@
 								</div>
 								{% if has_banner_text %}
 									<div class="js-textbanner-text text-center {{ banner_info_columns_classes }} p-3 px-md-5">
-										{% if slide.title %}
-											<h3 class="textbanner-title h3 h2-md {% if slide.description or slide.button %}mb-2 pb-1{% endif %}">{{ slide.title }}</h3>
-										{% endif %}
-										{% if slide.description %}
-											<div class="textbanner-paragraph {{ banner_description_spacing_classes }}">{{ slide.description }}</div>
-										{% endif %}
-										{% if slide.button and slide.link %}
-											<div class="btn btn-secondary btn-small">{{ slide.button }}</div>
-										{% endif %}
+										<h3 class="textbanner-title h3 h2-md">{{ slide.title | default(yamuna_module_title) }}</h3>
+										{% if slide.link %}<div class="btn btn-secondary btn-small"><span>{{ slide.button | default('Ver mais') }}</span><svg class="yamuna-home-module-cta-icon" aria-hidden="true"><use xlink:href="#arrow"/></svg></div>{% endif %}
 									</div>
 								{% endif %}
 							</div>

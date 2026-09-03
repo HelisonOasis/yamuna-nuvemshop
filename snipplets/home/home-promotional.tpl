@@ -19,7 +19,7 @@
             {% set banner_image = "#{banner}.jpg" | has_custom_image %}
             {% set banner_image_src = "#{banner}.jpg" | static_url %}
             {% set banner_title = attribute(settings,"#{banner}_title") %}
-            {% set banner_button_text = attribute(settings,"#{banner}_button") %}
+            {% set banner_button_text = 'Leia Mais' %}
             {% set banner_url = attribute(settings,"#{banner}_url") %}
             {% set has_banner = banner_show and (banner_title or banner_image) %}
             {% set has_banner_text = banner_title or banner_button_text %}
@@ -68,7 +68,10 @@
                                 {% endif %}
                                 <div class="textbanner-text over-image">
                                     <h3 class="h2 mb-0 js-promotional-banner-title js-promotional-banner-title-{{ loop.index }}">{{ banner_title }}</h3>
-                                    <div class="btn btn-secondary btn-small invert mt-3 js-promotional-banner-button js-promotional-banner-button-{{ loop.index }}" {% if not (banner_url and banner_button_text) %}style="display:none"{% endif %} data-has-url="{{ banner_url ? 'true' : 'false' }}">{{ banner_button_text }}</div>
+                                    {% if banner_title | lower == 'nosso manifesto' %}
+                                        <p class="promotional-banner-subtitle">Produtos artesanais, naturais e sustentáveis, promovendo saúde e bem-estar com respeito ao meio ambiente.</p>
+                                    {% endif %}
+                                    <div class="btn btn-secondary btn-small invert mt-3 js-promotional-banner-button js-promotional-banner-button-{{ loop.index }}" {% if not (banner_url and banner_button_text) %}style="display:none"{% endif %} data-has-url="{{ banner_url ? 'true' : 'false' }}"><span>{{ banner_button_text }}</span><img class="promotional-banner-button-arrow" src="{{ 'images/yamuna/promotional-banner-arrow.svg' | static_url }}" alt="" aria-hidden="true" /></div>
                                 </div>
                             </div>
                         {% if banner_url %}

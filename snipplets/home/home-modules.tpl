@@ -12,4 +12,21 @@
             {% include 'snipplets/home/home-modules-grid.tpl' with {'module': true} %}
         {% endif %}
     </div>
+    <script>
+        (function () {
+            var modules = document.currentScript.previousElementSibling;
+            if (!modules || !window.matchMedia) return;
+
+            function syncMobileMargin() {
+                if (window.matchMedia('(max-width: 767px)').matches) {
+                    modules.style.setProperty('margin-bottom', '0', 'important');
+                } else {
+                    modules.style.removeProperty('margin-bottom');
+                }
+            }
+
+            syncMobileMargin();
+            window.addEventListener('resize', syncMobileMargin);
+        })();
+    </script>
 {% endif %}
