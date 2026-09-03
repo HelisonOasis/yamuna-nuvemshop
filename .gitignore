@@ -8,7 +8,7 @@ npm-debug.log*
 *.log
 
 # Extratos temporários de revisão da PDP.
-_pdp_*_edits*.txt
+_pdp_*.txt
 
 # Arquivos do sistema/editor.
 .DS_Store
