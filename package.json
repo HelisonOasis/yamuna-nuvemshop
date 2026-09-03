@@ -1,8 +1,0 @@
-{
-  "name": "yamuna-nuvemshop-theme",
-  "private": true,
-  "scripts": {
-    "nuvem": "powershell -NoProfile -ExecutionPolicy Bypass -File \"./nuvemshop-ftp-watch.ps1\""
-  }
-}
-
