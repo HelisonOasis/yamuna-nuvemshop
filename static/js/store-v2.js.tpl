@@ -75,6 +75,122 @@ window.urls = {
   #Lazy load
 ==============================================================================*/ #}
 
+{# Keep the compact mobile sort trigger text in sync with its native select. #}
+;(function () {
+    {# The PLP sorting menu is initialized globally in layout.tpl so it also survives dynamic content updates. #}
+    return;
+
+    function updateYamunaSortLabel(select) {
+        var sort = select.closest('.yamuna-plp-sort');
+        var label = sort && sort.querySelector('.yamuna-plp-sort-label');
+
+        if (label) {
+            label.textContent = select.options[select.selectedIndex].text;
+        }
+    }
+
+    function setInitialYamunaSortLabel() {
+        document.querySelectorAll('.yamuna-plp-sort .js-sort-by').forEach(function (select) {
+            if (window.innerWidth <= 1023 && window.location.search.indexOf('sort_by=') !== -1) {
+                updateYamunaSortLabel(select);
+            }
+            initializeYamunaMobileSortMenu(select);
+        });
+    }
+
+    function initializeYamunaMobileSortMenu(select) {
+        var sort = select.closest('.yamuna-plp-sort');
+        var label = sort && sort.querySelector('.yamuna-plp-sort-label');
+
+        if (!sort || !label || sort.querySelector('.yamuna-plp-sort-options')) {
+            return;
+        }
+
+        var options = document.createElement('ul');
+        options.className = 'yamuna-plp-sort-options';
+        options.setAttribute('role', 'listbox');
+
+        Array.prototype.forEach.call(select.options, function (option) {
+            var item = document.createElement('li');
+            var button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'yamuna-plp-sort-option';
+            button.textContent = option.text;
+            button.setAttribute('role', 'option');
+            button.dataset.value = option.value;
+
+            button.addEventListener('click', function () {
+                select.value = button.dataset.value;
+                updateYamunaSortLabel(select);
+                sort.classList.remove('is-open');
+                label.setAttribute('aria-expanded', 'false');
+                select.dispatchEvent(new Event('change', { bubbles: true }));
+            });
+
+            item.appendChild(button);
+            options.appendChild(item);
+        });
+
+        label.setAttribute('role', 'button');
+        label.setAttribute('tabindex', '0');
+        label.setAttribute('aria-haspopup', 'listbox');
+        label.setAttribute('aria-expanded', 'false');
+        sort.appendChild(options);
+
+        document.addEventListener('click', function (event) {
+            if (!sort.contains(event.target)) {
+                sort.classList.remove('is-open');
+                label.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+
+    document.addEventListener('change', function (event) {
+        if (window.innerWidth <= 1023 && event.target.matches('.yamuna-plp-sort .js-sort-by')) {
+            updateYamunaSortLabel(event.target);
+        }
+    }, true);
+
+    function toggleYamunaMobileSortMenu(label, event) {
+        if (window.innerWidth > 1023) {
+            return;
+        }
+
+        var sort = label.closest('.yamuna-plp-sort');
+        var select = sort && sort.querySelector('.js-sort-by');
+
+        if (!sort || !select) {
+            return;
+        }
+
+        initializeYamunaMobileSortMenu(select);
+        event.preventDefault();
+        event.stopPropagation();
+        var isOpen = sort.classList.toggle('is-open');
+        label.setAttribute('aria-expanded', String(isOpen));
+    }
+
+    document.addEventListener('click', function (event) {
+        var label = event.target.closest('.yamuna-plp-sort-label');
+        if (label) {
+            toggleYamunaMobileSortMenu(label, event);
+        }
+    }, true);
+
+    document.addEventListener('keydown', function (event) {
+        var label = event.target.closest('.yamuna-plp-sort-label');
+        if (label && (event.key === 'Enter' || event.key === ' ')) {
+            toggleYamunaMobileSortMenu(label, event);
+        }
+    });
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setInitialYamunaSortLabel);
+    } else {
+        setInitialYamunaSortLabel();
+    }
+})();
+
 document.addEventListener('lazybeforeunveil', function(e){
     if ((e.target.parentElement) && (e.target.nextElementSibling)) {
         var parent = e.target.parentElement;
@@ -85,6 +201,94 @@ document.addEventListener('lazybeforeunveil', function(e){
         }
     }
 });
+
+{# Newsletter da home: o envio padrão fica bloqueado para nunca expor dados na URL (Perfit). #}
+(function () {
+    function showNewsletterFeedback(feedback, message, text) {
+        if (feedback && message) {
+            message.textContent = text;
+            feedback.hidden = false;
+        }
+    }
+
+    window.submitYamunaNewsletter = function (form) {
+        if (!form || !form.checkValidity()) {
+            if (form) { form.reportValidity(); }
+            return false;
+        }
+
+        var feedback = document.getElementById('home-newsletter-feedback');
+        var message = feedback && feedback.querySelector('.newsletter-feedback-message');
+        var button = form.querySelector('button[type="submit"]');
+        var name = form.querySelector('[name="name"]');
+        var email = form.querySelector('[name="email"]');
+        var payload = new URLSearchParams();
+
+        payload.append('fields[1]', name ? name.value.trim() : '');
+        payload.append('fields[3]', email ? email.value.trim() : '');
+
+        if (button) {
+            button.disabled = true;
+            button.textContent = '{{ "Enviando..." | translate | escape('js') }}';
+        }
+
+        fetch('https://pubapi.myperfit.com/v2/optin/yamuna/KNcmLsC8', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: payload.toString()
+        })
+            .then(function (response) {
+                if (!response.ok) { throw new Error('newsletter_signup_failed'); }
+                return response.json();
+            })
+            .then(function (result) {
+                form.reset();
+                showNewsletterFeedback(feedback, message, 'Obrigado por se inscrever em nossa newsletter! Se não receber o email de confirmação, lembre-se de conferir sua pasta de spam e lixo eletrônico.');
+            })
+            .catch(function () {
+                showNewsletterFeedback(feedback, message, '{{ "Não foi possível concluir sua inscrição. Tente novamente." | translate | escape('js') }}');
+            })
+            .finally(function () {
+                if (button) {
+                    button.disabled = false;
+                    button.textContent = '{{ "Enviar" | translate | escape('js') }}';
+                }
+            });
+
+        return false;
+};
+
+    function initializeYamunaNewsletter() {
+        var feedback = document.getElementById('home-newsletter-feedback');
+        var close = feedback && feedback.querySelector('.newsletter-feedback-close');
+        var phone = document.getElementById('newsletter-phone');
+
+        if (close) {
+            close.addEventListener('click', function () { feedback.hidden = true; });
+        }
+
+        if (phone) {
+            phone.addEventListener('input', function () {
+                var digits = phone.value.replace(/\D/g, '').slice(0, 11);
+                if (digits.length <= 2) {
+                    phone.value = digits ? '(' + digits : '';
+                } else if (digits.length <= 6) {
+                    phone.value = '(' + digits.slice(0, 2) + ') ' + digits.slice(2);
+                } else if (digits.length <= 10) {
+                    phone.value = '(' + digits.slice(0, 2) + ') ' + digits.slice(2, 6) + '-' + digits.slice(6);
+                } else {
+                    phone.value = '(' + digits.slice(0, 2) + ') ' + digits.slice(2, 7) + '-' + digits.slice(7);
+                }
+            });
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeYamunaNewsletter);
+    } else {
+        initializeYamunaNewsletter();
+    }
+})();
 
 
 window.lazySizesConfig = window.lazySizesConfig || {};
@@ -333,10 +537,14 @@ DOMContentLoaded.addEventOrExecute(() => {
         if (jQueryNuvem(modal_id).hasClass("modal-show")) {
             let modal = jQueryNuvem(modal_id).removeClass("modal-show");
             setTimeout(() => modal.hide(), 500);
+            $overlay_id.fadeOut(500);
+            if(jQueryNuvem(".js-modal.modal-show").length <= 1){
+                jQueryNuvem("body").removeClass("overflow-none");
+            }
         } else {
-            {# Lock body scroll if there is no modal visible on screen #}
+            {# Lock body scroll if there is no modal visible on screen, except desktop minicart #}
 
-            if(!jQueryNuvem(".js-modal.modal-show").length){
+            if(!jQueryNuvem(".js-modal.modal-show").length && (window.innerWidth < 1024 || modal_id !== '#modal-cart')){
                 jQueryNuvem("body").addClass("overflow-none");
             }
             jQueryNuvem(modal_id).detach().appendTo("body");
@@ -642,6 +850,22 @@ DOMContentLoaded.addEventOrExecute(() => {
             $this_closest_form.submit();
         });
 
+        {# Yamuna desktop search panel #}
+        jQueryNuvem(document).on("focus", ".yamuna-header-desktop-search .js-search-input", function () {
+            jQueryNuvem(this).closest(".js-search-container").next(".js-search-suggest").addClass("yamuna-search-open").show();
+            jQueryNuvem(".head-main").addClass("yamuna-dropdown-open");
+        });
+        jQueryNuvem(document).on("click", ".yamuna-search-chip", function () {
+            var $input = jQueryNuvem(this).closest(".js-search-suggest").prev(".js-search-container").find(".js-search-input");
+            $input.val(jQueryNuvem(this).data("yamuna-search-suggestion")).trigger("input").trigger('focus');
+        });
+        jQueryNuvem(document).on("click", function (e) {
+            if (!jQueryNuvem(e.target).closest(".yamuna-header-desktop-search").length) {
+                jQueryNuvem(".yamuna-header-desktop-search .js-search-suggest").removeClass("yamuna-search-open").hide();
+                jQueryNuvem(".head-main").removeClass("yamuna-dropdown-open");
+            }
+        });
+
 
 	{#/*============================================================================
 	  #Sliders
@@ -677,7 +901,7 @@ DOMContentLoaded.addEventOrExecute(() => {
             '.js-home-slider', {
                 preloadImages: preloadImagesValue,
                 lazy: lazyValue,
-                {% if settings.slider | length > 1 %}
+                {% if settings.slider | length > 0 %}
                     loop: loopValue,
                 {% endif %}
                 autoplay: slider_autoplay,
@@ -699,7 +923,7 @@ DOMContentLoaded.addEventOrExecute(() => {
             '.js-home-slider-mobile', {
                 preloadImages: preloadImagesValue,
                 lazy: lazyValue,
-                {% if settings.slider_mobile | length > 1 %}
+                {% if settings.slider_mobile | length > 0 %}
                     loop: loopValue,
                 {% endif %}
                 autoplay: slider_autoplay,
@@ -716,11 +940,6 @@ DOMContentLoaded.addEventOrExecute(() => {
                 window.homeMobileSwiper = swiperInstance;
             }
         );
-
-        {% if settings.slider | length == 1 %}
-            jQueryNuvem('.js-swiper-home .swiper-wrapper').addClass( "disabled" );
-            jQueryNuvem('.js-swiper-home-pagination, .js-swiper-home-prev, .js-swiper-home-next').remove();
-        {% endif %}
 
         {# /* // Banners slider */ #}
 
@@ -779,8 +998,9 @@ DOMContentLoaded.addEventOrExecute(() => {
             var lazyVal = true;
             var watchOverflowVal = true;
             var centerInsufficientSlidesVal = true;
-            var slidesPerViewDesktopVal = {% if columns == 2 %}4{% else %}3{% endif %};
-            var slidesPerViewMobileVal = 1.5;
+            var slidesPerViewDesktopVal = 3;
+            var slidesPerViewTabletVal = 2;
+            var slidesPerViewMobileVal = 1;
 
             {% if has_featured_products_slider %}
 
@@ -799,9 +1019,17 @@ DOMContentLoaded.addEventOrExecute(() => {
                         nextEl: '.js-swiper-featured-next',
                         prevEl: '.js-swiper-featured-prev',
                     },
+                    pagination: {
+                        el: '.js-swiper-featured-pagination',
+                        clickable: true,
+                    },
                     slidesPerView: slidesPerViewMobileVal,
+                    spaceBetween: 8,
                     breakpoints: {
                         768: {
+                            slidesPerView: slidesPerViewTabletVal,
+                        },
+                        1200: {
                             slidesPerView: slidesPerViewDesktopVal,
                         }
                     }
@@ -826,9 +1054,17 @@ DOMContentLoaded.addEventOrExecute(() => {
                         nextEl: '.js-swiper-new-next',
                         prevEl: '.js-swiper-new-prev',
                     },
+                    pagination: {
+                        el: '.js-swiper-new-pagination',
+                        clickable: true,
+                    },
                     slidesPerView: slidesPerViewMobileVal,
+                    spaceBetween: 8,
                     breakpoints: {
                         768: {
+                            slidesPerView: slidesPerViewTabletVal,
+                        },
+                        1200: {
                             slidesPerView: slidesPerViewDesktopVal,
                         }
                     }
@@ -853,9 +1089,17 @@ DOMContentLoaded.addEventOrExecute(() => {
                         nextEl: '.js-swiper-sale-next',
                         prevEl: '.js-swiper-sale-prev',
                     },
+                    pagination: {
+                        el: '.js-swiper-sale-pagination',
+                        clickable: true,
+                    },
                     slidesPerView: slidesPerViewMobileVal,
+                    spaceBetween: 8,
                     breakpoints: {
                         768: {
+                            slidesPerView: slidesPerViewTabletVal,
+                        },
+                        1200: {
                             slidesPerView: slidesPerViewDesktopVal,
                         }
                     }
@@ -885,6 +1129,22 @@ DOMContentLoaded.addEventOrExecute(() => {
                 }
             });
         });
+
+        {# /* // Testimonials slider */ #}
+
+        if (window.innerWidth < 1024) {
+            createSwiper('.js-swiper-testimonials', {
+                loop: true,
+                loopedSlides: 3,
+                watchOverflow: true,
+                grabCursor: true,
+                centeredSlides: false,
+                slidesPerView: 1,
+                spaceBetween: 0,
+            }, function(swiperInstance) {
+                swiperInstance.slideToLoop(0, 0, false);
+            });
+        }
 
 
         {# /* // Brands slider */ #}
@@ -991,19 +1251,41 @@ DOMContentLoaded.addEventOrExecute(() => {
 
 		{# /* // Banner services slider */ #}
 
-        var width = window.innerWidth;
-        if (width < 767) {
+        if (window.innerWidth < 1024 && !window.yamunaBenefitsSwiperInitialized && document.querySelector('.js-informative-banners')) {
+            window.yamunaBenefitsSwiperInitialized = true;
+            var yamunaBenefitsAutoplay = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? false : {
+                delay: 3600,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            };
             createSwiper('.js-informative-banners', {
-                slidesPerView: 1.2,
+                slidesPerView: 1,
+                speed: 600,
+                loop: false,
                 watchOverflow: true,
                 centerInsufficientSlides: true,
+                autoplay: yamunaBenefitsAutoplay,
                 pagination: {
                     el: '.js-informative-banners-pagination',
                     clickable: true,
                 },
                 breakpoints: {
-                    640: {
-                        slidesPerView: 3,
+                    480: {
+                        slidesPerView: 2,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                        autoplay: yamunaBenefitsAutoplay,
+                    },
+                    1024: {
+                        slidesPerView: 5,
+                        autoplay: false,
+                        allowTouchMove: false,
+                    }
+                },
+                on: {
+                    breakpoint: function () {
+                        this.slideTo(0, 0, false);
                     }
                 }
             });
@@ -1588,6 +1870,7 @@ DOMContentLoaded.addEventOrExecute(() => {
 
 	    {% endif %}
 
+        {# Sync Figma PDP price cards with the selected variant. #}
         {% if template == 'product' %}
             const base_price = Number(jQueryNuvem("#price_display").attr("content"));
             refreshInstallmentv2(base_price);
@@ -1976,13 +2259,61 @@ DOMContentLoaded.addEventOrExecute(() => {
         return String(image.attr('srcset'));
     }
 
+    {# The product spot has its own capture-phase handler so third-party product
+       listeners cannot submit its form and navigate to /comprar/. #}
+    document.addEventListener('click', function(event) {
+        var button = event.target.closest('.yamuna-home-spot-buy-one, .yamuna-home-spot-buy-three');
+
+        if (!button || button.disabled || !window.LS || !LS.addToCartEnhanced) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        var form = button.closest('form');
+        var quantity = button.getAttribute('data-quantity') || '1';
+        var quantityInput = form && form.querySelector('.js-home-spot-add-quantity');
+
+        if (!form || !quantityInput) {
+            return;
+        }
+
+        quantityInput.value = quantity;
+        button.disabled = true;
+
+        LS.addToCartEnhanced(
+            jQueryNuvem(form),
+            '{{ "Comprar" | translate }}',
+            '{{ "Agregando..." | translate }}',
+            '{{ "Â¡Uy! No tenemos mÃ¡s stock de este producto para agregarlo al carrito." | translate }}',
+            {{ store.editable_ajax_cart_enabled ? 'true' : 'false' }},
+            function() {
+                button.disabled = false;
+                if (window.yamunaShowCartToast) {
+                    window.yamunaShowCartToast();
+                }
+            },
+            function() {
+                button.disabled = false;
+            }
+        );
+    }, true);
+
     jQueryNuvem(document).on("click", ".js-addtocart:not(.js-addtocart-placeholder)", function (e) {
     
         {# Button variables for transitions on add to cart #}
 
         var $productContainer = jQueryNuvem(this).closest('.js-product-container');
         var $productVariants = $productContainer.find(".js-variation-option");
-        var $productButton = $productContainer.find("input[type='submit'].js-addtocart");
+        var $productButton = $productContainer.find(".js-addtocart:not(.js-addtocart-placeholder)");
+        var $productForm = jQueryNuvem(this).closest("form");
+        var isHomeSpotButton = jQueryNuvem(this).is('.yamuna-home-spot-buy-one, .yamuna-home-spot-buy-three');
+        var clickedButtonTop = isHomeSpotButton ? jQueryNuvem(this).position().top : 0;
+        var clickedButtonHeight = isHomeSpotButton ? jQueryNuvem(this).outerHeight() : 0;
+        var productFormHeight = isHomeSpotButton ? $productForm.outerHeight() : 0;
+        var requestedQuantity = jQueryNuvem(this).data('quantity') || 1;
+        $productContainer.find('.js-home-spot-add-quantity').val(requestedQuantity);
         var $productButtonPlaceholder = $productContainer.find(".js-addtocart-placeholder");
         var $productButtonText = $productButtonPlaceholder.find(".js-addtocart-text");
         var $productButtonAdding = $productButtonPlaceholder.find(".js-addtocart-adding");
@@ -2017,7 +2348,7 @@ DOMContentLoaded.addEventOrExecute(() => {
             var addedToCartCopy = "{{ 'Agregar al carrito' | translate }}";
         } else {
             var imageSrc = getQuickShopImgSrc(this);
-            var quantity = 1;
+            var quantity = requestedQuantity;
             var name = $productContainer.find('.js-item-name').text();
             var price = $productContainer.find('.js-price-display').text().trim();
             var addedToCartCopy = "{{ 'Comprar' | translate }}";
@@ -2030,14 +2361,38 @@ DOMContentLoaded.addEventOrExecute(() => {
 
         if (!jQueryNuvem(this).hasClass('contact')) {
 
+            {# Home spot CTAs always add through AJAX and never submit /comprar/. #}
+            if (isHomeSpotButton) {
+                e.preventDefault();
+            }
+
             {% if settings.ajax_cart %}
                 e.preventDefault();
             {% endif %}
 
             {# Hide real button and show button placeholder during event #}
 
+            $productButtonPlaceholder.insertAfter(jQueryNuvem(this));
+            if (isHomeSpotButton) {
+                $productForm.css({
+                    position: 'relative',
+                    minHeight: productFormHeight + 'px'
+                });
+                $productButtonPlaceholder.css({
+                    display: 'flex',
+                    position: 'absolute',
+                    top: clickedButtonTop + 'px',
+                    left: 0,
+                    width: '100%',
+                    height: clickedButtonHeight + 'px',
+                    minHeight: clickedButtonHeight + 'px',
+                    margin: 0
+                });
+            }
             $productButton.hide();
-            $productButtonPlaceholder.css('display' , 'inline-block');
+            if (!isHomeSpotButton) {
+                $productButtonPlaceholder.css('display' , 'inline-block');
+            }
             $productButtonText.fadeOut();
             $productButtonAdding.addClass("active");
 
@@ -2047,6 +2402,9 @@ DOMContentLoaded.addEventOrExecute(() => {
                 $productButtonAdding.removeClass("active");
                 $productButtonText.fadeIn();
                 $productButtonPlaceholder.removeAttr("style").hide();
+                if (isHomeSpotButton) {
+                    $productForm.css({ position: '', minHeight: '' });
+                }
                 $productButton.show();
             }
 
@@ -2060,11 +2418,19 @@ DOMContentLoaded.addEventOrExecute(() => {
 
             {# Handle subscribable product submit #}
 
-            LS.subscriptionSubmit($productContainer, subscription_callback_error, e);
+            {# The home spot does not contain subscription controls. Calling this
+               helper there can submit the form natively and navigate to /comprar/. #}
+            if (!isHomeSpotButton) {
+                LS.subscriptionSubmit($productContainer, subscription_callback_error, e);
+            }
 
-            {% if settings.ajax_cart %}
+            {% if settings.ajax_cart or true %}
 
                 var callback_add_to_cart = function(html_notification_related_products, html_notification_cross_selling) {
+
+                    if (window.yamunaShowCartToast) {
+                        window.yamunaShowCartToast();
+                    }
 
                     {# Animate cart amount #}
 
@@ -2118,6 +2484,9 @@ DOMContentLoaded.addEventOrExecute(() => {
                     },2000);
                     setTimeout(function(){
                         $productButtonPlaceholder.removeAttr("style").hide();
+                        if (isHomeSpotButton) {
+                            $productForm.css({ position: '', minHeight: '' });
+                        }
                         $productButton.show();
                     },3000);
 
@@ -2697,19 +3066,41 @@ DOMContentLoaded.addEventOrExecute(() => {
 
 
         {# /* // Banner services slider */ #}
-        var width = window.innerWidth;
-        if (width < 767) {
+        if (window.innerWidth < 1024 && !window.yamunaBenefitsSwiperInitialized && document.querySelector('.js-informative-banners')) {
+            window.yamunaBenefitsSwiperInitialized = true;
+            var yamunaBenefitsAutoplay = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? false : {
+                delay: 3600,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            };
             createSwiper('.js-informative-banners', {
-                slidesPerView: 1.2,
+                slidesPerView: 1,
+                speed: 600,
+                loop: false,
                 watchOverflow: true,
                 centerInsufficientSlides: true,
+                autoplay: yamunaBenefitsAutoplay,
                 pagination: {
                     el: '.js-informative-banners-pagination',
                     clickable: true,
                 },
                 breakpoints: {
-                    640: {
-                        slidesPerView: 3,
+                    480: {
+                        slidesPerView: 2,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                        autoplay: yamunaBenefitsAutoplay,
+                    },
+                    1024: {
+                        slidesPerView: 5,
+                        autoplay: false,
+                        allowTouchMove: false,
+                    }
+                },
+                on: {
+                    breakpoint: function () {
+                        this.slideTo(0, 0, false);
                     }
                 }
             });
@@ -2809,6 +3200,72 @@ DOMContentLoaded.addEventOrExecute(() => {
             jQueryNuvem("#product-example").hide();
         }
 
+        {% endif %}
+
+        {% if template == 'product' %}
+        (function () {
+            var priceCards = document.querySelector('.yamuna-pdp-price-cards');
+            var productPrice = document.getElementById('price_display');
+            var buyThreeCard = document.querySelector('[data-yamuna-buy-three]');
+
+            if (!priceCards || !productPrice || !buyThreeCard) {
+                return;
+            }
+
+            function parseBrazilianCurrency(value) {
+                return Number(String(value).replace(/[^0-9,.-]/g, '').replace(/\./g, '').replace(',', '.'));
+            }
+
+            function formatBrazilianCurrency(value) {
+                return value.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                });
+            }
+
+            function updateCardPrices() {
+                var unitPrice = parseBrazilianCurrency(productPrice.textContent);
+                var pixDiscount = Number(priceCards.getAttribute('data-yamuna-pix-discount')) || 0;
+
+                if (!isFinite(unitPrice)) {
+                    return;
+                }
+
+                var buyThreePrice = unitPrice * 0.95;
+                var unitPixPrice = unitPrice * (1 - (pixDiscount / 100));
+                var buyThreePixPrice = buyThreePrice * (1 - (pixDiscount / 100));
+
+                priceCards.querySelectorAll('[data-yamuna-unit-pix-price]').forEach(function (element) {
+                    element.textContent = formatBrazilianCurrency(unitPixPrice);
+                });
+                priceCards.querySelectorAll('[data-buy-three-price]').forEach(function (element) {
+                    element.textContent = formatBrazilianCurrency(buyThreePrice);
+                });
+                priceCards.querySelectorAll('[data-buy-three-pix-price]').forEach(function (element) {
+                    element.textContent = formatBrazilianCurrency(buyThreePixPrice);
+                });
+            }
+
+            buyThreeCard.addEventListener('click', function () {
+                var quantityInput = document.querySelector('#product_form .js-quantity-input');
+
+                if (!quantityInput) {
+                    return;
+                }
+
+                quantityInput.value = 3;
+                quantityInput.dispatchEvent(new Event('change', { bubbles: true }));
+                buyThreeCard.classList.add('is-selected');
+            });
+
+            new MutationObserver(updateCardPrices).observe(productPrice, {
+                childList: true,
+                subtree: true,
+                characterData: true
+            });
+
+            updateCardPrices();
+        })();
         {% endif %}
 
 });

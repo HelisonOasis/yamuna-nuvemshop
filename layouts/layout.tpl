@@ -5,11 +5,12 @@
         <link rel="dns-prefetch" href="{{ store_resource_hints }}" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;700&display=swap" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&family=Roboto:wght@500;600&display=swap" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{{ page_title }}</title>
+        <link rel="icon" type="image/png" href="{{ 'images/yamuna/favicon.png' | static_url }}" />
         <meta name="description" content="{{ page_description }}" />
         <link rel="preload" as="style" href="{{ [settings.font_headings, settings.font_rest] | google_fonts_url('400,700') }}" />
         <link rel="preload" href="{{ 'css/style-colors.scss.tpl' | static_url }}" as="style" />
@@ -47,6 +48,20 @@
         {# Load async styling not mandatory for first meaningfull paint #}
 
         <link rel="stylesheet" href="{{ 'css/style-async.scss.tpl' | static_url }}" media="print" onload="this.media='all'">
+
+        <style>
+            @media (min-width: 768px) {
+                body.template-home .yamuna-home-hero-overlay-button {
+                    font-family: 'Roboto', sans-serif !important;
+                    font-size: 18px !important;
+                    font-style: normal !important;
+                    font-weight: 500 !important;
+                    line-height: normal !important;
+                    text-align: center !important;
+                    text-transform: uppercase !important;
+                }
+            }
+        </style>
 
         {# Loads custom CSS added from Advanced Settings on the admin´s theme customization screen #}
 
@@ -166,6 +181,56 @@
 
             {% include "static/js/external-no-dependencies.js.tpl" %}
 
+            // Supports both legacy numeric IDs and product-description block keys.
+            function toggleInfo(id) {
+                if (id === null || typeof id === 'undefined') {
+                    return;
+                }
+
+                var content = document.getElementById('infoToOpen-' + String(id));
+                var trigger = document.getElementById('info-id-' + String(id));
+
+                if (content) {
+                    content.classList.toggle('hidden');
+
+                    if (trigger) {
+                        trigger.classList.toggle('is-open', !content.classList.contains('hidden'));
+                    }
+                }
+            }
+
+            function moveProductAccordionHeadings() {
+                var accordions = document.querySelectorAll('.yamuna-product-description-accordion');
+
+                for (var index = 0; index < accordions.length; index++) {
+                    var accordion = accordions[index];
+                    var trigger = accordion.querySelector('.informationDiv');
+                    var content = accordion.querySelector('.infoToOpen');
+                    var title = null;
+
+                    if (!trigger || !content || trigger.querySelector('h3')) {
+                        continue;
+                    }
+
+                    for (var childIndex = 0; childIndex < content.children.length; childIndex++) {
+                        if (content.children[childIndex].tagName === 'H3') {
+                            title = content.children[childIndex];
+                            break;
+                        }
+                    }
+
+                    if (title) {
+                        trigger.appendChild(title);
+                    }
+                }
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', moveProductAccordionHeadings);
+            } else {
+                moveProductAccordionHeadings();
+            }
+
             {# LS.ready.then function waits to Jquery and private Tiendanube JS to be loaded before executing what´s inside #}
 
             LS.ready.then(function(){
@@ -182,6 +247,91 @@
                     {% include "static/js/store.js.tpl" %}
                 {% endif %}
             });
+        </script>
+
+        <script>
+            ;(function () {
+                function isMobileSort() {
+                    return window.innerWidth <= 1023;
+                }
+
+                function updateSortLabel(sort) {
+                    var label = sort.querySelector('.yamuna-plp-sort-label');
+                    var select = sort.querySelector('.js-sort-by');
+
+                    if (isMobileSort() && label && select && window.location.search.indexOf('sort_by=') !== -1) {
+                        var selectedText = select.options[select.selectedIndex].text;
+                        if (label.textContent !== selectedText) {
+                            label.textContent = selectedText;
+                        }
+                    }
+                }
+
+                function closeOtherSortMenus(target) {
+                    document.querySelectorAll('.yamuna-plp-sort.is-open').forEach(function (sort) {
+                        if (!sort.contains(target)) {
+                            sort.classList.remove('is-open');
+                            var label = sort.querySelector('.yamuna-plp-sort-label');
+                            if (label) {
+                                label.setAttribute('aria-expanded', 'false');
+                            }
+                        }
+                    });
+                }
+
+                document.addEventListener('click', function (event) {
+                    var option = event.target.closest('.yamuna-plp-sort-option');
+
+                    if (option && isMobileSort()) {
+                        var optionSort = option.closest('.yamuna-plp-sort');
+                        var optionLabel = optionSort.querySelector('.yamuna-plp-sort-label');
+                        var url = new URL(window.location.href);
+
+                        event.preventDefault();
+                        event.stopPropagation();
+                        optionLabel.textContent = option.textContent.trim();
+                        optionSort.classList.remove('is-open');
+                        optionLabel.setAttribute('aria-expanded', 'false');
+                        url.searchParams.set('sort_by', option.getAttribute('data-sort-value'));
+                        url.searchParams.delete('page');
+                        window.location.assign(url.pathname + (url.search ? url.search : '') + url.hash);
+                        return;
+                    }
+
+                    var label = event.target.closest('.yamuna-plp-sort-label');
+
+                    if (label && isMobileSort()) {
+                        var sort = label.closest('.yamuna-plp-sort');
+                        event.preventDefault();
+                        event.stopPropagation();
+                        var isOpen = sort.classList.toggle('is-open');
+                        label.setAttribute('aria-expanded', String(isOpen));
+                        return;
+                    }
+
+                    closeOtherSortMenus(event.target);
+                }, true);
+
+                document.addEventListener('keydown', function (event) {
+                    var label = event.target.closest('.yamuna-plp-sort-label');
+                    if (label && isMobileSort() && (event.key === 'Enter' || event.key === ' ')) {
+                        event.preventDefault();
+                        label.click();
+                    }
+                });
+
+                function syncSortLabels() {
+                    document.querySelectorAll('.yamuna-plp-sort').forEach(updateSortLabel);
+                }
+
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', syncSortLabels);
+                } else {
+                    syncSortLabels();
+                }
+
+                new MutationObserver(syncSortLabels).observe(document.documentElement, { childList: true, subtree: true });
+            })();
         </script>
 
         {# Google reCAPTCHA on register page #}
