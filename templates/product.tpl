@@ -23,12 +23,21 @@
         <div id="product-description-accordions">
             {% include 'snipplets/product/product-description-blocks.tpl' with { product_description_blocks_view: 'accordions' } %}
         </div>
-        {% if settings.show_product_fb_comment_box %}
-            <div class="fb-comments section-fb-comments" data-href="{{ product.social_url }}" data-num-posts="5" data-width="100%"></div>
-        {% endif %}
-        <div id="reviewsapp"></div>
     </div>
 </div>
 
 {# Related products #}
 {% include 'snipplets/product/product-related.tpl' %}
+
+{# Reviews (Figma: after related products) #}
+<div class="yamuna-pdp-reviews">
+    {% if settings.show_product_fb_comment_box %}
+        <div class="fb-comments section-fb-comments" data-href="{{ product.social_url }}" data-num-posts="5" data-width="100%"></div>
+    {% endif %}
+    <div id="reviewsapp"></div>
+</div>
+
+{# Newsletter (Figma: after reviews) #}
+<div class="yamuna-pdp-newsletter">
+    {% include 'snipplets/newsletter.tpl' %}
+</div>

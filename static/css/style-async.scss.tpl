@@ -627,7 +627,7 @@ style.css
 }
 
 /* Evita que qualquer elemento decorativo maior que a viewport desloque a
- * página inteira no mobile. Os trilhos dos sliders continuam com o próprio
+ * p?gina inteira no mobile. Os trilhos dos sliders continuam com o pr?prio
  * overflow e, portanto, preservam o arraste horizontal. */
 @media (max-width: 767px) {
   html,
@@ -2730,6 +2730,11 @@ footer {
   @extend %section-margin;
 }
 
+{# Newsletter sits flush against the footer (no white gap). #}
+.section-newsletter-home {
+  margin-bottom: 0;
+}
+
 {# Keep Yamuna's home product carousels visually continuous. #}
 .section-featured-home {
   margin-top: 0;
@@ -3040,7 +3045,7 @@ footer {
   font-size: 20px;
   font-weight: 400;
   line-height: 1;
-  content: '→';
+  content: '?';
 }
 
 [data-store="home-image-text-module"] .js-textbanner-text .btn:after {
@@ -6090,7 +6095,7 @@ footer.yamuna-footer .powered-by-logo svg {
 
 }
 
-{# PDP desktop â€” Figma node 798:5606. These rules intentionally override the
+{# PDP desktop ??? Figma node 798:5606. These rules intentionally override the
    native product-detail layout only; catalogue and checkout remain untouched. #}
 @media (min-width: 1024px) {
   body.template-product {
@@ -6371,7 +6376,7 @@ footer.yamuna-footer .powered-by-logo svg {
     width: 134px;
   }
 
-  body.template-product .yamuna-pdp-summary .js-addtocart {
+  body.template-product .yamuna-pdp-summary .js-addtocart:not(.js-addtocart-placeholder) {
     height: 42px;
     margin: 0 !important;
     border: 0;
@@ -6382,6 +6387,10 @@ footer.yamuna-footer .powered-by-logo svg {
     font-weight: 700;
     letter-spacing: .02em;
     text-transform: uppercase;
+  }
+
+  body.template-product .yamuna-pdp-summary .js-addtocart-placeholder {
+    display: none !important;
   }
 
   body.template-product .yamuna-pdp-summary .form-quantity {
@@ -6458,19 +6467,9 @@ footer.yamuna-footer .powered-by-logo svg {
     border-top: 2px solid #a31460;
   }
 
-  body.template-product #product-description .yamuna-product-description-main h3:first-child {
-    margin: 0 0 16px;
-    color: #4b1b3a;
-    font-size: 0;
-  }
-
   body.template-product #product-description .yamuna-product-description-main h3:first-child::before {
-    color: #4b1b3a;
-    content: '\\2014  DESCRI\\00C7\\00C3O DO PRODUTO';
-    font-family: 'Dosis', sans-serif;
-    font-size: 19px;
-    font-weight: 700;
-    line-height: 1.2;
+    content: none !important;
+    display: none !important;
   }
 
   body.template-product #product-description .yamuna-product-description-main,
@@ -6519,12 +6518,9 @@ footer.yamuna-footer .powered-by-logo svg {
     margin: 0 !important;
   }
 
-  body.template-product #product-description .yamuna-product-description-main h3:first-child {
-    font-size: 0;
-  }
-
   body.template-product #product-description .yamuna-product-description-main h3:first-child::before {
-    content: '\\2014  DESCRI\\00C7\\00C3O DO PRODUTO';
+    content: none !important;
+    display: none !important;
   }
 
   body.template-product #product-description .yamuna-product-description-main,
@@ -7171,7 +7167,7 @@ footer.yamuna-footer .powered-by-logo svg {
     transition: background .28s ease, box-shadow .28s ease;
   }
 
-  /* O header termina exatamente onde o hero começa: sem a faixa/gradiente
+  /* O header termina exatamente onde o hero come?a: sem a faixa/gradiente
    * branco sobre o topo do banner no mobile e tablet. */
   body.template-home .head-main::after {
     position: absolute;
@@ -7263,7 +7259,7 @@ footer.yamuna-footer .powered-by-logo svg {
   [data-store="banner-services"] .swiper-wrapper { transition-duration: 0ms !important; }
 }
 
-{# Compact desktop header: preserve space for navigation at 1024–1439px. #}
+{# Compact desktop header: preserve space for navigation at 1024?1439px. #}
 @media (min-width: 1024px) and (max-width: 1439px) {
   body .head-main .yamuna-header-desktop-search,
   body.template-home .head-main .yamuna-header-desktop-search {
@@ -8585,7 +8581,7 @@ body.template-category .yamuna-plp-quick-filter.is-selected {
   }
 }
 
-{# PDP desktop composition — derived from Figma node 798:5606. #}
+{# PDP desktop composition ? derived from Figma node 798:5606. #}
 @media (min-width: 1024px) {
   body.template-product #single-product > .container {
     max-width: 1312px;
@@ -8739,12 +8735,9 @@ body.template-category .yamuna-plp-quick-filter.is-selected {
 @media (min-width: 1024px) {
   body.template-product .section-single-product { margin: 0 !important; }
 
-  body.template-product #product-description .yamuna-product-description-main h3:first-child {
-    font-size: 0;
-  }
-
   body.template-product #product-description .yamuna-product-description-main h3:first-child::before {
-    content: '\\2014  DESCRI\\00C7\\00C3O DO PRODUTO';
+    content: none !important;
+    display: none !important;
   }
 
   body.template-product #product-description .yamuna-product-description-main,
@@ -8757,7 +8750,7 @@ body.template-category .yamuna-plp-quick-filter.is-selected {
   }
 }
 
-{# Final PLP filter drawer overrides â€” Figma node 3428:38466. #}
+{# Final PLP filter drawer overrides ??? Figma node 3428:38466. #}
 body.template-category .yamuna-plp-filter-trigger,
 body.template-search .yamuna-plp-filter-trigger {
   width: 132px;
@@ -9080,7 +9073,7 @@ body.template-search .yamuna-plp-sort-label {
   }
 }
 
-{# Mobile hero content card â€” Figma node 156:3359. #}
+{# Mobile hero content card ??? Figma node 156:3359. #}
 @media (max-width: 767px) {
   body.template-home .js-home-slider-mobile .slide-container .slider-slide {
     position: relative !important;
@@ -9245,7 +9238,7 @@ body.template-search .yamuna-plp-sort .form-select-icon {
   display: none;
 }
 
-{# PLP mobile / tablet — preserve the mobile composition up to the desktop breakpoint. #}
+{# PLP mobile / tablet ? preserve the mobile composition up to the desktop breakpoint. #}
 @media (max-width: 1023px) {
   body.template-category .yamuna-plp-hero,
   body.template-category .category-controls,
@@ -9456,7 +9449,7 @@ body.template-search .yamuna-plp-sort .form-select-icon {
   }
 }
 
-{# PLP mobile fine tuning — Figma node 784:8733 (320px). #}
+{# PLP mobile fine tuning ? Figma node 784:8733 (320px). #}
 @media (max-width: 1023px) {
   body.template-category .yamuna-plp-hero,
   body.template-search .yamuna-plp-hero {
@@ -10078,7 +10071,7 @@ body.template-search .yamuna-plp-body .item-image img {
   }
 }
 
-{# PDP breadcrumb — Figma node 829:4111. #}
+{# PDP breadcrumb ? Figma node 829:4111. #}
 @media (min-width: 1024px) {
   body.template-product .yamuna-pdp-summary .breadcrumbs {
     display: flex !important;
@@ -10111,7 +10104,7 @@ body.template-search .yamuna-plp-body .item-image img {
   }
 
   body.template-product .yamuna-pdp-summary .breadcrumbs .divider::after {
-    content: '›';
+    content: '\203A';
     font-family: Arial, sans-serif;
     font-size: 18px;
     font-weight: 400;
@@ -10369,7 +10362,7 @@ body.template-search .yamuna-plp-body .item-image img {
   }
 }
 
-{# Desktop header — behavior and measurements from yamuna.com.br.
+{# Desktop header ? behavior and measurements from yamuna.com.br.
    The platform adds .compress to .js-head-main on scroll; the visual change is
    intentionally driven by that existing state rather than a second scroll listener. #}
 @media (min-width: 1024px) {
@@ -10501,7 +10494,7 @@ body.template-search .yamuna-plp-body .item-image img {
   }
 }
 
-{# Mobile header — Figma 156:3337. #}
+{# Mobile header ? Figma 156:3337. #}
 @media (max-width: 1023px) {
   body .head-main .yamuna-header-mobile {
     position: relative !important;
@@ -10574,7 +10567,7 @@ body.template-search .yamuna-plp-body .item-image img {
   }
 }
 
-{# Desktop header — Figma 845:5824.  These declarations deliberately come
+{# Desktop header ? Figma 845:5824.  These declarations deliberately come
    last because the PDP experiment appended incompatible desktop dimensions. #}
 @media (min-width: 1024px) {
   body[class] .head-main,
@@ -10912,3 +10905,864 @@ body.template-search .yamuna-plp-body .item-image img {
     max-width: none;
   }
 }
+
+{# ==========================================================================
+   PDP FINAL OVERRIDES ? recovered from Sep 3 session (Figma 798:5606 + ERROS)
+   Scoped ONLY to body.template-product / .yamuna-pdp* ? do not touch home.
+   ========================================================================== #}
+@media (min-width: 1024px) {
+  body.template-product .yamuna-pdp-informative-banners {
+    display: none !important;
+  }
+
+  body.template-product #product-description .social-share {
+    display: none !important;
+  }
+
+  {# Benefits row ? Figma 804:5665..804:5721: one row between 2 lines, ~12px gaps, 528px #}
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-benefits {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important;
+    width: 528px !important;
+    max-width: 528px !important;
+    height: 40px !important;
+    margin: 8px 0 24px !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    border-top: 1px solid #c0bbc3 !important;
+    border-bottom: 1px solid #c0bbc3 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-benefit {
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    gap: 8px !important;
+    color: #238482 !important;
+    font-family: Roboto, Arial, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    letter-spacing: -0.41px !important;
+    white-space: nowrap !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-benefit img {
+    display: block !important;
+    width: 24px !important;
+    height: 24px !important;
+    flex: 0 0 24px !important;
+    object-fit: contain !important;
+  }
+
+  {# Price cards ? Figma: price ABOVE pix/installments #}
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-cards {
+    width: 528px !important;
+    margin: 32px 0 !important;
+    gap: 32px !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-unit {
+    padding: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-unit > .d-inline-flex {
+    position: absolute !important;
+    top: 72px !important;
+    right: 12px !important;
+    left: 12px !important;
+    display: flex !important;
+    width: auto !important;
+    justify-content: center !important;
+    margin: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-unit .js-price-display {
+    margin: 0 !important;
+    color: #238482 !important;
+    font-family: Roboto, Arial, sans-serif !important;
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    line-height: 28px !important;
+    text-align: center !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-unit .yamuna-pdp-price-card-meta {
+    position: absolute !important;
+    top: 102px !important;
+    right: 12px !important;
+    left: 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
+    color: #9e929e !important;
+    font-family: Dosis, Arial, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 18px !important;
+    text-align: center !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-buy-three .yamuna-pdp-price-card-discount {
+    z-index: 3 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-buy-three .yamuna-pdp-price-card-heading {
+    z-index: 1 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-buy-three .yamuna-pdp-price-card-body {
+    top: 72px !important;
+    right: 12px !important;
+    left: 12px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 42px !important;
+    align-items: end !important;
+    justify-items: center !important;
+    column-gap: 4px !important;
+    row-gap: 0 !important;
+    padding: 0 0 0 28px !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-buy-three .yamuna-pdp-buy-three-price {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    justify-self: end !important;
+    margin: 0 !important;
+    color: #238482 !important;
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    line-height: 28px !important;
+    text-align: right !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-buy-three .yamuna-pdp-price-card-unit-label {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    align-self: end !important;
+    justify-self: start !important;
+    margin: 0 0 2px !important;
+    padding: 0 !important;
+    color: #9e929e !important;
+    font-family: Dosis, Arial, sans-serif !important;
+    font-size: 8px !important;
+    font-weight: 600 !important;
+    line-height: 9px !important;
+    text-align: left !important;
+    text-transform: uppercase !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-buy-three .yamuna-pdp-price-card-pix,
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-buy-three .yamuna-pdp-price-card-installments {
+    grid-column: 1 / -1 !important;
+    justify-self: center !important;
+    width: 100% !important;
+    line-height: 18px !important;
+    text-align: center !important;
+  }
+
+  {# Quantity pill ? Figma 810:7937, radius ~32 ends, 48px tall #}
+  body.template-product .yamuna-pdp-summary #product_form > .form-row {
+    align-items: center !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product_form > .form-row > .col-4 {
+    display: flex !important;
+    align-items: center !important;
+    height: 48px !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .form-quantity {
+    width: 150px !important;
+    height: 48px !important;
+    overflow: hidden !important;
+    border: 1px solid #c0bbc3 !important;
+    border-radius: 32px !important;
+    background: #fff !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .form-quantity-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 48px !important;
+    width: 48px !important;
+    height: 46px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    color: #9e929e !important;
+    background: rgba(192, 187, 195, 0.28) !important;
+    line-height: 1 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .form-quantity-icon:first-child {
+    border-radius: 32px 0 0 32px !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .form-quantity-icon:last-child {
+    border-radius: 0 32px 32px 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .form-quantity .form-control {
+    flex: 1 1 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    height: 46px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-top: 1px solid #c0bbc3 !important;
+    border-bottom: 1px solid #c0bbc3 !important;
+    background: #fff !important;
+    color: #393747 !important;
+    font-family: Inter, Roboto, Arial, sans-serif !important;
+    font-size: 18px !important;
+    line-height: 46px !important;
+    text-align: center !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .form-control,
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .btn {
+    height: 48px !important;
+    min-height: 48px !important;
+    border-radius: 23px !important;
+    box-sizing: border-box !important;
+  }
+  body.template-product .yamuna-pdp-summary #product_form > .form-row {
+    display: flex !important;
+    flex-direction: row-reverse !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    column-gap: 32px !important;
+    row-gap: 0 !important;
+    gap: 32px !important;
+    width: 528px;
+    margin: 19px 0 0 !important;
+    padding: 0 0 21px !important;
+    border-bottom: 1px solid #c0bbc3;
+  }
+
+  body.template-product .yamuna-pdp-summary #product_form > .form-row > .col-12 {
+    display: none !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product_form > .form-row > .col-8,
+  body.template-product .yamuna-pdp-summary #product_form > .form-row > .col-4 {
+    flex: initial !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product_form > .form-row > .col-8 {
+    width: 304px !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product_form > .form-row > .col-4 {
+    width: 150px !important;
+  }
+
+  {# Add to cart ? ERROS / Figma 807-7931 #}
+  body.template-product .yamuna-pdp-summary .js-addtocart:not(.js-addtocart-placeholder) {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    height: 48px !important;
+    margin: 0 !important;
+    padding: 12px 24px !important;
+    border: 0 !important;
+    border-radius: 23px !important;
+    background: #238482 !important;
+    color: #fff !important;
+    font-family: Roboto, Arial, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: normal !important;
+    letter-spacing: normal !important;
+    text-transform: uppercase !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .js-addtocart-placeholder {
+    display: none !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .js-addtocart:not(.js-addtocart-placeholder) img,
+  body.template-product .yamuna-pdp-summary .js-addtocart:not(.js-addtocart-placeholder) svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  {# Quantity ? 150x48 #}
+  body.template-product .yamuna-pdp-summary .form-quantity {
+    width: 150px !important;
+    height: 48px !important;
+    overflow: hidden !important;
+    border: 1px solid #c0bbc3 !important;
+    border-radius: 32px !important;
+    background: #fff !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .form-quantity-icon {
+    min-width: 42px !important;
+    height: 46px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    color: #4a1d3a !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .form-quantity-icon:first-child,
+  body.template-product .yamuna-pdp-summary .form-quantity-icon:last-child {
+    background: rgba(192, 187, 195, 0.28) !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .form-quantity .form-control {
+    height: 46px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: #fff !important;
+    color: #4a1d3a !important;
+    font-family: 'Dosis', sans-serif !important;
+    font-size: 18px !important;
+    text-align: center !important;
+  }
+
+  {# CEP block ? HTML children: label (col-12), input wrap, button wrap, help (col-12) #}
+  body.template-product .yamuna-pdp-summary #product-shipping-container {
+    margin-top: 16px !important;
+    padding-top: 0 !important;
+    border-top: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .form-group-inline {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    column-gap: 12px !important;
+    row-gap: 8px !important;
+    margin: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .form-group-inline > .col-12.form-label,
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .form-group-inline > .col-12.mb-2 {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 4px !important;
+    padding: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .form-group-inline > .col-6.col-lg-7,
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .form-group-inline > [class*="col-lg-7"] {
+    flex: 0 0 224px !important;
+    width: 224px !important;
+    max-width: 224px !important;
+    padding: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .form-group-inline > .col-6.col-lg-5,
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .form-group-inline > [class*="col-lg-5"] {
+    flex: 0 0 125px !important;
+    width: 125px !important;
+    max-width: 125px !important;
+    padding: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .form-control {
+    width: 100% !important;
+    height: 48px !important;
+    border: 1px solid #c0bbc3 !important;
+    border-radius: 23px !important;
+    color: #9e929e !important;
+    font-family: 'Dosis', sans-serif !important;
+    font-size: 18px !important;
+    font-weight: 400 !important;
+    text-transform: uppercase !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .form-control::placeholder {
+    color: #9e929e !important;
+    font-family: 'Dosis', sans-serif !important;
+    font-size: 18px !important;
+    text-transform: uppercase !important;
+    opacity: 1 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .btn {
+    width: 100% !important;
+    height: 48px !important;
+    border: 0 !important;
+    border-radius: 23px !important;
+    background: #e5c3da !important;
+    color: #4a1d3a !important;
+    font-family: Roboto, Arial, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product-shipping-container .js-product-quick-login {
+    display: none !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .form-group-inline > .col-12:has(.js-shipping-zipcode-help) {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product-shipping-container .js-shipping-zipcode-help {
+    display: inline-block !important;
+    margin: 0 !important;
+    color: #238482 !important;
+    font-family: 'Dosis', sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    text-decoration: underline !important;
+    white-space: nowrap !important;
+  }
+
+  {# Description main ? Figma title with minus icon #}
+  body.template-product #product-description {
+    display: block !important;
+    width: 528px !important;
+    max-width: 528px !important;
+    margin-top: 24px !important;
+  }
+
+  body.template-product #product-description .yamuna-product-description-main {
+    width: 476px !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-top: 0 !important;
+  }
+
+  body.template-product #product-description .yamuna-product-description-main::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  body.template-product #product-description .yamuna-pdp-description-title {
+    display: flex !important;
+    align-items: center !important;
+    gap: 2px !important;
+    margin: 0 0 16px !important;
+    color: #4a1d3a !important;
+    font-family: Roboto, Arial, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    line-height: 19px !important;
+    text-transform: uppercase !important;
+  }
+
+  body.template-product #product-description .yamuna-pdp-description-title::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  body.template-product #product-description .yamuna-product-description-main h3:first-child {
+    font-size: inherit !important;
+  }
+
+  body.template-product #product-description .yamuna-product-description-main h3:first-child::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  body.template-product #product-description .yamuna-pdp-description-title-icon {
+    width: 24px !important;
+    height: 24px !important;
+    flex: 0 0 24px !important;
+  }
+
+  body.template-product #product-description .yamuna-pdp-description-duplicate {
+    display: none !important;
+  }
+
+  body.template-product #product-description .yamuna-product-description-main > *:not(.yamuna-pdp-description-title) {
+    margin-left: 26px !important;
+  }
+
+  body.template-product #product-description .yamuna-product-description-main,
+  body.template-product #product-description .yamuna-product-description-main p,
+  body.template-product #product-description .yamuna-product-description-main li {
+    color: #393747 !important;
+    font-family: 'Dosis', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+  }
+
+  body.template-product #product-description .yamuna-product-description-main p {
+    margin-bottom: 24px !important;
+  }
+
+  body.template-product #product-description .yamuna-pdp-desc-label {
+    color: #a31460 !important;
+    font-weight: 700 !important;
+  }
+
+  body.template-product #product-description .yamuna-pdp-nutrition-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 8px 0 0 !important;
+    padding: 8px 16px !important;
+    border-radius: 40px !important;
+    background: #e5c3da !important;
+    color: #4a1d3a !important;
+    font-family: 'Dosis', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    text-decoration: none !important;
+  }
+
+  body.template-product #product-description .yamuna-product-description-main li {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    line-height: 1.8 !important;
+  }
+
+  {# Accordions ? final spacing #}
+  body.template-product #product-description-accordions {
+    margin-top: 64px !important;
+    padding: 32px 0 40px !important;
+    background: #f0f0f0 !important;
+  }
+
+  body.template-product #product-description-accordions .yamuna-product-description-blocks {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    column-gap: 192px !important;
+    row-gap: 0 !important;
+    max-width: 1312px !important;
+    margin: 0 auto !important;
+  }
+
+  body.template-product #product-description-accordions .yamuna-product-description-accordion {
+    min-height: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border-top: 1px solid rgba(195, 136, 162, 0.25) !important;
+  }
+
+  body.template-product #product-description-accordions .yamuna-product-description-accordion:last-child,
+  body.template-product #product-description-accordions .yamuna-product-description-accordion:nth-last-child(2) {
+    border-bottom: 1px solid rgba(195, 136, 162, 0.25) !important;
+  }
+
+  body.template-product #product-description-accordions .informationDiv {
+    display: flex !important;
+    min-height: 0 !important;
+    padding: 16px 0 !important;
+    gap: 34px !important;
+    align-items: center !important;
+  }
+
+  body.template-product #product-description-accordions .informationDiv > h3 {
+    margin: 0 !important;
+    color: #393747 !important;
+    font-family: 'Dosis', sans-serif !important;
+    font-size: 24px !important;
+    font-weight: 600 !important;
+    line-height: 1.5 !important;
+    text-transform: none !important;
+  }
+
+  body.template-product #product-description-accordions .yamuna-pdp-accordion-icon,
+  body.template-product #product-description-accordions .informationDiv img {
+    width: 24px !important;
+    height: 24px !important;
+    flex: 0 0 24px !important;
+    transform: scaleY(-1) !important;
+    transition: transform .2s ease !important;
+  }
+
+  body.template-product #product-description-accordions .informationDiv.is-open .yamuna-pdp-accordion-icon,
+  body.template-product #product-description-accordions .informationDiv.is-open img {
+    transform: scaleY(1) !important;
+  }
+
+  body.template-product #product-description-accordions .infoToOpen {
+    padding: 0 0 24px 40px !important;
+    color: #393747 !important;
+    font-family: 'Dosis', sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+  }
+
+  body.template-product .yamuna-pdp-reviews {
+    margin-top: 48px;
+  }
+
+  body.template-product .yamuna-pdp-newsletter {
+    margin-top: 48px;
+    margin-bottom: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-newsletter .section-newsletter-home,
+  body.template-product .yamuna-pdp-newsletter [data-store="home-newsletter"] {
+    margin-bottom: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-related .products-section-title,
+  body.template-product .yamuna-pdp-related .h1 {
+    text-transform: uppercase;
+  }
+
+  {# Final PDP polish vs Figma circled gaps ? qty was wrapping (padding 12 + icons 48+48) #}
+  body.template-product .yamuna-pdp-summary #product_form > .form-row {
+    align-items: center !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product_form > .form-row > .col-4 {
+    display: flex !important;
+    align-items: center !important;
+    align-self: center !important;
+    width: 150px !important;
+    height: 48px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product_form > .form-row > .col-8 {
+    display: flex !important;
+    align-items: center !important;
+    align-self: center !important;
+    height: 48px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product_form .js-quantity.form-group {
+    display: flex !important;
+    align-items: center !important;
+    width: 150px !important;
+    height: 48px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .form-quantity {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+    box-sizing: border-box !important;
+    width: 150px !important;
+    max-width: 150px !important;
+    height: 48px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border: 1px solid #c0bbc3 !important;
+    border-radius: 32px !important;
+    background: #fff !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .form-quantity-icon {
+    display: flex !important;
+    flex: 0 0 42px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    width: 42px !important;
+    min-width: 42px !important;
+    max-width: 42px !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    color: #9e929e !important;
+    background: rgba(192, 187, 195, 0.28) !important;
+    line-height: 1 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .form-quantity-icon:first-child {
+    border-radius: 32px 0 0 32px !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .form-quantity-icon:last-child {
+    border-radius: 0 32px 32px 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .form-quantity-icon svg,
+  body.template-product .yamuna-pdp-summary .form-quantity-icon use {
+    width: 14px !important;
+    height: 14px !important;
+    fill: #9e929e !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .form-quantity .form-control-container {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-top: 1px solid #c0bbc3 !important;
+    border-bottom: 1px solid #c0bbc3 !important;
+    background: #fff !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .form-quantity .form-control {
+    display: block !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: #fff !important;
+    color: #393747 !important;
+    font-family: Inter, Roboto, Arial, sans-serif !important;
+    font-size: 18px !important;
+    font-weight: 400 !important;
+    line-height: 46px !important;
+    text-align: center !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .js-addtocart:not(.js-addtocart-placeholder) {
+    margin: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-buy-three {
+    overflow: visible !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-buy-three .yamuna-pdp-price-card-body {
+    top: 72px !important;
+    right: 16px !important;
+    left: 16px !important;
+    display: grid !important;
+    grid-template-columns: auto auto !important;
+    grid-template-rows: auto auto auto !important;
+    align-items: center !important;
+    justify-content: center !important;
+    justify-items: start !important;
+    column-gap: 6px !important;
+    row-gap: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-buy-three .yamuna-pdp-buy-three-price {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    justify-self: end !important;
+    margin: 0 !important;
+    line-height: 28px !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-buy-three .yamuna-pdp-price-card-unit-label {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    align-self: center !important;
+    justify-self: start !important;
+    margin: 0 !important;
+    padding-top: 2px !important;
+    line-height: 9px !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-buy-three .yamuna-pdp-price-card-pix {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    justify-self: center !important;
+    margin-top: 2px !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-buy-three .yamuna-pdp-price-card-installments {
+    grid-column: 1 / -1 !important;
+    grid-row: 3 !important;
+    justify-self: center !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-unit > .d-inline-flex {
+    top: 72px !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-price-card-unit .yamuna-pdp-price-card-meta {
+    top: 102px !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .form-control,
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .btn {
+    box-sizing: border-box !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    border-radius: 24px !important;
+    line-height: 46px !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .form-control {
+    padding: 0 18px !important;
+    line-height: 46px !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary #product-shipping-container .shipping-calculator-form .form-group-inline {
+    align-items: center !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-benefits {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important;
+    width: 528px !important;
+    max-width: 528px !important;
+    height: 40px !important;
+    margin: 8px 0 24px !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    border-top: 1px solid #c0bbc3 !important;
+    border-bottom: 1px solid #c0bbc3 !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-benefit {
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  body.template-product .yamuna-pdp-summary .yamuna-pdp-benefit img {
+    display: block !important;
+    width: 24px !important;
+    height: 24px !important;
+    flex: 0 0 24px !important;
+    object-fit: contain !important;
+  }
+}
+
+
+/* benefits-bar-figma-153243 */

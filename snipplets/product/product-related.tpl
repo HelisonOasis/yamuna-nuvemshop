@@ -69,7 +69,7 @@
     {{ component('nubesdk-slot', { type: 'before_product_detail_related_products' }) }}
     {{ component(
         'products-section',{
-            title: settings.products_related_title,
+            title: 'VOCÊ PODE GOSTAR',
             id: 'related-products',
             data_component: alternative_data_component,
             products_amount: related_products | length,
@@ -78,7 +78,7 @@
             product_template_params: {'slide_item': true},
             slider_controls_position: 'bottom',
             section_classes: {
-                section: 'js-related-products ' ~  section_class,
+                section: 'js-related-products yamuna-pdp-related ' ~  section_class,
                 container: container_class,
                 title_container: title_container_class,
                 title: title_class,

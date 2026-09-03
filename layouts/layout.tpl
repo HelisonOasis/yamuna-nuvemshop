@@ -206,29 +206,71 @@
                     var accordion = accordions[index];
                     var trigger = accordion.querySelector('.informationDiv');
                     var content = accordion.querySelector('.infoToOpen');
-                    var title = null;
 
                     if (!trigger || !content || trigger.querySelector('h3')) {
                         continue;
                     }
 
-                    for (var childIndex = 0; childIndex < content.children.length; childIndex++) {
-                        if (content.children[childIndex].tagName === 'H3') {
-                            title = content.children[childIndex];
-                            break;
-                        }
-                    }
-
+                    var title = content.querySelector('h3');
                     if (title) {
                         trigger.appendChild(title);
                     }
                 }
             }
 
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', moveProductAccordionHeadings);
-            } else {
+            function styleYamunaProductDescription() {
+                var main = document.querySelector('.yamuna-product-description-main');
+                if (!main) {
+                    return;
+                }
+
+                var headings = main.querySelectorAll('h2, h3');
+                for (var h = 0; h < headings.length; h++) {
+                    var heading = headings[h];
+                    if (heading.classList.contains('yamuna-pdp-description-title')) {
+                        continue;
+                    }
+                    var headingText = (heading.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+                    if (headingText === 'descrição' || headingText === 'descricao' || headingText === 'descrição do produto' || headingText === 'descricao do produto') {
+                        heading.classList.add('yamuna-pdp-description-duplicate');
+                    }
+                }
+
+                var nodes = main.querySelectorAll('p, li, strong, b, span');
+                for (var i = 0; i < nodes.length; i++) {
+                    var node = nodes[i];
+                    var text = (node.textContent || '').replace(/\s+/g, ' ').trim();
+                    var lower = text.toLowerCase();
+
+                    if (lower === 'tabela nutricional' || lower.indexOf('tabela nutricional') === 0 && text.length < 40) {
+                        node.classList.add('yamuna-pdp-nutrition-btn');
+                        continue;
+                    }
+
+                    if (lower.indexOf('ingredientes:') === 0 || lower.indexOf('rendimento:') === 0) {
+                        if (node.classList.contains('yamuna-pdp-desc-label')) {
+                            continue;
+                        }
+                        var labelMatch = text.match(/^(Ingredientes:|Rendimento:)/i);
+                        if (!labelMatch) {
+                            continue;
+                        }
+                        var label = labelMatch[1];
+                        var rest = text.slice(label.length);
+                        node.innerHTML = '<span class="yamuna-pdp-desc-label">' + label + '</span>' + rest;
+                    }
+                }
+            }
+
+            function initYamunaProductDescriptionUi() {
                 moveProductAccordionHeadings();
+                styleYamunaProductDescription();
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initYamunaProductDescriptionUi);
+            } else {
+                initYamunaProductDescriptionUi();
             }
 
             {# LS.ready.then function waits to Jquery and private Tiendanube JS to be loaded before executing what´s inside #}
