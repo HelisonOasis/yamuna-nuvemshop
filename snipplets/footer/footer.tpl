@@ -14,6 +14,13 @@
 
 {{ component('nubesdk-slot', { type: "before_footer" }) }}
 
+<style>
+  footer.yamuna-footer .h3,
+  footer.yamuna-footer h4 {
+    font-family: 'Raleway', sans-serif !important;
+  }
+</style>
+
 <footer class="js-hide-footer-while-scrolling display-when-content-ready yamuna-footer" data-store="footer">
 	<div class="container-fluid px-md-5">
 		<div class="row element-footer">
@@ -59,35 +66,59 @@
 				{% endif %}
 
 				{# Foot Nav #}
-				{% if has_footer_menu %}
-					<div class="col">
-						{% if settings.footer_menu_title %}
-							<h4 class="h3">{{ settings.footer_menu_title }}</h4>
-						{% endif %}
-						{% include "snipplets/navigation/navigation-foot.tpl" %}
-					</div>
-				{% endif %}
+				<div class="col yamuna-footer-menu yamuna-footer-menu-primary">
+					<h4 class="h3">Vendas</h4>
+					<ul class="footer-menu">
+						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.whatsapp }}" target="_blank" rel="noopener">Atendimento ao Cliente</a></li>
+						<li class="footer-menu-item"><a class="footer-menu-link" href="/revenda">Revenda e Lojistas</a></li>
+						<li class="footer-menu-item"><span class="footer-menu-link">Contato via E-mail</span></li>
+						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.whatsapp }}" target="_blank" rel="noopener">Comprar com WhatsApp</a></li>
+						<li class="footer-menu-item"><a class="footer-menu-link" href="/programa-de-beneficios">Programa de pontos</a></li>
+					</ul>
+				</div>
 
 				{# Foot Nav Secondary #}
 				{% if has_footer_menu_secondary %}
-					<div class="col">
-						{% if settings.footer_menu_secondary_title %}
-							<h4 class="h3">{{ settings.footer_menu_secondary_title }}</h4>
-						{% endif %}
+					<div class="col yamuna-footer-menu yamuna-footer-menu-secondary">
+						<h4 class="h3">Institucional</h4>
 						{% include "snipplets/navigation/navigation-foot-secondary.tpl" %}
 					</div>
 				{% endif %}
 
+				{# SAC #}
+				<div class="col yamuna-footer-menu yamuna-footer-menu-sac">
+					<h4 class="h3">SAC</h4>
+					<ul class="footer-menu">
+						<li class="footer-menu-item"><a class="footer-menu-link" href="/entrega">Regras de frete grátis</a></li>
+						<li class="footer-menu-item"><a class="footer-menu-link" href="/TrocaseDevolucoes">Trocas e Reembolsos</a></li>
+						<li class="footer-menu-item"><a class="footer-menu-link" href="/duvidasfrequentes">Dúvidas frequentes</a></li>
+						<li class="footer-menu-item"><a class="footer-menu-link" href="https://www.google.com/maps/place/Yamuna+Artesanal+%7C+F%C3%A1brica+e+loja+virtual+de+Produtos+Naturais+(Ghee)+-+Rod.+Roz%C3%A1lia+Paulina+Ferreira,+1897+-+P%C3%A2ntano+do+Sul,+Florian%C3%B3polis+-+SC,+88066-600/@-27.7698586,-48.5244642,15z/data=!4m6!3m5!1s0x952725aefc66dc8d:0x1f6bed5868b0b518!8m2!3d-27.7698586!4d-48.5244642!16s%2Fg%2F11f6fxbzqk?source=g.page.m.dd._&amp;g_ep=Eg1tbF8yMDI2MDgyM18wIJvbDyoASAJQAQ%3D%3D" target="_blank" rel="noopener">Avalie-nos no Google</a></li>
+					</ul>
+				</div>
+
 				{# Foot Nav Tertiary #}
 				{% if has_footer_menu_tertiary %}
-					<div class="col">
+					<div class="col yamuna-footer-menu yamuna-footer-menu-tertiary">
 						{% if settings.footer_menu_tertiary_title %}
 							<h4 class="h3">{{ settings.footer_menu_tertiary_title }}</h4>
 						{% endif %}
 						<ul class="footer-menu">
 							{% for item in menus[settings.footer_menu_tertiary] %}
+								{% set footer_item_url = item.url %}
+								{% set footer_item_name = item.name | lower | trim %}
+								{% if footer_item_name == 'quem somos' %}
+									{% set footer_item_url = '/quem-somos' %}
+								{% elseif footer_item_name == 'manifesto' %}
+									{% set footer_item_url = '/nossomanifesto' %}
+								{% elseif footer_item_name == 'blog' %}
+									{% set footer_item_url = '/aprenda' %}
+								{% elseif footer_item_name == 'atendimento ao cliente' %}
+									{% set footer_item_url = store.whatsapp %}
+								{% elseif footer_item_name == 'seja um revendedor' %}
+									{% set footer_item_url = '/revenda' %}
+								{% endif %}
 								<li class="footer-menu-item">
-									<a class="footer-menu-link" href="{{ item.url }}" {% if item.url | is_external %}target="_blank"{% endif %}>{{ item.name }}</a>
+									<a class="footer-menu-link" href="{{ footer_item_url }}" {% if footer_item_url | is_external %}target="_blank"{% endif %}>{{ item.name }}</a>
 								</li>
 							{% endfor %}
 						</ul>
@@ -96,7 +127,7 @@
 
 				{# Contact info #}
 				{% if has_footer_contact_info %}
-					<div class="col-md mb-4">
+					<div class="col-md mb-4 yamuna-footer-contact">
 						{% if settings.footer_contact_title %}
 							<h4 class="h3">{{ settings.footer_contact_title }}</h4>
 						{% endif %}
@@ -109,7 +140,7 @@
 					<ul class="footer-menu">
 						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.customer_home_url }}">{{ 'Meus pedidos' | translate }}</a></li>
 						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.customer_home_url }}">{{ 'Minha conta' | translate }}</a></li>
-						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.customer_register_url }}">{{ 'Criar conta' | translate }}</a></li>
+						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.customer_home_url }}">Editar Cadastro</a></li>
 					</ul>
 				</div>
 
@@ -130,7 +161,7 @@
 				 				{% if has_payment_logos %}
 				 					<div class="row mb-4">
 				 						<div class="col-md-4">
-					 						<h4 class="h3">{{ "Medios de pago" | translate }}</h4>
+							<h4 class="h3">Formas de pagamento</h4>
 					 					</div>
 					 					<div class="col-md-8">
 					 						{% include "snipplets/logos-icons.tpl" with {'payments': true} %}

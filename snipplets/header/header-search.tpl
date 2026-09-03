@@ -7,5 +7,17 @@
 	</div>
 </form>
 <div class="js-search-suggest search-suggest">
-    {# AJAX container for search suggestions #}
+    <div class="yamuna-search-default">
+        <strong class="yamuna-search-default-title">Sugestões de Pesquisa</strong>
+        <div class="yamuna-search-chips">
+            <button type="button" class="yamuna-search-chip" data-yamuna-search-suggestion="Manteiga Ghee">Manteiga Ghee</button>
+            <button type="button" class="yamuna-search-chip" data-yamuna-search-suggestion="Creme de Castanhas">Creme de Castanhas</button>
+            <button type="button" class="yamuna-search-chip" data-yamuna-search-suggestion="Alimentos de Coco">Alimentos de Coco</button>
+            <button type="button" class="yamuna-search-chip" data-yamuna-search-suggestion="Shampoo em Barra">Shampoo em Barra</button>
+            <button type="button" class="yamuna-search-chip" data-yamuna-search-suggestion="Condicionador em Barra">Condicionador em Barra</button>
+            <button type="button" class="yamuna-search-chip" data-yamuna-search-suggestion="Chocolates">Chocolates</button>
+            <button type="button" class="yamuna-search-chip" data-yamuna-search-suggestion="Cafés">Cafés</button>
+            <button type="button" class="yamuna-search-chip" data-yamuna-search-suggestion="Veganos">Veganos</button>
+        </div>
+    </div>
 </div>

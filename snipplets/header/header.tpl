@@ -10,6 +10,155 @@
 
 <header class="js-head-main head-main head-{{ settings.head_background }} {% if settings.head_fix %}head-fix{% endif %} transition-soft {{ logo_desktop_class }}" data-store="head">
 
+    {# Desktop navigation — Figma node 845:5824. The native controls below
+       remain available for tablet and mobile. #}
+    <div class="yamuna-header-desktop d-none">
+        <div class="yamuna-header-desktop-logo">
+            <a class="yamuna-header-logo-link" href="{{ store.url }}" aria-label="{{ store.name }}">
+                <img class="yamuna-header-logo-image yamuna-header-logo-default" src="{{ 'images/yamuna/logo-yamuna-reference.png' | static_url }}" alt="{{ store.name }}" />
+                <img class="yamuna-header-logo-image yamuna-header-logo-scrolled" src="{{ 'images/yamuna/logo-yamuna-branco-reference.png' | static_url }}" alt="" aria-hidden="true" />
+            </a>
+        </div>
+
+        <nav class="yamuna-header-desktop-nav" aria-label="{{ 'Navegação principal' | translate }}">
+            <div class="nav-main-item nav-dropdown yamuna-products-menu">
+                <div class="nav-item-container">
+                    <a class="nav-list-link" href="{{ store.url }}/produtos/">Produtos</a>
+                </div>
+                <div class="nav-dropdown-content desktop-dropdown yamuna-products-dropdown">
+                    <ul class="desktop-list-subitems list-subitems nav-list-accordion">
+                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}kits-presentes/">Kits e presentes</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}manteiga-ghee/">Manteiga ghee</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}cremes-de-castanhas/">Creme de castanhas</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}alimentos-de-coco/">Alimentos de coco</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Shampoo e condicionador em barra</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Sabonetes</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Cafés</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Chocolates e cacau</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Temperos e massalas</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Óleos corporais</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Adoçantes naturais</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Leites vegetais</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Nutracêuticos/cápsulas</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Casa sustentável</a></li>
+                    </ul>
+                </div>
+            </div>
+            <a class="nav-list-link" href="{{ store.url }}/quem-somos/">Quem somos</a>
+            <a class="nav-list-link" href="{{ store.url }}/revenda/">Revenda</a>
+            <a class="nav-list-link" href="{{ store.url }}/blog/">Blog</a>
+        </nav>
+
+        <div class="yamuna-header-desktop-search">
+            {% snipplet "header/header-search.tpl" %}
+        </div>
+
+        <div class="yamuna-header-desktop-utilities">
+            <a class="yamuna-header-action" href="{{ customer ? store.customer_home_url : store.customer_login_url }}" aria-label="{{ 'Minha conta' | translate }}">
+                <img src="{{ 'images/yamuna/header-user.svg' | static_url }}" alt="" aria-hidden="true" />
+            </a>
+            <a class="yamuna-header-action" href="{{ store.url }}/favoritos/" aria-label="{{ 'Favoritos' | translate }}">
+                <img src="{{ 'images/yamuna/header-heart.svg' | static_url }}" alt="" aria-hidden="true" />
+            </a>
+            <a {% if settings.ajax_cart and template != 'cart' %}href="#" class="yamuna-header-action js-modal-open js-toggle-cart" data-toggle="#modal-cart"{% else %}href="{{ store.cart_url }}" class="yamuna-header-action"{% endif %} aria-label="{{ 'Sacola' | translate }}">
+                <img src="{{ 'images/yamuna/header-bag.svg' | static_url }}" alt="" aria-hidden="true" />
+                <span class="yamuna-header-cart-count js-cart-widget-amount badge-amount">{{ "{1}" | translate(cart.items_count ) }}</span>
+            </a>
+        </div>
+    </div>
+
+    {# Mobile header — Figma node 156:3337 #}
+    <div class="yamuna-header-mobile d-md-none">
+        <div class="yamuna-header-mobile-logo">
+            <a class="yamuna-header-logo-link" href="{{ store.url }}" aria-label="{{ store.name }}">
+                <img class="yamuna-header-logo-image" src="{{ 'images/yamuna/logo-yamuna-reference.png' | static_url }}" alt="{{ store.name }}" />
+            </a>
+        </div>
+
+        <div class="yamuna-header-mobile-actions">
+            <a class="yamuna-header-mobile-action js-yamuna-mobile-search-toggle" href="#" aria-controls="yamuna-mobile-search" aria-expanded="false" aria-label="{{ 'Buscar' | translate }}">
+                <img class="yamuna-header-mobile-glyph" src="{{ 'images/yamuna/header-search-mobile.svg' | static_url }}" alt="" aria-hidden="true" />
+            </a>
+            <a {% if settings.ajax_cart and template != 'cart' %}href="#" class="yamuna-header-mobile-action js-modal-open js-toggle-cart" data-toggle="#modal-cart"{% else %}href="{{ store.cart_url }}" class="yamuna-header-mobile-action"{% endif %} aria-label="{{ 'Sacola' | translate }}">
+                <img class="yamuna-header-mobile-glyph" src="{{ 'images/yamuna/header-cart-mobile.svg' | static_url }}" alt="" aria-hidden="true" />
+                <span class="yamuna-header-mobile-cart-count js-cart-widget-amount badge-amount">{{ "{1}" | translate(cart.items_count ) }}</span>
+            </a>
+            <a class="yamuna-header-mobile-action js-modal-open" href="#" data-toggle="#nav-hamburger" aria-label="{{ 'Menu' | translate }}">
+                <img class="yamuna-header-mobile-glyph" src="{{ 'images/yamuna/header-menu-mobile.svg' | static_url }}" alt="" aria-hidden="true" />
+            </a>
+        </div>
+    </div>
+
+    <div id="yamuna-mobile-search" class="yamuna-mobile-search" aria-hidden="true">
+        <form class="yamuna-mobile-search-form js-search-container js-search-form" action="{{ store.search_url }}" method="get">
+            <div class="form-group m-0">
+                <input class="yamuna-mobile-search-input js-search-input form-control" autocomplete="off" type="search" name="q" placeholder="BUSCAR POR..." aria-label="{{ 'Buscar' | translate }}" />
+                <button type="submit" class="yamuna-mobile-search-submit" aria-label="{{ 'Buscar' | translate }}">
+                    <img src="{{ 'images/yamuna/menu-search.svg' | static_url }}" alt="" aria-hidden="true" />
+                </button>
+            </div>
+        </form>
+        <div class="yamuna-mobile-search-suggest js-search-suggest"></div>
+    </div>
+
+    <script>
+        document.addEventListener('click', function(event) {
+            var trigger = event.target.closest('.js-yamuna-mobile-search-toggle');
+            if (!trigger || !window.matchMedia('(max-width: 1023px)').matches) return;
+
+            event.preventDefault();
+            var panel = document.getElementById('yamuna-mobile-search');
+            if (!panel) return;
+
+            var isOpen = panel.classList.toggle('is-open');
+            panel.setAttribute('aria-hidden', String(!isOpen));
+            trigger.setAttribute('aria-expanded', String(isOpen));
+            if (isOpen) {
+                var input = panel.querySelector('.yamuna-mobile-search-input');
+                window.setTimeout(function() { input && input.focus(); }, 0);
+            }
+        });
+    </script>
+
+    <script>
+        (function() {
+            function syncDesktopPanels() {
+                if (!window.matchMedia('(min-width: 1024px)').matches) return;
+
+                var header = document.querySelector('.yamuna-header-desktop');
+                if (!header) return;
+
+                var headerRect = header.getBoundingClientRect();
+                var headerBefore = window.getComputedStyle(header, '::before');
+                var beforeLeft = parseFloat(headerBefore.left);
+                var beforeRight = parseFloat(headerBefore.right);
+                var beforeTop = parseFloat(headerBefore.top);
+                var beforeHeight = parseFloat(headerBefore.height);
+
+                if (isNaN(beforeLeft)) beforeLeft = 0;
+                if (isNaN(beforeRight)) beforeRight = 0;
+                if (isNaN(beforeTop)) beforeTop = 0;
+                if (isNaN(beforeHeight)) beforeHeight = headerRect.height;
+
+                document.documentElement.style.setProperty('--yamuna-desktop-panel-left', (headerRect.left + beforeLeft) + 'px');
+                document.documentElement.style.setProperty('--yamuna-desktop-panel-width', Math.max(0, headerRect.width - beforeLeft - beforeRight) + 'px');
+                document.documentElement.style.setProperty('--yamuna-desktop-panel-top', (headerRect.top + beforeTop + beforeHeight) + 'px');
+            }
+
+            function syncDesktopPanelsDuringTransition() {
+                syncDesktopPanels();
+                window.setTimeout(syncDesktopPanels, 100);
+                window.setTimeout(syncDesktopPanels, 300);
+                window.setTimeout(syncDesktopPanels, 650);
+            }
+
+            syncDesktopPanelsDuringTransition();
+            window.addEventListener('load', syncDesktopPanelsDuringTransition);
+            window.addEventListener('resize', syncDesktopPanelsDuringTransition);
+            window.addEventListener('scroll', syncDesktopPanelsDuringTransition, { passive: true });
+        })();
+    </script>
+
     {# Topbar = Social + Advertising + Language #}
 
     {% set has_social_network = store.facebook or store.twitter or store.pinterest or store.instagram or store.tiktok or store.youtube %}
@@ -119,15 +268,99 @@
                     </div>
                 {% endif %}
                 <div class="col-{% if settings.logo_position_mobile == 'left' %}12{% else %}10{% endif %} nav-categories-container d-block d-md-none p-0">
-                    {% snipplet "navigation/navigation-categories.tpl" %}
+                    <div class="js-nav-categories nav-categories-container-inner" data-categories-amount="{% if settings.logo_position_mobile == 'left' %}4{% else %}3{% endif %}">
+                        {% for item in navigation %}
+                            {% set is_active = item.current or item.is_parent_active %}
+                            <div class="nav-categories-item d-inline-block {% if loop.first and settings.logo_position_mobile == 'left' %}pl-3{% endif %}">
+                                <a class="nav-categories-link {% if is_active %}active{% endif %} pb-1" href="{{ item.url }}" {% if item.is_external %}target="_blank"{% endif %}>
+                                    {{ item.name }}
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             {% endif %}
-            <div class="col text-center p-0 d-none d-md-block">{% snipplet "navigation/navigation.tpl" %}</div>
         </div>
-
 	</div>
-    {% include "snipplets/notification.tpl" with {order_notification: true} %}
+
+    {% if not settings.head_utility == 'categories' or (settings.head_utility == 'categories' and settings.logo_position_desktop == 'center') %}
+        <div class="js-desktop-nav-categories desktop-nav-categories-container d-none d-md-block {% if settings.logo_position_desktop == 'center' %}border-top border-bottom{% endif %}">
+            <div class="container">
+                <div class="row no-gutters">
+                    <div class="col">
+                        {% include "snipplets/navigation/navigation.tpl" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
 </header>
+
+<script>
+  (function() {
+    function onScroll() {
+      var top = window.pageYOffset || document.documentElement.scrollTop || 0;
+      if (top > 40) {
+        document.documentElement.classList.add('yamuna-header-scrolled');
+      } else {
+        document.documentElement.classList.remove('yamuna-header-scrolled');
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Auto-open desktop cart dropdown on add to cart
+    window.yamunaAutoOpenCart = function() {
+      var header = document.querySelector('.head-main .yamuna-header-desktop');
+      if (header && !header.classList.contains('yamuna-cart-dropdown-open')) {
+        header.classList.add('yamuna-cart-dropdown-open');
+      }
+      var cartModal = document.getElementById('modal-cart');
+      if (cartModal) {
+        cartModal.classList.add('modal-show');
+        cartModal.style.display = 'block';
+      }
+      if (window.innerWidth >= 1024 && !document.querySelector('.js-modal.modal-show:not(#modal-cart)')) {
+        var overlay = document.querySelector('.js-modal-overlay[data-modal-id="#modal-cart"]');
+        if (overlay) overlay.style.display = 'none';
+      }
+    };
+
+    window.yamunaShowCartToast = function(title, subtitle) {
+      var toast = document.querySelector('.yamuna-cart-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.className = 'yamuna-cart-toast';
+        toast.innerHTML = '<div class="yamuna-cart-toast-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" stroke="#238482" stroke-width="2"/><path d="M7 12.5l3.5 3.5L17 9" stroke="#238482" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
+          '<div class="yamuna-cart-toast-text">' +
+            '<div class="yamuna-cart-toast-title">' + (title || 'Produto adicionado ao carrinho') + '</div>' +
+            '<div class="yamuna-cart-toast-subtitle">' + (subtitle || 'Seu carrinho foi atualizado') + '</div>' +
+          '</div>' +
+          '<button type="button" class="yamuna-cart-toast-close" aria-label="Fechar">&times;</button>';
+        document.body.appendChild(toast);
+        toast.querySelector('.yamuna-cart-toast-close').addEventListener('click', function() {
+          toast.classList.remove('yamuna-cart-toast-show');
+        });
+      } else {
+        if (title) toast.querySelector('.yamuna-cart-toast-title').textContent = title;
+        if (subtitle) toast.querySelector('.yamuna-cart-toast-subtitle').textContent = subtitle;
+      }
+
+      toast.classList.remove('yamuna-cart-toast-show');
+      void toast.offsetWidth;
+      toast.classList.add('yamuna-cart-toast-show');
+
+      if (window._yamunaToastTimeout) {
+        clearTimeout(window._yamunaToastTimeout);
+      }
+      window._yamunaToastTimeout = setTimeout(function() {
+        toast.classList.remove('yamuna-cart-toast-show');
+      }, 4000);
+    };
+
+  })();
+</script>
 
 {{ component('nubesdk-slot', { type: "after_header" }) }}
 
@@ -164,17 +397,11 @@
     {% endblock %}
 {% endembed %}
 
-{# Hamburger panel #}
+{# Hamburger panel — Yamuna mobile navigation. #}
 
-{% embed "snipplets/modal.tpl" with {modal_id: 'nav-hamburger',modal_class: 'nav-hamburger head-'~ settings.head_background ~ ' modal-docked-small', modal_position: 'left', modal_transition: 'fade', modal_width: 'full', modal_topbar: true, modal_fixed_footer: true, modal_footer: true, modal_footer_class: 'p-0' } %}
-    {% block modal_topbar %}
-        {% snipplet "navigation/navigation-topbar.tpl" %}
-    {% endblock %}
+{% embed "snipplets/modal.tpl" with {modal_id: 'nav-hamburger',modal_class: 'nav-hamburger head-'~ settings.head_background ~ ' modal-docked-small', modal_position: 'left', modal_transition: 'fade', modal_width: 'full' } %}
     {% block modal_body %}
-        {% include "snipplets/navigation/navigation-panel.tpl" with {primary_links: true} %}
-    {% endblock %}
-    {% block modal_foot %}
-        {% include "snipplets/navigation/navigation-panel.tpl" %}
+        {% include "snipplets/navigation/yamuna-mobile-menu.tpl" %}
     {% endblock %}
 {% endembed %}
 {# Notifications #}
@@ -202,15 +429,13 @@
         modal_form_action: store.cart_url, 
         modal_form_class: 'js-ajax-cart-panel', 
         modal_header: true, 
-        modal_mobile_full_screen: true,
-        modal_url: 'modal-fullscreen-cart',
         modal_form_hook: 'cart-form', 
         data_component:'cart',
         custom_data_attribute: 'cart-open-type',
 		custom_data_attribute_value: settings.cart_open_type
     } %}
         {% block modal_head %}
-            {% block page_header_text %}{{ "Carrito de Compras" | translate }}{% endblock page_header_text %}
+            SACOLA DE COMPRAS
         {% endblock %}
         {% block modal_body %}
             {% snipplet "cart-panel.tpl" %}

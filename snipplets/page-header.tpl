@@ -25,6 +25,30 @@
 
 				{% endif %}
 			<h1 class="{% if template == 'product' %}js-product-name{% else %}text-center{% endif %} h2 h1-md {% if template == 'contact' %} text-md-left{% endif %}{% if settings.theme_rounded and template != 'product' %} text-primary{% endif %}" {% if template == "product" %}data-store="product-name-{{ product.id }}"{% endif %}>{% block page_header_text %}{% endblock %}</h1>
+			{% if template == 'product' %}
+				<div class="yamuna-pdp-benefits" aria-label="Características do produto">
+					<div class="yamuna-pdp-benefit">
+						<img src="{{ 'images/yamuna/pdp-benefits/sem-acucar.svg' | static_url }}" alt="" aria-hidden="true" />
+						<span>Sem açúcar</span>
+					</div>
+					<div class="yamuna-pdp-benefit">
+						<img src="{{ 'images/yamuna/pdp-benefits/sem-conservantes.svg' | static_url }}" alt="" aria-hidden="true" />
+						<span>Sem conservantes</span>
+					</div>
+					<div class="yamuna-pdp-benefit">
+						<img src="{{ 'images/yamuna/pdp-benefits/sem-gluten.svg' | static_url }}" alt="" aria-hidden="true" />
+						<span>Sem glúten</span>
+					</div>
+					<div class="yamuna-pdp-benefit">
+						<img src="{{ 'images/yamuna/pdp-benefits/sem-lactose.svg' | static_url }}" alt="" aria-hidden="true" />
+						<span>Sem lactose</span>
+					</div>
+					<div class="yamuna-pdp-benefit">
+						<img src="{{ 'images/yamuna/pdp-benefits/vegano.svg' | static_url }}" alt="" aria-hidden="true" />
+						<span>Vegano</span>
+					</div>
+				</div>
+			{% endif %}
 				{% if template == 'product' %}
 
 					{{ component('nubesdk-slot', { type: "after_product_detail_name" }) }}

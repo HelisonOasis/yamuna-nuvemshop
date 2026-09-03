@@ -14,7 +14,7 @@
 			        {% endif %}
 	        	</a>
 	        </div>
-	        {% if desktop_nav %}{% if not subitem %}<div class="js-desktop-dropdown nav-dropdown-content desktop-dropdown">{% endif %}{% endif %}
+	        {% if desktop_nav %}{% if not subitem %}<div class="js-desktop-dropdown nav-dropdown-content desktop-dropdown{% if item.isCategory or item.name|lower == 'produtos' %} yamuna-products-dropdown{% endif %}">{% endif %}{% endif %}
 				<ul class="{% if desktop_nav %}{% if not subitem %}desktop-list-subitems{% endif %}{% else %}js-pages-accordion{% endif %} list-subitems nav-list-accordion" {% if not desktop_nav %}style="display:none;"{% endif %}>
 					{% if not desktop_nav and item.isCategory  %}
 						<li class="nav-item nav-item-desktop">
