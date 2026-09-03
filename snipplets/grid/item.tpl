@@ -12,6 +12,7 @@
 
 {% set slide_item = slide_item | default(false) %}
 {% set columns = settings.grid_columns %}
+{% set is_home_product_spot = slide_item and section_name in ['primary', 'new', 'sale'] %}
 
 {% if slide_item %}
     <div class="swiper-slide{% if settings.theme_rounded and not reduced_item %} p-3{% endif %}">
@@ -49,7 +50,7 @@
     <div class="js-item-product {% if highlighted_products_setting_name %}js-products-{{ highlighted_products_setting_name }}-product{% endif %} {% if not slide_item %}{{ grid_classes }}{% endif %} item item-product {{ reduced_item_class }}" data-product-type="list" data-product-id="{{ product.id }}" data-store="product-item-{{ product.id }}" data-component="product-list-item" data-component-value="{{ product.id }}" data-grid-classes="{{ grid_classes }}">
 {% endif %}
 
-        {% if (settings.quick_shop or settings.product_color_variants) and not reduced_item %}
+        {% if (settings.quick_shop or settings.product_color_variants or template == 'category' or template == 'search') and not reduced_item %}
             <div id="quick{{ product.id }}{% if slide_item and section_name %}-{{ section_name }}{% endif %}" class="js-product-container js-quickshop-container position-relative {% if product.variations %}js-quickshop-has-variants{% endif %}" data-variants="{{ product.variants_object | json_encode }}">
         {% endif %}
 
@@ -134,18 +135,23 @@
         {# Subscription data - calculate only is_subscription_only for the CTA button #}
         {% set is_subscription_only = product.isSubscriptionOnly() %}
 
-        <div class="item-description {% if reduced_item %}py-3{% else %}py-4{% endif %}{% if settings.theme_rounded %} px-3{% else %} px-1{% endif %}" data-store="product-item-info-{{ product.id }}">
+        {% set product_can_show_installments = product.show_installments and product.display_price and product.get_max_installments.installment > 1 and settings.product_installments and not is_subscription_only %}
+
+        <div class="item-description {% if reduced_item %}py-3{% else %}py-4{% endif %}{% if settings.theme_rounded %} px-3{% else %} px-1{% endif %}" data-store="product-item-info-{{ product.id }}"{% if is_home_product_spot %} style="border-bottom:0 !important;"{% endif %}>
             <a href="{{ product_url_with_selected_variant }}" title="{{ product.name }}" aria-label="{{ product.name }}" class="item-link">
 
                 {{ component('nubesdk-slot', { type: "before_product_grid_item_name" }) }}
 
-                <div class="js-item-name item-name {% if reduced_item %}mb-2{% else %}mb-3{% endif %}" data-store="product-item-name-{{ product.id }}">{{ product.name }}</div>
+                <div class="js-item-name item-name {% if reduced_item %}mb-2{% else %}mb-3{% endif %}" data-store="product-item-name-{{ product.id }}"{% if is_home_product_spot %} style="display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"{% endif %}>{{ product.name }}</div>
 
                 {{ component('nubesdk-slot', { type: "after_product_grid_item_name" }) }}
 
                 {{ component('nubesdk-slot', { type: "before_product_grid_item_price" }) }}
 
                 {% if product.display_price %}
+                    {% if is_home_product_spot %}
+                        <div class="yamuna-home-spot-price-row">
+                    {% endif %}
                     {% if is_subscription_only %}
                         {# Subscription only products: use subscription-price component with product_list location #}
                         {{ component('subscriptions/subscription-price', {
@@ -173,11 +179,21 @@
 
                 {{ component('nubesdk-slot', { type: "after_product_grid_item_price" }) }}
 
+                {% if slide_item and section_name in ['primary', 'new', 'sale'] and product_can_show_installments %}
+                    <div class="yamuna-home-spot-payment">
+                        <span class="yamuna-home-spot-payment-prefix">ou</span>
+                        {{ component('installments', {'location' : 'product_item', container_classes: { installment: "item-installments yamuna-home-spot-installments"}}) }}
+                        <span class="yamuna-home-spot-payment-suffix">sem juros</span>
+                    </div>
+                {% endif %}
+
+                {% if is_home_product_spot and product.display_price %}
+                    </div>
+                {% endif %}
+
             </a>
 
             {% if not reduced_item %}
-                {% set product_can_show_installments = product.show_installments and product.display_price and product.get_max_installments.installment > 1 and settings.product_installments and not is_subscription_only %}
-
                 {% set discount_price_spacing_classes = product_can_show_installments ? 'mt-1 mb-2' %}
 
                 {{ component('payment-discount-price', {
@@ -187,7 +203,7 @@
                     }) 
                 }}
 
-                {% if product_can_show_installments %}
+                {% if product_can_show_installments and not (slide_item and section_name in ['primary', 'new', 'sale']) %}
                     {{ component('installments', {'location' : 'product_item', container_classes: { installment: "item-installments"}}) }}
                 {% endif %}
 
@@ -207,7 +223,33 @@
             {% endif %}
         </div>
         {% if not reduced_item %}
-            {% if settings.quick_shop %}
+            {% if template == 'category' or template == 'search' %}
+                <div class="yamuna-plp-item-actions">
+                    {% if product.available and product.display_price %}
+                        {% if product.isSubscribable() or product.variations %}
+                            <a href="{{ product_url_with_selected_variant }}" class="yamuna-plp-buy-one" title="{{ 'Comprar' | translate }} {{ product.name }}">
+                                {{ 'Comprar' | translate }}
+                            </a>
+                        {% else %}
+                            {% set three_products_price = (product.price * 3) | money %}
+                            <form class="js-product-form" method="post" action="{{ store.cart_url }}">
+                                <input type="hidden" name="add_to_cart" value="{{product.id}}" />
+                                <input class="js-home-spot-add-quantity" type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="js-addtocart js-prod-submit-form yamuna-plp-buy-one" data-quantity="1" data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}">
+                                    <img src="{{ 'images/yamuna/home-spot-bag-white.svg' | static_url }}" alt="" aria-hidden="true" />
+                                    {{ 'Comprar' | translate }}
+                                </button>
+                                <button type="submit" class="js-addtocart js-prod-submit-form yamuna-plp-buy-three" data-quantity="3" data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}">
+                                    <img src="{{ 'images/yamuna/home-spot-bag-teal.svg' | static_url }}" alt="" aria-hidden="true" />
+                                    <span class="yamuna-plp-buy-three-prefix">{{ 'Compre 3' | translate }}</span><span class="yamuna-plp-buy-three-price">{{ 'por' | translate }} {{ three_products_price }} {{ 'cada' | translate }}</span>
+                                </button>
+                            </form>
+                        {% endif %}
+                    {% else %}
+                        <a href="{{ product.url }}" class="yamuna-plp-buy-one">{{ 'Consultar' | translate }}</a>
+                    {% endif %}
+                </div>
+            {% elseif settings.quick_shop %}
                 <div class="item-actions row justify-content-center{% if settings.theme_rounded %} m-0 mb-3{% endif %}">
                     {% if product.available and product.display_price %}
                         <div class="col-8 col-md-6 pr-1">
@@ -226,7 +268,20 @@
                                     {% set state = store.is_catalog ? 'catalog' : (product.available ? product.display_price ? 'cart' : 'contact' : 'nostock') %}
                                     {% set texts = {'cart': "Comprar", 'contact': "Consultar precio", 'nostock': "Sin stock", 'catalog': "Consultar"} %}
 
-                                    <input type="submit" class="js-addtocart js-prod-submit-form {{ quickshop_button_primary_classes }} {{ state }}" value="{{ texts[state] | translate }}" {% if state == 'nostock' %}disabled{% endif %} data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}"/>
+                                    {% if slide_item and section_name in ['primary', 'new', 'sale'] %}
+                                        {% set three_products_price = (product.price * 3) | money %}
+                                        <input class="js-home-spot-add-quantity" type="hidden" name="quantity" value="1" />
+                                        <button type="button" class="js-addtocart js-prod-submit-form {{ quickshop_button_primary_classes }} yamuna-home-spot-buy-one {{ state }}" data-quantity="1" {% if state == 'nostock' %}disabled{% endif %} data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}">
+                                            <img class="yamuna-home-spot-bag" src="{{ 'images/yamuna/home-spot-bag-white.svg' | static_url }}" alt="" aria-hidden="true" />
+                                            <span>{{ texts[state] | translate }}</span>
+                                        </button>
+                                        <button type="button" class="js-addtocart js-prod-submit-form btn btn-secondary btn-small w-100 yamuna-home-spot-buy-three {{ state }}" data-quantity="3" {% if state == 'nostock' %}disabled{% endif %} data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}">
+                                            <img class="yamuna-home-spot-bag" src="{{ 'images/yamuna/home-spot-bag-teal.svg' | static_url }}" alt="" aria-hidden="true" />
+                                            <span class="yamuna-home-spot-buy-three-label"><span class="yamuna-home-spot-buy-three-prefix">Compre 3</span><span class="yamuna-home-spot-buy-three-price"> por {{ three_products_price }}</span></span>
+                                        </button>
+                                    {% else %}
+                                        <input type="submit" class="js-addtocart js-prod-submit-form {{ quickshop_button_primary_classes }} {{ state }}" value="{{ texts[state] | translate }}" {% if state == 'nostock' %}disabled{% endif %} data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}"/>
+                                    {% endif %}
 
                                     {# Fake add to cart CTA visible during add to cart event #}
 
@@ -242,7 +297,7 @@
                     </div>
                 </div>
             {% endif %}
-            {% if settings.quick_shop or settings.product_color_variants %}
+            {% if settings.quick_shop or settings.product_color_variants or template == 'category' or template == 'search' %}
                 </div>{# This closes the quickshop tag #}
             {% endif %}
         {% endif %}

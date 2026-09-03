@@ -6,13 +6,10 @@
 
 {% if not show_help %}
 
-{% set category_banner = (category.images is not empty) or ("banner-products.jpg" | has_custom_image) %}
-{% if category_banner %}
-    {% include 'snipplets/category-banner.tpl' %}
-{% endif %}
-<section class="container {% if not category.description %}d-md-none{% endif %}">
+{% include 'snipplets/plp-hero.tpl' %}
+<section class="container yamuna-plp-page-heading {% if not category.description %}d-md-none{% endif %}">
 	<div class="row">
-		{% if category.description and category_banner %}
+		{% if category.description %}
 			<div class="category-banner-header background-main">
 		{% endif %}
 		<div class="col-12 d-md-none">
@@ -23,7 +20,7 @@
 				{% block page_header_text %}{{ category.name }}{% endblock page_header_text %}
 			{% endembed %}
 		</div>
-		{% if category.description and category_banner %}
+		{% if category.description %}
 			</div>
 		{% endif %}
 	</div>
@@ -33,7 +30,7 @@
 {% include "snipplets/grid/filters-controls.tpl" %}
 
 
-<section class="category-body">
+<section class="category-body yamuna-plp-body">
 	<div class="container">
 		<div class="row">
 			{% if has_filters_available %}
