@@ -38,19 +38,21 @@
 
 			{# Shipping calcualtor input #}
 
-			{% embed "snipplets/forms/form-input.tpl" with{type_tel: true, input_value: cart_zipcode, input_name: 'zipcode', input_custom_class: 'js-shipping-input', input_placeholder: "Tu código postal" | translate, input_aria_label: 'Tu código postal' | translate, input_label: false, input_append_content: true, input_group_custom_class: 'form-row form-group-inline align-items-center mb-3', form_control_container_custom_class: 'col-6 col-lg-7 pr-0'} %}
+			{% embed "snipplets/forms/form-input.tpl" with{type_tel: true, input_value: cart_zipcode, input_name: 'zipcode', input_custom_class: 'js-shipping-input', input_placeholder: (product_detail ? "Digite seu CEP" : "Tu código postal") | translate, input_aria_label: (product_detail ? 'Digite seu CEP' : 'Tu código postal') | translate, input_label: false, input_append_content: true, input_group_custom_class: 'form-row form-group-inline align-items-center mb-3', form_control_container_custom_class: 'col-6 col-lg-7 pr-0'} %}
 				{% block input_prepend_content %}
 					<div class="col-12 mb-2 form-label">
-						<svg class="icon-inline icon-lg icon-w-20 svg-icon-text mr-2 align-text-bottom"><use xlink:href="#truck"/></svg>
-						<span class="align-middle">
-							{{ "Medios de envío" | translate }}
-						</span>
+						{% if product_detail %}
+							<span class="align-middle">Digite seu cep para consultar as opções de entrega</span>
+						{% else %}
+							<svg class="icon-inline icon-lg icon-w-20 svg-icon-text mr-2 align-text-bottom"><use xlink:href="#truck"/></svg>
+							<span class="align-middle">{{ "Medios de envío" | translate }}</span>
+						{% endif %}
 					</div>
 				{% endblock input_prepend_content %}
 				{% block input_append_content %}
 				<div class="col-6 col-lg-5 pl-0">
 					<button class="js-calculate-shipping btn btn-secondary btn-block" aria-label="{{ 'Calcular envío' | translate }}">	
-						<span class="js-calculate-shipping-wording">{{ "Calcular" | translate }}</span>
+						<span class="js-calculate-shipping-wording">{% if product_detail %}Buscar{% else %}{{ "Calcular" | translate }}{% endif %}</span>
 						<span class="js-calculating-shipping-wording" style="display: none;">{{ "Calculando" | translate }}</span>
 						<span class="float-right loading" style="display: none;">
 							<svg class="icon-inline icon-smd icon-spin svg-icon-primary"><use xlink:href="#circle-notch"/></svg>

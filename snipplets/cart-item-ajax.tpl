@@ -2,19 +2,19 @@
 
 {% set is_gift = item.is_gift %}
 
-<div class="js-cart-item {% if item.product.is_non_shippable %}js-cart-item-non-shippable{% else %}js-cart-item-shippable{% endif %} {% if cart_page %}row align-items-md-center{% else %}cart-item form-row{% endif %}" data-item-id="{{ item.id }}" data-gift="{{ is_gift ? 'true' : 'false' }}" data-store="cart-item-{{ item.product.id }}" data-component="cart.line-item">
+<div class="js-cart-item {% if item.product.is_non_shippable %}js-cart-item-non-shippable{% else %}js-cart-item-shippable{% endif %} {% if cart_page %}row align-items-md-center{% else %}cart-item form-row{% endif %}" data-item-id="{{ item.id }}" data-gift="{{ is_gift ? 'true' : 'false' }}" data-store="cart-item-{{ item.product.id }}" data-component="cart.line-item"{% if not cart_page %} style="position:relative; display:flex; height:130px; min-height:130px; margin:0; padding:0; border-bottom:1px solid #c0bbc3;"{% endif %}>
 
   {% set discount_percentage = item.discount_percentage %}
   {% set hide_compare_price_subtotal = not item.compare_at_price_subtotal or item.is_subscription_item %}
 
-  {# Cart item image #}
-  <div class="{% if cart_page %}col-3 col-md-1{% else %}col-2{% endif %}">
+  {# Cart item image — shared by the cart page and the Yamuna mini cart. #}
+  <div class="{% if cart_page %}col-3 col-md-1{% else %}col-2{% endif %}"{% if not cart_page %} style="flex:0 0 80px; width:80px; max-width:80px; padding:0;"{% endif %}>
     <a href="{{ item.url }}">
       <img src="{{ item.featured_image | product_image_url('medium') }}" class="img-fluid{% if settings.theme_rounded %} box-rounded-small{% endif %}" />
     </a>
   </div>
-  <div class="{% if cart_page %}col-9 col-md-10 pl-0 pl-md-3{% else %}col-10 d-flex align-items-center{% endif %}">
-    <div class="{% if cart_page %}row align-items-md-center{% else %}w-100{% endif %}">
+  <div class="{% if cart_page %}col-9 col-md-10 pl-0 pl-md-3{% else %}col-10 d-flex align-items-center{% endif %}"{% if not cart_page %} style="position:relative; display:block; flex:1 1 auto; width:calc(100% - 80px); max-width:calc(100% - 80px); height:129px; padding:0 0 0 13px;"{% endif %}>
+    <div class="{% if cart_page %}row align-items-md-center{% else %}w-100{% endif %}"{% if not cart_page %} style="position:relative; height:100%;"{% endif %}>
       {# Cart item name #}
       <h6 class="{% if cart_page %}col-10 col-md-5 h4-md font-weight-normal mb-3 mb-md-0{% else %}cart-item-name{% endif %}" data-component="line-item.name">
         <a href="{{ item.url }}" data-component="name.short-name">
@@ -40,6 +40,10 @@
         {% endif %}
       </h6>
 
+      {% if not cart_page and not is_gift %}
+        <div class="yamuna-cart-item-promo" style="position:absolute; top:40px; left:13px; display:flex; width:99px; min-height:30px; padding:4px 6px; align-items:center; border-radius:3px; background:rgba(192,187,195,.2);"><span>Adicione 2 produtos</span><span>para garantir <strong>5% OFF</strong></span></div>
+      {% endif %}
+
       {% if cart_page %}
         {% set cart_quantity_class = 'float-md-none m-auto ' %}
       {% else %}
@@ -47,7 +51,7 @@
       {% endif %}
 
       {# Cart item quantity controls #}
-      <div class="cart-item-quantity {% if cart_page %}col-auto col-md-3 text-center{% endif %}" data-component="line-item.subtotal">
+      <div class="cart-item-quantity {% if cart_page %}col-auto col-md-3 text-center{% endif %}" data-component="line-item.subtotal"{% if not cart_page %} style="position:absolute; top:87px; left:-92px; width:81px; margin:0;"{% endif %}>
         {% embed "snipplets/forms/form-input.tpl" with{
           type_number: true, 
           input_value: item.quantity, 
@@ -61,8 +65,7 @@
           data_component: 'quantity.value',
           form_control_container_custom_class: 'col'} %}
             {% block input_prepend_content %}
-            <div class="row m-0 align-items-center ">
-              <span class="js-cart-quantity-btn form-quantity-icon btn" onclick="LS.minusQuantity({{ item.id }}{% if not cart_page %}, true{% endif %})" data-component="quantity.minus">
+              <span class="js-cart-quantity-btn yamuna-cart-minus form-quantity-icon btn" onclick="var inp = this.closest('.cart-item-quantity') ? this.closest('.cart-item-quantity').querySelector('.js-cart-quantity-input') : null; var val = (inp && parseInt(inp.value, 10)) || 1; if (val <= 1) { LS.removeItem({{ item.id }}{% if not cart_page %}, true{% endif %}); } else { LS.minusQuantity({{ item.id }}{% if not cart_page %}, true{% endif %}); }" data-component="quantity.minus">
                 <svg class="icon-inline icon-w-12 svg-icon-primary"><use xlink:href="#minus"/></svg>
               </span>
             {% endblock input_prepend_content %}
@@ -82,6 +85,10 @@
         {% endembed %}
       </div>
 
+      {% if not cart_page and not is_gift %}
+        <span class="yamuna-cart-subscription" style="position:absolute; top:87px; left:0; width:138px; height:30px;">ASSINAR COM 15% OFF</span>
+      {% endif %}
+
       {% if cart_page %}
         {# Cart item unit price #}
         <div class="cart-item-subtotal-short col-2 mb-0 {% if not compare_at_price %}mt-2{% endif %} text-center font-weight-normal d-none d-md-block">
@@ -100,7 +107,7 @@
 
       {# Cart item subtotal #}
 
-      <div class="{% if cart_page %}col col-md-2 text-right text-md-center mb-0{% else %}cart-item-subtotal{% endif %} {% if cart_page and hide_compare_price_subtotal %}mt-2{% elseif not hide_compare_price_subtotal %}m-0{% endif %}">
+      <div class="{% if cart_page %}col col-md-2 text-right text-md-center mb-0{% else %}cart-item-subtotal{% endif %} {% if cart_page and hide_compare_price_subtotal %}mt-2{% elseif not hide_compare_price_subtotal %}m-0{% endif %}"{% if not cart_page %} style="position:absolute; top:0; right:0; margin:0;"{% endif %}>
         {% if is_gift %}
           <div class="price-compare font-small opacity-50">{{ item.compare_at_price_subtotal | money }}</div>
           <div class="{% if cart_page %}h5 h4-md{% else %}h6{% endif %} mt-1">{{ "Gratis" | translate }}</div>
@@ -117,9 +124,9 @@
 
   {# Cart item delete #}
   {% if not is_gift %}
-    <div class="cart-item-delete {% if cart_page %}position-relative-md col-auto col-md-1{% else %}col-1{% endif %} text-right" >
-      <button type="button" class="btn {% if cart_page %}h6 h5-md mb-0{% endif %}" onclick="LS.removeItem({{ item.id }}{% if not cart_page %}, true{% endif %})" data-component="line-item.remove">
-        <svg class="icon-inline svg-icon-text icon-lg"><use xlink:href="#trash-alt"/></svg>
+    <div class="cart-item-delete {% if cart_page %}position-relative-md col-auto col-md-1{% else %}col-1{% endif %} text-right"{% if not cart_page %} style="position:absolute !important; top:87px !important; right:0 !important; bottom:auto !important; width:18px !important; height:28px !important; display:flex !important; align-items:center !important; justify-content:flex-end !important; margin:0 !important; padding:0 !important;"{% endif %}>
+      <button type="button" class="btn {% if cart_page %}h6 h5-md mb-0{% endif %}" style="display:flex !important; align-items:center !important; justify-content:center !important; width:18px !important; height:18px !important; margin:0 !important; padding:0 !important; border:0 !important; background:transparent !important;" onclick="LS.removeItem({{ item.id }}{% if not cart_page %}, true{% endif %})" data-component="line-item.remove">
+        <img class="yamuna-cart-trash-icon" src="{{ 'images/yamuna/cart-trash-figma.svg' | static_url }}" alt="{{ 'Remover' | translate }}" style="display:block !important; width:14px !important; height:16px !important;">
       </button>
     </div>
   {% endif %}
