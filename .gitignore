@@ -1,5 +1,6 @@
 # Configuração local da Nuvemshop CLI — pode conter credenciais de FTP.
 .nuvem
+ftp-credentials.md
 
 # Dependências e registros locais.
 node_modules/
