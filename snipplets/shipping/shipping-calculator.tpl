@@ -13,9 +13,9 @@
 {% endif %}
 
 {% if product_detail %}
-<div class="row">
+<div class="yamuna-pdp-shipping-wrap">
 {% endif %}
-<div class="mb-2 col-12" data-store="shipping-calculator">
+<div class="mb-2 {% if product_detail %}yamuna-pdp-shipping-inner{% else %}col-12{% endif %}" data-store="shipping-calculator">
 
 	<div class="js-shipping-calculator-head shipping-calculator-head position-relative transition-soft {% if cart_zipcode %}with-zip{% else %}with-form{% endif %} {% if free_shipping_messages_visible %}with-free-shipping{% endif %}">
 		<div class="js-shipping-calculator-with-zipcode {% if cart_zipcode %}js-cart-saved-zipcode transition-up-active{% endif %} mb-4 w-100 transition-up position-absolute">
@@ -40,7 +40,7 @@
 
 			{% embed "snipplets/forms/form-input.tpl" with{type_tel: true, input_value: cart_zipcode, input_name: 'zipcode', input_custom_class: 'js-shipping-input', input_placeholder: (product_detail ? "Digite seu CEP" : "Tu código postal") | translate, input_aria_label: (product_detail ? 'Digite seu CEP' : 'Tu código postal') | translate, input_label: false, input_append_content: true, input_group_custom_class: 'form-row form-group-inline align-items-center mb-3', form_control_container_custom_class: 'col-6 col-lg-7 pr-0'} %}
 				{% block input_prepend_content %}
-					<div class="col-12 mb-2 form-label">
+					<div class="col-12 mb-2 form-label {% if product_detail %}yamuna-pdp-shipping-label{% endif %}">
 						{% if product_detail %}
 							<span class="align-middle">Digite seu cep para consultar as opções de entrega</span>
 						{% else %}
@@ -72,7 +72,7 @@
 							<a data-toggle="#quick-login" class="js-product-quick-login js-modal-open font-small text-primary mt-2 mb-2 d-block" href="#">{{ '<strong>Iniciá sesión</strong> y usá tus datos de entrega' | translate }}</a>
 						{% endif %}
 
-						<a class="font-small text-primary mt-2 mb-2 d-block {% if product_detail %} js-shipping-zipcode-help {% endif %}" href="{% if store.country == 'AR' %}{{ zipcode_help_ar }}{% elseif store.country == 'BR' %}{{ zipcode_help_br }}{% elseif store.country == 'MX' %}{{ zipcode_help_mx }}{% endif %}" target="_blank">{{ "No sé mi código postal" | translate }}</a>
+						<a class="font-small text-primary mt-2 mb-2 d-block {% if product_detail %}js-shipping-zipcode-help yamuna-pdp-shipping-help{% endif %}" href="{% if store.country == 'AR' %}{{ zipcode_help_ar }}{% elseif store.country == 'BR' %}{{ zipcode_help_br }}{% elseif store.country == 'MX' %}{{ zipcode_help_mx }}{% endif %}" target="_blank">{% if product_detail %}Não sei meu CEP{% else %}{{ "No sé mi código postal" | translate }}{% endif %}</a>
 					</div>
 				{% endif %}
 				<div class="col-12">

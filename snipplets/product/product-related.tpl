@@ -1,40 +1,73 @@
 {# Related products visibility conditions #}
 
+{% set max_related_products_length = 8 %}
 {% set related_products = [] %}
+{% set related_ids = ',' ~ product.id ~ ',' %}
+{% set related_products_without_stock = [] %}
+
 {% set related_products_ids_from_app = product.metafields.related_products.related_products_ids %}
 {% set has_related_products_from_app = related_products_ids_from_app | get_products | length > 0 %}
-{% if has_related_products_from_app %}
-    {% set related_products = related_products_ids_from_app | get_products %}
-{% endif %}
-{% if related_products is empty %}
-    {% set max_related_products_length = 8 %}
-    {% set max_related_products_achieved = false %}
-    {% set related_products_without_stock = [] %}
-    {% set max_related_products_without_achieved = false %}
 
+{# Prefer manually selected related products (app/metafields) #}
+{% if has_related_products_from_app %}
+    {% for related_product in related_products_ids_from_app | get_products if related_products | length < max_related_products_length %}
+        {% if related_product.id != product.id and (',' ~ related_product.id ~ ',') not in related_ids %}
+            {% set related_products = related_products | merge([related_product]) %}
+            {% set related_ids = related_ids ~ related_product.id ~ ',' %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{# Fill from category when under the target amount #}
+{% if related_products | length < max_related_products_length %}
     {% if related_tag %}
         {% set products_from_category = related_products_from_controller %}
     {% else %}
         {% set products_from_category = category.products | shuffle %}
     {% endif %}
 
-    {% for product_from_category in products_from_category if not max_related_products_achieved and product_from_category.id != product.id %}
-        {%  if product_from_category.stock is null or product_from_category.stock > 0 %}
-            {% set related_products = related_products | merge([product_from_category]) %}
-        {% elseif (related_products_without_stock | length < max_related_products_length) %}
-            {% set related_products_without_stock = related_products_without_stock | merge([product_from_category]) %}
-        {% endif %}
-        {%  if (related_products | length == max_related_products_length) %}
-            {% set max_related_products_achieved = true %}
+    {% for product_from_category in products_from_category if related_products | length < max_related_products_length %}
+        {% if product_from_category.id != product.id and (',' ~ product_from_category.id ~ ',') not in related_ids %}
+            {% if product_from_category.stock is null or product_from_category.stock > 0 %}
+                {% set related_products = related_products | merge([product_from_category]) %}
+                {% set related_ids = related_ids ~ product_from_category.id ~ ',' %}
+            {% elseif related_products_without_stock | length < max_related_products_length %}
+                {% set related_products_without_stock = related_products_without_stock | merge([product_from_category]) %}
+            {% endif %}
         {% endif %}
     {% endfor %}
-    {% if (related_products | length < max_related_products_length) %}
-        {% set number_of_related_products_for_refill = max_related_products_length - (related_products | length) %}
-        {% set related_products_for_refill = related_products_without_stock | take(number_of_related_products_for_refill) %}
+{% endif %}
 
-        {% set related_products = related_products | merge(related_products_for_refill)  %}
+{# Fill remaining slots from home featured sections for a larger carousel #}
+{% if related_products | length < max_related_products_length %}
+    {% set refill_pools = [] %}
+    {% if sections.primary.products %}
+        {% set refill_pools = refill_pools | merge(sections.primary.products) %}
+    {% endif %}
+    {% if sections.new.products %}
+        {% set refill_pools = refill_pools | merge(sections.new.products) %}
+    {% endif %}
+    {% if sections.sale.products %}
+        {% set refill_pools = refill_pools | merge(sections.sale.products) %}
     {% endif %}
 
+    {% for refill_product in refill_pools | shuffle if related_products | length < max_related_products_length %}
+        {% if refill_product.id != product.id and (',' ~ refill_product.id ~ ',') not in related_ids %}
+            {% if refill_product.stock is null or refill_product.stock > 0 %}
+                {% set related_products = related_products | merge([refill_product]) %}
+                {% set related_ids = related_ids ~ refill_product.id ~ ',' %}
+            {% elseif related_products_without_stock | length < max_related_products_length %}
+                {% set related_products_without_stock = related_products_without_stock | merge([refill_product]) %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{# Last resort: include out-of-stock products already collected #}
+{% if related_products | length < max_related_products_length %}
+    {% set number_of_related_products_for_refill = max_related_products_length - (related_products | length) %}
+    {% set related_products_for_refill = related_products_without_stock | take(number_of_related_products_for_refill) %}
+    {% set related_products = related_products | merge(related_products_for_refill) %}
 {% endif %}
 
 {% set complementary_products = complementary_product_list | length > 0 %}
@@ -74,8 +107,8 @@
             data_component: alternative_data_component,
             products_amount: related_products | length,
             products_array: related_products,
-            product_template_path: 'snipplets/grid/item.tpl',
-            product_template_params: {'slide_item': true},
+            product_template_path: 'snipplets/product/pdp-related-item.tpl',
+            product_template_params: {'slide_item': true, 'is_pdp_related_spot': true},
             slider_controls_position: 'bottom',
             section_classes: {
                 section: 'js-related-products yamuna-pdp-related ' ~  section_class,
@@ -130,4 +163,3 @@
     }}
     {{ component('nubesdk-slot', { type: 'after_product_detail_complementary_products' }) }}
 {% endif %}
-</div>

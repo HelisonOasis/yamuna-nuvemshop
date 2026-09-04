@@ -49,7 +49,11 @@
                 {% elseif block_key != 'descricao' and render_accordions and block_content | trim is not empty %}
                     <div class="flex flex-col w-full relative yamuna-product-description-accordion">
                         <div id="info-id-{{ block_key }}" class="flex informationDiv" onclick="toggleInfo('{{ block_key }}')">
-                            <img id="open-info-{{ block_key }}" class="yamuna-pdp-accordion-icon" src="{{ 'images/yamuna/pdp-accordion-arrow.svg' | static_url }}" alt="" width="24" height="24" loading="lazy">
+                            <span id="open-info-{{ block_key }}" class="yamuna-pdp-accordion-icon" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" focusable="false">
+                                    <path d="M2 3.33339H14C14.1215 3.33377 14.2406 3.36728 14.3444 3.4303C14.4483 3.49333 14.533 3.5835 14.5895 3.69109C14.6459 3.79868 14.6719 3.91963 14.6647 4.04091C14.6575 4.16219 14.6174 4.27921 14.5487 4.37939L8.54866 13.0461C8.3 13.4054 7.70133 13.4054 7.452 13.0461L1.452 4.37939C1.38255 4.27942 1.34182 4.16234 1.33424 4.04086C1.32666 3.91937 1.35252 3.79813 1.40901 3.69031C1.46549 3.58249 1.55045 3.49222 1.65464 3.42929C1.75883 3.36636 1.87828 3.33319 2 3.33339Z" fill="#4A1D3A"/>
+                                </svg>
+                            </span>
                         </div>
                         <div id="infoToOpen-{{ block_key }}" class="infoToOpen hidden font-dosis pb-5 mr-2">
                             {{ block_content | raw }}

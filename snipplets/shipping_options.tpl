@@ -53,7 +53,7 @@
 
     {% if has_featured_shipping %}
 
-        <div class="form-label my-3 float-left">
+        <div class="form-label my-3 float-left yamuna-shipping-section-label">
             <svg class="icon-inline icon-lg icon-w-19 svg-icon-text mr-2 align-bottom"><use xlink:href="#truck"/></svg>
             {{ "Envío a domicilio" | translate }}
         </div>
@@ -100,7 +100,7 @@
 
     {% if has_featured_pickup %}
 
-        <div class="form-label my-3 float-left">
+        <div class="form-label my-3 float-left yamuna-shipping-section-label">
             <svg class="icon-inline icon-lg icon-w-12 svg-icon-text mr-2 align-bottom"><use xlink:href="#map-marker-alt"/></svg>
             {{ "Retirar por" | translate }}
         </div>

@@ -14,9 +14,6 @@
                     {% include 'snipplets/product/product-description-blocks.tpl' with { product_description_blocks_view: 'main' } %}
 
                     {{ component('nubesdk-slot', { type: "after_product_description" }) }}
-
-                    {# Product share #}
-                    {% include 'snipplets/social/social-share.tpl' %}
                 </div>
             </div>
         </div>

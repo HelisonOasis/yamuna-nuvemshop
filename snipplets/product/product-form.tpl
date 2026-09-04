@@ -312,12 +312,12 @@
         }) }}
 
         {% set state = store.is_catalog ? 'catalog' : (product.available ? product.display_price ? 'cart' : 'contact' : 'nostock') %}
-        {% set texts = {'cart': "Agregar al carrito", 'contact': "Consultar precio", 'nostock': "Sin stock", 'catalog': "Consultar"} %}
+        {% set texts = {'cart': "Adicionar à sacola", 'contact': "Consultar preço", 'nostock': "Sem estoque", 'catalog': "Consultar"} %}
         <div class="{% if product.isSubscribable() %}col-12 mt-2{% else %}col-8 pr-0{% endif %}">
 
             {# Add to cart CTA #}
 
-            <input type="submit" class="js-addtocart js-prod-submit-form btn btn-primary btn-block mb-4 {{ state }}" value="{{ texts[state] | translate }}" {% if state == 'nostock' %}disabled{% endif %} data-store="product-buy-button" data-component="product.add-to-cart"/>
+            <input type="submit" class="js-addtocart js-prod-submit-form btn btn-primary btn-block mb-4 {{ state }}" value="{{ texts[state] }}" {% if state == 'nostock' %}disabled{% endif %} data-store="product-buy-button" data-component="product.add-to-cart"/>
 
             {# Fake add to cart CTA visible during add to cart event #}
 

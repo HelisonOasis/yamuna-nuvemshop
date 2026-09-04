@@ -12,7 +12,11 @@
 
 {% set slide_item = slide_item | default(false) %}
 {% set columns = settings.grid_columns %}
+{% set is_pdp_related_spot = is_pdp_related_spot | default(false) %}
 {% set is_home_product_spot = slide_item and section_name in ['primary', 'new', 'sale'] %}
+{% set is_yamuna_spot_card = is_home_product_spot or is_pdp_related_spot %}
+{% set spot_ns = is_pdp_related_spot ? 'yamuna-pdp-spot' : 'yamuna-home-spot' %}
+{% set spot_qty_class = is_pdp_related_spot ? 'js-pdp-spot-add-quantity' : 'js-home-spot-add-quantity' %}
 
 {% if slide_item %}
     <div class="swiper-slide{% if settings.theme_rounded and not reduced_item %} p-3{% endif %}">
@@ -137,20 +141,20 @@
 
         {% set product_can_show_installments = product.show_installments and product.display_price and product.get_max_installments.installment > 1 and settings.product_installments and not is_subscription_only %}
 
-        <div class="item-description {% if reduced_item %}py-3{% else %}py-4{% endif %}{% if settings.theme_rounded %} px-3{% else %} px-1{% endif %}" data-store="product-item-info-{{ product.id }}"{% if is_home_product_spot %} style="border-bottom:0 !important;"{% endif %}>
+        <div class="item-description {% if reduced_item %}py-3{% else %}py-4{% endif %}{% if settings.theme_rounded %} px-3{% else %} px-1{% endif %}" data-store="product-item-info-{{ product.id }}"{% if is_yamuna_spot_card %} style="border-bottom:0 !important;"{% endif %}>
             <a href="{{ product_url_with_selected_variant }}" title="{{ product.name }}" aria-label="{{ product.name }}" class="item-link">
 
                 {{ component('nubesdk-slot', { type: "before_product_grid_item_name" }) }}
 
-                <div class="js-item-name item-name {% if reduced_item %}mb-2{% else %}mb-3{% endif %}" data-store="product-item-name-{{ product.id }}"{% if is_home_product_spot %} style="display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"{% endif %}>{{ product.name }}</div>
+                <div class="js-item-name item-name {% if reduced_item %}mb-2{% else %}mb-3{% endif %}" data-store="product-item-name-{{ product.id }}"{% if is_yamuna_spot_card %} style="display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"{% endif %}>{{ product.name }}</div>
 
                 {{ component('nubesdk-slot', { type: "after_product_grid_item_name" }) }}
 
                 {{ component('nubesdk-slot', { type: "before_product_grid_item_price" }) }}
 
                 {% if product.display_price %}
-                    {% if is_home_product_spot %}
-                        <div class="yamuna-home-spot-price-row">
+                    {% if is_yamuna_spot_card %}
+                        <div class="{{ spot_ns }}-price-row">
                     {% endif %}
                     {% if is_subscription_only %}
                         {# Subscription only products: use subscription-price component with product_list location #}
@@ -179,15 +183,26 @@
 
                 {{ component('nubesdk-slot', { type: "after_product_grid_item_price" }) }}
 
-                {% if slide_item and section_name in ['primary', 'new', 'sale'] and product_can_show_installments %}
-                    <div class="yamuna-home-spot-payment">
-                        <span class="yamuna-home-spot-payment-prefix">ou</span>
-                        {{ component('installments', {'location' : 'product_item', container_classes: { installment: "item-installments yamuna-home-spot-installments"}}) }}
-                        <span class="yamuna-home-spot-payment-suffix">sem juros</span>
-                    </div>
+                {% if is_yamuna_spot_card and product_can_show_installments %}
+                    {% if is_pdp_related_spot %}
+                        {# Figma: "ou 10x de R$9,93 sem juros" — stacked under price, compact "Nx". #}
+                        {% set spot_installments = product.get_max_installments(false) %}
+                        {% if not spot_installments or spot_installments.installment <= 1 %}
+                            {% set spot_installments = product.get_max_installments %}
+                        {% endif %}
+                        <div class="{{ spot_ns }}-payment">
+                            ou {{ spot_installments.installment }}x de {{ (product.price / spot_installments.installment) | money }} sem juros
+                        </div>
+                    {% else %}
+                        <div class="{{ spot_ns }}-payment">
+                            <span class="{{ spot_ns }}-payment-prefix">ou</span>
+                            {{ component('installments', {'location' : 'product_item', container_classes: { installment: "item-installments " ~ spot_ns ~ "-installments"}}) }}
+                            <span class="{{ spot_ns }}-payment-suffix">sem juros</span>
+                        </div>
+                    {% endif %}
                 {% endif %}
 
-                {% if is_home_product_spot and product.display_price %}
+                {% if is_yamuna_spot_card and product.display_price %}
                     </div>
                 {% endif %}
 
@@ -203,7 +218,7 @@
                     }) 
                 }}
 
-                {% if product_can_show_installments and not (slide_item and section_name in ['primary', 'new', 'sale']) %}
+                {% if product_can_show_installments and not is_yamuna_spot_card %}
                     {{ component('installments', {'location' : 'product_item', container_classes: { installment: "item-installments"}}) }}
                 {% endif %}
 
@@ -268,24 +283,26 @@
                                     {% set state = store.is_catalog ? 'catalog' : (product.available ? product.display_price ? 'cart' : 'contact' : 'nostock') %}
                                     {% set texts = {'cart': "Comprar", 'contact': "Consultar precio", 'nostock': "Sin stock", 'catalog': "Consultar"} %}
 
-                                    {% if slide_item and section_name in ['primary', 'new', 'sale'] %}
+                                    {% if is_yamuna_spot_card %}
                                         {% set three_products_price = (product.price * 3) | money %}
-                                        <input class="js-home-spot-add-quantity" type="hidden" name="quantity" value="1" />
-                                        <button type="button" class="js-addtocart js-prod-submit-form {{ quickshop_button_primary_classes }} yamuna-home-spot-buy-one {{ state }}" data-quantity="1" {% if state == 'nostock' %}disabled{% endif %} data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}">
-                                            <img class="yamuna-home-spot-bag" src="{{ 'images/yamuna/home-spot-bag-white.svg' | static_url }}" alt="" aria-hidden="true" />
+                                        <input class="{{ spot_qty_class }}" type="hidden" name="quantity" value="1" />
+                                        <button type="button" class="js-addtocart js-prod-submit-form {{ quickshop_button_primary_classes }} {{ spot_ns }}-buy-one {{ state }}" data-quantity="1" {% if state == 'nostock' %}disabled{% endif %} data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}">
+                                            <img class="{{ spot_ns }}-bag" src="{{ 'images/yamuna/home-spot-bag-white.svg' | static_url }}" alt="" aria-hidden="true" />
                                             <span>{{ texts[state] | translate }}</span>
                                         </button>
-                                        <button type="button" class="js-addtocart js-prod-submit-form btn btn-secondary btn-small w-100 yamuna-home-spot-buy-three {{ state }}" data-quantity="3" {% if state == 'nostock' %}disabled{% endif %} data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}">
-                                            <img class="yamuna-home-spot-bag" src="{{ 'images/yamuna/home-spot-bag-teal.svg' | static_url }}" alt="" aria-hidden="true" />
-                                            <span class="yamuna-home-spot-buy-three-label"><span class="yamuna-home-spot-buy-three-prefix">Compre 3</span><span class="yamuna-home-spot-buy-three-price"> por {{ three_products_price }}</span></span>
+                                        <button type="button" class="js-addtocart js-prod-submit-form btn btn-secondary btn-small w-100 {{ spot_ns }}-buy-three {{ state }}" data-quantity="3" {% if state == 'nostock' %}disabled{% endif %} data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}">
+                                            <img class="{{ spot_ns }}-bag" src="{{ 'images/yamuna/home-spot-bag-teal.svg' | static_url }}" alt="" aria-hidden="true" />
+                                            <span class="{{ spot_ns }}-buy-three-label"><span class="{{ spot_ns }}-buy-three-prefix">Compre 3</span><span class="{{ spot_ns }}-buy-three-price"> por {{ three_products_price }}{% if is_pdp_related_spot %} cada{% endif %}</span></span>
                                         </button>
                                     {% else %}
                                         <input type="submit" class="js-addtocart js-prod-submit-form {{ quickshop_button_primary_classes }} {{ state }}" value="{{ texts[state] | translate }}" {% if state == 'nostock' %}disabled{% endif %} data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}"/>
                                     {% endif %}
 
+                                    {% if not is_pdp_related_spot %}
                                     {# Fake add to cart CTA visible during add to cart event #}
 
                                     {% include 'snipplets/placeholders/button-placeholder.tpl' with {custom_class: "btn-small w-100 mb-2", direct_add: true} %}
+                                    {% endif %}
                                 </form>
                             {% endif %}
                         </div>

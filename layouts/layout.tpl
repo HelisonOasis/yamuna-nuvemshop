@@ -5,7 +5,7 @@
         <link rel="dns-prefetch" href="{{ store_resource_hints }}" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&family=Roboto:wght@500;600&display=swap" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Raleway:wght@400;500;600;700;800&family=Roboto:wght@400;500;600;700;800;900&display=swap" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -236,19 +236,21 @@
                     }
                 }
 
-                var nodes = main.querySelectorAll('p, li, strong, b, span');
+                var nodes = main.querySelectorAll('p, li, strong, b, span, a, button');
+                var hasNutritionBtn = false;
                 for (var i = 0; i < nodes.length; i++) {
                     var node = nodes[i];
                     var text = (node.textContent || '').replace(/\s+/g, ' ').trim();
                     var lower = text.toLowerCase();
 
-                    if (lower === 'tabela nutricional' || lower.indexOf('tabela nutricional') === 0 && text.length < 40) {
+                    if (lower === 'tabela nutricional' || (lower.indexOf('tabela nutricional') === 0 && text.length < 40)) {
                         node.classList.add('yamuna-pdp-nutrition-btn');
+                        hasNutritionBtn = true;
                         continue;
                     }
 
                     if (lower.indexOf('ingredientes:') === 0 || lower.indexOf('rendimento:') === 0) {
-                        if (node.classList.contains('yamuna-pdp-desc-label')) {
+                        if (node.querySelector('.yamuna-pdp-desc-label')) {
                             continue;
                         }
                         var labelMatch = text.match(/^(Ingredientes:|Rendimento:)/i);
@@ -260,11 +262,106 @@
                         node.innerHTML = '<span class="yamuna-pdp-desc-label">' + label + '</span>' + rest;
                     }
                 }
+
+                // Figma mobile: TABELA NUTRICIONAL opens Informacao Nutricional accordion
+                if (!hasNutritionBtn && !main.querySelector('.yamuna-pdp-nutrition-btn')) {
+                    var nutritionTarget = document.getElementById('info-id-informacao-nutricional');
+                    if (nutritionTarget) {
+                        var btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = 'yamuna-pdp-nutrition-btn';
+                        btn.textContent = 'Tabela nutricional';
+                        btn.addEventListener('click', function () {
+                            if (typeof toggleInfo === 'function') {
+                                toggleInfo('informacao-nutricional');
+                            }
+                            nutritionTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        });
+                        main.appendChild(btn);
+                    }
+                }
+            }
+
+            function paintYamunaPdpRating(average, count) {
+                var root = document.querySelector('.js-yamuna-pdp-rating');
+                if (!root) {
+                    return;
+                }
+                var score = Math.max(0, Math.min(5, Number(average) || 0));
+                var total = Math.max(0, parseInt(count, 10) || 0);
+                var filledSrc = root.getAttribute('data-star-filled') || '';
+                var emptySrc = root.getAttribute('data-star-empty') || '';
+                var stars = root.querySelectorAll('.js-yamuna-pdp-star');
+                for (var s = 0; s < stars.length; s++) {
+                    stars[s].src = (score > 0 && s < Math.round(score)) ? filledSrc : emptySrc;
+                }
+
+                var label = root.querySelector('.js-yamuna-pdp-rating-label');
+                if (label) {
+                    if (score > 0 || total > 0) {
+                        var pretty = (Math.round(score * 10) / 10).toFixed(1).replace('.', ',');
+                        label.textContent = pretty + ' de 5 (' + total + ')';
+                        root.classList.remove('is-empty');
+                    } else {
+                        label.textContent = 'Ver avaliações';
+                        root.classList.add('is-empty');
+                    }
+                }
+
+                root.hidden = false;
+                root.setAttribute('aria-label', score > 0
+                    ? ('Avaliação ' + score + ' de 5 com ' + total + ' avaliações')
+                    : 'Ver avaliações do produto');
+            }
+
+            function parseYamunaReviewsFromDom() {
+                var app = document.getElementById('reviewsapp');
+                if (!app || !app.textContent) {
+                    return null;
+                }
+                var text = app.textContent.replace(/\s+/g, ' ');
+                var avgMatch = text.match(/(\d+[.,]\d+)\s*(?:de|\/)\s*5/i) || text.match(/média[^\d]*(\d+[.,]\d+)/i);
+                var countMatch = text.match(/(\d+)\s*avalia/i) || text.match(/\((\d+)\)/);
+                if (!avgMatch) {
+                    return null;
+                }
+                return {
+                    average: parseFloat(String(avgMatch[1]).replace(',', '.')),
+                    count: countMatch ? parseInt(countMatch[1], 10) : 0
+                };
+            }
+
+            function initYamunaPdpRating() {
+                var root = document.querySelector('.js-yamuna-pdp-rating');
+                if (!root) {
+                    return;
+                }
+
+                var initialAvg = parseFloat(String(root.getAttribute('data-rating') || '').replace(',', '.'));
+                var initialCount = parseInt(root.getAttribute('data-count') || '0', 10);
+                paintYamunaPdpRating(!isNaN(initialAvg) ? initialAvg : 0, initialCount);
+
+                var tryParse = function () {
+                    var parsed = parseYamunaReviewsFromDom();
+                    if (parsed) {
+                        paintYamunaPdpRating(parsed.average, parsed.count);
+                    }
+                };
+
+                tryParse();
+                var app = document.getElementById('reviewsapp');
+                if (app && window.MutationObserver) {
+                    var observer = new MutationObserver(tryParse);
+                    observer.observe(app, { childList: true, subtree: true, characterData: true });
+                }
+                setTimeout(tryParse, 1500);
+                setTimeout(tryParse, 4000);
             }
 
             function initYamunaProductDescriptionUi() {
                 moveProductAccordionHeadings();
                 styleYamunaProductDescription();
+                initYamunaPdpRating();
             }
 
             if (document.readyState === 'loading') {

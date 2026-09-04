@@ -10,7 +10,7 @@
     {% set checked_option = false %}
 {% endif %}
 
-<li class="js-shipping-list-item radio-button-item float-left w-100" data-store="shipping-calculator-item-{{ option.code }}">
+<li class="js-shipping-list-item radio-button-item float-left w-100 yamuna-shipping-quote" data-store="shipping-calculator-item-{{ option.code }}">
     <label class="js-shipping-radio radio-button list-item" data-loop="shipping-radio-{{loop.index}}" data-shipping-type="{% if pickup %}pickup{% else %}delivery{% endif %}" data-component="shipping.option">
         <input
         id="{% if featured_option %}featured-{% endif %}shipping-{{loop.index}}" 
@@ -25,7 +25,7 @@
         value="{{option.code}}" 
         {% if checked_option %}checked="checked"{% endif %} name="option" 
         style="display:none" />
-        <div class="radio-button-content">
+        <div class="radio-button-content yamuna-shipping-quote-content">
             <div class="radio-button-icons-container">
                 <span class="radio-button-icons">
                     <span class="radio-button-icon unchecked"></span>
@@ -37,22 +37,27 @@
             <div class="radio-button-label">
 
                 {# Improved shipping option with no carrier img and ordered shipping info #}
-                <div class="radio-button-text row"> 
-                    <div class="col-8 col-md-9 font-small pr-0">
-                        <div class="{% if option.payment_rules or option.time or option.suboptions is not empty %}mb-2{% endif %}" data-component="option.name">
+                <div class="radio-button-text row yamuna-shipping-quote-row"> 
+                    <div class="col-8 col-md-9 font-small pr-0 yamuna-shipping-quote-info">
+                        <div class="yamuna-shipping-quote-name {% if option.payment_rules or option.time or option.dates or option.suboptions is not empty %}mb-1{% endif %}" data-component="option.name">
                             {{option.short_name}} <span class="ml-1">{{ option.method == 'branch'  ? option.extra.extra  :  '' }}</span>
                         </div>
                         {% if option.time %}
-                            <div class="opacity-60 {% if option.suboptions is not empty or option.payment_rules or (option.method == 'pickup-point' and option.pickup_hours is not empty) %}mb-2{% endif %}" data-component="option.date">
-                                <span class="d-table float-left">
+                            <div class="opacity-60 yamuna-shipping-quote-time {% if option.suboptions is not empty or option.payment_rules or (option.method == 'pickup-point' and option.pickup_hours is not empty) %}mb-2{% endif %}" data-component="option.date">
+                                <span class="d-table float-left yamuna-shipping-quote-time-icon">
                                     <svg class="icon-inline icon-sm svg-icon-text mr-2"><use xlink:href="#history"/></svg>
                                 </span>
                                 <span class="d-table">
-                                    {% if store.has_smart_dates %}
-                                        {{option.dates}}
-                                    {% else %}
-                                        {{option.time}}
-                                    {% endif %}
+                                    {{ option.time }}
+                                </span>
+                            </div>
+                        {% elseif option.dates %}
+                            <div class="opacity-60 yamuna-shipping-quote-time {% if option.suboptions is not empty or option.payment_rules or (option.method == 'pickup-point' and option.pickup_hours is not empty) %}mb-2{% endif %}" data-component="option.date">
+                                <span class="d-table float-left yamuna-shipping-quote-time-icon">
+                                    <svg class="icon-inline icon-sm svg-icon-text mr-2"><use xlink:href="#history"/></svg>
+                                </span>
+                                <span class="d-table">
+                                    {{ option.dates }}
                                 </span>
                             </div>
                         {% endif %}
@@ -80,7 +85,7 @@
                         {% endif %}
                     </div>
                     {% if option.show_price %} 
-                        <div class="col-4 col-md-3 text-right" data-component="option.price">
+                        <div class="col-4 col-md-3 text-right yamuna-shipping-quote-price" data-component="option.price">
                             <h5 class="{% if option.cost.value == 0  %}text-accent{% else %}text-primary{% endif %} mb-0 d-inline-block">
                                 {% if option.cost.value == 0  %}
                                     {{ 'Gratis' | translate }}

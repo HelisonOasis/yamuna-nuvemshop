@@ -26,25 +26,40 @@
 				{% endif %}
 			<h1 class="{% if template == 'product' %}js-product-name{% else %}text-center{% endif %} h2 h1-md {% if template == 'contact' %} text-md-left{% endif %}{% if settings.theme_rounded and template != 'product' %} text-primary{% endif %}" {% if template == "product" %}data-store="product-name-{{ product.id }}"{% endif %}>{% block page_header_text %}{% endblock %}</h1>
 			{% if template == 'product' %}
+				{# Figma 853:9590 — rating under title #}
+				{% set yamuna_rating_value = product.metafields.yamuna.rating | default(product.metafields.reviews.rating) | default('') %}
+				{% set yamuna_rating_count = product.metafields.yamuna.rating_count | default(product.metafields.reviews.count) | default(0) %}
+				<div class="yamuna-pdp-rating js-yamuna-pdp-rating{% if not yamuna_rating_value %} is-empty{% endif %}"
+					data-rating="{{ yamuna_rating_value }}"
+					data-count="{{ yamuna_rating_count }}"
+					data-star-filled="{{ 'images/yamuna/pdp-star-filled.svg' | static_url }}"
+					data-star-empty="{{ 'images/yamuna/pdp-star-empty.svg' | static_url }}">
+					<div class="yamuna-pdp-rating-stars" aria-hidden="true">
+						{% for i in 1..5 %}
+							<img class="yamuna-pdp-rating-star js-yamuna-pdp-star" data-index="{{ i }}" src="{{ 'images/yamuna/pdp-star-empty.svg' | static_url }}" alt="" width="18" height="18" loading="lazy" />
+						{% endfor %}
+					</div>
+					<a class="yamuna-pdp-rating-label js-yamuna-pdp-rating-label" href="#reviewsapp">Ver avaliações</a>
+				</div>
 				<div class="yamuna-pdp-benefits" aria-label="Características do produto">
 					<div class="yamuna-pdp-benefit">
-						<img src="{{ 'images/yamuna/pdp-benefits/sem-acucar.svg' | static_url }}" alt="" aria-hidden="true" />
+						<img src="{{ 'images/yamuna/pdp-benefits/sem-acucar.svg' | static_url }}?v=figma2" alt="" width="24" height="24" aria-hidden="true" />
 						<span>Sem açúcar</span>
 					</div>
 					<div class="yamuna-pdp-benefit">
-						<img src="{{ 'images/yamuna/pdp-benefits/sem-conservantes.svg' | static_url }}" alt="" aria-hidden="true" />
+						<img src="{{ 'images/yamuna/pdp-benefits/sem-conservantes.svg' | static_url }}?v=figma2" alt="" width="24" height="24" aria-hidden="true" />
 						<span>Sem conservantes</span>
 					</div>
 					<div class="yamuna-pdp-benefit">
-						<img src="{{ 'images/yamuna/pdp-benefits/sem-gluten.svg' | static_url }}" alt="" aria-hidden="true" />
+						<img src="{{ 'images/yamuna/pdp-benefits/sem-gluten.svg' | static_url }}?v=figma2" alt="" width="24" height="24" aria-hidden="true" />
 						<span>Sem glúten</span>
 					</div>
 					<div class="yamuna-pdp-benefit">
-						<img src="{{ 'images/yamuna/pdp-benefits/sem-lactose.svg' | static_url }}" alt="" aria-hidden="true" />
+						<img src="{{ 'images/yamuna/pdp-benefits/sem-lactose.svg' | static_url }}?v=figma2" alt="" width="24" height="24" aria-hidden="true" />
 						<span>Sem lactose</span>
 					</div>
 					<div class="yamuna-pdp-benefit">
-						<img src="{{ 'images/yamuna/pdp-benefits/vegano.svg' | static_url }}" alt="" aria-hidden="true" />
+						<img src="{{ 'images/yamuna/pdp-benefits/vegano.svg' | static_url }}?v=figma2" alt="" width="24" height="24" aria-hidden="true" />
 						<span>Vegano</span>
 					</div>
 				</div>

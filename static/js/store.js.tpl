@@ -997,7 +997,7 @@ $(document).ready(function(){
         {% endif %}
 
         {% set columns = settings.grid_columns %}
-         createSwiper('.js-swiper-related', {
+         createSwiper('.yamuna-pdp-related .js-swiper-related', {
             lazy: true,
             {% if related_products | length > 3 %}
                 loop: true,
@@ -1008,14 +1008,31 @@ $(document).ready(function(){
             watchSlideProgress: true,
             watchSlidesVisibility: true,
             slideVisibleClass: 'js-swiper-slide-visible',
-            slidesPerView: 1.5,
+            slidesPerView: 1.15,
+            spaceBetween: 16,
             navigation: {
-                nextEl: '.js-swiper-related-next',
-                prevEl: '.js-swiper-related-prev',
+                nextEl: '.yamuna-pdp-related .js-swiper-related-next',
+                prevEl: '.yamuna-pdp-related .js-swiper-related-prev',
             },
             breakpoints: {
-                640: {
-                    slidesPerView: {% if columns == 2 %}4{% else %}3{% endif %},
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+                1200: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                }
+            },
+            on: {
+                init: function () {
+                    var containerWidth = this.width || (this.el && this.el.clientWidth) || window.innerWidth;
+                    if (containerWidth < 768) {
+                        this.params.slidesPerView = 1.15;
+                        this.params.spaceBetween = 16;
+                        this.currentBreakpoint = false;
+                        this.update();
+                    }
                 }
             }
         });
@@ -1657,8 +1674,8 @@ $(document).ready(function(){
                 var slidesPerViewVal = 1;
             } else {
                 var speedVal = 300;
-                var spaceBetweenVal = 10;
-                var slidesPerViewVal = 1.2;
+                var spaceBetweenVal = 0;
+                var slidesPerViewVal = 1;
             }
 
             var productSwiper = null;
@@ -1668,12 +1685,12 @@ $(document).ready(function(){
                     speed: speedVal,
                     {% if has_multiple_slides %}
                     slidesPerView: slidesPerViewVal,
-                    centeredSlides: true,
+                    centeredSlides: false,
                     spaceBetween: spaceBetweenVal,
                     {% endif %}
                     pagination: {
                         el: '.js-swiper-product-pagination',
-                        type: 'fraction',
+                        type: 'bullets',
                         clickable: true,
                     },
                     navigation: {
@@ -1820,7 +1837,7 @@ $(document).ready(function(){
     {# The product spot has its own capture-phase handler so third-party product
        listeners cannot submit its form and navigate to /comprar/. #}
     document.addEventListener('click', function(event) {
-        var button = event.target.closest('.yamuna-home-spot-buy-one, .yamuna-home-spot-buy-three');
+        var button = event.target.closest('.yamuna-home-spot-buy-one, .yamuna-home-spot-buy-three, .yamuna-pdp-spot-buy-one, .yamuna-pdp-spot-buy-three');
 
         if (!button || button.disabled || !window.LS || !LS.addToCartEnhanced) {
             return;
@@ -1831,7 +1848,7 @@ $(document).ready(function(){
 
         var form = button.closest('form');
         var quantity = button.getAttribute('data-quantity') || '1';
-        var quantityInput = form && form.querySelector('.js-home-spot-add-quantity');
+        var quantityInput = form && form.querySelector('.js-home-spot-add-quantity, .js-pdp-spot-add-quantity');
 
         if (!form || !quantityInput) {
             return;
@@ -1866,12 +1883,12 @@ $(document).ready(function(){
         var $productVariants = $productContainer.find(".js-variation-option");
         var $productButton = $productContainer.find(".js-addtocart:not(.js-addtocart-placeholder)");
         var $productForm = $(this).closest("form");
-        var isHomeSpotButton = $(this).is('.yamuna-home-spot-buy-one, .yamuna-home-spot-buy-three');
+        var isHomeSpotButton = $(this).is('.yamuna-home-spot-buy-one, .yamuna-home-spot-buy-three, .yamuna-pdp-spot-buy-one, .yamuna-pdp-spot-buy-three');
         var clickedButtonTop = isHomeSpotButton ? $(this).position().top : 0;
         var clickedButtonHeight = isHomeSpotButton ? $(this).outerHeight() : 0;
         var productFormHeight = isHomeSpotButton ? $productForm.outerHeight() : 0;
         var requestedQuantity = $(this).data('quantity') || 1;
-        $productContainer.find('.js-home-spot-add-quantity').val(requestedQuantity);
+        $productContainer.find('.js-home-spot-add-quantity, .js-pdp-spot-add-quantity').val(requestedQuantity);
         var $productButtonPlaceholder = $productContainer.find(".js-addtocart-placeholder");
         var $productButtonText = $productButtonPlaceholder.find(".js-addtocart-text");
         var $productButtonAdding = $productButtonPlaceholder.find(".js-addtocart-adding");
@@ -2192,9 +2209,16 @@ $(document).ready(function(){
 
         {# Hide the shipping calculator and show spinner  #}
 
-        $(".js-shipping-calculator-head").addClass("with-zip").removeClass("with-form");
-        $(".js-shipping-calculator-with-zipcode").addClass("transition-up-active");
-        $(".js-shipping-calculator-spinner").show();
+        {% if template == 'product' %}
+            $("#product-shipping-container .js-shipping-calculator-head").addClass("with-form").removeClass("with-zip");
+            $("#product-shipping-container .js-shipping-calculator-with-zipcode").removeClass("transition-up-active");
+            $("#product-shipping-container .js-shipping-calculator-form").addClass("transition-up-active");
+            $("#product-shipping-container .js-shipping-calculator-spinner").show();
+        {% else %}
+            $(".js-shipping-calculator-head").addClass("with-zip").removeClass("with-form");
+            $(".js-shipping-calculator-with-zipcode").addClass("transition-up-active");
+            $(".js-shipping-calculator-spinner").show();
+        {% endif %}
     } else {
 
         {# If there is no cookie saved, show calcualtor #}
@@ -2599,8 +2623,8 @@ $(document).ready(function(){
         } else {
             var speedVal = 300;
             var loopVal = true;
-            var spaceBetweenVal = 10;
-            var slidesPerViewVal = 1.2;
+            var spaceBetweenVal = 0;
+            var slidesPerViewVal = 1;
         }
 
         createSwiper('.js-swiper-product', {
@@ -2609,13 +2633,17 @@ $(document).ready(function(){
             {% if product.images_count > 1 %}
             loop: loopVal,
             slidesPerView: slidesPerViewVal,
-            centeredSlides: true,
+            centeredSlides: false,
             spaceBetween: spaceBetweenVal,
             {% endif %}
             pagination: {
                 el: '.js-swiper-product-pagination',
-                type: 'fraction',
+                type: 'bullets',
                 clickable: true,
+            },
+            navigation: {
+                nextEl: '.js-swiper-product-next',
+                prevEl: '.js-swiper-product-prev',
             },
             on: {
                 init: function () {

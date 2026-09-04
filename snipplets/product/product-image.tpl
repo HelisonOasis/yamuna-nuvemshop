@@ -72,8 +72,12 @@
 					{% endfor %}
 					{% include 'snipplets/product/product-video.tpl' %}
 				</div>
+				{% if product.media_count > 1 %}
+					<button type="button" class="js-swiper-product-prev yamuna-pdp-gallery-arrow yamuna-pdp-gallery-arrow-prev" aria-label="{{ 'Anterior' | translate }}"></button>
+					<button type="button" class="js-swiper-product-next yamuna-pdp-gallery-arrow yamuna-pdp-gallery-arrow-next" aria-label="{{ 'Próximo' | translate }}"></button>
+					<div class="js-swiper-product-pagination swiper-pagination yamuna-pdp-gallery-pagination"></div>
+				{% endif %}
 			</div>
-		    <div class="js-swiper-product-pagination swiper-pagination swiper-pagination-white h5 font-weight-normal d-block d-md-none"></div>
 		</div>
 	{% endif %}
 </div>
