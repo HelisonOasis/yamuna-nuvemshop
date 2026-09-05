@@ -1155,8 +1155,20 @@
 <div class="yamuna-cart-dropdown-footer js-visible-on-cart-filled" {% if cart.items_count == 0 %}style="display:none;"{% endif %}>
   <div class="yamuna-cart-discount">15% OFF ACIMA DE 3 UNIDADES</div>
   <p>{{ 'Digite seu cep para consultar as opções de entrega' | translate }}</p>
-  <button class="yamuna-cart-checkout" type="submit" name="go_to_checkout"><img src="{{ 'images/yamuna/cart-bag.svg' | static_url }}" alt="">{{ 'Comprar' | translate }}</button>
+  <a class="yamuna-cart-checkout" href="{{ store.cart_url }}" data-yamuna-cart-page="1" data-component="cart.checkout-button"><img src="{{ 'images/yamuna/cart-bag.svg' | static_url }}" alt="">{{ 'Comprar' | translate }}</a>
 </div>
+<script>
+  (function () {
+    document.addEventListener('click', function (e) {
+      var link = e.target && e.target.closest && e.target.closest('a.yamuna-cart-checkout[data-yamuna-cart-page]');
+      if (!link) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      {# Force a top-level GET — POST to /comprar/ without go_to_checkout returns an empty 200. #}
+      window.location.href = link.href;
+    }, true);
+  })();
+</script>
 
 <div class="yamuna-cart-empty-footer" {% if cart.items_count > 0 %}style="display:none;"{% endif %}>
   <div class="yamuna-cart-discount">15% OFF ACIMA DE 3 UNIDADES</div>

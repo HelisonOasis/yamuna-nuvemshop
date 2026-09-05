@@ -5,107 +5,105 @@
 {% set hide_compare_price_subtotal = not item.compare_at_price_subtotal or item.is_subscription_item %}
 
 {% if cart_page %}
-<div class="js-cart-item {% if item.product.is_non_shippable %}js-cart-item-non-shippable{% else %}js-cart-item-shippable{% endif %} row align-items-md-center" data-item-id="{{ item.id }}" data-gift="{{ is_gift ? 'true' : 'false' }}" data-store="cart-item-{{ item.product.id }}" data-component="cart.line-item">
+{# Pre-checkout cart row — Figma 1576:11580 #}
+{% set unit_compare = item.compare_at_price %}
+{% set has_unit_compare = unit_compare and unit_compare > item.unit_price %}
+{% set cart_page_installments = item.product.get_max_installments(false) %}
+{% if not cart_page_installments or cart_page_installments.installment <= 1 %}
+  {% set cart_page_installments = item.product.get_max_installments %}
+{% endif %}
 
-  <div class="col-3 col-md-1">
-    <a href="{{ item.url }}">
-      <img src="{{ item.featured_image | product_image_url('medium') }}" class="img-fluid{% if settings.theme_rounded %} box-rounded-small{% endif %}" />
-    </a>
-  </div>
-  <div class="col-9 col-md-10 pl-0 pl-md-3">
-    <div class="row align-items-md-center">
-      <h6 class="col-10 col-md-5 h4-md font-weight-normal mb-3 mb-md-0" data-component="line-item.name">
-        <a href="{{ item.url }}" data-component="name.short-name">
-          {{ item.short_name }}
-        </a>
-        <small data-component="name.short-variant-name">{{ item.short_variant_name }}</small>
-        {{ component(
-          'cart-labels', {
-            group: true,
-            subscription_label: true,
-            hide_percentage_off_label: true,
-            labels_classes: {
-              group: 'mt-2',
-              label: 'd-inline-block label label-accent label-small font-smallest mb-1',
-              subscription: 'font-smallest opacity-80 mt-1 mb-2',
-            },
-          })
-        }}
-        {% if is_gift %}
-          <div class="text-accent font-smallest font-weight-bold text-uppercase my-2">
-            {{ "Regalo" | translate }}
-          </div>
-        {% endif %}
-      </h6>
-
-      {% set cart_quantity_class = 'float-md-none m-auto ' %}
-
-      <div class="cart-item-quantity col-auto col-md-3 text-center" data-component="line-item.subtotal">
-        {% embed "snipplets/forms/form-input.tpl" with{
-          type_number: true,
-          input_value: item.quantity,
-          input_name: 'quantity[' ~ item.id ~ ']',
-          input_data_attr: 'item-id',
-          input_data_val: item.id,
-          input_group_custom_class: cart_quantity_class ~ 'form-quantity cart-item-quantity small mb-0',
-          input_custom_class: 'js-cart-quantity-input text-center h6',
-          input_label: false, input_append_content: true,
-          input_disabled: is_gift,
-          data_component: 'quantity.value',
-          form_control_container_custom_class: 'col'} %}
-            {% block input_prepend_content %}
-              <span class="js-cart-quantity-btn yamuna-cart-minus form-quantity-icon btn" onclick="var inp = this.closest('.cart-item-quantity') ? this.closest('.cart-item-quantity').querySelector('.js-cart-quantity-input') : null; var val = (inp && parseInt(inp.value, 10)) || 1; if (val <= 1) { LS.removeItem({{ item.id }}); } else { LS.minusQuantity({{ item.id }}); }" data-component="quantity.minus">
-                <svg class="icon-inline icon-w-12 svg-icon-primary"><use xlink:href="#minus"/></svg>
-              </span>
-            {% endblock input_prepend_content %}
-            {% block input_append_content %}
-              <span class="js-cart-input-spinner cart-item-spinner" style="display: none;">
-                <svg class="icon-inline icon-spin svg-icon-primary"><use xlink:href="#circle-notch"/></svg>
-              </span>
-              <span class="js-cart-quantity-btn form-quantity-icon btn" onclick="LS.plusQuantity({{ item.id }})" data-component="quantity.plus">
-                <svg class="icon-inline icon-w-12 svg-icon-primary"><use xlink:href="#plus"/></svg>
-              </span>
-            {% endblock input_append_content %}
-        {% endembed %}
-      </div>
-
-      <div class="cart-item-subtotal-short col-2 mb-0 {% if not compare_at_price %}mt-2{% endif %} text-center font-weight-normal d-none d-md-block">
-        {% if is_gift %}
-          <div class="price-compare font-small opacity-50">{{ item.compare_at_price | money }}</div>
-          <div class="h4 font-weight-normal">{{ "Gratis" | translate }}</div>
-        {% else %}
-          <div class="js-cart-item-unit-price-compare-price-container" data-line-item-id="{{ item.id }}"{% if not compare_at_price %} style="display: none"{% endif %}>
-            <span class="text-accent font-small font-weight-bold mr-1">-{{ discount_percentage }}%</span>
-            <span class="js-cart-item-unit-price-compare-price price-compare font-small opacity-50 mr-0" data-line-item-id="{{ item.id }}" data-component="compare_price.value" data-component-value='{{ compare_at_price | money }}'>{{ compare_at_price | money }}</span>
-          </div>
-          <div class="js-cart-item-unit-price h4 font-weight-normal {% if compare_at_price %}mt-1{% endif %}" data-line-item-id="{{ item.id }}">{{ item.unit_price | money }}</div>
-        {% endif %}
-      </div>
-
-      <div class="col col-md-2 text-right text-md-center mb-0 {% if hide_compare_price_subtotal %}mt-2{% elseif not hide_compare_price_subtotal %}m-0{% endif %}">
-        {% if is_gift %}
-          <div class="price-compare font-small opacity-50">{{ item.compare_at_price_subtotal | money }}</div>
-          <div class="h5 h4-md mt-1">{{ "Gratis" | translate }}</div>
-        {% else %}
-          <div class="js-cart-item-subtotal-compare-price-container" data-line-item-id="{{ item.id }}"{% if hide_compare_price_subtotal %} style="display: none"{% endif %}>
-            <span class="text-accent font-small font-weight-bold mr-1">-{{ discount_percentage }}%</span>
-            <span class="js-cart-item-subtotal-compare-price price-compare font-small opacity-50 mr-0" data-line-item-id="{{ item.id }}" data-component="subtotal_compare_price.value" data-component-value='{{ item.compare_at_price_subtotal | money }}'>{{ item.compare_at_price_subtotal | money }}</span>
-          </div>
-          <div class="js-cart-item-subtotal h5 h4-md {% if not hide_compare_price_subtotal %}mt-1{% endif %}" data-line-item-id="{{ item.id }}" data-component="subtotal.value" data-component-value='{{ item.subtotal | money }}'>{{ item.subtotal | money }}</div>
-        {% endif %}
-      </div>
-    </div>
-  </div>
+<div class="js-cart-item {% if item.product.is_non_shippable %}js-cart-item-non-shippable{% else %}js-cart-item-shippable{% endif %} yamuna-cart-row" data-item-id="{{ item.id }}" data-gift="{{ is_gift ? 'true' : 'false' }}" data-store="cart-item-{{ item.product.id }}" data-component="cart.line-item">
 
   {% if not is_gift %}
-    <div class="cart-item-delete position-relative-md col-auto col-md-1 text-right">
-      <button type="button" class="btn h6 h5-md mb-0" onclick="LS.removeItem({{ item.id }})" data-component="line-item.remove">
+    <div class="yamuna-cart-row-delete cart-item-delete">
+      <button type="button" class="btn" onclick="LS.removeItem({{ item.id }})" data-component="line-item.remove" aria-label="{{ 'Remover' | translate }}">
         <img class="yamuna-cart-trash-icon" src="{{ 'images/yamuna/cart-trash-figma.svg' | static_url }}" alt="{{ 'Remover' | translate }}">
       </button>
     </div>
+  {% else %}
+    <div class="yamuna-cart-row-delete" aria-hidden="true"></div>
   {% endif %}
 
-  <div class="col-12"><div class="divider"></div></div>
+  <a class="yamuna-cart-row-image" href="{{ item.url }}">
+    <img src="{{ item.featured_image | product_image_url('medium') }}" alt="{{ item.short_name }}" />
+  </a>
+
+  <div class="yamuna-cart-row-desc" data-component="line-item.name">
+    <a href="{{ item.url }}" data-component="name.short-name">{{ item.short_name }}</a>
+    <small data-component="name.short-variant-name">{{ item.short_variant_name }}</small>
+    {{ component(
+      'cart-labels', {
+        group: true,
+        subscription_label: true,
+        hide_percentage_off_label: true,
+        labels_classes: {
+          group: 'mt-1',
+          label: 'd-inline-block label label-accent label-small font-smallest mb-1',
+          subscription: 'font-smallest opacity-80 mt-1 mb-0',
+        },
+      })
+    }}
+    {% if is_gift %}
+      <div class="text-accent font-smallest font-weight-bold text-uppercase mt-1">{{ "Regalo" | translate }}</div>
+    {% endif %}
+  </div>
+
+  <div class="yamuna-cart-row-qty cart-item-quantity" data-component="line-item.quantity">
+    {% embed "snipplets/forms/form-input.tpl" with{
+      type_number: true,
+      input_value: item.quantity,
+      input_name: 'quantity[' ~ item.id ~ ']',
+      input_data_attr: 'item-id',
+      input_data_val: item.id,
+      input_group_custom_class: 'yamuna-cart-page-qty form-quantity cart-item-quantity mb-0',
+      input_custom_class: 'js-cart-quantity-input text-center',
+      input_label: false, input_append_content: true,
+      input_disabled: is_gift,
+      data_component: 'quantity.value',
+      form_control_container_custom_class: 'yamuna-cart-page-qty-field'} %}
+        {% block input_prepend_content %}
+          <span class="js-cart-quantity-btn yamuna-cart-minus form-quantity-icon btn" onclick="var inp = this.closest('.cart-item-quantity') ? this.closest('.cart-item-quantity').querySelector('.js-cart-quantity-input') : null; var val = (inp && parseInt(inp.value, 10)) || 1; if (val <= 1) { LS.removeItem({{ item.id }}); } else { LS.minusQuantity({{ item.id }}); }" data-component="quantity.minus">
+            <svg class="icon-inline icon-w-12 svg-icon-primary"><use xlink:href="#minus"/></svg>
+          </span>
+        {% endblock input_prepend_content %}
+        {% block input_append_content %}
+          <span class="js-cart-input-spinner cart-item-spinner" style="display: none;">
+            <svg class="icon-inline icon-spin svg-icon-primary"><use xlink:href="#circle-notch"/></svg>
+          </span>
+          <span class="js-cart-quantity-btn yamuna-cart-plus form-quantity-icon btn" onclick="LS.plusQuantity({{ item.id }})" data-component="quantity.plus">
+            <svg class="icon-inline icon-w-12 svg-icon-primary"><use xlink:href="#plus"/></svg>
+          </span>
+        {% endblock input_append_content %}
+    {% endembed %}
+  </div>
+
+  <div class="yamuna-cart-row-unit" data-component="line-item.unit-price">
+    {% if is_gift %}
+      <div class="yamuna-cart-row-price-compare">{{ item.compare_at_price | money }}</div>
+      <div class="yamuna-cart-row-price">{{ "Gratis" | translate }}</div>
+    {% else %}
+      <div class="js-cart-item-unit-price-compare-price-container yamuna-cart-row-price-compare" data-line-item-id="{{ item.id }}"{% if not has_unit_compare %} style="display: none"{% endif %}>
+        <span class="js-cart-item-unit-price-compare-price" data-line-item-id="{{ item.id }}" data-component="compare_price.value" data-component-value='{{ unit_compare | money }}'>{{ unit_compare | money }}</span>
+      </div>
+      <div class="js-cart-item-unit-price yamuna-cart-row-price" data-line-item-id="{{ item.id }}">{{ item.unit_price | money }}</div>
+    {% endif %}
+  </div>
+
+  <div class="yamuna-cart-row-total" data-component="line-item.subtotal">
+    {% if is_gift %}
+      <div class="yamuna-cart-row-price-compare">{{ item.compare_at_price_subtotal | money }}</div>
+      <div class="yamuna-cart-row-price">{{ "Gratis" | translate }}</div>
+    {% else %}
+      <div class="js-cart-item-subtotal-compare-price-container" data-line-item-id="{{ item.id }}" style="display: none" aria-hidden="true">
+        <span class="js-cart-item-subtotal-compare-price" data-line-item-id="{{ item.id }}" data-component="subtotal_compare_price.value" data-component-value='{{ item.compare_at_price_subtotal | money }}'>{{ item.compare_at_price_subtotal | money }}</span>
+      </div>
+      <div class="js-cart-item-subtotal yamuna-cart-row-price" data-line-item-id="{{ item.id }}" data-component="subtotal.value" data-component-value='{{ item.subtotal | money }}'>{{ item.subtotal | money }}</div>
+      {% if cart_page_installments and cart_page_installments.installment > 1 %}
+        <div class="yamuna-cart-row-installments">em {{ cart_page_installments.installment }}x de {{ (item.subtotal / cart_page_installments.installment) | money }} sem juros</div>
+      {% endif %}
+    {% endif %}
+  </div>
 </div>
 
 {% else %}

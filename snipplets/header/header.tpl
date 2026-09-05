@@ -424,15 +424,15 @@
 
     {# Cart Ajax #}
 
+    {# No modal_form_action: minicart must never POST go_to_checkout to /comprar/
+       (that handoff returns an empty body). Qty updates already use LS AJAX. #}
     {% embed "snipplets/modal.tpl" with{
         modal_id: 'modal-cart', 
         modal_position: 'right', 
         modal_transition: 'slide', 
         modal_width: 'docked-md', 
-        modal_form_action: store.cart_url, 
         modal_form_class: 'js-ajax-cart-panel', 
         modal_header: true, 
-        modal_form_hook: 'cart-form', 
         data_component:'cart',
         custom_data_attribute: 'cart-open-type',
 		custom_data_attribute_value: settings.cart_open_type

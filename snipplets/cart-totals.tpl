@@ -192,11 +192,12 @@
                   {% set should_show_checkout_button = cart.checkout_enabled and not has_validation_messages %}
                   {% if cart_page %}
 
-                    {# Cart page CTA and minimum alert: Always render button to ensure it exists in DOM, control visibility via CSS/JS #}
-
+                    {# Cart page CTA — skipped when page provides its own Finalizar button #}
+                    {% if not hide_checkout_button %}
                     <div class="row mb-3">
                       <input id="go-to-checkout" class="btn btn-primary btn-block" {{ not should_show_checkout_button ? 'style="display:none"' }} type="submit" name="go_to_checkout" value="{{ 'Iniciar Compra' | translate }}"/>
                     </div>
+                    {% endif %}
 
                     <div class="row">
                       {# Cart alert messages #}

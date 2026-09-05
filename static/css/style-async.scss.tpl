@@ -7233,6 +7233,8 @@ footer.yamuna-footer .powered-by-logo svg {
     font-weight: 700;
     line-height: 22px;
     text-transform: uppercase;
+    text-decoration: none;
+    box-sizing: border-box;
   }
 
   body #modal-cart .yamuna-cart-checkout img { display: block; width: 18px; height: 18px; }
@@ -13874,6 +13876,460 @@ body.template-product .yamuna-pdp-related .swiper-pagination {
     max-width: 528px !important;
     margin-left: auto !important;
     margin-right: auto !important;
+  }
+}
+
+/* ===== Yamuna pre-checkout cart page (Figma 1576:11580) ===== */
+{# Sticky footer on cart: no white strip under the footer when content is short. #}
+html:has(body.template-cart),
+body.template-cart {
+  min-height: 100%;
+}
+
+body.template-cart {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body.template-cart > .mt-4 {
+  flex: 1 0 auto;
+  width: 100%;
+  margin-top: 0 !important;
+}
+
+body.template-cart footer.yamuna-footer {
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+body.template-cart .yamuna-cart-page {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1086px;
+  margin: calc(var(--yamuna-menu-top, 105px) + 40px) auto 64px;
+  padding: 0 16px;
+}
+
+body.template-cart .yamuna-cart-page-inner {
+  position: relative;
+  width: 100%;
+}
+
+body.template-cart .yamuna-cart-page-back {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #a31460;
+  font-family: Raleway, Roboto, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-decoration: none;
+}
+
+body.template-cart .yamuna-cart-page-back:hover {
+  color: #a31460;
+  text-decoration: underline;
+}
+
+body.template-cart .yamuna-cart-page-title {
+  margin: 0 0 28px;
+  color: #a31460;
+  font-family: Raleway, Roboto, Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+body.template-cart .yamuna-cart-table {
+  overflow: hidden;
+  border: 1px solid #e6e2e6;
+  border-radius: 8px;
+  background: #fff;
+}
+
+body.template-cart .yamuna-cart-table-head {
+  display: grid;
+  grid-template-columns: 32px 85px minmax(140px, 1fr) 120px 150px 160px;
+  gap: 12px;
+  align-items: center;
+  height: 40px;
+  padding: 0 23px;
+  background: #c388a2;
+  border-radius: 8px 8px 0 0;
+  color: #fff;
+  font-family: Raleway, Roboto, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+body.template-cart .yamuna-cart-col-desc {
+  grid-column: 2 / 4;
+}
+
+body.template-cart .yamuna-cart-col-qty,
+body.template-cart .yamuna-cart-col-unit,
+body.template-cart .yamuna-cart-col-total {
+  text-align: center;
+}
+
+body.template-cart .yamuna-cart-table-body {
+  padding: 8px 23px 16px;
+}
+
+body.template-cart .yamuna-cart-row {
+  display: grid;
+  grid-template-columns: 32px 85px minmax(140px, 1fr) 120px 150px 160px;
+  gap: 12px;
+  align-items: center;
+  min-height: 110px;
+  padding: 18px 0;
+  border-bottom: 1px solid #e6e2e6;
+  position: relative;
+}
+
+body.template-cart .yamuna-cart-row:last-child {
+  border-bottom: 0;
+}
+
+body.template-cart .yamuna-cart-row-delete,
+body.template-cart .yamuna-cart-row .cart-item-delete {
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.template-cart .yamuna-cart-row-delete .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+body.template-cart .yamuna-cart-row-delete .yamuna-cart-trash-icon {
+  display: block;
+  width: 23px;
+  height: 24px;
+}
+
+body.template-cart .yamuna-cart-row-image {
+  display: block;
+  width: 85px;
+  height: 85px;
+  overflow: hidden;
+}
+
+body.template-cart .yamuna-cart-row-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+body.template-cart .yamuna-cart-row-desc {
+  min-width: 0;
+  color: #393747;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+body.template-cart .yamuna-cart-row-desc a {
+  color: #393747;
+  text-decoration: none;
+}
+
+body.template-cart .yamuna-cart-row-desc small {
+  display: block;
+  margin-top: 2px;
+  color: #5f5d5f;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+body.template-cart .yamuna-cart-row-qty {
+  display: flex;
+  justify-content: center;
+}
+
+{# Qty pill — Figma 1642:13955 (~102×37, gray ends / white center, radius 32) #}
+body.template-cart .yamuna-cart-page-qty.form-quantity,
+body.template-cart .yamuna-cart-page-qty.form-group {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch !important;
+  box-sizing: border-box !important;
+  width: 102px !important;
+  max-width: 102px !important;
+  min-width: 102px !important;
+  height: 37px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  gap: 0 !important;
+}
+
+body.template-cart .yamuna-cart-page-qty .yamuna-cart-page-qty-field,
+body.template-cart .yamuna-cart-page-qty .form-control-container {
+  display: flex !important;
+  flex: 0 0 43px !important;
+  align-items: stretch !important;
+  box-sizing: border-box !important;
+  width: 43px !important;
+  max-width: 43px !important;
+  min-width: 43px !important;
+  height: 37px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+  position: static !important;
+}
+
+body.template-cart .yamuna-cart-page-qty .form-quantity-icon.btn,
+body.template-cart .yamuna-cart-page-qty .yamuna-cart-minus,
+body.template-cart .yamuna-cart-page-qty .yamuna-cart-plus {
+  display: flex !important;
+  flex: 0 0 30px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  width: 30px !important;
+  min-width: 30px !important;
+  max-width: 30px !important;
+  height: 37px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 1px solid #c0bbc3 !important;
+  background: rgba(192, 187, 195, 0.28) !important;
+  box-shadow: none !important;
+  color: #9e929e !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+}
+
+body.template-cart .yamuna-cart-page-qty .yamuna-cart-minus {
+  border-radius: 32px 0 0 32px !important;
+}
+
+body.template-cart .yamuna-cart-page-qty .yamuna-cart-plus {
+  border-radius: 0 32px 32px 0 !important;
+}
+
+body.template-cart .yamuna-cart-page-qty .form-control,
+body.template-cart .yamuna-cart-page-qty .js-cart-quantity-input {
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 43px !important;
+  min-width: 43px !important;
+  max-width: 43px !important;
+  height: 37px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-top: 1px solid #c0bbc3 !important;
+  border-bottom: 1px solid #c0bbc3 !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  color: #393747 !important;
+  font-family: Roboto, Inter, Arial, sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  line-height: 35px !important;
+  text-align: center !important;
+  -moz-appearance: textfield;
+}
+
+body.template-cart .yamuna-cart-page-qty .js-cart-quantity-input::-webkit-outer-spin-button,
+body.template-cart .yamuna-cart-page-qty .js-cart-quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+body.template-cart .yamuna-cart-page-qty .cart-item-spinner {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+body.template-cart .yamuna-cart-page-qty .form-quantity-icon svg,
+body.template-cart .yamuna-cart-page-qty .form-quantity-icon use {
+  width: 12px !important;
+  height: 12px !important;
+  fill: #9e929e !important;
+  color: #9e929e !important;
+}
+
+body.template-cart .yamuna-cart-row-unit,
+body.template-cart .yamuna-cart-row-total {
+  text-align: center;
+}
+
+body.template-cart .yamuna-cart-row-total {
+  text-align: right;
+}
+
+body.template-cart .yamuna-cart-row-price {
+  color: #238482;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+body.template-cart .yamuna-cart-row-price-compare {
+  color: #4f4f4f;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.3;
+  text-decoration: line-through;
+}
+
+body.template-cart .yamuna-cart-row-installments {
+  margin-top: 4px;
+  color: #5f5d5f;
+  font-family: Poppins, Roboto, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.1;
+}
+
+body.template-cart .yamuna-cart-page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 22px;
+  margin-top: 28px;
+}
+
+body.template-cart .yamuna-cart-page-continue,
+body.template-cart .yamuna-cart-page-checkout {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 352px;
+  height: 40px;
+  margin: 0;
+  padding: 0 16px;
+  border-radius: 23px;
+  font-family: Raleway, Roboto, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  appearance: none;
+}
+
+body.template-cart .yamuna-cart-page-continue {
+  border: 1px solid #a31460;
+  background: #fff;
+  color: #a31460;
+  font-weight: 500;
+}
+
+body.template-cart .yamuna-cart-page-checkout {
+  border: 0;
+  background: #238482;
+  color: #fff;
+}
+
+body.template-cart .yamuna-cart-page-continue:hover {
+  color: #a31460;
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+body.template-cart .yamuna-cart-page-checkout:hover {
+  background: #1e7270;
+  color: #fff;
+}
+
+body.template-cart .yamuna-cart-page-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 48px 16px;
+}
+
+body.template-cart .yamuna-cart-page-platform-totals {
+  display: none !important;
+}
+
+body.template-cart .yamuna-cart-page-validation {
+  margin-top: 16px;
+}
+
+@media (max-width: 991px) {
+  body.template-cart .yamuna-cart-page {
+    margin-top: calc(var(--yamuna-menu-top, 72px) + 24px);
+  }
+
+  body.template-cart .yamuna-cart-table-head {
+    display: none;
+  }
+
+  body.template-cart .yamuna-cart-table-body {
+    padding: 8px 12px 12px;
+  }
+
+  body.template-cart .yamuna-cart-row {
+    grid-template-columns: 24px 72px 1fr;
+    grid-template-areas:
+      "delete image desc"
+      "qty qty qty"
+      "unit unit total";
+    gap: 10px 12px;
+    align-items: start;
+    min-height: 0;
+    padding: 16px 0;
+  }
+
+  body.template-cart .yamuna-cart-row-delete { grid-area: delete; padding-top: 24px; }
+  body.template-cart .yamuna-cart-row-image { grid-area: image; width: 72px; height: 72px; }
+  body.template-cart .yamuna-cart-row-desc { grid-area: desc; }
+  body.template-cart .yamuna-cart-row-qty { grid-area: qty; justify-content: flex-start; }
+  body.template-cart .yamuna-cart-row-unit { grid-area: unit; text-align: left; }
+  body.template-cart .yamuna-cart-row-total { grid-area: total; text-align: right; }
+
+  body.template-cart .yamuna-cart-page-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  body.template-cart .yamuna-cart-page-continue,
+  body.template-cart .yamuna-cart-page-checkout {
+    max-width: none;
   }
 }
 
