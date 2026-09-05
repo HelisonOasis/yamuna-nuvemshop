@@ -2003,13 +2003,14 @@ DOMContentLoaded.addEventOrExecute(() => {
 
     jQueryNuvem(".js-product-form").on("submit", function (e) {
 	    var button = jQueryNuvem(e.currentTarget).find('[type="submit"]');
-	    button.attr('disabled', 'disabled');
 	    if ((button.hasClass('contact')) || (button.hasClass('catalog'))) {
 	        e.preventDefault();
+	        button.attr('disabled', 'disabled');
 	        var product_id = jQueryNuvem(e.currentTarget).find("input[name='add_to_cart']").val();
 	        window.location = "{{ store.contact_url | escape('js') }}?product=" + product_id;
-	    } else if (button.hasClass('cart')) {
-	        button.val('{{ "Agregando..." | translate }}');
+	    } else if (button.hasClass('cart') || button.hasClass('js-addtocart')) {
+	        {# Safety net: never navigate to /comprar/; AJAX click handler owns the UX. #}
+	        e.preventDefault();
 	    }
 	});
 
@@ -2068,10 +2069,10 @@ DOMContentLoaded.addEventOrExecute(() => {
 	    {# /* // Product slider */ #}
 
             var width = window.innerWidth;
-            if (width > 767) {
+            if (width > 767 && width < 1360) {
                 var speedVal = 0;
-                var spaceBetweenVal = 0;
-                var slidesPerViewVal = 1;
+                var spaceBetweenVal = 12;
+                var slidesPerViewVal = 2;
             } else {
                 var speedVal = 300;
                 var spaceBetweenVal = 0;
@@ -2087,6 +2088,23 @@ DOMContentLoaded.addEventOrExecute(() => {
                     slidesPerView: slidesPerViewVal,
                     centeredSlides: false,
                     spaceBetween: spaceBetweenVal,
+                    breakpoints: {
+                        0: {
+                            slidesPerView: 1,
+                            spaceBetween: 0,
+                            speed: 300,
+                        },
+                        768: {
+                            slidesPerView: 2,
+                            spaceBetween: 12,
+                            speed: 0,
+                        },
+                        1360: {
+                            slidesPerView: 1,
+                            spaceBetween: 0,
+                            speed: 0,
+                        },
+                    },
                     {% endif %}
                     pagination: {
                         el: '.js-swiper-product-pagination',
@@ -2277,10 +2295,36 @@ DOMContentLoaded.addEventOrExecute(() => {
         return String(image.attr('srcset'));
     }
 
-    {# The product spot has its own capture-phase handler so third-party product
-       listeners cannot submit its form and navigate to /comprar/. #}
+    {# jQueryNuvem has no .is(); older handlers and plugins still call it. #}
+    if (window.jQueryNuvem && jQueryNuvem.fn && typeof jQueryNuvem.fn.is !== 'function') {
+        jQueryNuvem.fn.is = function(selector) {
+            if (!this.length || !selector || !this[0] || typeof this[0].matches !== 'function') {
+                return false;
+            }
+            try {
+                return this[0].matches(selector);
+            } catch (err) {
+                return false;
+            }
+        };
+    }
+
+    {# Capture-phase AJAX add-to-cart for home spots AND PDP CTA.
+       Mirrors home behavior and blocks native submit to /comprar/. #}
     document.addEventListener('click', function(event) {
         var button = event.target.closest('.yamuna-home-spot-buy-one, .yamuna-home-spot-buy-three, .yamuna-pdp-spot-buy-one, .yamuna-pdp-spot-buy-three');
+
+        if (!button) {
+            button = event.target.closest('#product_form .js-addtocart.js-prod-submit-form, .yamuna-pdp-summary .js-addtocart.js-prod-submit-form');
+            if (button && (
+                button.classList.contains('js-addtocart-placeholder')
+                || button.classList.contains('contact')
+                || button.classList.contains('catalog')
+                || button.classList.contains('nostock')
+            )) {
+                button = null;
+            }
+        }
 
         if (!button || button.disabled || !window.LS || !LS.addToCartEnhanced) {
             return;
@@ -2290,30 +2334,38 @@ DOMContentLoaded.addEventOrExecute(() => {
         event.stopImmediatePropagation();
 
         var form = button.closest('form');
-        var quantity = button.getAttribute('data-quantity') || '1';
-        var quantityInput = form && form.querySelector('.js-home-spot-add-quantity, .js-pdp-spot-add-quantity');
-
-        if (!form || !quantityInput) {
+        if (!form) {
             return;
         }
 
-        quantityInput.value = quantity;
+        var spotQuantityInput = form.querySelector('.js-home-spot-add-quantity, .js-pdp-spot-add-quantity');
+        if (spotQuantityInput && button.getAttribute('data-quantity')) {
+            spotQuantityInput.value = button.getAttribute('data-quantity') || '1';
+        }
+
+        var originalLabel = button.tagName === 'INPUT' ? button.value : (button.textContent || '').trim();
         button.disabled = true;
 
         LS.addToCartEnhanced(
             jQueryNuvem(form),
-            '{{ "Comprar" | translate }}',
+            originalLabel || '{{ "Comprar" | translate }}',
             '{{ "Agregando..." | translate }}',
-            '{{ "Â¡Uy! No tenemos mÃ¡s stock de este producto para agregarlo al carrito." | translate }}',
+            '{{ "¡Uy! No tenemos más stock de este producto para agregarlo al carrito." | translate }}',
             {{ store.editable_ajax_cart_enabled ? 'true' : 'false' }},
             function() {
                 button.disabled = false;
+                if (button.tagName === 'INPUT' && originalLabel) {
+                    button.value = originalLabel;
+                }
                 if (window.yamunaShowCartToast) {
                     window.yamunaShowCartToast();
                 }
             },
             function() {
                 button.disabled = false;
+                if (button.tagName === 'INPUT' && originalLabel) {
+                    button.value = originalLabel;
+                }
             }
         );
     }, true);
@@ -2326,9 +2378,13 @@ DOMContentLoaded.addEventOrExecute(() => {
         var $productVariants = $productContainer.find(".js-variation-option");
         var $productButton = $productContainer.find(".js-addtocart:not(.js-addtocart-placeholder)");
         var $productForm = jQueryNuvem(this).closest("form");
-        var isHomeSpotButton = jQueryNuvem(this).is('.yamuna-home-spot-buy-one, .yamuna-home-spot-buy-three, .yamuna-pdp-spot-buy-one, .yamuna-pdp-spot-buy-three');
-        var clickedButtonTop = isHomeSpotButton ? jQueryNuvem(this).position().top : 0;
-        var clickedButtonHeight = isHomeSpotButton ? jQueryNuvem(this).outerHeight() : 0;
+        var $clickedAddButton = jQueryNuvem(this);
+        var isHomeSpotButton = $clickedAddButton.hasClass('yamuna-home-spot-buy-one')
+            || $clickedAddButton.hasClass('yamuna-home-spot-buy-three')
+            || $clickedAddButton.hasClass('yamuna-pdp-spot-buy-one')
+            || $clickedAddButton.hasClass('yamuna-pdp-spot-buy-three');
+        var clickedButtonTop = isHomeSpotButton ? $clickedAddButton.position().top : 0;
+        var clickedButtonHeight = isHomeSpotButton ? $clickedAddButton.outerHeight() : 0;
         var productFormHeight = isHomeSpotButton ? $productForm.outerHeight() : 0;
         var requestedQuantity = jQueryNuvem(this).data('quantity') || 1;
         $productContainer.find('.js-home-spot-add-quantity, .js-pdp-spot-add-quantity').val(requestedQuantity);
@@ -2377,16 +2433,10 @@ DOMContentLoaded.addEventOrExecute(() => {
             }
         }
 
-        if (!jQueryNuvem(this).hasClass('contact')) {
+        if (!jQueryNuvem(this).hasClass('contact') && !jQueryNuvem(this).hasClass('catalog')) {
 
-            {# Home spot CTAs always add through AJAX and never submit /comprar/. #}
-            if (isHomeSpotButton) {
-                e.preventDefault();
-            }
-
-            {% if settings.ajax_cart %}
-                e.preventDefault();
-            {% endif %}
+            {# Always AJAX add-to-cart (same as home). Never navigate to /comprar/. #}
+            e.preventDefault();
 
             {# Hide real button and show button placeholder during event #}
 
@@ -2414,6 +2464,13 @@ DOMContentLoaded.addEventOrExecute(() => {
             $productButtonText.fadeOut();
             $productButtonAdding.addClass("active");
 
+            {# Keep original CTA label to restore after AJAX (LS sets "Incluindo..."). #}
+            var originalAddLabel = $productButton.attr('data-yamuna-original-label');
+            if (!originalAddLabel) {
+                originalAddLabel = ($productButton.val() || $productButton.text() || 'Adicionar à sacola').toString().trim();
+                $productButton.attr('data-yamuna-original-label', originalAddLabel);
+            }
+
             {# Restore button state in case of error #}
 
             function restore_button_initial_state(){
@@ -2423,24 +2480,15 @@ DOMContentLoaded.addEventOrExecute(() => {
                 if (isHomeSpotButton) {
                     $productForm.css({ position: '', minHeight: '' });
                 }
-                $productButton.show();
+                if ($productButton[0] && $productButton[0].tagName === 'INPUT') {
+                    $productButton.val(originalAddLabel);
+                }
+                $productButton.prop('disabled', false).removeAttr('disabled').show();
             }
 
-            {# Restore button state for subscriptions stock error #}
-
-            var subscription_callback_error = function() {
-                setTimeout(function() {
-                    restore_button_initial_state();
-                }, 500);
-            }
-
-            {# Handle subscribable product submit #}
-
-            {# The home spot does not contain subscription controls. Calling this
-               helper there can submit the form natively and navigate to /comprar/. #}
-            if (!isHomeSpotButton) {
-                LS.subscriptionSubmit($productContainer, subscription_callback_error, e);
-            }
+            {# Do not call LS.subscriptionSubmit here: it can natively submit the
+               product form and redirect to /comprar/. Subscription fields still
+               go through LS.addToCartEnhanced via the form (same as home CTAs). #}
 
             {% if settings.ajax_cart or true %}
 
@@ -2505,7 +2553,10 @@ DOMContentLoaded.addEventOrExecute(() => {
                         if (isHomeSpotButton) {
                             $productForm.css({ position: '', minHeight: '' });
                         }
-                        $productButton.show();
+                        if ($productButton[0] && $productButton[0].tagName === 'INPUT') {
+                            $productButton.val(originalAddLabel);
+                        }
+                        $productButton.prop('disabled', false).removeAttr('disabled').show();
                     },3000);
 
                     $productContainer.find(".js-added-to-cart-product-message").slideDown();
@@ -2751,7 +2802,25 @@ DOMContentLoaded.addEventOrExecute(() => {
 
     {# Apply zipcode saved by cookie if there is no zipcode saved on cart from backend #}
 
-    if (cookieService.get('calculator_zipcode')) {
+    {% if template == 'product' %}
+        {# PDP: always start with a fresh CEP form. Clear cookie too so linkedstore-v2
+           cannot auto-restore / auto-calculate after our initial reset. #}
+        var resetProductShippingCalculator = function () {
+            try { cookieService.remove('calculator_zipcode'); } catch (err) {}
+            jQueryNuvem('#product-shipping-container .js-shipping-input').val('');
+            jQueryNuvem('#product-shipping-container .js-shipping-calculator-response').empty().hide();
+            jQueryNuvem('#product-shipping-container .js-shipping-calculator-spinner').hide();
+            jQueryNuvem('#product-shipping-container .js-shipping-calculator-head').addClass('with-form').removeClass('with-zip');
+            jQueryNuvem('#product-shipping-container .js-shipping-calculator-with-zipcode').removeClass('transition-up-active');
+            jQueryNuvem('#product-shipping-container .js-shipping-calculator-form').addClass('transition-up-active');
+        };
+        resetProductShippingCalculator();
+        {# Beat platform auto-calc that runs after DOM ready when cookie was present. #}
+        window.setTimeout(resetProductShippingCalculator, 0);
+        window.setTimeout(resetProductShippingCalculator, 150);
+        window.setTimeout(resetProductShippingCalculator, 500);
+        window.setTimeout(resetProductShippingCalculator, 1200);
+    {% elseif cookieService.get('calculator_zipcode') %}
 
         {# If there is a cookie saved based on previous calcualtion, add it to the shipping input to triggert automatic calculation #}
 
@@ -2775,23 +2844,15 @@ DOMContentLoaded.addEventOrExecute(() => {
 
         {# Hide the shipping calculator and show spinner  #}
 
-        {% if template == 'product' %}
-            {# PDP keeps the CEP form visible (yamuna.com.br pattern) #}
-            jQueryNuvem("#product-shipping-container .js-shipping-calculator-head").addClass("with-form").removeClass("with-zip");
-            jQueryNuvem("#product-shipping-container .js-shipping-calculator-with-zipcode").removeClass("transition-up-active");
-            jQueryNuvem("#product-shipping-container .js-shipping-calculator-form").addClass("transition-up-active");
-            jQueryNuvem("#product-shipping-container .js-shipping-calculator-spinner").show();
-        {% else %}
-            jQueryNuvem(".js-shipping-calculator-head").addClass("with-zip").removeClass("with-form");
-            jQueryNuvem(".js-shipping-calculator-with-zipcode").addClass("transition-up-active");
-            jQueryNuvem(".js-shipping-calculator-spinner").show();
-        {% endif %}
-    } else {
+        jQueryNuvem(".js-shipping-calculator-head").addClass("with-zip").removeClass("with-form");
+        jQueryNuvem(".js-shipping-calculator-with-zipcode").addClass("transition-up-active");
+        jQueryNuvem(".js-shipping-calculator-spinner").show();
+    {% else %}
 
         {# If there is no cookie saved, show calcualtor #}
 
         jQueryNuvem(".js-shipping-calculator-form").addClass("transition-up-active");
-    }
+    {% endif %}
 
     {# Remove shipping suboptions from DOM to avoid duplicated modals #}
 
@@ -2815,6 +2876,11 @@ DOMContentLoaded.addEventOrExecute(() => {
         {# Calculate on page load for both calculators: Product and Cart #}
         {% if template == 'product' %}
              if (!vanillaJS) {
+                LS.calculateShippingAjax(
+                    jQueryNuvem('#product-shipping-container').find(".js-shipping-input").val(),
+                    '{{store.shipping_calculator_url | escape('js')}}',
+                    jQueryNuvem("#product-shipping-container").closest(".js-shipping-calculator-container") );
+             } else if (typeof LS !== 'undefined' && typeof LS.calculateShippingAjax === 'function') {
                 LS.calculateShippingAjax(
                     jQueryNuvem('#product-shipping-container').find(".js-shipping-input").val(),
                     '{{store.shipping_calculator_url | escape('js')}}',
@@ -2937,18 +3003,7 @@ DOMContentLoaded.addEventOrExecute(() => {
 
     {% if template == 'product' %}
         if (!vanillaJS) {
-            {# /* // Calculate product detail shipping on page load */ #}
-
-            if(jQueryNuvem('#product-shipping-container').find(".js-shipping-input").val()){
-                setTimeout(function() {
-                    LS.calculateShippingAjax(
-                        jQueryNuvem('#product-shipping-container').find(".js-shipping-input").val(),
-                        '{{store.shipping_calculator_url | escape('js')}}',
-                        jQueryNuvem("#product-shipping-container").closest(".js-shipping-calculator-container") );
-
-                    removeShippingSuboptions();
-                }, 100);
-            }
+            {# PDP starts with empty CEP — do not auto-calculate from cookie/prefilled input. #}
         }
 
         {# /* // Pitch login instead of zipcode helper if is returning customer */ #}
@@ -3196,11 +3251,11 @@ DOMContentLoaded.addEventOrExecute(() => {
         {# /* // Product slider */ #}
 
         var width = window.innerWidth;
-        if (width > 767) {
+        if (width > 767 && width < 1360) {
             var speedVal = 0;
             var loopVal = false;
-            var spaceBetweenVal = 0;
-            var slidesPerViewVal = 1;
+            var spaceBetweenVal = 12;
+            var slidesPerViewVal = 2;
         } else {
             var speedVal = 300;
             var loopVal = true;
@@ -3216,6 +3271,24 @@ DOMContentLoaded.addEventOrExecute(() => {
             slidesPerView: slidesPerViewVal,
             centeredSlides: false,
             spaceBetween: spaceBetweenVal,
+            breakpoints: {
+                0: {
+                    slidesPerView: 1,
+                    spaceBetween: 0,
+                    speed: 300,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 12,
+                    speed: 0,
+                    loop: false,
+                },
+                1360: {
+                    slidesPerView: 1,
+                    spaceBetween: 0,
+                    speed: 0,
+                },
+            },
             {% endif %}
             pagination: {
                 el: '.js-swiper-product-pagination',

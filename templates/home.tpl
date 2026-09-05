@@ -155,12 +155,12 @@
       top: auto;
       right: 0;
       bottom: 0;
-      left: 0;
+      left: 0 !important;
       width: 100% !important;
       height: 32px;
       min-height: 32px;
       padding: 0 8px 0 22px;
-      border-radius: 24px;
+      border-radius: 0 0 16px 16px;
     }
 
     [data-store="home-image-text-module"] .textbanner-title {

@@ -185,7 +185,7 @@
 
                 {% if is_yamuna_spot_card and product_can_show_installments %}
                     {% if is_pdp_related_spot %}
-                        {# Figma: "ou 10x de R$9,93 sem juros" — stacked under price, compact "Nx". #}
+                        {# Figma 838:4078: "ou 10x de R$4,99 sem juros" beside price. #}
                         {% set spot_installments = product.get_max_installments(false) %}
                         {% if not spot_installments or spot_installments.installment <= 1 %}
                             {% set spot_installments = product.get_max_installments %}
@@ -284,7 +284,7 @@
                                     {% set texts = {'cart': "Comprar", 'contact': "Consultar precio", 'nostock': "Sin stock", 'catalog': "Consultar"} %}
 
                                     {% if is_yamuna_spot_card %}
-                                        {% set three_products_price = (product.price * 3) | money %}
+                                        {% set three_products_price = is_pdp_related_spot ? (product.price | money) : ((product.price * 3) | money) %}
                                         <input class="{{ spot_qty_class }}" type="hidden" name="quantity" value="1" />
                                         <button type="button" class="js-addtocart js-prod-submit-form {{ quickshop_button_primary_classes }} {{ spot_ns }}-buy-one {{ state }}" data-quantity="1" {% if state == 'nostock' %}disabled{% endif %} data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}">
                                             <img class="{{ spot_ns }}-bag" src="{{ 'images/yamuna/home-spot-bag-white.svg' | static_url }}" alt="" aria-hidden="true" />

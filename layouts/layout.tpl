@@ -98,6 +98,18 @@
         {{ component('structured-data-organization') }}
         {{ component('structured-data') }}
 
+        {% if template == 'product' %}
+        <script>
+            {# Clear sticky CEP cookie ASAP so platform JS cannot auto-restore on PDP refresh. #}
+            (function () {
+                try {
+                    document.cookie = 'calculator_zipcode=; Max-Age=0; path=/';
+                    document.cookie = 'calculator_zipcode=; Max-Age=0; path=/; domain=' + location.hostname;
+                } catch (e) {}
+            })();
+        </script>
+        {% endif %}
+
     </head>
     <body class="{% if customer %}customer-logged-in{% endif %} template-{{ template | replace('.', '-') }}" data-rounded-borders="{{ settings.theme_rounded ? 'true' : 'false' }}" data-solid-icons="{{ settings.icons_solid ? 'true' : 'false' }}">
 

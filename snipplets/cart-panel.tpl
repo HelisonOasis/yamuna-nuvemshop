@@ -196,58 +196,171 @@
       display: block !important;
     }
 
-    body #modal-cart .cart-item {
+    /* Figma sacola desktop: image | body; controls under body column. */
+    body #modal-cart .yamuna-minicart-item,
+    body #modal-cart .cart-item.yamuna-minicart-item {
       position: relative !important;
-      display: flex !important;
-      min-height: 140px !important;
-      height: 140px !important;
+      display: grid !important;
+      grid-template-columns: 88px minmax(0, 1fr) !important;
+      grid-template-rows: auto auto !important;
+      align-items: start !important;
+      column-gap: 16px !important;
+      row-gap: 0 !important;
+      min-height: 0 !important;
+      height: auto !important;
       margin: 0 !important;
-      padding: 0 0 16px !important;
-      border-bottom: 1px solid #ded8dc !important;
+      padding: 16px 0 !important;
+      border-bottom: 1px solid #c0bbc3 !important;
+      box-sizing: border-box !important;
     }
 
-    body #modal-cart .cart-item > .col-2 {
-      flex: 0 0 88px !important;
+    body #modal-cart .yamuna-minicart-item-image {
+      grid-column: 1 !important;
+      grid-row: 1 / span 2 !important;
+      flex: none !important;
       width: 88px !important;
       max-width: 88px !important;
       padding: 0 !important;
     }
 
-    body #modal-cart .cart-item > .col-2 a,
-    body #modal-cart .cart-item > .col-2 img {
-      display: block !important;
-      width: 88px !important;
-      height: 130px !important;
+    body #modal-cart .yamuna-minicart-item-body {
+      grid-column: 2 !important;
+      grid-row: 1 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      min-width: 0 !important;
+      padding: 0 !important;
     }
 
-    body #modal-cart .cart-item > .col-2 img {
+    body #modal-cart .yamuna-minicart-item-controls {
+      grid-column: 2 !important;
+      grid-row: 2 !important;
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: wrap !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      width: 100% !important;
+      margin: 12px 0 0 !important;
+      float: none !important;
+    }
+
+    body #modal-cart .yamuna-minicart-item-image a,
+    body #modal-cart .yamuna-minicart-item-image img {
+      display: block !important;
+      width: 88px !important;
+      height: 88px !important;
       object-fit: contain !important;
     }
 
-    body #modal-cart .cart-item > .col-10 {
+    body #modal-cart .yamuna-minicart-item-body {
       position: relative !important;
-      display: block !important;
-      flex: 1 1 auto !important;
-      width: calc(100% - 88px) !important;
-      max-width: calc(100% - 88px) !important;
-      height: 140px !important;
-      padding: 0 0 0 16px !important;
+      grid-column: 2 !important;
+      grid-row: 1 !important;
+      display: flex !important;
+      flex: none !important;
+      flex-direction: column !important;
+      align-items: stretch !important;
+      min-width: 0 !important;
+      padding: 0 !important;
+      float: none !important;
     }
 
-    body #modal-cart .cart-item > .col-10 > .w-100 {
-      position: relative !important;
-      height: 100% !important;
+    /* Kill Bootstrap floats/margins that collapse the name column and orphan the trash. */
+    body #modal-cart .yamuna-minicart-item .form-group,
+    body #modal-cart .yamuna-minicart-item .form-quantity,
+    body #modal-cart .yamuna-minicart-item .yamuna-minicart-qty,
+    body #modal-cart .yamuna-minicart-item .cart-item-quantity,
+    body #modal-cart .yamuna-minicart-item .row {
+      float: none !important;
+      clear: none !important;
+      margin: 0 !important;
+      margin-bottom: 0 !important;
+    }
+
+    body #modal-cart .yamuna-minicart-item .form-group::after,
+    body #modal-cart .yamuna-minicart-item .form-group::before,
+    body #modal-cart .yamuna-minicart-item .row::after,
+    body #modal-cart .yamuna-minicart-item .row::before {
+      display: none !important;
+      content: none !important;
+    }
+
+    body #modal-cart .yamuna-minicart-item-top {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: flex-start !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      width: 100% !important;
+    }
+
+    body #modal-cart .cart-item-name,
+    body #modal-cart .cart-item-name a {
+      display: -webkit-box !important;
+      -webkit-box-orient: vertical !important;
+      -webkit-line-clamp: 2 !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      word-break: break-word !important;
+      overflow-wrap: anywhere !important;
     }
 
     body #modal-cart .cart-item-name {
-      width: calc(100% - 106px) !important;
+      flex: 1 1 auto !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      width: auto !important;
       margin: 0 !important;
       padding: 0 !important;
       color: #393747 !important;
       font-family: 'Dosis', sans-serif !important;
       font-size: 18px !important;
       font-weight: 600 !important;
-      line-height: normal !important;
+      line-height: 22px !important;
+    }
+
+    body #modal-cart .cart-item-name a {
+      color: inherit !important;
+      text-decoration: none !important;
+      width: 100% !important;
+    }
+
+    /* Hide platform cart labels that inflate the name block. */
+    body #modal-cart .cart-item-name [data-store="cart-item-labels"],
+    body #modal-cart .cart-item-name .mt-2 {
+      display: none !important;
+    }
+
+    body #modal-cart .yamuna-cart-dropdown-footer {
+      box-sizing: border-box !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: stretch !important;
+      height: auto !important;
+      min-height: 160px !important;
+      padding: 0 0 28px !important;
+    }
+
+    body #modal-cart .yamuna-cart-dropdown-footer > p {
+      position: static !important;
+      margin: 12px 20px 0 !important;
+      color: #000 !important;
+      font-size: 16px !important;
+      font-weight: 400 !important;
+      line-height: 1.25 !important;
+      text-align: center !important;
+    }
+
+    body #modal-cart .yamuna-cart-checkout {
+      position: relative !important;
+      top: auto !important;
+      right: auto !important;
+      bottom: auto !important;
+      left: auto !important;
+      width: calc(100% - 44px) !important;
+      margin: 16px 22px 0 !important;
     }
 
     body #modal-cart .yamuna-cart-item-promo {
@@ -255,10 +368,12 @@
     }
 
     body #modal-cart .cart-item-subtotal {
-      position: absolute !important;
-      top: 0 !important;
-      right: 0 !important;
+      position: static !important;
+      top: auto !important;
+      right: auto !important;
+      flex: 0 0 auto !important;
       margin: 0 !important;
+      padding: 0 !important;
     }
 
     body #modal-cart .cart-item-subtotal,
@@ -267,15 +382,25 @@
       font-family: 'Dosis', sans-serif !important;
       font-size: 20px !important;
       font-weight: 700 !important;
-      line-height: normal !important;
+      line-height: 22px !important;
       text-align: right !important;
       white-space: nowrap !important;
     }
 
-    body #modal-cart .cart-item > .col-10 > .w-100 > .cart-item-quantity {
-      position: absolute !important;
-      top: 56px !important;
-      left: 0 !important;
+    body #modal-cart .yamuna-minicart-item-controls {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      width: 100% !important;
+      margin-top: 10px !important;
+    }
+
+    body #modal-cart .yamuna-minicart-item-controls .cart-item-quantity {
+      position: static !important;
+      top: auto !important;
+      left: auto !important;
       width: 88px !important;
       margin: 0 !important;
     }
@@ -284,6 +409,7 @@
     body #modal-cart .cart-item-quantity .form-quantity,
     body #modal-cart .cart-item-quantity .form-quantity .row {
       display: flex !important;
+      flex-wrap: nowrap !important;
       width: 88px !important;
       height: 32px !important;
       margin: 0 !important;
@@ -353,14 +479,59 @@
       text-align: center !important;
     }
 
-    body #modal-cart .yamuna-cart-subscription {
-      position: absolute !important;
-      top: 98px !important;
-      left: 0 !important;
-      display: block !important;
-      width: 150px !important;
-      height: 26px !important;
+    body #modal-cart .cart-item-delete {
+      position: static !important;
+      top: auto !important;
+      right: auto !important;
+      bottom: auto !important;
+      left: auto !important;
+      z-index: 1 !important;
+      display: flex !important;
+      flex: 0 0 auto !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      width: 24px !important;
+      height: 32px !important;
+      margin: 0 0 0 auto !important;
       padding: 0 !important;
+    }
+
+    body #modal-cart .cart-item-delete .btn {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 24px !important;
+      height: 24px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      background: transparent !important;
+    }
+
+    body #modal-cart .yamuna-cart-trash-icon {
+      display: block !important;
+      width: 14px !important;
+      height: 16px !important;
+    }
+
+    body #modal-cart .yamuna-cart-subscription {
+      position: static !important;
+      top: auto !important;
+      left: auto !important;
+      right: auto !important;
+      bottom: auto !important;
+      float: none !important;
+      clear: both !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      align-self: flex-start !important;
+      width: auto !important;
+      min-width: 150px !important;
+      max-width: 180px !important;
+      height: 26px !important;
+      margin: 10px 0 0 !important;
+      padding: 0 8px !important;
       border: 1px solid #a31460 !important;
       border-radius: 2px !important;
       color: #a31460 !important;
@@ -372,22 +543,50 @@
       white-space: nowrap !important;
     }
 
-    body #modal-cart .cart-item-delete {
-      position: absolute !important;
-      z-index: 2 !important;
-      top: auto !important;
-      bottom: 42px !important;
-      right: 0 !important;
-      width: 18px !important;
-      margin: 0 !important;
-      padding: 0 !important;
+    body #modal-cart .yamuna-minicart-item-controls {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: wrap !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      width: 100% !important;
+      margin: 12px 0 0 !important;
+      float: none !important;
     }
 
-    body #modal-cart .cart-item-delete .btn,
-    body #modal-cart .yamuna-cart-trash-icon {
-      display: block !important;
-      width: 18px !important;
-      height: 18px !important;
+    /* Desktop Figma: qty | trash, then ASSINAR on the next line */
+    body #modal-cart .yamuna-minicart-item-controls .cart-item-quantity {
+      order: 1 !important;
+    }
+
+    body #modal-cart .yamuna-minicart-item-controls .cart-item-delete {
+      order: 2 !important;
+      margin-left: auto !important;
+    }
+
+    body #modal-cart .yamuna-minicart-item-controls .yamuna-cart-subscription {
+      order: 3 !important;
+      flex: 0 0 100% !important;
+      width: auto !important;
+      max-width: none !important;
+      margin: 0 !important;
+    }
+
+    body #modal-cart .cart-item-delete {
+      position: static !important;
+      top: auto !important;
+      right: auto !important;
+      bottom: auto !important;
+      left: auto !important;
+      float: none !important;
+      z-index: 1 !important;
+      display: flex !important;
+      flex: 0 0 auto !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      width: 24px !important;
+      height: 32px !important;
       margin: 0 !important;
       padding: 0 !important;
     }
@@ -397,6 +596,19 @@
     body #modal-cart .js-empty-ajax-cart .yamuna-cart-trash-icon,
     body #modal-cart .js-ajax-cart-list:empty ~ .cart-item-delete {
       display: none !important;
+    }
+
+    /* Figma: breathing room under COMPRAR CTA - keep button in normal flow */
+    body #modal-cart .yamuna-cart-dropdown-footer {
+      padding-bottom: 28px !important;
+    }
+
+    body #modal-cart .yamuna-cart-checkout {
+      position: relative !important;
+      top: auto !important;
+      right: auto !important;
+      bottom: auto !important;
+      left: auto !important;
     }
   }
 
@@ -426,26 +638,144 @@
       z-index: 30000 !important;
     }
 
-    /* A estrutura do tema envolve os três controles em .row; sem nowrap o
-       Bootstrap leva o botão "+" para a segunda linha. */
-    body #modal-cart .cart-item > .col-10 > .w-100 > .cart-item-quantity,
+    /* Mobile minicart item — image|body on top, full-width qty|ASSINAR|trash. */
+    body #modal-cart .yamuna-minicart-item,
+    body #modal-cart .cart-item.yamuna-minicart-item {
+      position: relative !important;
+      display: grid !important;
+      grid-template-columns: 80px minmax(0, 1fr) !important;
+      grid-template-rows: auto auto !important;
+      align-items: start !important;
+      column-gap: 13px !important;
+      row-gap: 8px !important;
+      min-height: 0 !important;
+      height: auto !important;
+      margin: 0 !important;
+      padding: 12px 0 !important;
+      border-bottom: 1px solid #c0bbc3 !important;
+    }
+
+    body #modal-cart .yamuna-minicart-item-image {
+      grid-column: 1 !important;
+      grid-row: 1 !important;
+      flex: none !important;
+      width: 80px !important;
+      max-width: 80px !important;
+      padding: 0 !important;
+    }
+
+    body #modal-cart .yamuna-minicart-item-body {
+      grid-column: 2 !important;
+      grid-row: 1 !important;
+      display: flex !important;
+      flex: none !important;
+      flex-direction: column !important;
+      min-width: 0 !important;
+      padding: 0 !important;
+    }
+
+    body #modal-cart .yamuna-minicart-item-controls {
+      grid-column: 1 / -1 !important;
+      grid-row: 2 !important;
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      gap: 8px !important;
+      width: 100% !important;
+      margin: 0 !important;
+    }
+
+    body #modal-cart .yamuna-minicart-item-image a,
+    body #modal-cart .yamuna-minicart-item-image img {
+      display: block !important;
+      width: 80px !important;
+      height: 80px !important;
+      object-fit: contain !important;
+    }
+
+    body #modal-cart .yamuna-minicart-item-top {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: flex-start !important;
+      justify-content: space-between !important;
+      gap: 8px !important;
+      width: 100% !important;
+    }
+
+    body #modal-cart .cart-item-name {
+      flex: 1 1 auto !important;
+      min-width: 0 !important;
+      width: auto !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      color: #393747 !important;
+      font-family: 'Raleway', sans-serif !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      line-height: 17px !important;
+      display: -webkit-box !important;
+      -webkit-box-orient: vertical !important;
+      -webkit-line-clamp: 2 !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+    }
+
+    body #modal-cart .cart-item-name a { color: inherit !important; text-decoration: none !important; }
+    body #modal-cart .cart-item-name small,
+    body #modal-cart .cart-item-name [data-component="cart-labels"],
+    body #modal-cart .js-cart-item-subtotal-compare-price-container { display: none !important; }
+
+    body #modal-cart .cart-item-subtotal,
+    body #modal-cart .cart-item-subtotal .js-cart-item-subtotal {
+      position: static !important;
+      flex: 0 0 auto !important;
+      margin: 0 !important;
+      color: var(--brand-blue-secondary-800, #238482) !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 14px !important;
+      font-weight: 700 !important;
+      line-height: 17px !important;
+      text-align: right !important;
+      white-space: nowrap !important;
+    }
+
+    body #modal-cart .yamuna-cart-item-promo {
+      position: static !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+      width: 99px !important;
+      min-height: 30px !important;
+      margin: 8px 0 0 !important;
+      padding: 4px 6px !important;
+      border-radius: 3px !important;
+      background: rgba(192, 187, 195, .2) !important;
+      color: var(--neutral-gray-600, #393747) !important;
+      font-family: 'Dosis', sans-serif !important;
+      font-size: 10px !important;
+      font-weight: 400 !important;
+      line-height: 115% !important;
+      text-align: center !important;
+    }
+
+    body #modal-cart .yamuna-cart-item-promo > span {
+      display: block !important;
+      white-space: nowrap !important;
+    }
+
+    body #modal-cart .yamuna-minicart-item-controls .cart-item-quantity,
     body #modal-cart .cart-item-quantity .form-group,
     body #modal-cart .cart-item-quantity .form-quantity,
     body #modal-cart .cart-item-quantity .form-quantity .row {
-      width: 81px !important;
-      height: 30px !important;
-    }
-
-    /* O conteúdo de .w-100 começa após a coluna de imagem (x=105).
-       No Figma o seletor parte de x=13 e o selo parte de x=105. */
-    body #modal-cart .cart-item > .col-10 > .w-100 > .cart-item-quantity {
-      top: 87px !important;
-      left: -92px !important;
-    }
-
-    body #modal-cart .cart-item-quantity .form-quantity .row {
+      position: static !important;
+      top: auto !important;
+      left: auto !important;
       display: flex !important;
       flex-wrap: nowrap !important;
+      width: 81px !important;
+      height: 30px !important;
       margin: 0 !important;
       padding: 0 !important;
     }
@@ -470,46 +800,57 @@
       padding: 0 !important;
     }
 
-    body #modal-cart .cart-item > .col-10 > .w-100 > .yamuna-cart-item-promo {
-      left: 0 !important;
-      margin-left: 0 !important;
-      transform: none !important;
-      color: var(--neutral-gray-600, #393747) !important;
+    body #modal-cart .cart-item-delete {
+      position: static !important;
+      top: auto !important;
+      right: auto !important;
+      bottom: auto !important;
       display: flex !important;
-      flex-direction: column !important;
-      justify-content: center !important;
-      font-family: 'Dosis', sans-serif !important;
-      font-size: 10px !important;
-      font-style: normal !important;
-      font-weight: 400 !important;
-      line-height: 115% !important;
-      text-align: center !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      width: 18px !important;
+      height: 28px !important;
+      margin: 0 0 0 auto !important;
     }
 
-    body #modal-cart .yamuna-cart-item-promo > span {
+    body #modal-cart .cart-item-delete .btn {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 18px !important;
+      height: 18px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      background: transparent !important;
+    }
+
+    body #modal-cart .yamuna-cart-trash-icon {
       display: block !important;
-      white-space: nowrap !important;
+      width: 14px !important;
+      height: 16px !important;
     }
 
     body #modal-cart .yamuna-cart-subscription {
-      top: 87px !important;
-      left: 0 !important;
+      position: static !important;
+      top: auto !important;
+      left: auto !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-sizing: border-box !important;
       width: 138px !important;
       height: 30px !important;
+      margin: 0 !important;
+      padding: 0 4px !important;
+      border: 1px solid #a31460 !important;
+      border-radius: 2px !important;
+      color: #a31460 !important;
       font-family: 'Inter', sans-serif !important;
       font-size: 10px !important;
+      font-weight: 500 !important;
       line-height: 28px !important;
-    }
-
-    body #modal-cart .cart-item-subtotal,
-    body #modal-cart .cart-item-subtotal .js-cart-item-subtotal {
-      color: var(--brand-blue-secondary-800, #238482) !important;
-      font-family: 'Inter', sans-serif !important;
-      font-size: 14px !important;
-      font-style: normal !important;
-      font-weight: 700 !important;
-      line-height: normal !important;
-      text-align: right !important;
+      white-space: nowrap !important;
     }
 
     body #modal-cart .yamuna-cart-dropdown-footer,
@@ -696,64 +1037,60 @@
       display: none !important;
     }
 
-    body #modal-cart .modal-body > .js-ajax-cart-list,
+    body #modal-cart .modal-body > .js-ajax-cart-list {
+      display: block !important;
+    }
+
+    /* Never force-show empty cards when AJAX already injected line items
+       (that overlay crushed the first product on mobile). */
     body #modal-cart .modal-body > .js-empty-ajax-cart {
+      display: none !important;
+    }
+
+    body #modal-cart:not(:has(.js-cart-item)) .modal-body > .js-empty-ajax-cart,
+    body #modal-cart.yamuna-cart-is-empty .modal-body > .js-empty-ajax-cart {
       display: block !important;
-    }
-
-    body #modal-cart .cart-item > .col-2 {
-      flex: 0 0 80px !important;
-      width: 80px !important;
-      max-width: 80px !important;
-      padding: 0 !important;
-    }
-
-    body #modal-cart .cart-item > .col-10 {
-      flex: 1 1 auto !important;
-      width: calc(100% - 80px) !important;
-      max-width: calc(100% - 80px) !important;
-      padding-left: 13px !important;
-    }
-
-    body #modal-cart .cart-item > .col-10 > .w-100 > .cart-item-quantity {
-      top: 87px !important;
-      left: -92px !important;
-      width: 81px !important;
-    }
-
-    body #modal-cart .yamuna-cart-subscription {
-      top: 87px !important;
-      left: 13px !important;
-      width: 138px !important;
-    }
-
-    body #modal-cart .cart-item-delete {
-      top: 87px !important;
-      right: 0 !important;
+      position: relative !important;
+      top: auto !important;
+      right: auto !important;
       bottom: auto !important;
-      width: 18px !important;
-      height: 28px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: flex-end !important;
+      left: auto !important;
+      padding: 12px !important;
     }
 
-    body #modal-cart .cart-item-delete .btn {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      width: 18px !important;
-      height: 18px !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border: 0 !important;
-      background: transparent !important;
+    body #modal-cart:has(.js-cart-item) .js-empty-ajax-cart,
+    body #modal-cart:has(.js-cart-item) .yamuna-cart-empty-footer {
+      display: none !important;
     }
 
-    body #modal-cart .yamuna-cart-trash-icon {
+    body #modal-cart:has(.js-cart-item) .yamuna-cart-dropdown-footer {
       display: block !important;
-      width: 14px !important;
-      height: 16px !important;
+    }
+
+    /* Mobile Figma: qty | ASSINAR | trash on one row */
+    body #modal-cart .yamuna-minicart-item-controls {
+      flex-wrap: nowrap !important;
+      justify-content: flex-start !important;
+      gap: 8px !important;
+    }
+
+    body #modal-cart .yamuna-minicart-item-controls .cart-item-quantity {
+      order: 1 !important;
+      flex: 0 0 auto !important;
+    }
+
+    body #modal-cart .yamuna-minicart-item-controls .yamuna-cart-subscription {
+      order: 2 !important;
+      flex: 0 0 auto !important;
+      width: 138px !important;
+      max-width: none !important;
+      margin: 0 !important;
+    }
+
+    body #modal-cart .yamuna-minicart-item-controls .cart-item-delete {
+      order: 3 !important;
+      flex: 0 0 auto !important;
+      margin: 0 0 0 auto !important;
     }
 
     /* The storefront can render the cart empty and inject line items by AJAX.

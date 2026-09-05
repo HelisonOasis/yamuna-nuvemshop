@@ -1651,13 +1651,14 @@ $(document).ready(function(){
 
 	$(".js-product-form").submit(function (e) {
 	    var button = $(this).find(':submit');
-	    button.attr('disabled', 'disabled');
 	    if ((button.hasClass('contact')) || (button.hasClass('catalog'))) {
 	        e.preventDefault();
+	        button.attr('disabled', 'disabled');
 	        var product_id = $(this).find("input[name='add_to_cart']").val();
 	        window.location = "{{ store.contact_url | escape('js') }}?product=" + product_id;
-	    } else if (button.hasClass('cart')) {
-	        button.val('{{ "Agregando..." | translate }}');
+	    } else if (button.hasClass('cart') || button.hasClass('js-addtocart')) {
+	        {# Safety net: never navigate to /comprar/; AJAX click handler owns the UX. #}
+	        e.preventDefault();
 	    }
 	});
 
@@ -1668,10 +1669,10 @@ $(document).ready(function(){
 	    {# /* // Product slider */ #}
 
             var width = window.innerWidth;
-            if (width > 767) {
+            if (width > 767 && width < 1360) {
                 var speedVal = 0;
-                var spaceBetweenVal = 0;
-                var slidesPerViewVal = 1;
+                var spaceBetweenVal = 12;
+                var slidesPerViewVal = 2;
             } else {
                 var speedVal = 300;
                 var spaceBetweenVal = 0;
@@ -1687,6 +1688,23 @@ $(document).ready(function(){
                     slidesPerView: slidesPerViewVal,
                     centeredSlides: false,
                     spaceBetween: spaceBetweenVal,
+                    breakpoints: {
+                        0: {
+                            slidesPerView: 1,
+                            spaceBetween: 0,
+                            speed: 300,
+                        },
+                        768: {
+                            slidesPerView: 2,
+                            spaceBetween: 12,
+                            speed: 0,
+                        },
+                        1360: {
+                            slidesPerView: 1,
+                            spaceBetween: 0,
+                            speed: 0,
+                        },
+                    },
                     {% endif %}
                     pagination: {
                         el: '.js-swiper-product-pagination',
@@ -1923,16 +1941,10 @@ $(document).ready(function(){
             }
         }
 
-        if (!$(this).hasClass('contact')) {
+        if (!$(this).hasClass('contact') && !$(this).hasClass('catalog')) {
 
-            {# Home spot CTAs always add through AJAX and never submit /comprar/. #}
-            if (isHomeSpotButton) {
-                e.preventDefault();
-            }
-
-            {% if settings.ajax_cart %}
-                e.preventDefault();
-            {% endif %}
+            {# Always AJAX add-to-cart (same as home). Never navigate to /comprar/. #}
+            e.preventDefault();
 
             {# Hide real button and show button placeholder during event #}
 
@@ -2185,7 +2197,24 @@ $(document).ready(function(){
 
     {# Apply zipcode saved by cookie if there is no zipcode saved on cart from backend #}
 
-    if (cookieService.get('calculator_zipcode')) {
+    {% if template == 'product' %}
+        {# PDP: always start with a fresh CEP form. Clear cookie too so platform JS
+           cannot auto-restore / auto-calculate after our initial reset. #}
+        var resetProductShippingCalculator = function () {
+            try { cookieService.remove('calculator_zipcode'); } catch (err) {}
+            $('#product-shipping-container .js-shipping-input').val('');
+            $('#product-shipping-container .js-shipping-calculator-response').empty().hide();
+            $('#product-shipping-container .js-shipping-calculator-spinner').hide();
+            $('#product-shipping-container .js-shipping-calculator-head').addClass('with-form').removeClass('with-zip');
+            $('#product-shipping-container .js-shipping-calculator-with-zipcode').removeClass('transition-up-active');
+            $('#product-shipping-container .js-shipping-calculator-form').addClass('transition-up-active');
+        };
+        resetProductShippingCalculator();
+        window.setTimeout(resetProductShippingCalculator, 0);
+        window.setTimeout(resetProductShippingCalculator, 150);
+        window.setTimeout(resetProductShippingCalculator, 500);
+        window.setTimeout(resetProductShippingCalculator, 1200);
+    {% elseif cookieService.get('calculator_zipcode') %}
 
         {# If there is a cookie saved based on previous calcualtion, add it to the shipping input to triggert automatic calculation #}
 
@@ -2209,22 +2238,15 @@ $(document).ready(function(){
 
         {# Hide the shipping calculator and show spinner  #}
 
-        {% if template == 'product' %}
-            $("#product-shipping-container .js-shipping-calculator-head").addClass("with-form").removeClass("with-zip");
-            $("#product-shipping-container .js-shipping-calculator-with-zipcode").removeClass("transition-up-active");
-            $("#product-shipping-container .js-shipping-calculator-form").addClass("transition-up-active");
-            $("#product-shipping-container .js-shipping-calculator-spinner").show();
-        {% else %}
-            $(".js-shipping-calculator-head").addClass("with-zip").removeClass("with-form");
-            $(".js-shipping-calculator-with-zipcode").addClass("transition-up-active");
-            $(".js-shipping-calculator-spinner").show();
-        {% endif %}
-    } else {
+        $(".js-shipping-calculator-head").addClass("with-zip").removeClass("with-form");
+        $(".js-shipping-calculator-with-zipcode").addClass("transition-up-active");
+        $(".js-shipping-calculator-spinner").show();
+    {% else %}
 
         {# If there is no cookie saved, show calcualtor #}
 
         $(".js-shipping-calculator-form").addClass("transition-up-active");
-    }
+    {% endif %}
 
     {# Remove shipping suboptions from DOM to avoid duplicated modals #}
 
@@ -2356,18 +2378,7 @@ $(document).ready(function(){
 
     {% if template == 'product' %}
         if (!vanillaJS) {
-            {# /* // Calculate product detail shipping on page load */ #}
-
-            if($('#product-shipping-container').find(".js-shipping-input").val()){
-                setTimeout(function() {
-                    LS.calculateShippingAjax(
-                        $('#product-shipping-container').find(".js-shipping-input").val(),
-                        '{{store.shipping_calculator_url | escape('js')}}',
-                        $("#product-shipping-container").closest(".js-shipping-calculator-container") );
-
-                    removeShippingSuboptions();
-                }, 100);
-            }
+            {# PDP starts with empty CEP — do not auto-calculate from cookie/prefilled input. #}
         }
 
         {# /* // Pitch login instead of zipcode helper if is returning customer */ #}
@@ -2615,11 +2626,11 @@ $(document).ready(function(){
         {# /* // Product slider */ #}
 
         var width = window.innerWidth;
-        if (width > 767) {
+        if (width > 767 && width < 1360) {
             var speedVal = 0;
             var loopVal = false;
-            var spaceBetweenVal = 0;
-            var slidesPerViewVal = 1;
+            var spaceBetweenVal = 12;
+            var slidesPerViewVal = 2;
         } else {
             var speedVal = 300;
             var loopVal = true;
@@ -2635,6 +2646,24 @@ $(document).ready(function(){
             slidesPerView: slidesPerViewVal,
             centeredSlides: false,
             spaceBetween: spaceBetweenVal,
+            breakpoints: {
+                0: {
+                    slidesPerView: 1,
+                    spaceBetween: 0,
+                    speed: 300,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 12,
+                    speed: 0,
+                    loop: false,
+                },
+                1360: {
+                    slidesPerView: 1,
+                    spaceBetween: 0,
+                    speed: 0,
+                },
+            },
             {% endif %}
             pagination: {
                 el: '.js-swiper-product-pagination',
@@ -2647,8 +2676,8 @@ $(document).ready(function(){
             },
             on: {
                 init: function () {
-                  $(".js-product-slider-placeholder").hide();
-                  $(".js-swiper-product").css({"visibility" : "visible" , "height" : "auto"});
+                    $(".js-product-slider-placeholder").hide();
+                    $(".js-swiper-product").css({"visibility" : "visible" , "height" : "auto"});
                 },
             },
         });

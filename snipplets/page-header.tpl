@@ -11,7 +11,7 @@
 #}
 
 <section class="page-header" data-store="page-title">
-	{% if template != 'product' or template != 'contact' %}
+	{% if template != 'product' and template != 'contact' %}
 	<div class="container">
 		<div class="row">
 	{% endif %}
@@ -26,7 +26,7 @@
 				{% endif %}
 			<h1 class="{% if template == 'product' %}js-product-name{% else %}text-center{% endif %} h2 h1-md {% if template == 'contact' %} text-md-left{% endif %}{% if settings.theme_rounded and template != 'product' %} text-primary{% endif %}" {% if template == "product" %}data-store="product-name-{{ product.id }}"{% endif %}>{% block page_header_text %}{% endblock %}</h1>
 			{% if template == 'product' %}
-				{# Figma 853:9590 — rating under title #}
+				{# Figma 853:9590 - rating under title #}
 				{% set yamuna_rating_value = product.metafields.yamuna.rating | default(product.metafields.reviews.rating) | default('') %}
 				{% set yamuna_rating_count = product.metafields.yamuna.rating_count | default(product.metafields.reviews.count) | default(0) %}
 				<div class="yamuna-pdp-rating js-yamuna-pdp-rating{% if not yamuna_rating_value %} is-empty{% endif %}"
@@ -73,7 +73,7 @@
 					<p class="font-small font-md-normal text-center mb-0 mb-md-4">{{ category.description }}</p> 
 				{% endif %}
 			</div>
-	{% if template != 'product' %}
+	{% if template != 'product' and template != 'contact' %}
 		</div>
 	</div>
 	{% endif %}

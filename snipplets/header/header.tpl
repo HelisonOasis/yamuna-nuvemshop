@@ -143,6 +143,9 @@
                 document.documentElement.style.setProperty('--yamuna-desktop-panel-left', (headerRect.left + beforeLeft) + 'px');
                 document.documentElement.style.setProperty('--yamuna-desktop-panel-width', Math.max(0, headerRect.width - beforeLeft - beforeRight) + 'px');
                 document.documentElement.style.setProperty('--yamuna-desktop-panel-top', (headerRect.top + beforeTop + beforeHeight) + 'px');
+                document.documentElement.style.setProperty('--yamuna-menu-left', (headerRect.left + beforeLeft) + 'px');
+                document.documentElement.style.setProperty('--yamuna-menu-width', Math.max(0, headerRect.width - beforeLeft - beforeRight) + 'px');
+                document.documentElement.style.setProperty('--yamuna-menu-top', (headerRect.top + beforeTop + beforeHeight) + 'px');
             }
 
             function syncDesktopPanelsDuringTransition() {
