@@ -177,6 +177,9 @@
                             <span class="js-price-display item-price" data-product-price="{{ product.price }}">
                                 {{ product.price | money }}
                             </span>
+                            {% if product_can_show_installments and not is_yamuna_spot_card %}
+                                {{ component('installments', {'location' : 'product_item', container_classes: { installment: "item-installments"}}) }}
+                            {% endif %}
                         </div>
                     {% endif %}
                 {% endif %}
@@ -217,10 +220,6 @@
                         container_classes: discount_price_spacing_classes ~ " font-small font-md-normal text-accent font-weight-bold",
                     }) 
                 }}
-
-                {% if product_can_show_installments and not is_yamuna_spot_card %}
-                    {{ component('installments', {'location' : 'product_item', container_classes: { installment: "item-installments"}}) }}
-                {% endif %}
 
                 {% if not reduced_item %}
                 

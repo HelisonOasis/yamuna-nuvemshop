@@ -8847,8 +8847,23 @@ body.template-category .js-product-table .item-name {
 body.template-category .js-product-table .item-price-container {
   display: inline-flex;
   margin: 0 !important;
+  align-items: center;
+  gap: 8px;
+}
+
+body.template-category .js-product-table .yamuna-plp-price-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: baseline;
-  gap: 10px;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+}
+
+body.template-category .js-product-table .yamuna-plp-price-row .item-price-container {
+  width: auto;
+  flex: 0 0 auto;
 }
 
 body.template-category .js-product-table .item-price {
@@ -8857,16 +8872,49 @@ body.template-category .js-product-table .item-price {
   font-size: 24px;
   font-weight: 600;
   line-height: 1.1;
+  white-space: nowrap;
 }
 
 body.template-category .js-product-table .item-installments {
   display: inline;
-  margin: 0 0 0 10px;
-  color: #9e929e;
+  margin: 0;
+  color: #9e9e9e;
   font-family: 'Dosis', sans-serif;
   font-size: 14px;
   font-weight: 400;
-  line-height: 1.1;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+body.template-category .js-product-table .item-installments *,
+body.template-search .js-product-table .item-installments * {
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 400;
+  line-height: inherit;
+}
+
+body.template-category .yamuna-plp-body .js-offer-label,
+body.template-category .yamuna-plp-body .label-accent,
+body.template-search .yamuna-plp-body .js-offer-label,
+body.template-search .yamuna-plp-body .label-accent {
+  background: #a31460 !important;
+  color: #fff !important;
+}
+
+body.template-category .yamuna-plp-body .label-circle,
+body.template-search .yamuna-plp-body .label-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  text-align: center;
 }
 
 body.template-category .yamuna-plp-item-actions {
@@ -8903,11 +8951,14 @@ body.template-category .yamuna-plp-buy-three {
 body.template-category .yamuna-plp-buy-three {
   background: #fff;
   color: #238482;
-  font-size: 12px;
+  font-size: 14px;
 }
 
-body.template-category .yamuna-plp-buy-three span {
+body.template-category .yamuna-plp-buy-three span,
+body.template-category .yamuna-plp-buy-three-prefix,
+body.template-category .yamuna-plp-buy-three-price {
   margin-left: 4px;
+  font-size: 14px;
   font-weight: 600;
 }
 
@@ -9056,8 +9107,23 @@ body.template-search .js-product-table .item-name {
 body.template-search .js-product-table .item-price-container {
   display: inline-flex;
   margin: 0 !important;
+  align-items: center;
+  gap: 8px;
+}
+
+body.template-search .js-product-table .yamuna-plp-price-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: baseline;
-  gap: 10px;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+}
+
+body.template-search .js-product-table .yamuna-plp-price-row .item-price-container {
+  width: auto;
+  flex: 0 0 auto;
 }
 
 body.template-search .js-product-table .item-price {
@@ -9066,16 +9132,18 @@ body.template-search .js-product-table .item-price {
   font-size: 24px;
   font-weight: 600;
   line-height: 1.1;
+  white-space: nowrap;
 }
 
 body.template-search .js-product-table .item-installments {
   display: inline;
-  margin: 0 0 0 10px;
-  color: #9e929e;
+  margin: 0;
+  color: #9e9e9e;
   font-family: 'Dosis', sans-serif;
   font-size: 14px;
   font-weight: 400;
-  line-height: 1.1;
+  line-height: normal;
+  white-space: nowrap;
 }
 
 body.template-search .yamuna-plp-item-actions {
@@ -9112,10 +9180,16 @@ body.template-search .yamuna-plp-buy-three {
 body.template-search .yamuna-plp-buy-three {
   background: #fff;
   color: #238482;
-  font-size: 12px;
+  font-size: 14px;
 }
 
-body.template-search .yamuna-plp-buy-three span { margin-left: 4px; }
+body.template-search .yamuna-plp-buy-three span,
+body.template-search .yamuna-plp-buy-three-prefix,
+body.template-search .yamuna-plp-buy-three-price {
+  margin-left: 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
 
 body.template-search .yamuna-plp-buy-one img,
 body.template-search .yamuna-plp-buy-three img {
@@ -11031,19 +11105,6 @@ body.template-search .yamuna-plp-body .item-image img {
   body.template-category .yamuna-plp-body .js-product-table .item-name,
   body.template-search .yamuna-plp-body .js-product-table .item-name {
     font-size: 16px;
-  }
-
-  body.template-category .yamuna-plp-body .yamuna-plp-buy-one,
-  body.template-category .yamuna-plp-body .yamuna-plp-buy-three,
-  body.template-search .yamuna-plp-body .yamuna-plp-buy-one,
-  body.template-search .yamuna-plp-body .yamuna-plp-buy-three,
-  body.template-category .yamuna-plp-body .yamuna-plp-buy-one *,
-  body.template-category .yamuna-plp-body .yamuna-plp-buy-three *,
-  body.template-search .yamuna-plp-body .yamuna-plp-buy-one *,
-  body.template-search .yamuna-plp-body .yamuna-plp-buy-three * {
-    font-size: 10px !important;
-    line-height: 12px;
-    white-space: nowrap;
   }
 
   body.template-category .yamuna-plp-body .yamuna-plp-buy-one,

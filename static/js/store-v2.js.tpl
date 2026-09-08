@@ -1570,15 +1570,24 @@ DOMContentLoaded.addEventOrExecute(() => {
                 return selected;
             }
 
+            var yamunaFilterByProductId = {"364441596":["sem acucar","sem gluten","sem lactose","vacas de pasto"],"364437592":["sem acucar","sem gluten","sem lactose","vacas de pasto"],"360843941":["sem acucar","sem gluten","sem lactose"],"360843891":["sem acucar","sem gluten","sem lactose"],"360843842":["sem acucar","sem gluten","sem lactose"],"360258715":["sem acucar","sem gluten","sem lactose"],"360195322":["sem acucar","sem gluten","sem lactose"],"359634279":["moinho de pedra","sem acucar","sem gluten","sem lactose","vegano"],"359634271":["moinho de pedra","sem acucar","sem gluten","sem lactose","vegano"],"359634266":["moinho de pedra","sem acucar","sem gluten","sem lactose","vegano"],"359634255":["moinho de pedra","sem acucar","sem gluten","sem lactose","vegano"],"359634238":["organico","sem gluten","sem lactose","vegano"],"359634222":["vegano"],"359634216":["vegano"],"359634205":["vegano"],"359634194":["vegano"],"359633797":["vegano"],"359633788":["vegano"],"359633783":["vegano"],"359633776":["vegano"],"359633768":["vegano"],"359633756":["vegano"],"359633748":["vegano"],"359633741":["vegano"],"359633732":["moinho de pedra","sem acucar","sem gluten","sem lactose","vegano"],"359633726":["moinho de pedra","sem acucar","sem gluten","sem lactose","vegano"],"359633719":["moinho de pedra","sem acucar","sem gluten","sem lactose","vegano"],"359633712":["moinho de pedra","sem acucar","sem gluten","sem lactose","vegano"],"359633706":["organico","sem acucar","sem gluten","sem lactose","vegano"],"359633668":["sem acucar","sem gluten","sem lactose","vegano"],"359633653":["moinho de pedra","pouco acucar","sem gluten","sem lactose","vegano"],"359633647":["vegano"],"359633639":["vegano"],"359633632":["vegano"],"359633625":["vegano"],"359633615":["vegano"],"359633607":["vegano"],"359633603":["vegano"],"359633596":["vegano"],"359633589":["vegano"],"359633583":["sem acucar","sem gluten","sem lactose","vegano"],"359633578":["sem acucar","sem gluten","sem lactose","vegano"],"359633568":["sem acucar","sem gluten","sem lactose","vegano"],"359633558":["sem acucar","sem gluten","sem lactose","vegano"],"359633547":["organico","sem acucar","sem gluten","sem lactose","vegano"],"359633528":["sem acucar","sem gluten","sem lactose","vegano"],"359633476":["moinho de pedra","sem acucar","sem gluten","sem lactose","vegano"],"359633452":["sem acucar","sem gluten","sem lactose"],"359633432":["sem acucar","sem gluten","sem lactose"],"359633415":["sem acucar","sem gluten","sem lactose"],"359633389":["sem acucar","sem gluten","sem lactose"],"359633358":["pouco acucar","sem gluten","sem lactose","vegano"],"359633329":["sem acucar","sem gluten","sem lactose","vegano"],"359633315":["sem acucar","sem gluten","sem lactose","vegano"],"359633301":["moinho de pedra","sem acucar","sem gluten","sem lactose","vegano"],"359633285":["moinho de pedra","sem acucar","sem gluten","sem lactose","vegano"],"359633266":["sem acucar","sem gluten","sem lactose","vacas de pasto"],"359633228":["sem acucar","sem gluten","sem lactose","vacas de pasto"],"359633198":["sem acucar","sem gluten","sem lactose","vacas de pasto"],"359633177":["sem acucar","sem gluten","sem lactose","vacas de pasto"],"359633145":["sem acucar","sem gluten","sem lactose","vacas de pasto"],"359624539":["moinho de pedra","sem acucar","sem gluten","sem lactose","vegano"],"359624514":["moinho de pedra","sem acucar","sem gluten","sem lactose","vegano"],"359624490":["moinho de pedra","sem acucar","sem gluten","sem lactose","vegano"],"359624468":["moinho de pedra","sem acucar","sem gluten","sem lactose","vegano"],"359624441":["sem acucar","sem gluten","sem lactose","vacas de pasto"],"359624413":["sem acucar","sem gluten","sem lactose"],"359624390":["sem acucar","sem gluten","sem lactose","vegano"],"359624361":["moinho de pedra","sem gluten","sem lactose","vegano"],"359624323":["moinho de pedra","sem acucar","sem gluten","sem lactose"],"359624293":["moinho de pedra","pouco acucar","sem gluten","sem lactose"],"359624264":["sem acucar","sem gluten","sem lactose","vacas de pasto"],"359624239":["sem acucar","sem gluten","sem lactose","vegano"],"359624204":["sem acucar","sem gluten","sem lactose","vegano"],"359624181":["organico","sem acucar","sem gluten","sem lactose","vegano"],"359624153":["vegano"],"359624133":["moinho de pedra","sem acucar","sem gluten","sem lactose"],"359624114":["moinho de pedra","sem gluten"],"359624110":["moinho de pedra","sem acucar","sem gluten","sem lactose"],"359624102":["moinho de pedra","pouco acucar","sem gluten","sem lactose"],"359624099":["moinho de pedra","pouco acucar","sem gluten","sem lactose","vegano"],"359624084":["moinho de pedra","organico","sem acucar","sem gluten","sem lactose","vegano"],"359624048":["sem acucar","sem gluten","sem lactose","vegano","organico"],"359624026":["moinho de pedra","pouco acucar","sem gluten","sem lactose"],"359623998":["moinho de pedra","pouco acucar","sem gluten","sem lactose"],"359623976":["sem acucar","sem gluten","sem lactose","vacas de pasto"],"359623961":["sem gluten","sem lactose","vegano"],"359634179":["vegano"],"359634165":["vegano"],"359633801":["vegano"],"359633506":["sem acucar","sem gluten","sem lactose","vegano"],"359624346":["organico","sem acucar","sem gluten","sem lactose","vegano"],"359624169":["vegano"],"359624162":["vegano"],"359624157":["vegano"]};
+
+            var filterAliases = {
+                'moinho de pedra': ['moinho de pedra'],
+                'organico': ['organico', 'organica', 'organicos'],
+                'pouco acucar': ['pouco acucar', 'baixo acucar'],
+                'sem acucar': ['sem acucar', 'zero acucar', '0 acucar'],
+                'sem gluten': ['sem gluten'],
+                'sem lactose': ['sem lactose'],
+                'vacas de pasto': ['vacas de pasto', 'vacas a pasto'],
+                'vegano': ['vegano', 'vegana']
+            };
+
             function itemMatchesFilter(tags, filter) {
-                if (tags.indexOf(filter) !== -1) return true;
-                if (filter === 'vacas de pasto' && tags.indexOf('ghee') !== -1) return true;
-                if (filter === 'sem lactose' && (tags.indexOf('ghee') !== -1 || tags.indexOf('vegano') !== -1 || tags.indexOf('leite de coco') !== -1 || tags.indexOf('oleo de coco') !== -1 || tags.indexOf('tahine') !== -1)) return true;
-                if (filter === 'sem gluten' && (tags.indexOf('ghee') !== -1 || tags.indexOf('massala') !== -1 || tags.indexOf('curcuma') !== -1 || tags.indexOf('tahine') !== -1)) return true;
-                if (filter === 'vegano' && tags.indexOf('ghee') === -1 && /(leite de coco|oleo de coco|tahine|massala|nibs|spirulina|vegano|castanha|pistache|amendoas|curcuma)/.test(tags)) return true;
-                if (filter === 'organico' && /organic/.test(tags)) return true;
-                if (filter === 'sem acucar' && (tags.indexOf('zero acucar') !== -1 || tags.indexOf('0 acucar') !== -1)) return true;
-                if (filter === 'moinho de pedra' && tags.indexOf('moinho') !== -1) return true;
+                var aliases = filterAliases[filter] || [filter];
+                for (var i = 0; i < aliases.length; i++) {
+                    if (tags.indexOf(aliases[i]) !== -1) return true;
+                }
                 return false;
             }
 
@@ -1587,7 +1596,8 @@ DOMContentLoaded.addEventOrExecute(() => {
                 var items = document.querySelectorAll('.yamuna-plp-body .js-item-product');
                 var visible = 0;
                 items.forEach(function(item) {
-                    var tags = normalize(item.getAttribute('data-yamuna-tags'));
+                    var mapped = yamunaFilterByProductId[item.getAttribute('data-product-id')] || [];
+                    var tags = normalize((item.getAttribute('data-yamuna-tags') || '') + ' ' + mapped.join(' '));
                     var match = !selected.length || selected.every(function(filter) {
                         return itemMatchesFilter(tags, filter);
                     });
@@ -2535,7 +2545,7 @@ DOMContentLoaded.addEventOrExecute(() => {
     {# Capture-phase AJAX add-to-cart for home spots AND PDP CTA.
        Mirrors home behavior and blocks native submit to /comprar/. #}
     document.addEventListener('click', function(event) {
-        var button = event.target.closest('.yamuna-home-spot-buy-one, .yamuna-home-spot-buy-three, .yamuna-pdp-spot-buy-one, .yamuna-pdp-spot-buy-three');
+        var button = event.target.closest('.yamuna-home-spot-buy-one, .yamuna-home-spot-buy-three, .yamuna-pdp-spot-buy-one, .yamuna-pdp-spot-buy-three, .yamuna-plp-buy-one, .yamuna-plp-buy-three');
 
         if (!button) {
             button = event.target.closest('#product_form .js-addtocart.js-prod-submit-form, .yamuna-pdp-summary .js-addtocart.js-prod-submit-form');
@@ -2567,6 +2577,7 @@ DOMContentLoaded.addEventOrExecute(() => {
         }
 
         var originalLabel = button.tagName === 'INPUT' ? button.value : (button.textContent || '').trim();
+        var originalHtml = button.tagName === 'INPUT' ? '' : button.innerHTML;
         button.disabled = true;
 
         LS.addToCartEnhanced(
@@ -2579,6 +2590,8 @@ DOMContentLoaded.addEventOrExecute(() => {
                 button.disabled = false;
                 if (button.tagName === 'INPUT' && originalLabel) {
                     button.value = originalLabel;
+                } else if (originalHtml) {
+                    button.innerHTML = originalHtml;
                 }
                 if (window.yamunaShowCartToast) {
                     window.yamunaShowCartToast();
@@ -2588,6 +2601,8 @@ DOMContentLoaded.addEventOrExecute(() => {
                 button.disabled = false;
                 if (button.tagName === 'INPUT' && originalLabel) {
                     button.value = originalLabel;
+                } else if (originalHtml) {
+                    button.innerHTML = originalHtml;
                 }
             }
         );
@@ -2602,6 +2617,8 @@ DOMContentLoaded.addEventOrExecute(() => {
         var $productButton = $productContainer.find(".js-addtocart:not(.js-addtocart-placeholder)");
         var $productForm = jQueryNuvem(this).closest("form");
         var $clickedAddButton = jQueryNuvem(this);
+        var isPlpButton = $clickedAddButton.hasClass('yamuna-plp-buy-one')
+            || $clickedAddButton.hasClass('yamuna-plp-buy-three');
         var isHomeSpotButton = $clickedAddButton.hasClass('yamuna-home-spot-buy-one')
             || $clickedAddButton.hasClass('yamuna-home-spot-buy-three')
             || $clickedAddButton.hasClass('yamuna-pdp-spot-buy-one')
@@ -2663,29 +2680,31 @@ DOMContentLoaded.addEventOrExecute(() => {
 
             {# Hide real button and show button placeholder during event #}
 
-            $productButtonPlaceholder.insertAfter(jQueryNuvem(this));
-            if (isHomeSpotButton) {
-                $productForm.css({
-                    position: 'relative',
-                    minHeight: productFormHeight + 'px'
-                });
-                $productButtonPlaceholder.css({
-                    display: 'flex',
-                    position: 'absolute',
-                    top: clickedButtonTop + 'px',
-                    left: 0,
-                    width: '100%',
-                    height: clickedButtonHeight + 'px',
-                    minHeight: clickedButtonHeight + 'px',
-                    margin: 0
-                });
+            if (!isPlpButton) {
+                $productButtonPlaceholder.insertAfter(jQueryNuvem(this));
+                if (isHomeSpotButton) {
+                    $productForm.css({
+                        position: 'relative',
+                        minHeight: productFormHeight + 'px'
+                    });
+                    $productButtonPlaceholder.css({
+                        display: 'flex',
+                        position: 'absolute',
+                        top: clickedButtonTop + 'px',
+                        left: 0,
+                        width: '100%',
+                        height: clickedButtonHeight + 'px',
+                        minHeight: clickedButtonHeight + 'px',
+                        margin: 0
+                    });
+                }
+                $productButton.hide();
+                if (!isHomeSpotButton) {
+                    $productButtonPlaceholder.css('display' , 'inline-block');
+                }
+                $productButtonText.fadeOut();
+                $productButtonAdding.addClass("active");
             }
-            $productButton.hide();
-            if (!isHomeSpotButton) {
-                $productButtonPlaceholder.css('display' , 'inline-block');
-            }
-            $productButtonText.fadeOut();
-            $productButtonAdding.addClass("active");
 
             {# Keep original CTA label to restore after AJAX (LS sets "Incluindo..."). #}
             var originalAddLabel = $productButton.attr('data-yamuna-original-label');
