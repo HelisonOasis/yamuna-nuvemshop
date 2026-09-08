@@ -7,7 +7,7 @@
 		{% elseif footer_item_name == 'manifesto' or footer_item_name == 'nosso manifesto' %}
 			{% set footer_item_url = '/nossomanifesto' %}
 		{% elseif footer_item_name == 'blog' or footer_item_name == 'nosso blog' %}
-			{% set footer_item_url = '/aprenda' %}
+			{% set footer_item_url = store.blog_url %}
 		{% elseif footer_item_name == 'política de privacidade' or footer_item_name == 'politica de privacidade' %}
 			{% set footer_item_url = '/PoliticaDePrivacidade' %}
 		{% elseif footer_item_name == 'trabalhe conosco' %}

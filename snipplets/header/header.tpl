@@ -46,7 +46,7 @@
             </div>
             <a class="nav-list-link" href="{{ store.url }}/quem-somos/">Quem somos</a>
             <a class="nav-list-link" href="{{ store.url }}/revenda/">Revenda</a>
-            <a class="nav-list-link" href="{{ store.url }}/blog/">Blog</a>
+            <a class="nav-list-link" href="{{ store.blog_url | default('/aprenda') }}">Blog</a>
         </nav>
 
         <div class="yamuna-header-desktop-search">

@@ -7,7 +7,7 @@
 		{% elseif footer_item_name == 'manifesto' %}
 			{% set footer_item_url = '/nossomanifesto' %}
 		{% elseif footer_item_name == 'blog' %}
-			{% set footer_item_url = '/aprenda' %}
+			{% set footer_item_url = store.blog_url %}
 		{% elseif footer_item_name == 'atendimento ao cliente' %}
 			{% set footer_item_url = store.whatsapp %}
 		{% elseif footer_item_name == 'seja um revendedor' %}

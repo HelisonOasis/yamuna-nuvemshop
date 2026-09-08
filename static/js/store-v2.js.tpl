@@ -1146,6 +1146,109 @@ DOMContentLoaded.addEventOrExecute(() => {
             });
         }
 
+        {# /* // Home blog carousel */ #}
+
+        function initYamunaHomeBlogSwiper() {
+            if (!document.querySelector('.js-swiper-blog')) return;
+            createSwiper('.js-swiper-blog', {
+                watchOverflow: true,
+                grabCursor: true,
+                slidesPerView: 1.15,
+                spaceBetween: 24,
+                navigation: {
+                    nextEl: '.js-swiper-blog-next',
+                    prevEl: '.js-swiper-blog-prev',
+                },
+                pagination: {
+                    el: '.js-swiper-blog-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 36,
+                    },
+                    1200: {
+                        slidesPerView: 3,
+                        spaceBetween: 48,
+                    }
+                }
+            });
+        }
+
+        var homeBlogTrack = document.querySelector('.js-yamuna-home-blog-track');
+        if (homeBlogTrack && !homeBlogTrack.children.length) {
+            fetch('/blog/').then(function(res) { return res.text(); }).then(function(html) {
+                var doc = new DOMParser().parseFromString(html, 'text/html');
+                var cards = doc.querySelectorAll('.yamuna-blog-grid .js-yamuna-blog-card');
+                cards.forEach(function(card, index) {
+                    if (index > 11) return;
+                    var slide = card.cloneNode(true);
+                    slide.classList.add('swiper-slide', 'yamuna-blog-card--home');
+                    homeBlogTrack.appendChild(slide);
+                });
+                initYamunaHomeBlogSwiper();
+            }).catch(function() {
+                initYamunaHomeBlogSwiper();
+            });
+        } else {
+            initYamunaHomeBlogSwiper();
+        }
+
+        (function initYamunaBlogFilters() {
+            var grid = document.querySelector('.yamuna-blog-grid');
+            if (!grid) return;
+            var cards = grid.querySelectorAll('.js-yamuna-blog-card');
+            var empty = document.querySelector('.js-yamuna-blog-empty');
+            var search = document.querySelector('.js-yamuna-blog-q');
+            var form = document.querySelector('.js-yamuna-blog-search');
+            var catButtons = document.querySelectorAll('.js-yamuna-blog-cat');
+            var activeCat = 'all';
+
+            function cardMatchesCat(card, cat) {
+                if (cat === 'all') return true;
+                var text = (card.textContent || '').toLowerCase();
+                if (cat === 'receitas') return /receita|gelato|muffin|panqueca|levain|p[aã]o|energy ball/.test(text);
+                if (cat === 'saude') return /sa[uú]de|colesterol|lactose|intestino|gordura|vitamina/.test(text);
+                if (cat === 'ayurveda') return /ayurveda|massala|masala|dosha/.test(text);
+                if (cat === 'conhecimento') return /benef[ií]cio|ci[eê]ncia|conhecimento|colesterol|gordura/.test(text);
+                return true;
+            }
+
+            function applyFilter() {
+                var q = (search && search.value ? search.value : '').toLowerCase().trim();
+                var visible = 0;
+                cards.forEach(function(card) {
+                    var text = (card.textContent || '').toLowerCase();
+                    var catOk = cardMatchesCat(card, activeCat);
+                    var qOk = !q || text.indexOf(q) !== -1;
+                    var show = catOk && qOk;
+                    card.hidden = !show;
+                    if (show) visible += 1;
+                });
+                if (empty) empty.hidden = visible !== 0;
+            }
+
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    applyFilter();
+                });
+            }
+            if (search) {
+                search.addEventListener('input', applyFilter);
+            }
+            catButtons.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    activeCat = btn.getAttribute('data-cat') || 'all';
+                    catButtons.forEach(function(other) {
+                        other.classList.toggle('is-active', other === btn);
+                    });
+                    applyFilter();
+                });
+            });
+        })();
+
 
         {# /* // Brands slider */ #}
 
@@ -1402,6 +1505,126 @@ DOMContentLoaded.addEventOrExecute(() => {
             e.preventDefault();
             LS.urlRemoveAllParamsExceptQuerySort();
         });
+
+        (function initYamunaPlpFilters() {
+            var options = document.querySelectorAll('.js-yamuna-plp-filter');
+            if (!options.length) return;
+
+            var modal = document.getElementById('nav-filters');
+            var overlay = document.querySelector('.js-modal-overlay[data-modal-id="#nav-filters"]');
+            if (overlay && overlay.parentElement !== document.body) {
+                document.body.appendChild(overlay);
+            }
+            if (modal && modal.parentElement !== document.body) {
+                document.body.appendChild(modal);
+            }
+
+            function closeYamunaFiltersNow() {
+                if (!modal) return;
+                modal.classList.remove('modal-show');
+                modal.style.display = 'none';
+                if (overlay) overlay.style.display = 'none';
+                document.documentElement.classList.remove('yamuna-filters-open');
+                document.body.classList.remove('overflow-none');
+                if (window.location.hash.indexOf('modal-fullscreen') !== -1) {
+                    history.replaceState('', document.title, window.location.pathname + window.location.search);
+                }
+            }
+
+            document.addEventListener('click', function(e) {
+                var applyBtn = e.target.closest('#nav-filters .js-yamuna-plp-apply');
+                var closeBtn = e.target.closest('#nav-filters .js-modal-close');
+                var overlayClick = e.target.closest('.js-modal-overlay[data-modal-id="#nav-filters"]');
+                if (!closeBtn && !overlayClick) return;
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (applyBtn) applyYamunaFilters();
+                closeYamunaFiltersNow();
+            }, true);
+
+            if (modal && window.MutationObserver) {
+                new MutationObserver(function() {
+                    var isOpen = modal.classList.contains('modal-show');
+                    document.documentElement.classList.toggle('yamuna-filters-open', isOpen);
+                    if (isOpen) {
+                        document.body.classList.remove('overflow-none');
+                    }
+                }).observe(modal, { attributes: true, attributeFilter: ['class'] });
+            }
+
+            function normalize(value) {
+                return String(value || '')
+                    .toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/ç/g, 'c');
+            }
+
+            function selectedFilters() {
+                var selected = [];
+                options.forEach(function(option) {
+                    if (option.classList.contains('is-selected')) {
+                        selected.push(normalize(option.getAttribute('data-yamuna-filter')));
+                    }
+                });
+                return selected;
+            }
+
+            function itemMatchesFilter(tags, filter) {
+                if (tags.indexOf(filter) !== -1) return true;
+                if (filter === 'vacas de pasto' && tags.indexOf('ghee') !== -1) return true;
+                if (filter === 'sem lactose' && (tags.indexOf('ghee') !== -1 || tags.indexOf('vegano') !== -1 || tags.indexOf('leite de coco') !== -1 || tags.indexOf('oleo de coco') !== -1 || tags.indexOf('tahine') !== -1)) return true;
+                if (filter === 'sem gluten' && (tags.indexOf('ghee') !== -1 || tags.indexOf('massala') !== -1 || tags.indexOf('curcuma') !== -1 || tags.indexOf('tahine') !== -1)) return true;
+                if (filter === 'vegano' && tags.indexOf('ghee') === -1 && /(leite de coco|oleo de coco|tahine|massala|nibs|spirulina|vegano|castanha|pistache|amendoas|curcuma)/.test(tags)) return true;
+                if (filter === 'organico' && /organic/.test(tags)) return true;
+                if (filter === 'sem acucar' && (tags.indexOf('zero acucar') !== -1 || tags.indexOf('0 acucar') !== -1)) return true;
+                if (filter === 'moinho de pedra' && tags.indexOf('moinho') !== -1) return true;
+                return false;
+            }
+
+            function applyYamunaFilters() {
+                var selected = selectedFilters();
+                var items = document.querySelectorAll('.yamuna-plp-body .js-item-product');
+                var visible = 0;
+                items.forEach(function(item) {
+                    var tags = normalize(item.getAttribute('data-yamuna-tags'));
+                    var match = !selected.length || selected.every(function(filter) {
+                        return itemMatchesFilter(tags, filter);
+                    });
+                    item.style.display = match ? '' : 'none';
+                    if (match) visible += 1;
+                });
+                var empty = document.querySelector('.yamuna-plp-body [data-component="filter.message"]');
+                if (empty) empty.style.display = visible ? 'none' : '';
+            }
+
+            options.forEach(function(option) {
+                option.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    option.classList.toggle('is-selected');
+                    var input = option.querySelector('input');
+                    if (input) input.checked = option.classList.contains('is-selected');
+                });
+            });
+
+            document.querySelectorAll('.js-yamuna-plp-apply').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    applyYamunaFilters();
+                });
+            });
+
+            document.querySelectorAll('.js-yamuna-plp-clear').forEach(function(button) {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    options.forEach(function(option) {
+                        option.classList.remove('is-selected');
+                        var input = option.querySelector('input');
+                        if (input) input.checked = false;
+                    });
+                    applyYamunaFilters();
+                });
+            });
+        })();
 
 	{% endif %}
 

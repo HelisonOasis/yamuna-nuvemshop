@@ -73,7 +73,6 @@
 						<li class="footer-menu-item"><a class="footer-menu-link" href="/revenda">Revenda e Lojistas</a></li>
 						<li class="footer-menu-item"><span class="footer-menu-link">Contato via E-mail</span></li>
 						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.whatsapp }}" target="_blank" rel="noopener">Comprar com WhatsApp</a></li>
-						<li class="footer-menu-item"><a class="footer-menu-link" href="/programa-de-beneficios">Programa de pontos</a></li>
 					</ul>
 				</div>
 
@@ -111,7 +110,7 @@
 								{% elseif footer_item_name == 'manifesto' %}
 									{% set footer_item_url = '/nossomanifesto' %}
 								{% elseif footer_item_name == 'blog' %}
-									{% set footer_item_url = '/aprenda' %}
+									{% set footer_item_url = store.blog_url %}
 								{% elseif footer_item_name == 'atendimento ao cliente' %}
 									{% set footer_item_url = store.whatsapp %}
 								{% elseif footer_item_name == 'seja um revendedor' %}

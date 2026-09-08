@@ -238,8 +238,7 @@
 		{% endif %}
 	{% endfor %}
 
-	{# Reserved space for the future blog section. #}
-	{% include 'snipplets/home/home-content-placeholders.tpl' with {'placeholder': 'blog'} %}
+	{% include 'snipplets/home/home-blog.tpl' %}
 
 	{# Show the native Instagram feed here once its token is configured. #}
 	{% if has_instafeed %}

@@ -45,7 +45,7 @@
     <section class="yamuna-mobile-menu-links">
         <a href="/quem-somos">QUEM SOMOS</a>
         <a href="/nossomanifesto">MANIFESTO</a>
-        <a href="/aprenda">BLOG</a>
+        <a href="{{ store.blog_url }}">BLOG</a>
     </section>
     <section class="yamuna-mobile-menu-links yamuna-mobile-menu-links-last">
         <a href="{{ store.whatsapp }}" target="_blank" rel="noopener">ATENDIMENTO AO CLIENTE</a>

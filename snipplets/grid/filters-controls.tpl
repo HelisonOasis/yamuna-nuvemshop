@@ -2,10 +2,9 @@
 {% set category_page = template == 'category' %}
 {% if (search_page_filters or category_page)  %}
     <section class="js-category-controls category-controls container visible-when-content-ready">
-        <div class="row align-items-center {% if products %}mb-md-5{% endif %}">
+        <div class="row align-items-center">
             <div class="visible-when-content-ready col-auto">
-                {% if has_filters_available %}
-                <a href="#" class="js-modal-open js-fullscreen-modal-open yamuna-plp-filter-trigger" data-toggle="#nav-filters" data-modal-url="modal-fullscreen-filters" data-component="filter-button">
+                <a href="#" class="js-modal-open yamuna-plp-filter-trigger" data-toggle="#nav-filters" data-component="filter-button">
                     <svg class="yamuna-plp-filter-trigger-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                         <g clip-path="url(#clip0_3426_14815)">
                             <path d="M0.75 3.56245H2.802C2.96298 4.15475 3.31438 4.67762 3.80199 5.0504C4.28961 5.42318 4.88634 5.62514 5.50012 5.62514C6.11391 5.62514 6.71064 5.42318 7.19826 5.0504C7.68587 4.67762 8.03727 4.15475 8.19825 3.56245H17.25C17.4489 3.56245 17.6397 3.48343 17.7803 3.34278C17.921 3.20213 18 3.01136 18 2.81245C18 2.61354 17.921 2.42277 17.7803 2.28212C17.6397 2.14147 17.4489 2.06245 17.25 2.06245H8.19825C8.03727 1.47015 7.68587 0.947279 7.19826 0.574502C6.71064 0.201724 6.11391 -0.000244141 5.50012 -0.000244141C4.88634 -0.000244141 4.28961 0.201724 3.80199 0.574502C3.31438 0.947279 2.96298 1.47015 2.802 2.06245H0.75C0.551088 2.06245 0.360322 2.14147 0.21967 2.28212C0.0790176 2.42277 0 2.61354 0 2.81245C0 3.01136 0.0790176 3.20213 0.21967 3.34278C0.360322 3.48343 0.551088 3.56245 0.75 3.56245ZM5.49975 1.49995C5.75934 1.49995 6.0131 1.57693 6.22894 1.72115C6.44478 1.86537 6.613 2.07035 6.71234 2.31018C6.81168 2.55001 6.83767 2.81391 6.78703 3.06851C6.73639 3.32311 6.61138 3.55697 6.42783 3.74053C6.24427 3.92408 6.01041 4.04909 5.75581 4.09973C5.50121 4.15037 5.23731 4.12438 4.99748 4.02504C4.75765 3.9257 4.55267 3.75748 4.40845 3.54164C4.26423 3.3258 4.18725 3.07204 4.18725 2.81245C4.18765 2.46448 4.32606 2.13087 4.57211 1.88481C4.81817 1.63876 5.15178 1.50035 5.49975 1.49995Z" fill="#A31460"/>
@@ -17,21 +16,6 @@
                     <span class="yamuna-plp-filter-label-desktop">{{ 'Filtrar' | t }}</span>
                     <span class="yamuna-plp-filter-label-mobile">{{ 'Filtros' | t }}</span>
                 </a>
-                {% embed "snipplets/modal.tpl" with{modal_id: 'nav-filters', modal_class: 'filters yamuna-plp-filters-modal', modal_position: 'left', modal_transition: 'slide', modal_header: true, modal_width: 'full', modal_mobile_full_screen: 'true' } %}
-                    {% block modal_head %}
-                        {{'Filtros ' | translate }}
-                    {% endblock %}
-                    {% block modal_body %}
-                        {% include "snipplets/grid/filters.tpl" with {mobile: true, yamuna_plp_modal: true} %}
-                        <div class="js-filters-overlay filters-overlay" style="display: none;">
-                            <div class="filters-updating-message">
-                                <h3 class="js-applying-filter" style="display: none;">{{ 'Aplicando filtro...' | translate }}</h3>
-                                <h3 class="js-removing-filter" style="display: none;">{{ 'Borrando filtro...' | translate }}</h3>
-                            </div>
-                        </div>
-                    {% endblock %}
-                {% endembed %}
-                {% endif %}
             </div>
             {% if products %}
             <div class="col ml-auto yamuna-plp-sort">
@@ -62,8 +46,22 @@
             </div>
             {% endif %}
         </div>
-</section>
-<div class="container visible-when-content-ready d-md-none">
-    {% include "snipplets/grid/filters.tpl" with {mobile: true, applied_filters: true} %}
-</div>
+    </section>
+    {% embed "snipplets/modal.tpl" with{modal_id: 'nav-filters', modal_class: 'filters yamuna-plp-filters-modal', modal_position: 'left', modal_transition: 'slide', modal_header: true, modal_width: 'full', modal_zindex_top: true } %}
+        {% block modal_head %}
+            {{'Filtros ' | translate }}
+        {% endblock %}
+        {% block modal_body %}
+            {% include "snipplets/grid/filters.tpl" with {mobile: true, yamuna_plp_modal: true} %}
+            <div class="js-filters-overlay filters-overlay" style="display: none;">
+                <div class="filters-updating-message">
+                    <h3 class="js-applying-filter" style="display: none;">{{ 'Aplicando filtro...' | translate }}</h3>
+                    <h3 class="js-removing-filter" style="display: none;">{{ 'Borrando filtro...' | translate }}</h3>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+    <div class="container visible-when-content-ready d-md-none">
+        {% include "snipplets/grid/filters.tpl" with {mobile: true, applied_filters: true} %}
+    </div>
 {% endif %}

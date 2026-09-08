@@ -627,6 +627,1019 @@ style.css
   }
 }
 
+/* Original Fbits /revenda layout */
+body.template-page:has(.yamuna-resale-page) > .mt-4,
+body.template-page:has(.yamuna-about-page) > .mt-4,
+body.template-page > .yamuna-resale-wrap {
+  margin-top: 0 !important;
+}
+
+.yamuna-resale-page {
+  --yamuna-resale-magenta: #a31460;
+  --yamuna-resale-magenta-alt: #9f145e;
+  --yamuna-resale-teal: #238482;
+  --yamuna-resale-text: #393747;
+  color: var(--yamuna-resale-text);
+  background: #fff;
+  overflow: hidden;
+  font-family: 'Roboto', sans-serif;
+}
+
+.yamuna-resale-page h1,
+.yamuna-resale-page h2,
+.yamuna-resale-page p,
+.yamuna-resale-page a,
+.yamuna-resale-page figcaption {
+  margin-top: 0;
+  font-family: 'Roboto', sans-serif !important;
+}
+
+.yamuna-resale-page img {
+  max-width: 100%;
+  height: auto;
+}
+
+.yamuna-resale-section {
+  width: 100%;
+  max-width: 1330px;
+  margin: 0 auto;
+  padding: 93px 20px 0;
+}
+
+.yamuna-resale-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: #fff !important;
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.55;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background .2s ease;
+}
+
+.yamuna-resale-btn:hover {
+  color: #fff !important;
+  opacity: .92;
+}
+
+.yamuna-resale-btn-teal {
+  background: var(--yamuna-resale-teal);
+}
+
+.yamuna-resale-btn-teal:hover {
+  background: #1c6d6b;
+}
+
+.yamuna-resale-btn-magenta {
+  background: var(--yamuna-resale-magenta);
+}
+
+.yamuna-resale-btn-magenta:hover {
+  background: #8a1051;
+}
+
+.yamuna-resale-hero {
+  position: relative;
+  width: 100%;
+}
+
+.yamuna-resale-hero-media,
+.yamuna-resale-hero-media picture,
+.yamuna-resale-hero-media img {
+  display: block;
+  width: 100%;
+}
+
+.yamuna-resale-hero-media img {
+  object-fit: cover;
+}
+
+.yamuna-resale-hero-card {
+  position: absolute;
+  left: 0;
+  bottom: 16px;
+  box-sizing: border-box;
+  width: min(284px, calc(100% - 16px));
+  max-width: 284px;
+  padding: 16px;
+  border-radius: 0 24px 24px 0;
+  background: #fff;
+}
+
+.yamuna-resale-hero-card h1 {
+  margin: 0;
+  color: var(--yamuna-resale-magenta);
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.yamuna-resale-hero-card > p {
+  margin: 0;
+  padding: 8px 0;
+  color: var(--yamuna-resale-text);
+  font-family: 'Dosis', sans-serif !important;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.yamuna-resale-hero-note {
+  margin: 0 !important;
+  padding-top: 20px !important;
+  color: var(--yamuna-resale-text) !important;
+  font-family: 'Raleway', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  text-align: left;
+}
+
+.yamuna-resale-hero-card .yamuna-resale-btn {
+  padding: 8px 32px;
+  font-family: 'Raleway', sans-serif !important;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.yamuna-resale-intro {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.yamuna-resale-intro-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  text-align: center;
+}
+
+.yamuna-resale-intro-copy p {
+  margin: 0;
+  color: var(--yamuna-resale-text);
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 28px;
+  text-align: center;
+}
+
+.yamuna-resale-intro-copy strong {
+  font-weight: 700;
+}
+
+.yamuna-resale-people {
+  display: block;
+  width: min(100%, 464px);
+  margin: 0 auto;
+  order: -1;
+}
+
+.yamuna-resale-video-frame {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+  background: #111;
+}
+
+.yamuna-resale-video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.yamuna-resale-seals-featured {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.yamuna-resale-seals-featured img,
+.yamuna-resale-seals-grid img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+}
+
+.yamuna-resale-seals-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.yamuna-resale-banner {
+  max-width: 1330px;
+  margin: 93px auto 0;
+  padding: 0 20px;
+}
+
+.yamuna-resale-banner img {
+  display: block;
+  width: 100%;
+}
+
+.yamuna-resale-why,
+.yamuna-resale-join {
+  max-width: 1115px;
+  text-align: center;
+}
+
+.yamuna-resale-why h2,
+.yamuna-resale-join h2 {
+  margin: 0;
+  padding-bottom: 44px;
+  color: var(--yamuna-resale-teal);
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.yamuna-resale-why p,
+.yamuna-resale-join p {
+  margin: 0;
+  padding-bottom: 8px;
+  color: #000;
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.yamuna-resale-join p {
+  padding-bottom: 32px;
+}
+
+.yamuna-resale-join p:last-of-type {
+  padding-bottom: 8px;
+}
+
+.yamuna-resale-diffs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1319px;
+}
+
+.yamuna-resale-diffs h2 {
+  width: 100%;
+  margin: 0 0 32px;
+  color: #000;
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.yamuna-resale-diffs-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 16px 16px;
+}
+
+.yamuna-resale-diffs-grid figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 150px;
+  margin: 0;
+}
+
+.yamuna-resale-diffs-grid img {
+  width: 132px;
+  height: 132px;
+  object-fit: contain;
+}
+
+.yamuna-resale-diffs-grid figcaption {
+  color: #000;
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.yamuna-resale-diffs .yamuna-resale-btn {
+  display: flex;
+  width: 100%;
+  max-width: 589px;
+  margin: 80px auto 0;
+}
+
+.yamuna-resale-join .yamuna-resale-btn {
+  display: flex;
+  width: 100%;
+  max-width: 359px;
+  margin: 80px auto;
+  background: var(--yamuna-resale-magenta-alt);
+}
+
+@media (min-width: 768px) {
+  .yamuna-resale-hero-card {
+    bottom: 80px;
+    width: 432px;
+    max-width: 432px;
+    padding: 20px 16px 20px 64px;
+  }
+
+  .yamuna-resale-hero-card h1 {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  .yamuna-resale-hero-card > p {
+    padding: 20px 0;
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .yamuna-resale-hero-note {
+    font-size: 16px !important;
+    line-height: 24px !important;
+  }
+
+  .yamuna-resale-btn {
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  .yamuna-resale-intro-copy p {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .yamuna-resale-seals-featured {
+    margin-bottom: 64px;
+  }
+
+  .yamuna-resale-seals-featured img,
+  .yamuna-resale-seals-grid img {
+    width: 196px;
+    height: 196px;
+  }
+
+  .yamuna-resale-seals-grid {
+    gap: 32px 32px;
+  }
+
+  .yamuna-resale-why h2,
+  .yamuna-resale-join h2 {
+    font-size: 64px;
+    line-height: 96px;
+  }
+
+  .yamuna-resale-why p,
+  .yamuna-resale-join p {
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .yamuna-resale-diffs h2 {
+    margin-bottom: 64px;
+    font-size: 36px;
+    line-height: 40px;
+  }
+
+  .yamuna-resale-diffs-grid {
+    gap: 64px 32px;
+  }
+
+  .yamuna-resale-diffs-grid figure {
+    width: 192px;
+  }
+
+  .yamuna-resale-diffs-grid img {
+    width: 164px;
+    height: 164px;
+  }
+
+  .yamuna-resale-diffs-grid figcaption {
+    font-size: 20px;
+    line-height: 28px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .yamuna-resale-intro {
+    grid-template-columns: minmax(0, 1fr) 464px;
+    gap: 40px;
+  }
+
+  .yamuna-resale-intro-copy {
+    align-items: stretch;
+    text-align: left;
+  }
+
+  .yamuna-resale-intro-copy p {
+    text-align: left;
+  }
+
+  .yamuna-resale-people {
+    order: 0;
+  }
+
+  .yamuna-resale-hero-card .yamuna-resale-btn {
+    font-size: 18px;
+  }
+
+  .yamuna-resale-btn-wide {
+    width: 100%;
+  }
+}
+
+/* Original Fbits /QuemSomos layout */
+.yamuna-about-page {
+  --yamuna-about-wine: #4a1d3a;
+  --yamuna-about-teal: #238482;
+  color: #000;
+  background: #fff;
+  font-family: 'Dosis', sans-serif;
+}
+
+.yamuna-about-page h1,
+.yamuna-about-page h2,
+.yamuna-about-page h3,
+.yamuna-about-page p,
+.yamuna-about-page a,
+.yamuna-about-page cite,
+.yamuna-about-page blockquote,
+.yamuna-about-page strong,
+.yamuna-about-page li,
+.yamuna-about-page dt,
+.yamuna-about-page dd,
+.yamuna-about-page summary,
+.yamuna-about-page details {
+  font-family: 'Dosis', sans-serif !important;
+}
+
+.yamuna-about-page h1,
+.yamuna-about-page h2,
+.yamuna-about-page h3,
+.yamuna-about-page p,
+.yamuna-about-page strong,
+.yamuna-about-page li {
+  margin: 0;
+}
+
+.yamuna-about-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+  max-width: 1330px;
+  margin: 0 auto;
+  padding: 16px 16px 64px;
+}
+
+.yamuna-inst-sidebar {
+  flex: 0 0 auto;
+  width: 100%;
+  padding: 0 0 16px;
+  border-bottom: 1px solid rgba(69, 69, 79, 0.25);
+  font-family: 'Poppins', sans-serif;
+}
+
+.yamuna-inst-title,
+.yamuna-inst-nav a {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.yamuna-about-page .yamuna-inst-title,
+.yamuna-about-page .yamuna-inst-nav a {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.yamuna-inst-title {
+  margin: 0 0 12px;
+  color: var(--yamuna-about-wine);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.yamuna-inst-nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.yamuna-inst-nav li + li {
+  margin-top: 2px;
+}
+
+.yamuna-inst-nav a {
+  display: block;
+  padding: 5px 0;
+  color: #1a1a1a !important;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-decoration: none !important;
+}
+
+.yamuna-inst-nav a:hover {
+  color: var(--yamuna-about-teal) !important;
+}
+
+.yamuna-inst-nav a.is-active {
+  color: var(--yamuna-about-teal) !important;
+  font-weight: 700;
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
+
+.yamuna-about-content {
+  min-width: 0;
+  text-align: justify;
+}
+
+.yamuna-about-content h1 {
+  margin-bottom: 18px;
+  color: var(--yamuna-about-wine);
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.yamuna-about-content h2 {
+  margin: 28px 0 12px;
+  color: var(--yamuna-about-wine);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: left;
+}
+
+.yamuna-about-content h3 {
+  margin: 22px 0 8px;
+  color: var(--yamuna-about-wine);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.yamuna-about-content p {
+  margin: 0 0 16px;
+  color: #222;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.yamuna-about-lead {
+  font-size: 18px !important;
+  line-height: 1.75 !important;
+}
+
+.yamuna-about-content p strong {
+  color: #111;
+  font-weight: 700;
+}
+
+.yamuna-about-highlight {
+  margin: 8px 0 16px !important;
+  color: var(--yamuna-about-wine) !important;
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+}
+
+.yamuna-about-content ul {
+  margin: 0 0 24px;
+  padding: 0 0 0 22px;
+}
+
+.yamuna-about-content li {
+  margin: 0 0 8px;
+  color: #222;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.yamuna-policy-defs {
+  margin: 0 0 12px;
+}
+
+.yamuna-policy-defs dt {
+  margin: 20px 0 6px;
+  color: var(--yamuna-about-wine);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.yamuna-policy-defs dd {
+  margin: 0;
+  color: #222;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.yamuna-policy-content a {
+  color: var(--yamuna-about-teal);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.yamuna-policy-callout {
+  margin: 0 0 24px;
+  padding: 16px 20px;
+  border-radius: 16px;
+  background: rgba(35, 132, 130, 0.08);
+}
+
+.yamuna-policy-callout p {
+  margin: 0;
+  text-align: left;
+}
+
+.yamuna-policy-callout p + p {
+  margin-top: 8px;
+}
+
+.yamuna-policy-address {
+  margin: 0 0 16px;
+  padding: 16px 20px;
+  border-left: 3px solid var(--yamuna-about-wine);
+  background: #f7f4f5;
+  color: #222;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.yamuna-faq-group {
+  margin: 0 0 12px;
+  overflow: hidden;
+  border: 1px solid rgba(69, 69, 79, 0.18);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.yamuna-faq-group summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
+  color: var(--yamuna-about-wine);
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  list-style: none;
+  text-align: left;
+}
+
+.yamuna-faq-group summary::-webkit-details-marker {
+  display: none;
+}
+
+.yamuna-faq-group summary::after {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  margin-top: -4px;
+  border-right: 2px solid var(--yamuna-about-wine);
+  border-bottom: 2px solid var(--yamuna-about-wine);
+  transform: rotate(45deg);
+  transition: transform .2s ease;
+  content: '';
+}
+
+.yamuna-faq-group[open] summary::after {
+  margin-top: 4px;
+  transform: rotate(-135deg);
+}
+
+.yamuna-faq-body {
+  padding: 0 20px 20px;
+}
+
+.yamuna-faq-body h3 {
+  margin: 18px 0 8px;
+  color: var(--yamuna-about-teal);
+  font-size: 17px;
+}
+
+.yamuna-faq-body h3:first-child {
+  margin-top: 4px;
+}
+
+.yamuna-about-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 20px 0 8px;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #f3f1f2;
+}
+
+.yamuna-about-media img,
+.yamuna-about-video iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.yamuna-about-media--jars img {
+  object-position: center 28%;
+}
+
+.yamuna-about-media--portrait img {
+  object-position: center 18%;
+}
+
+.yamuna-about-media--soaps img {
+  object-position: center 22%;
+}
+
+.yamuna-about-media--jobs img {
+  object-position: center 40%;
+}
+
+.yamuna-about-video {
+  margin-top: 12px;
+}
+
+.yamuna-about-video iframe {
+  position: absolute;
+  inset: 0;
+  border: 0;
+}
+
+.yamuna-about-closing {
+  margin-top: 36px;
+  padding-top: 8px;
+}
+
+.yamuna-about-page .yamuna-about-quote {
+  margin: 0;
+}
+
+.yamuna-about-page .yamuna-about-quote p {
+  margin: 0;
+  color: var(--yamuna-about-wine) !important;
+  font-size: 22px !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  text-align: left;
+}
+
+.yamuna-about-page .yamuna-about-quote cite {
+  display: block;
+  margin: 10px 0 0;
+  color: var(--yamuna-about-wine);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: .02em;
+  line-height: 1.3;
+}
+
+.yamuna-about-page a.yamuna-about-btn {
+  display: inline-flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin: 32px 0 0;
+  padding: 10px 22px;
+  border-radius: 36px;
+  color: #fff !important;
+  background: var(--yamuna-about-teal);
+  font-family: 'Dosis', sans-serif !important;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+
+.yamuna-about-page a.yamuna-about-btn:hover {
+  color: #fff !important;
+  background: #1c6e6c;
+}
+
+.yamuna-about-page a.yamuna-about-btn-wine {
+  background: #a31460;
+  margin-top: 16px;
+}
+
+.yamuna-about-page a.yamuna-about-btn-wine:hover {
+  color: #fff !important;
+  background: #8a1051;
+}
+
+.yamuna-about-contacts {
+  margin-top: 36px;
+}
+
+.yamuna-about-contacts h2 {
+  margin: 0 0 14px;
+}
+
+.yamuna-about-contacts p {
+  margin: 0 0 8px;
+  color: #222;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.55;
+  text-align: left;
+}
+
+.yamuna-about-contacts strong {
+  color: var(--yamuna-about-wine);
+  font-weight: 700;
+}
+
+.yamuna-about-contacts a {
+  color: var(--yamuna-about-teal);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+  .yamuna-about-layout {
+    gap: 20px;
+    padding: 12px 16px 56px;
+  }
+
+  .yamuna-inst-sidebar {
+    padding-bottom: 12px;
+  }
+
+  .yamuna-inst-title {
+    font-size: 20px;
+  }
+
+  .yamuna-inst-nav a {
+    padding: 4px 0;
+    font-size: 15px;
+  }
+
+  .yamuna-about-content h1 {
+    font-size: 24px;
+  }
+
+  .yamuna-about-content h2 {
+    margin-top: 22px;
+    font-size: 20px;
+  }
+
+  .yamuna-about-content h3,
+  .yamuna-faq-group summary {
+    font-size: 17px;
+  }
+
+  .yamuna-faq-group summary,
+  .yamuna-faq-body {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .yamuna-about-content p,
+  .yamuna-about-contacts p {
+    font-size: 16px;
+  }
+
+  .yamuna-about-highlight,
+  .yamuna-about-quote p {
+    font-size: 18px !important;
+  }
+
+  .yamuna-about-media {
+    margin: 16px 0 4px;
+    aspect-ratio: 4 / 3;
+    border-radius: 20px;
+  }
+
+  .yamuna-about-page a.yamuna-about-btn {
+    display: flex;
+    width: 100%;
+    white-space: normal;
+  }
+}
+
+@media (min-width: 1024px) {
+  .yamuna-about-layout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 48px;
+    padding: 145px 24px 80px;
+  }
+
+  .yamuna-inst-sidebar {
+    position: sticky;
+    top: 120px;
+    flex: 0 0 248px;
+    width: 248px;
+    max-height: calc(100vh - 140px);
+    padding: 0 24px 24px 0;
+    overflow: auto;
+    border-bottom: 0;
+    border-right: 1px solid rgba(69, 69, 79, 0.25);
+  }
+
+  .yamuna-inst-title {
+    font-size: 24px;
+  }
+
+  .yamuna-inst-nav a {
+    font-size: 16px;
+  }
+
+  .yamuna-about-content {
+    flex: 1 1 auto;
+    max-width: 974px;
+  }
+
+  .yamuna-about-content h1 {
+    font-size: 32px;
+  }
+
+  .yamuna-about-content h2 {
+    font-size: 24px;
+  }
+
+  .yamuna-about-content h3 {
+    font-size: 20px;
+  }
+
+  .yamuna-faq-group summary {
+    font-size: 20px;
+  }
+
+  .yamuna-faq-body h3 {
+    font-size: 18px;
+  }
+
+  .yamuna-policy-address {
+    font-size: 17px;
+  }
+
+  .yamuna-about-content p {
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .yamuna-about-content li,
+  .yamuna-policy-defs dd {
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .yamuna-about-lead {
+    font-size: 19px !important;
+  }
+
+  .yamuna-about-media {
+    border-radius: 36px;
+  }
+}
+
 /* Evita que qualquer elemento decorativo maior que a viewport desloque a
  * p?gina inteira no mobile. Os trilhos dos sliders continuam com o pr?prio
  * overflow e, portanto, preservam o arraste horizontal. */
@@ -7659,7 +8672,7 @@ body.template-category .yamuna-plp-hero {
   grid-template-columns: minmax(0, 862px) minmax(320px, 416px);
   gap: 34px;
   width: min(1312px, calc(100% - 48px));
-  margin: 0 auto 32px;
+  margin: 0 auto;
   align-items: center;
 }
 
@@ -7721,8 +8734,8 @@ body.template-category .yamuna-plp-body [data-store^="category-grid-"] {
 body.template-category .category-controls {
   position: static;
   width: min(1312px, calc(100% - 48px));
-  margin: 0 auto 24px;
-  padding: 0;
+  margin: 0 auto;
+  padding: 48px 0 !important;
 }
 
 body.template-category .category-controls .row {
@@ -8289,7 +9302,7 @@ body.template-search .yamuna-plp-buy-three img {
   body.template-category .yamuna-plp-hero {
     grid-template-columns: 1fr;
     gap: 18px;
-    margin-bottom: 22px;
+    margin-bottom: 0;
   }
 
   body.template-category .yamuna-plp-hero-image {
@@ -8640,7 +9653,7 @@ body.template-category .yamuna-plp-quick-filter.is-selected {
     gap: 34px;
     width: calc(100% - 48px);
     max-width: 1312px;
-    margin: calc(var(--yamuna-menu-top, 105px) + 27px) auto 32px;
+    margin: calc(var(--yamuna-menu-top, 105px) + 27px) auto 0;
     align-items: center;
   }
 
@@ -9053,7 +10066,103 @@ body.template-search .yamuna-plp-filter-trigger .yamuna-plp-filter-trigger-icon 
 }
 
 .modal-overlay[data-modal-id="#nav-filters"] {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
   background: rgba(31, 24, 30, .52) !important;
+  z-index: 50000 !important;
+  transition: none !important;
+}
+
+#nav-filters.yamuna-plp-filters-modal {
+  position: fixed !important;
+  top: 0 !important;
+  left: -100% !important;
+  z-index: 50001 !important;
+  height: 100vh !important;
+  transition: none !important;
+}
+
+html.yamuna-filters-open .head-main,
+html.yamuna-filters-open .head-main.head-fix,
+html.yamuna-filters-open .head-main .yamuna-header-desktop {
+  z-index: 1 !important;
+}
+
+#nav-filters.yamuna-plp-filters-modal.modal-show {
+  left: 0 !important;
+}
+
+body.template-category,
+body.template-search {
+  scrollbar-gutter: stable;
+}
+
+body.template-category .yamuna-plp-body,
+body.template-search .yamuna-plp-body {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+body.template-category .category-controls,
+body.template-search .category-controls {
+  position: relative;
+  z-index: auto;
+  display: flex;
+  width: min(1312px, calc(100% - 48px));
+  min-height: 0;
+  margin: 0 auto;
+  padding: 48px 0 !important;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+body.template-category .category-controls .row,
+body.template-search .category-controls .row {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 42px;
+  margin: 0 !important;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+body.template-category .category-controls .row > .col-auto,
+body.template-search .category-controls .row > .col-auto {
+  position: relative;
+  z-index: 2;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  flex: 0 0 auto;
+}
+
+body.template-category .yamuna-plp-sort,
+body.template-search .yamuna-plp-sort {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: auto;
+  z-index: 1;
+  width: auto !important;
+  max-width: none !important;
+  margin: 0;
+  padding: 0;
+  flex: 0 0 auto !important;
+  transform: translateY(-50%);
+}
+
+@media (min-width: 1024px) {
+  body.template-category .category-controls,
+  body.template-search .category-controls {
+    width: min(1312px, calc(100% - 128px));
+    max-width: 1312px;
+    margin: 0 auto;
+    padding: 48px 0 !important;
+  }
 }
 
 {# Keep every desktop PLP section on the same content axis as the header and hero. #}
@@ -9442,7 +10551,7 @@ body.template-search .yamuna-plp-sort .form-select-icon {
   body.template-category .yamuna-plp-hero,
   body.template-search .yamuna-plp-hero {
     display: block;
-    margin: 0 auto 20px;
+    margin: 0 auto;
   }
 
   body.template-category .yamuna-plp-hero-image,
@@ -9475,7 +10584,8 @@ body.template-search .yamuna-plp-sort .form-select-icon {
 
   body.template-category .category-controls,
   body.template-search .category-controls {
-    margin: 0 auto 20px;
+    margin: 0 auto;
+    padding: 32px 0;
   }
 
   body.template-category .category-controls .row,
@@ -9484,7 +10594,7 @@ body.template-search .yamuna-plp-sort .form-select-icon {
     min-height: 30px;
     margin: 0;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 
   body.template-category .category-controls .row > .col-auto,
@@ -9642,7 +10752,7 @@ body.template-search .yamuna-plp-sort .form-select-icon {
 @media (max-width: 1023px) {
   body.template-category .yamuna-plp-hero,
   body.template-search .yamuna-plp-hero {
-    margin-bottom: 20px;
+    margin-bottom: 0;
   }
 
   body.template-category .yamuna-plp-hero-image,
@@ -14332,4 +15442,767 @@ body.template-cart .yamuna-cart-page-validation {
     max-width: none;
   }
 }
+
+/* Yamuna blog listing, article and home carousel */
+body.template-blog > .yamuna-resale-wrap,
+body.template-blog-post > .yamuna-resale-wrap {
+  margin-top: 0 !important;
+}
+
+.yamuna-blog-page,
+.yamuna-blog-post-page,
+.yamuna-home-blog {
+  --yamuna-blog-wine: #4a1d3a;
+  --yamuna-blog-magenta: #a31460;
+  --yamuna-blog-teal: #238482;
+  color: #222;
+  background: #fff;
+  font-family: 'Dosis', sans-serif;
+}
+
+.yamuna-blog-page {
+  padding: 24px 0 80px;
+}
+
+.yamuna-blog-page-title,
+.yamuna-home-blog-title {
+  margin: 0 0 28px;
+  color: var(--yamuna-blog-magenta);
+  font-family: 'Dosis', sans-serif !important;
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.yamuna-blog-page-title {
+  margin: 0 0 32px;
+}
+
+.yamuna-home-blog-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.yamuna-blog-featured {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.yamuna-blog-card--featured {
+  position: relative;
+  overflow: hidden;
+  min-height: 240px;
+  border-radius: 16px;
+}
+
+.yamuna-blog-card--featured .yamuna-blog-card-inner,
+.yamuna-blog-card--featured .yamuna-blog-card-image,
+.yamuna-blog-card--featured .post-item-image-container {
+  height: 100%;
+  min-height: 240px;
+}
+
+.yamuna-blog-card--featured .yamuna-blog-card-info {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  padding: 28px 22px 22px;
+  background: linear-gradient(180deg, rgba(74, 29, 58, 0) 0%, rgba(74, 29, 58, 0.88) 62%);
+}
+
+.yamuna-blog-card--featured .yamuna-blog-card-title,
+.yamuna-blog-card--featured .yamuna-blog-card-title a,
+.yamuna-blog-card--featured .item-name,
+.yamuna-blog-card--featured .item-name a {
+  color: #fff !important;
+  font-family: 'Dosis', sans-serif !important;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.yamuna-blog-card--featured .yamuna-blog-card-summary,
+.yamuna-blog-card--featured .item-description p,
+.yamuna-blog-card--featured .post-item-summary {
+  color: #fff !important;
+  font-size: 15px;
+}
+
+.yamuna-blog-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none !important;
+  text-transform: uppercase;
+}
+
+.yamuna-blog-cta-continue {
+  color: #fff !important;
+  background: var(--yamuna-blog-teal);
+  border: 0;
+  font-size: 0;
+}
+
+.yamuna-blog-cta-continue::after {
+  content: 'Continue lendo';
+  font-size: 13px;
+}
+
+.yamuna-blog-cta-more {
+  color: var(--yamuna-blog-teal) !important;
+  background: #fff;
+  border: 1px solid var(--yamuna-blog-teal);
+  border-radius: 999px;
+  margin-top: 24px;
+  min-height: 30px;
+  padding: 4px 14px;
+  font-size: 0;
+  line-height: 1;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.yamuna-blog-cta-more::after {
+  content: "Leia mais →";
+  display: block;
+  width: 100%;
+  font-size: 11px;
+  line-height: 1;
+  text-align: center;
+}
+
+.yamuna-blog-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+.yamuna-blog-search-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin: 0 0 40px;
+  align-items: center;
+}
+
+.yamuna-blog-search-label {
+  margin: 0;
+  color: var(--yamuna-blog-magenta);
+  font-family: 'Dosis', sans-serif !important;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.yamuna-blog-cats-title {
+  margin: 0 0 20px;
+  color: var(--yamuna-blog-wine);
+  font-family: 'Dosis', sans-serif !important;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  text-transform: none;
+}
+
+.yamuna-blog-search-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.yamuna-blog-search-field {
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 100%;
+  min-height: 52px;
+  padding: 0 8px 0 18px;
+  border: 1px solid var(--yamuna-blog-magenta);
+  border-radius: 999px;
+  background: #fff;
+}
+
+.yamuna-blog-search-float {
+  position: absolute;
+  top: -10px;
+  left: 22px;
+  padding: 0 8px;
+  color: var(--yamuna-blog-magenta);
+  background: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.yamuna-blog-search input {
+  flex: 1 1 auto;
+  width: 100%;
+  height: 50px;
+  padding: 0 8px 0 4px;
+  border: 0;
+  color: #333;
+  background: transparent;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  outline: none;
+}
+
+.yamuna-blog-search-submit {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.yamuna-blog-search-submit img {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.yamuna-blog-sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.yamuna-blog-cats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0 0 16px;
+}
+
+.yamuna-blog-cats button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  color: var(--yamuna-blog-wine);
+  background: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.yamuna-blog-cats button:hover {
+  border-color: var(--yamuna-blog-wine);
+  color: var(--yamuna-blog-wine);
+}
+
+.yamuna-blog-cats button.is-active {
+  color: #fff;
+  background: var(--yamuna-blog-wine);
+  border-color: var(--yamuna-blog-wine);
+}
+
+.yamuna-blog-shop-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 56px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  color: #fff !important;
+  background: var(--yamuna-blog-teal);
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-decoration: none !important;
+  text-transform: uppercase;
+}
+
+.yamuna-blog-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px 24px;
+  align-items: stretch;
+}
+
+.yamuna-blog-card--grid,
+.yamuna-blog-card--home {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+
+.yamuna-blog-card--grid {
+  height: 100%;
+  filter: drop-shadow(4px 4px 7px rgba(0, 0, 0, 0.08));
+}
+
+.yamuna-blog-card-tags {
+  order: 2;
+  margin: 12px 0 6px;
+  color: var(--yamuna-blog-teal);
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.yamuna-blog-card-tags span + span {
+  margin-left: 6px;
+}
+
+.yamuna-blog-card--grid .yamuna-blog-card-inner,
+.yamuna-blog-card--home .yamuna-blog-card-inner {
+  display: contents;
+}
+
+.yamuna-blog-card--grid .yamuna-blog-card-image,
+.yamuna-blog-card--home .yamuna-blog-card-image,
+.yamuna-blog-card--grid .post-item-image-container,
+.yamuna-blog-card--home .post-item-image-container {
+  order: 1;
+  overflow: hidden;
+  height: 210px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(74, 29, 58, 0.12);
+}
+
+.yamuna-blog-card--grid .yamuna-blog-card-image,
+.yamuna-blog-card--grid .post-item-image-container {
+  height: 209px;
+  margin: 16px 16px 0;
+  padding: 0;
+  background: #f3f4f6;
+  border: 12px solid #f3f4f6;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.yamuna-blog-card--grid .yamuna-blog-card-image img,
+.yamuna-blog-card--grid .post-item-image-container img {
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.yamuna-blog-card--grid .yamuna-blog-card-info,
+.yamuna-blog-card--home .yamuna-blog-card-info {
+  order: 3;
+}
+
+.yamuna-blog-card--grid .yamuna-blog-card-info,
+.yamuna-blog-card--grid .post-item-info,
+.yamuna-blog-card--grid .post-item-link {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  height: 100%;
+  align-items: center;
+  padding: 16px 24px 24px;
+  text-align: center;
+}
+
+.yamuna-blog-card--grid .yamuna-blog-card-title,
+.yamuna-blog-card--home .yamuna-blog-card-title,
+.yamuna-blog-card--grid .item-name,
+.yamuna-blog-card--home .item-name,
+.yamuna-blog-card--grid .item-name a,
+.yamuna-blog-card--home .item-name a {
+  color: var(--yamuna-blog-magenta) !important;
+  font-family: 'Dosis', sans-serif !important;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.yamuna-blog-card--grid .yamuna-blog-card-title,
+.yamuna-blog-card--grid .item-name,
+.yamuna-blog-card--grid .item-name a {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  min-height: 2.5em;
+  font-size: 18px;
+}
+
+.yamuna-blog-card--grid .yamuna-blog-card-summary,
+.yamuna-blog-card--home .yamuna-blog-card-summary,
+.yamuna-blog-card--grid .post-item-summary,
+.yamuna-blog-card--home .post-item-summary {
+  color: #444;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.yamuna-blog-card--grid .yamuna-blog-card-summary,
+.yamuna-blog-card--grid .post-item-summary,
+.yamuna-blog-card--grid .item-description,
+.yamuna-blog-card--grid .item-description p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  min-height: 6em;
+  margin-bottom: 8px;
+  flex: 1 1 auto;
+}
+
+.yamuna-blog-card--grid .yamuna-blog-cta-more {
+  margin-top: auto;
+  align-self: center;
+}
+
+.yamuna-blog-empty {
+  margin: 24px 0 0;
+  color: #666;
+  text-align: center;
+}
+
+.yamuna-blog-post-page {
+  padding: 24px 0 80px;
+}
+
+.yamuna-blog-post-page .page-header h1,
+.yamuna-blog-post-title,
+.yamuna-blog-post-page h1 {
+  color: var(--yamuna-blog-magenta) !important;
+  font-family: 'Dosis', sans-serif !important;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.yamuna-blog-post {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.yamuna-blog-post-image,
+.yamuna-blog-post .post-item-image,
+.yamuna-blog-post img {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  height: auto;
+  margin: 8px auto 28px;
+  border-radius: 12px;
+}
+
+.yamuna-blog-post-date {
+  margin-bottom: 16px;
+  color: #777;
+  font-size: 13px;
+  text-align: center;
+}
+
+.yamuna-blog-post-page .post-author,
+.yamuna-blog-post-page .blog-post-author,
+.yamuna-blog-post-date a {
+  display: none !important;
+}
+
+.yamuna-blog-post-body,
+.yamuna-blog-post .post-content,
+.yamuna-blog-post .post-content p,
+.yamuna-blog-post .post-content li {
+  color: #222;
+  font-family: 'Dosis', sans-serif !important;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.yamuna-blog-post .post-content h2,
+.yamuna-blog-post .post-content h3,
+.yamuna-blog-post .post-content h4 {
+  color: var(--yamuna-blog-wine);
+  font-family: 'Dosis', sans-serif !important;
+  font-weight: 700;
+}
+
+.yamuna-blog-post .post-content a {
+  color: var(--yamuna-blog-teal);
+}
+
+.yamuna-home-blog {
+  padding: 80px 0 96px;
+}
+
+.yamuna-home-blog-slider {
+  position: relative;
+  padding: 0 16px;
+}
+
+.yamuna-home-blog .swiper-wrapper {
+  align-items: stretch;
+}
+
+.yamuna-home-blog .swiper-slide,
+.yamuna-blog-card--home {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.yamuna-blog-card--home {
+  height: 100%;
+}
+
+.yamuna-blog-card--home .yamuna-blog-card-info,
+.yamuna-blog-card--home .post-item-info,
+.yamuna-blog-card--home .post-item-link {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  height: 100%;
+}
+
+.yamuna-blog-card--home .yamuna-blog-card-info,
+.yamuna-blog-card--home .post-item-info {
+  padding-top: 18px;
+  padding-bottom: 8px;
+}
+
+.yamuna-blog-card--home .yamuna-blog-card-title,
+.yamuna-blog-card--home .item-name,
+.yamuna-blog-card--home .item-name a {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  min-height: 3.75em;
+}
+
+.yamuna-blog-card--home .yamuna-blog-card-summary,
+.yamuna-blog-card--home .post-item-summary,
+.yamuna-blog-card--home .item-description,
+.yamuna-blog-card--home .item-description p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  min-height: 4.5em;
+  margin-bottom: 20px;
+  flex: 1 1 auto;
+}
+
+.yamuna-blog-card--home .yamuna-blog-cta-more {
+  margin-top: auto;
+  padding: 4px 14px;
+  align-self: center;
+}
+
+.yamuna-home-blog-arrow {
+  display: none;
+}
+
+.yamuna-home-blog-all {
+  margin: 32px 0 0;
+  text-align: center;
+}
+
+.yamuna-home-blog-all a {
+  color: var(--yamuna-blog-teal);
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.yamuna-home-blog-pagination {
+  position: static !important;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 28px;
+}
+
+.yamuna-home-blog-pagination .swiper-pagination-bullet {
+  margin: 0 5px;
+  background: #c9c9c9;
+  opacity: 1;
+}
+
+.yamuna-home-blog-pagination .swiper-pagination-bullet-active {
+  background: var(--yamuna-blog-teal);
+}
+
+.yamuna-blog-pagination {
+  margin-top: 56px;
+  color: var(--yamuna-blog-wine);
+}
+
+.yamuna-blog-pagination .h4,
+.yamuna-blog-pagination span {
+  color: var(--yamuna-blog-wine);
+  font-family: 'Dosis', sans-serif;
+  font-weight: 600;
+}
+
+.yamuna-blog-pagination a {
+  color: var(--yamuna-blog-teal);
+}
+
+.yamuna-blog-page-link {
+  margin: 0 12px;
+  color: var(--yamuna-blog-teal) !important;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+  .yamuna-blog-featured {
+    grid-template-columns: 1.35fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    min-height: 520px;
+  }
+
+  .yamuna-blog-featured .yamuna-blog-card--featured:first-child {
+    grid-row: span 2;
+    min-height: 520px;
+  }
+
+  .yamuna-blog-search-row,
+  .yamuna-blog-layout {
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .yamuna-blog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 36px 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .yamuna-blog-page,
+  .yamuna-blog-post-page {
+    padding-top: 145px;
+  }
+
+  .yamuna-blog-search-label {
+    font-size: 30px;
+  }
+
+  .yamuna-blog-cats-title {
+    font-size: 36px;
+  }
+
+  .yamuna-blog-search-row {
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 28px;
+    margin-bottom: 48px;
+  }
+
+  .yamuna-blog-layout {
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+  }
+
+  .yamuna-blog-cats {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .yamuna-blog-cats button {
+    min-height: 56px;
+  }
+
+  .yamuna-blog-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 36px 16px;
+  }
+
+  .yamuna-blog-post-page .page-header h1,
+  .yamuna-blog-post-title,
+  .yamuna-blog-post-page h1 {
+    font-size: 40px;
+  }
+
+  .yamuna-home-blog-slider {
+    padding: 0 80px;
+  }
+
+  .yamuna-home-blog-arrow {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #fff;
+    background: var(--yamuna-blog-teal);
+    cursor: pointer;
+    transform: translateY(-50%);
+  }
+
+  .yamuna-home-blog-arrow-prev {
+    left: 8px;
+  }
+
+  .yamuna-home-blog-arrow-next {
+    right: 8px;
+  }
+
+  .yamuna-home-blog-arrow-prev::before,
+  .yamuna-home-blog-arrow-next::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid #fff;
+    border-right: 2px solid #fff;
+  }
+
+  .yamuna-home-blog-arrow-prev::before {
+    transform: rotate(-135deg);
+    margin-left: 3px;
+  }
+
+  .yamuna-home-blog-arrow-next::before {
+    transform: rotate(45deg);
+    margin-right: 3px;
+  }
+}
+
 

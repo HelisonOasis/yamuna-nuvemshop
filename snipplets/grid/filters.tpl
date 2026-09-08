@@ -24,41 +24,11 @@
     {% endif %}
 {% else %}
 
-    {% if product_filters is not empty %}
+    {% if yamuna_plp_modal or product_filters is not empty %}
 
         {% if yamuna_plp_modal %}
-            <div id="filters" class="visible-when-content-ready yamuna-plp-filter-list" data-store="filters-nav">
-                {% for product_filter in product_filters %}
-                    {% if product_filter.type != 'price' and product_filter.has_products %}
-                        {% for value in product_filter.values %}
-                            {% if value.product_count > 0 %}
-                                <label class="js-filter-checkbox {% if not value.selected %}js-apply-filter{% else %}js-remove-filter{% endif %} checkbox-container yamuna-plp-filter-option{% if value.selected %} is-selected{% endif %}" data-filter-name="{{ product_filter.key }}" data-filter-value="{{ value.name }}" data-component="filter.option" data-component-value="{{ value.name }}">
-                                    <input type="checkbox" autocomplete="off" {% if value.selected %}checked{% endif %}/>
-                                    <span class="checkbox yamuna-plp-filter-option-content">
-                                        <span class="checkbox-icon yamuna-plp-filter-icon" aria-hidden="true">
-                                            {% set yamuna_filter_value = value.name | lower %}
-                                            {% if yamuna_filter_value in ['sem gluten', 'sem glúten'] %}
-                                                <img src="{{ 'images/yamuna/plp-filters/sem-gluten.svg' | static_url }}" alt="" />
-                                            {% elseif yamuna_filter_value in ['organico', 'orgânico'] %}
-                                                <img src="{{ 'images/yamuna/plp-filters/organico.svg' | static_url }}" alt="" />
-                                            {% elseif yamuna_filter_value == 'sem lactose' %}
-                                                <img src="{{ 'images/yamuna/plp-filters/sem-lactose.svg' | static_url }}" alt="" />
-                                            {% endif %}
-                                        </span>
-                                        <span class="checkbox-text">{{ value.name }}</span>
-                                        <span class="yamuna-plp-filter-remove" aria-hidden="true">×</span>
-                                    </span>
-                                </label>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <div class="yamuna-plp-filter-actions">
-                <a href="#" class="js-modal-close yamuna-plp-filter-apply">{{ 'Filtrar' | translate }}</a>
-                <a href="#" class="js-remove-all-filters yamuna-plp-clear-filters" data-component="filter-delete">{{ 'Limpar filtros' | translate }}</a>
-            </div>
-        {% else %}
+            {% include 'snipplets/grid/yamuna-filter-list.tpl' %}
+        {% elseif product_filters is not empty %}
 
         <div id="filters" class="visible-when-content-ready" data-store="filters-nav">
 
