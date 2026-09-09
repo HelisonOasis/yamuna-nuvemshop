@@ -30,15 +30,20 @@
     <section class="yamuna-mobile-menu-products">
         <h2>PRODUTOS</h2>
         <ul>
-            <li><a href="{{ store.url }}kits-presentes/"><img src="{{ 'images/yamuna/menu-category-kits.svg' | static_url }}" alt="" />KITS E PRESENTES</a></li>
-            <li><a href="{{ store.url }}manteiga-ghee/"><img src="{{ 'images/yamuna/menu-category-manteiga.svg' | static_url }}" alt="" />MANTEIGA GHEE</a></li>
-            <li><a href="{{ store.url }}cremes-de-castanhas/"><img src="{{ 'images/yamuna/menu-category-castanhas.svg' | static_url }}" alt="" />CREME DE CASTANHAS</a></li>
-            <li><a href="{{ store.url }}alimentos-de-coco/"><img src="{{ 'images/yamuna/menu-category-coco.svg' | static_url }}" alt="" />ALIMENTOS DE COCO</a></li>
-            <li><a href="{{ store.url }}shampoos-e-condicionadores-naturais/"><img src="{{ 'images/yamuna/menu-icon-shampoo.svg' | static_url }}" alt="" />SHAMPOO E CONDICIONADOR EM BARRA</a></li>
-            <li><a href="{{ store.url }}chocolates-e-cacau/"><img src="{{ 'images/yamuna/menu-icon-chocolates.svg' | static_url }}" alt="" />CHOCOLATES E CAFÉS</a></li>
-            <li><a href="{{ store.url }}sabonetes-naturais/"><img src="{{ 'images/yamuna/menu-icon-sabonetes.svg' | static_url }}" alt="" />SABONETES</a></li>
-            <li><a href="{{ store.url }}temperos-e-massalas/"><img src="{{ 'images/yamuna/menu-icon-temperos.svg' | static_url }}" alt="" />TEMPEROS E MASSALAS</a></li>
-            <li><a href="{{ store.url }}produtos/"><img src="{{ 'images/yamuna/menu-icon-oleos.svg' | static_url }}" alt="" />ÓLEOS CORPORAIS</a></li>
+            <li><a href="{{ '/kits-presentes' | setting_url }}"><img src="{{ 'images/yamuna/menu-category-kits.svg' | static_url }}" alt="" />KITS E PRESENTES</a></li>
+            <li><a href="{{ '/manteiga-ghee' | setting_url }}"><img src="{{ 'images/yamuna/menu-category-manteiga.svg' | static_url }}" alt="" />MANTEIGA GHEE</a></li>
+            <li><a href="{{ '/cremes-de-castanhas' | setting_url }}"><img src="{{ 'images/yamuna/menu-category-castanhas.svg' | static_url }}" alt="" />CREME DE CASTANHAS</a></li>
+            <li><a href="{{ '/alimentos-de-coco' | setting_url }}"><img src="{{ 'images/yamuna/menu-category-coco.svg' | static_url }}" alt="" />ALIMENTOS DE COCO</a></li>
+            <li><a href="{{ '/shampoos-e-condicionadores-naturais' | setting_url }}"><img src="{{ 'images/yamuna/menu-icon-shampoo.svg' | static_url }}" alt="" />SHAMPOO E CONDICIONADOR EM BARRA</a></li>
+            <li><a href="{{ '/cafes-especiais' | setting_url }}"><img src="{{ 'images/yamuna/menu-icon-chocolates.svg' | static_url }}" alt="" />CAFÉS</a></li>
+            <li><a href="{{ '/chocolates-e-cacau' | setting_url }}"><img src="{{ 'images/yamuna/menu-icon-chocolates.svg' | static_url }}" alt="" />CHOCOLATES E CACAU</a></li>
+            <li><a href="{{ '/sabonetes-naturais' | setting_url }}"><img src="{{ 'images/yamuna/menu-icon-sabonetes.svg' | static_url }}" alt="" />SABONETES</a></li>
+            <li><a href="{{ '/temperos-e-massalas' | setting_url }}"><img src="{{ 'images/yamuna/menu-icon-temperos.svg' | static_url }}" alt="" />TEMPEROS E MASSALAS</a></li>
+            <li><a href="{{ '/oleos-corporais' | setting_url }}"><img src="{{ 'images/yamuna/menu-icon-oleos.svg' | static_url }}" alt="" />ÓLEOS CORPORAIS</a></li>
+            <li><a href="{{ '/adocantes-naturais' | setting_url }}"><img src="{{ 'images/yamuna/menu-icon-oleos.svg' | static_url }}" alt="" />ADOÇANTES NATURAIS</a></li>
+            <li><a href="{{ '/leites-vegetais' | setting_url }}"><img src="{{ 'images/yamuna/menu-category-coco.svg' | static_url }}" alt="" />LEITES VEGETAIS</a></li>
+            <li><a href="{{ '/nutraceuticos-capsulas' | setting_url }}"><img src="{{ 'images/yamuna/menu-icon-oleos.svg' | static_url }}" alt="" />NUTRACÊUTICOS/CÁPSULAS</a></li>
+            <li><a href="{{ '/casa-sustentavel' | setting_url }}"><img src="{{ 'images/yamuna/menu-category-kits.svg' | static_url }}" alt="" />CASA SUSTENTÁVEL</a></li>
         </ul>
     </section>
 

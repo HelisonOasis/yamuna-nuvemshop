@@ -255,7 +255,7 @@
                                 </button>
                                 <button type="submit" class="js-addtocart js-prod-submit-form yamuna-plp-buy-three" data-quantity="3" data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}">
                                     <img src="{{ 'images/yamuna/home-spot-bag-teal.svg' | static_url }}" alt="" aria-hidden="true" />
-                                    <span class="yamuna-plp-buy-three-prefix">{{ 'Compre 3' | translate }}</span><span class="yamuna-plp-buy-three-price">{{ 'por' | translate }} {{ three_products_price }} {{ 'cada' | translate }}</span>
+                                    <span class="yamuna-plp-buy-three-prefix">{{ 'Compre 3' | translate }}</span> <span class="yamuna-plp-buy-three-price">{{ 'por' | translate }} {{ three_products_price }} {{ 'cada' | translate }}</span>
                                 </button>
                             </form>
                         {% endif %}

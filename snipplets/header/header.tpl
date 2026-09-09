@@ -27,20 +27,20 @@
                 </div>
                 <div class="nav-dropdown-content desktop-dropdown yamuna-products-dropdown">
                     <ul class="desktop-list-subitems list-subitems nav-list-accordion">
-                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}kits-presentes/">Kits e presentes</a></li>
-                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}manteiga-ghee/">Manteiga ghee</a></li>
-                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}cremes-de-castanhas/">Creme de castanhas</a></li>
-                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}alimentos-de-coco/">Alimentos de coco</a></li>
-                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Shampoo e condicionador em barra</a></li>
-                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Sabonetes</a></li>
-                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Cafés</a></li>
-                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Chocolates e cacau</a></li>
-                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Temperos e massalas</a></li>
-                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Óleos corporais</a></li>
-                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Adoçantes naturais</a></li>
-                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Leites vegetais</a></li>
-                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Nutracêuticos/cápsulas</a></li>
-                        <li class="nav-item"><a class="nav-list-link" href="{{ store.url }}produtos/">Casa sustentável</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ '/kits-presentes' | setting_url }}">Kits e presentes</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ '/manteiga-ghee' | setting_url }}">Manteiga ghee</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ '/cremes-de-castanhas' | setting_url }}">Creme de castanhas</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ '/alimentos-de-coco' | setting_url }}">Alimentos de coco</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ '/shampoos-e-condicionadores-naturais' | setting_url }}">Shampoo e condicionador em barra</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ '/sabonetes-naturais' | setting_url }}">Sabonetes</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ '/cafes-especiais' | setting_url }}">Cafés</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ '/chocolates-e-cacau' | setting_url }}">Chocolates e cacau</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ '/temperos-e-massalas' | setting_url }}">Temperos e massalas</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ '/oleos-corporais' | setting_url }}">Óleos corporais</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ '/adocantes-naturais' | setting_url }}">Adoçantes naturais</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ '/leites-vegetais' | setting_url }}">Leites vegetais</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ '/nutraceuticos-capsulas' | setting_url }}">Nutracêuticos/cápsulas</a></li>
+                        <li class="nav-item"><a class="nav-list-link" href="{{ '/casa-sustentavel' | setting_url }}">Casa sustentável</a></li>
                     </ul>
                 </div>
             </div>
@@ -120,6 +120,14 @@
         });
     </script>
 
+    <style>
+        @media (min-width: 1024px) {
+            html {
+                --yamuna-panel-top: 0px;
+                --yamuna-panel-overlap: 105px;
+            }
+        }
+    </style>
     <script>
         (function() {
             function syncDesktopPanels() {
@@ -146,6 +154,11 @@
                 document.documentElement.style.setProperty('--yamuna-menu-left', (headerRect.left + beforeLeft) + 'px');
                 document.documentElement.style.setProperty('--yamuna-menu-width', Math.max(0, headerRect.width - beforeLeft - beforeRight) + 'px');
                 document.documentElement.style.setProperty('--yamuna-menu-top', (headerRect.top + beforeTop + beforeHeight) + 'px');
+                // Drawers start at the viewport top; overlap pads content under the capsule.
+                document.documentElement.style.setProperty('--yamuna-panel-top', '0px');
+                document.documentElement.style.setProperty('--yamuna-panel-overlap', Math.max(0, headerRect.top + beforeTop + beforeHeight) + 'px');
+                document.documentElement.style.setProperty('--yamuna-header-top', headerRect.top + 'px');
+                document.documentElement.style.setProperty('--yamuna-header-right', Math.max(0, window.innerWidth - headerRect.right) + 'px');
             }
 
             function syncDesktopPanelsDuringTransition() {

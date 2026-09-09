@@ -5,7 +5,7 @@
     <button class="yamuna-category-slider-desktop-arrow yamuna-category-slider-desktop-arrow-prev" type="button" aria-label="{{ 'Anterior' | translate }}">&lsaquo;</button>
     <div class="yamuna-category-slider-desktop-list">
       <div class="yamuna-category-slider-desktop-track">
-      <a class="yamuna-category-slider-desktop-item" href="{{ '/nutraceuticos' | setting_url }}">
+      <a class="yamuna-category-slider-desktop-item" href="{{ '/nutraceuticos-capsulas' | setting_url }}">
         <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/nutraceuticos.png' | static_url }}" alt="Nutracêuticos" loading="lazy"></span>
         <span>Nutracêuticos</span>
       </a>
@@ -13,7 +13,7 @@
         <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/leites-vegetais.png' | static_url }}" alt="Leites vegetais" loading="lazy"></span>
         <span>Leites vegetais</span>
       </a>
-      <a class="yamuna-category-slider-desktop-item" href="{{ '/kits-e-presentes' | setting_url }}">
+      <a class="yamuna-category-slider-desktop-item" href="{{ '/kits-presentes' | setting_url }}">
         <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/kits-presentes.png' | static_url }}" alt="Kits e presentes" loading="lazy"></span>
         <span>Kits e presentes</span>
       </a>
@@ -37,7 +37,7 @@
         <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/figma-manteiga-ghee.png' | static_url }}" alt="Manteiga ghee" loading="lazy"></span>
         <span>Manteiga ghee</span>
       </a>
-      <a class="yamuna-category-slider-item swiper-slide" href="{{ '/kits-e-presentes' | setting_url }}">
+      <a class="yamuna-category-slider-item swiper-slide" href="{{ '/kits-presentes' | setting_url }}">
         <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/figma-kits-presentes.png' | static_url }}" alt="Kits e presentes" loading="lazy"></span>
         <span>Kits e presentes</span>
       </a>
@@ -45,7 +45,7 @@
         <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/figma-creme-castanhas.png' | static_url }}" alt="Creme de castanhas" loading="lazy"></span>
         <span>Creme de castanhas</span>
       </a>
-      <a class="yamuna-category-slider-item swiper-slide" href="{{ '/nutraceuticos' | setting_url }}">
+      <a class="yamuna-category-slider-item swiper-slide" href="{{ '/nutraceuticos-capsulas' | setting_url }}">
         <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/nutraceuticos.png' | static_url }}" alt="Nutracêuticos" loading="lazy"></span>
         <span>Nutracêuticos</span>
       </a>

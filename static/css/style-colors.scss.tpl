@@ -2857,7 +2857,7 @@ input::-webkit-outer-spin-button{
 
 @media (min-width: 768px) {
   .head-main .nav-row {
-    max-width: 1088px;
+    max-width: 1312px;
     margin: 0 auto;
     border-radius: 54px;
     background: #a31460;

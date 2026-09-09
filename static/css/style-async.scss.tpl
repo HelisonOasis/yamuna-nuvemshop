@@ -1930,7 +1930,7 @@ body.template-page > .yamuna-resale-wrap {
   }
 
   html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop {
-    width: min(1088px, calc(100% - 48px));
+    width: min(1312px, calc(100% - 48px));
   }
 
   html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop::before { left: 0; }
@@ -2009,7 +2009,7 @@ body.template-page > .yamuna-resale-wrap {
   }
 
   html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop {
-    width: min(1088px, calc(100% - 48px));
+    width: min(1312px, calc(100% - 48px));
   }
 
   html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop::before {
@@ -3092,7 +3092,7 @@ button{
 
   .yamuna-header-desktop {
     display: flex !important;
-    width: min(100% - 48px, 760px);
+    width: min(1312px, calc(100% - 48px));
     min-height: 54px;
     margin: 0 auto;
     padding: 0 14px 0 18px;
@@ -3229,7 +3229,7 @@ button{
 
 @media (min-width: 768px) and (max-width: 1050px) {
   .yamuna-header-desktop {
-    width: min(100% - 30px, 700px);
+    width: min(1312px, calc(100% - 48px));
   }
 
   .yamuna-header-desktop-nav .nav-item {
@@ -3580,11 +3580,11 @@ button{
 
   body.template-home .head-main .yamuna-header-desktop-search .search-suggest {
     position: fixed;
-    top: var(--yamuna-menu-top, 49px);
+    top: var(--yamuna-panel-top, 0px);
     left: var(--yamuna-menu-left, 50%);
     z-index: 1;
     display: none;
-    width: var(--yamuna-menu-width, min(1088px, calc(100vw - 48px)));
+    width: var(--yamuna-menu-width, min(1312px, calc(100vw - 48px)));
     min-height: 130px;
     max-height: 358px;
     margin: 0;
@@ -5671,7 +5671,7 @@ footer.yamuna-footer .powered-by-logo svg {
   }
 
   html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop {
-    width: min(1088px, calc(100% - 48px));
+    width: min(1312px, calc(100% - 48px));
   }
 
   html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop::before {
@@ -5793,10 +5793,10 @@ footer.yamuna-footer .powered-by-logo svg {
 @media (min-width: 768px) {
   body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown {
     position: fixed;
-    top: var(--yamuna-menu-top, 49px);
+    top: var(--yamuna-panel-top, 0px);
     left: var(--yamuna-menu-left, 50%);
     z-index: 1;
-    width: var(--yamuna-menu-width, min(1088px, calc(100vw - 48px)));
+    width: var(--yamuna-menu-width, min(1312px, calc(100vw - 48px)));
     height: 358px;
     max-height: none !important;
     overflow: hidden;
@@ -5900,19 +5900,19 @@ footer.yamuna-footer .powered-by-logo svg {
   body.template-home .head-main { position: relative !important; z-index: 30001 !important; isolation: isolate; }
   body.template-home .head-main .yamuna-header-desktop { position: relative !important; z-index: 30002 !important; }
   body.template-home .head-main .yamuna-header-desktop::before { z-index: 30003 !important; }
+  body.template-home .head-main .yamuna-header-desktop-nav { position: relative; z-index: auto !important; }
   body.template-home .head-main .yamuna-header-desktop-logo,
-  body.template-home .head-main .yamuna-header-desktop-nav,
   body.template-home .head-main .yamuna-header-desktop-search,
   body.template-home .head-main .yamuna-header-desktop-utilities { position: relative; z-index: 30004 !important; }
 
   body.template-home #modal-cart {
     position: fixed !important;
-    top: calc(var(--yamuna-header-top, 25px) + 20px) !important;
+    top: var(--yamuna-panel-top, 0px) !important;
     right: var(--yamuna-header-right, max(24px, calc((100vw - 1320px) / 2))) !important;
     left: auto !important;
     width: 424px !important;
     max-width: calc(100vw - 32px) !important;
-    height: min(759px, calc(100vh - var(--yamuna-header-top, 25px) - 36px)) !important;
+    height: min(759px, calc(100vh - var(--yamuna-panel-top, 0px) - 24px)) !important;
     min-height: 0 !important;
     padding: 0 !important;
     overflow: hidden !important;
@@ -5921,6 +5921,7 @@ footer.yamuna-footer .powered-by-logo svg {
     transform: none !important;
     transition: opacity .18s ease !important;
     z-index: 29000 !important;
+    background: #fff !important;
   }
 
   body.template-home #modal-cart.modal-show { right: var(--yamuna-header-right, max(24px, calc((100vw - 1320px) / 2))) !important; opacity: 1; }
@@ -6050,17 +6051,18 @@ footer.yamuna-footer .powered-by-logo svg {
   body.template-home #modal-cart .progress-bar-title, body.template-home #modal-cart .progress-bar-icon { color: #fff !important; fill: #fff; }
   body.template-home #modal-cart .progress-bar-subtitle, body.template-home #modal-cart .bar-progress { display: none; }
   body.template-home #modal-cart .yamuna-cart-dropdown-footer {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    position: relative;
+    right: auto;
+    bottom: auto;
+    left: auto;
     display: flex;
     flex-direction: column;
     height: auto;
-    min-height: 160px;
+    min-height: 0;
     padding: 0 0 28px;
     background: #fff;
     box-sizing: border-box;
+    flex: 0 0 auto;
   }
   body.template-home #modal-cart .yamuna-cart-discount {
     flex: 0 0 auto;
@@ -6234,12 +6236,14 @@ footer.yamuna-footer .powered-by-logo svg {
   body.template-home .head-main .yamuna-header-desktop-search .search-suggest,
   body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown {
     position: fixed !important;
-    z-index: 30000 !important;
-    top: var(--yamuna-menu-top, 79px) !important;
+    z-index: 1 !important;
+    top: var(--yamuna-panel-top, 0px) !important;
+    padding-top: var(--yamuna-panel-overlap, 105px) !important;
+    background: #fff !important;
   }
 
   html.yamuna-header-scrolled body .head-main .yamuna-header-desktop,
-  html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop { width: min(1088px, calc(100% - 48px)) !important; }
+  html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop { width: min(1312px, calc(100% - 48px)) !important; }
   html.yamuna-header-scrolled body .head-main .yamuna-header-desktop-logo { flex-basis: 112px !important; width: 112px !important; padding-left: 18px !important; }
   html.yamuna-header-scrolled body .head-main .yamuna-header-desktop-logo::before { width: 76px !important; height: 42px !important; filter: brightness(0) invert(1) !important; }
   html.yamuna-header-scrolled body .head-main .yamuna-header-desktop-nav { margin-left: 16px !important; }
@@ -6316,8 +6320,8 @@ footer.yamuna-footer .powered-by-logo svg {
 {# Shared dropdown panels outside home. #}
 @media (min-width: 1024px) {
   body:not(.template-home) #modal-cart {
-    position: fixed !important; top: calc(var(--yamuna-header-top, 25px) + 20px) !important; right: var(--yamuna-header-right, max(24px, calc((100vw - 1320px) / 2))) !important; left: auto !important;
-    z-index: 29000 !important; width: 424px !important; max-width: calc(100vw - 32px) !important; height: min(759px,calc(100vh - var(--yamuna-header-top, 25px) - 36px)) !important;
+    position: fixed !important; top: var(--yamuna-panel-top, 0px) !important; right: var(--yamuna-header-right, max(24px, calc((100vw - 1320px) / 2))) !important; left: auto !important;
+    z-index: 29000 !important; width: 424px !important; max-width: calc(100vw - 32px) !important; height: min(759px,calc(100vh - var(--yamuna-panel-top, 0px) - 24px)) !important;
     padding: 0 !important; overflow: hidden !important; border-radius: 0 0 24px 24px !important; background: #fff; box-shadow: 4px 4px 8px rgba(0,0,0,.15) !important; transform: none !important;
   }
   body:not(.template-home) #modal-cart.modal-show { right: var(--yamuna-header-right, max(24px, calc((100vw - 1320px) / 2))) !important; opacity: 1; }
@@ -6363,7 +6367,7 @@ footer.yamuna-footer .powered-by-logo svg {
   body:not(.template-home) #modal-cart .yamuna-cart-shipping-promo i { position: absolute; right: 0; bottom: 0; left: 0; height: 3px; background: rgba(192,187,195,.6); }
   body:not(.template-home) #modal-cart .yamuna-cart-shipping-promo i::before { display: block; width: 9px; height: 3px; background: #a31460; content: ''; }
   body:not(.template-home) #modal-cart #error-ajax-stock, body:not(.template-home) #modal-cart .modal-body > .cart-row:not(.js-ajax-cart-list):not(.js-empty-ajax-cart), body:not(.template-home) #modal-cart .js-fulfillment-info { display: none !important; }
-  body:not(.template-home) #modal-cart .yamuna-cart-dropdown-footer, body:not(.template-home) #modal-cart .yamuna-cart-empty-footer { position: absolute; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; height: auto; min-height: 160px; padding: 0 0 28px; background: #fff; box-sizing: border-box; }
+  body:not(.template-home) #modal-cart .yamuna-cart-dropdown-footer, body:not(.template-home) #modal-cart .yamuna-cart-empty-footer { position: relative; right: auto; bottom: auto; left: auto; display: flex; flex-direction: column; height: auto; min-height: 0; padding: 0 0 28px; background: #fff; box-sizing: border-box; }
   body:not(.template-home) #modal-cart .yamuna-cart-discount { flex: 0 0 auto; height: 32px; padding: 6px 20px; background: #a31460; color: #fff; font-family: Dosis,Roboto,Arial,sans-serif; font-size: 18px; font-weight: 700; text-align: center; text-transform: uppercase; }
   body:not(.template-home) #modal-cart .yamuna-cart-dropdown-footer p { position: static; margin: 12px 20px 0; color: #000; font-size: 16px; font-weight: 400; line-height: 1.25; text-align: center; }
   body:not(.template-home) #modal-cart .yamuna-cart-checkout { position: relative; top: auto; right: auto; bottom: auto; left: auto; display: flex; width: calc(100% - 44px); height: 46px; margin: 16px 22px 0; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 24px; background: #238482; color: #fff; font-size: 16px; font-weight: 700; text-transform: uppercase; }
@@ -6461,10 +6465,10 @@ footer.yamuna-footer .powered-by-logo svg {
   }
 
   body .yamuna-header-desktop-search .search-suggest,
-  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown { z-index: 30000 !important; }
-  body .yamuna-header-desktop-search .search-suggest { position: fixed; top: var(--yamuna-menu-top,49px); left: var(--yamuna-menu-left,50%); width: var(--yamuna-menu-width,min(1088px,calc(100vw - 48px))); border-radius: 0 0 24px 24px; }
-  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown { position: fixed; top: var(--yamuna-menu-top,49px); left: var(--yamuna-menu-left,50%); width: var(--yamuna-menu-width,min(1088px,calc(100vw - 48px))); }
-  html.yamuna-header-scrolled body .yamuna-header-desktop { width: min(1088px,calc(100% - 48px)); }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown { z-index: 1 !important; }
+  body .yamuna-header-desktop-search .search-suggest { position: fixed; top: var(--yamuna-panel-top, 0px); left: var(--yamuna-menu-left,50%); width: var(--yamuna-menu-width,min(1312px,calc(100vw - 48px))); border-radius: 0 0 24px 24px; background: #fff; }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown { position: fixed; top: var(--yamuna-panel-top, 0px); left: var(--yamuna-menu-left,50%); width: var(--yamuna-menu-width,min(1312px,calc(100vw - 48px))); }
+  html.yamuna-header-scrolled body .yamuna-header-desktop { width: min(1312px,calc(100% - 48px)); }
   html.yamuna-header-scrolled body .yamuna-header-desktop::before { left: 0; }
   html.yamuna-header-scrolled body .yamuna-header-desktop-logo { flex-basis: 112px; width: 112px; padding-left: 18px; }
   html.yamuna-header-scrolled body .yamuna-header-desktop-logo::before { width: 76px; height: 42px; filter: brightness(0) invert(1); }
@@ -6484,7 +6488,7 @@ footer.yamuna-footer .powered-by-logo svg {
   body.template-home .head-main .yamuna-header-desktop-search .search-container { z-index: 30004 !important; }
 
   body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown {
-    height: 384px !important;
+    height: calc(358px + var(--yamuna-panel-overlap, 105px)) !important;
     max-height: none !important;
     overflow: hidden !important;
     transform: none !important;
@@ -6494,7 +6498,7 @@ footer.yamuna-footer .powered-by-logo svg {
   }
   body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .nav-item-container { position: relative; z-index: 30004; }
   body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown::after {
-    position: absolute; top: 0; right: 0; z-index: 1; width: 298px; height: 100%;
+    position: absolute; top: var(--yamuna-panel-overlap, 105px); right: 0; z-index: 1; width: 298px; height: calc(100% - var(--yamuna-panel-overlap, 105px));
     border-radius: 0 0 24px 0; background: url('{{ 'images/yamuna/menu-produtos.png' | static_url }}') center / cover no-repeat; content: ''; pointer-events: none;
   }
   body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems {
@@ -6605,7 +6609,7 @@ footer.yamuna-footer .powered-by-logo svg {
   }
   body .head-main .yamuna-header-desktop-search { margin-left: 42px !important; }
   body .head-main .yamuna-header-desktop-utilities { margin-left: 0 !important; }
-  html.yamuna-header-scrolled body .head-main .yamuna-header-desktop { width: min(1088px,calc(100% - 48px)) !important; grid-template-columns: 112px max-content 392px max-content; }
+  html.yamuna-header-scrolled body .head-main .yamuna-header-desktop { width: min(1312px,calc(100% - 48px)) !important; grid-template-columns: 112px max-content 392px max-content; }
   html.yamuna-header-scrolled body .head-main .yamuna-header-desktop::before { left: 0 !important; }
   html.yamuna-header-scrolled body .head-main .yamuna-header-desktop-logo { width: 112px !important; padding-left: 18px !important; }
   html.yamuna-header-scrolled body .head-main .yamuna-header-desktop-logo::before { width: 76px !important; height: 42px !important; filter: brightness(0) invert(1) !important; }
@@ -6670,13 +6674,15 @@ footer.yamuna-footer .powered-by-logo svg {
   body .head-main .yamuna-header-desktop-nav .desktop-dropdown,
   body.template-home .head-main .yamuna-header-desktop-search .search-suggest,
   body.template-home .head-main .yamuna-header-desktop-nav .desktop-dropdown {
-    z-index: 30000 !important;
-    top: var(--yamuna-menu-top,79px) !important;
+    z-index: 1 !important;
+    top: var(--yamuna-panel-top, 0px) !important;
+    padding-top: var(--yamuna-panel-overlap, 105px) !important;
+    background: #fff !important;
   }
   body .head-main .yamuna-header-desktop-nav .nav-item-container,
   body.template-home .head-main .yamuna-header-desktop-nav .nav-item-container { position: relative !important; z-index: 30005 !important; }
   html.yamuna-header-scrolled body .head-main .yamuna-header-desktop,
-  html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop { width: min(1088px,calc(100% - 48px)) !important; }
+  html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop { width: min(1312px,calc(100% - 48px)) !important; }
 }
 
 {# Figma mobile navbar: 80px header, left logo and three 32px circular actions. #}
@@ -6979,33 +6985,39 @@ footer.yamuna-footer .powered-by-logo svg {
   body #nav-hamburger .modal-close svg { display: none; }
 
   body #nav-hamburger .yamuna-mobile-menu {
-    position: relative;
-    width: 100%;
-    min-height: 670px;
-    padding: 0;
-    overflow: hidden;
-    background-color: #fff;
-    background-image: url('{{ 'images/yamuna/menu-divider-light.svg' | static_url }}'), url('{{ 'images/yamuna/menu-divider-light.svg' | static_url }}'), url('{{ 'images/yamuna/menu-divider-light.svg' | static_url }}'), url('{{ 'images/yamuna/menu-divider-dark.svg' | static_url }}'), url('{{ 'images/yamuna/menu-divider-dark.svg' | static_url }}');
-    background-repeat: no-repeat;
-    background-position: 12px 45px, 12px 93px, 12px 138px, 12px 476px, 12px 590px;
-    background-size: calc(100% - 24px) 2px, calc(100% - 24px) 2px, calc(100% - 24px) 2px, calc(100% - 24px) 2px, calc(100% - 24px) 2px;
+    position: relative !important;
+    top: auto !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 45px 0 32px !important;
+    overflow: visible !important;
+    background: #fff !important;
+    background-image: none !important;
     font-family: 'Raleway', sans-serif;
   }
 
   body #nav-hamburger .yamuna-mobile-menu-account {
-    position: absolute;
-    top: 57px;
-    left: 40px;
-    width: calc(100% - 80px);
-    height: 24px;
-    display: block;
-    border: 0;
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    display: flex !important;
+    width: auto !important;
+    height: 48px !important;
+    margin: 0 12px !important;
+    padding: 0 28px !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    border-top: 2px solid #e8e4ea !important;
+    border-bottom: 2px solid #e8e4ea !important;
   }
 
   body #nav-hamburger .yamuna-mobile-menu-account a {
-    position: absolute;
-    top: 0;
-    color: #4a1d3a;
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    color: #4a1d3a !important;
     font-family: 'Raleway', sans-serif;
     font-size: 14px;
     font-weight: 500;
@@ -7015,8 +7027,9 @@ footer.yamuna-footer .powered-by-logo svg {
   }
 
   body #nav-hamburger .yamuna-mobile-menu-login {
-    left: 0;
-    display: flex;
+    position: static !important;
+    left: auto !important;
+    display: flex !important;
     gap: 8px;
     align-items: center;
   }
@@ -7028,13 +7041,14 @@ footer.yamuna-footer .powered-by-logo svg {
   }
 
   body #nav-hamburger .yamuna-mobile-menu-register {
-    right: 0;
+    position: static !important;
+    right: auto !important;
   }
 
   body #nav-hamburger .yamuna-mobile-menu-account-divider {
-    position: absolute;
-    top: 0;
-    left: calc(50% - 8px);
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
     width: 1px;
     height: 24px;
     margin: 0;
@@ -7042,16 +7056,19 @@ footer.yamuna-footer .powered-by-logo svg {
   }
 
   body #nav-hamburger .yamuna-mobile-menu-search {
-    position: absolute;
-    top: 102px;
-    right: 12px;
-    left: 14px;
-    display: flex;
-    height: 27px;
-    padding: 0;
-    align-items: center;
-    justify-content: space-between;
-    border: 0;
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+    display: flex !important;
+    width: auto !important;
+    height: 45px !important;
+    margin: 0 12px !important;
+    padding: 0 2px 0 2px !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    border: 0 !important;
+    border-bottom: 2px solid #e8e4ea !important;
     color: rgba(74, 29, 58, .7);
     font-family: 'Raleway', sans-serif;
     font-size: 14px;
@@ -7060,22 +7077,58 @@ footer.yamuna-footer .powered-by-logo svg {
     text-decoration: none;
   }
 
+  body #nav-hamburger .yamuna-mobile-menu-search-input {
+    flex: 1 1 auto;
+    width: auto;
+    height: 27px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #4a1d3a;
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  body #nav-hamburger .yamuna-mobile-menu-search-input::placeholder {
+    color: rgba(74, 29, 58, .7);
+    opacity: 1;
+    text-transform: uppercase;
+  }
+
+  body #nav-hamburger .yamuna-mobile-menu-search-submit {
+    display: flex;
+    width: 27px;
+    height: 27px;
+    margin: 0;
+    padding: 0;
+    flex: 0 0 27px;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+  }
+
   body #nav-hamburger .yamuna-mobile-menu-search img {
     width: 27px;
     height: 27px;
   }
 
   body #nav-hamburger .yamuna-mobile-menu-products {
-    position: absolute;
-    top: 150px;
-    right: 12px;
-    left: 14px;
-    padding: 0;
-    border: 0;
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+    margin: 0 12px !important;
+    padding: 12px 2px 16px !important;
+    border: 0 !important;
+    border-bottom: 2px solid #c0bbc3 !important;
   }
 
   body #nav-hamburger .yamuna-mobile-menu h2 {
-    height: 17px;
+    height: auto;
     margin: 0 0 11px;
     color: #393747;
     font-family: 'Raleway', sans-serif;
@@ -7093,27 +7146,27 @@ footer.yamuna-footer .powered-by-logo svg {
   body #nav-hamburger .yamuna-mobile-menu-products li,
   body #nav-hamburger .yamuna-mobile-menu-products li + li {
     position: relative;
-    height: 32px;
+    height: auto !important;
+    min-height: 32px;
     margin: 0;
   }
 
   body #nav-hamburger .yamuna-mobile-menu-products a {
     position: relative;
-    display: block;
-    height: 32px;
-    min-height: 0;
-    padding: 0 0 0 30px;
+    display: flex !important;
+    height: auto !important;
+    min-height: 32px;
+    padding: 0 0 0 30px !important;
+    align-items: center;
     color: #238482;
     font-family: 'Raleway', sans-serif;
     font-size: 12px;
     font-weight: 600;
-    line-height: 32.28px;
+    line-height: 16px;
     text-decoration: none;
     text-transform: uppercase;
-    white-space: nowrap;
+    white-space: normal;
   }
-
-  body #nav-hamburger .yamuna-mobile-menu-products li:nth-child(-n + 4) a { padding-left: 30px; }
 
   body #nav-hamburger .yamuna-mobile-menu-products img {
     position: absolute;
@@ -7124,25 +7177,37 @@ footer.yamuna-footer .powered-by-logo svg {
     margin: 0;
   }
 
+  body #nav-hamburger .yamuna-mobile-menu-products li:nth-child(n + 5) img {
+    display: none;
+  }
+
   body #nav-hamburger .yamuna-mobile-menu-links {
-    position: absolute;
-    top: 491px;
-    left: 14px;
-    display: block;
-    padding: 0;
-    border: 0;
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    margin: 0 12px !important;
+    padding: 16px 2px !important;
+    border: 0 !important;
+    border-bottom: 2px solid #c0bbc3 !important;
   }
 
   body #nav-hamburger .yamuna-mobile-menu-links-last {
-    top: 602px;
-    left: 12px;
-    padding: 0;
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    margin: 0 12px !important;
+    padding: 16px 0 8px !important;
+    border-bottom: 0 !important;
   }
 
   body #nav-hamburger .yamuna-mobile-menu-links a,
   body #nav-hamburger .yamuna-mobile-menu-links-last a {
     display: block;
     height: 28px;
+    margin: 0;
     padding: 0;
     color: #393747;
     font-family: 'Raleway', sans-serif;
@@ -7683,10 +7748,10 @@ footer.yamuna-footer .powered-by-logo svg {
   body .head-main .yamuna-header-desktop-search .search-suggest,
   body .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown,
   body.template-home .head-main .yamuna-header-desktop-search .search-suggest,
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown { position: fixed !important; z-index: 30000 !important; top: var(--yamuna-menu-top,79px) !important; }
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown { position: fixed !important; z-index: 1 !important; top: var(--yamuna-panel-top, 0px) !important; padding-top: var(--yamuna-panel-overlap, 105px) !important; background: #fff !important; }
 
   html.yamuna-header-scrolled body .head-main .yamuna-header-desktop,
-  html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop { width: min(1088px,calc(100% - 48px)) !important; }
+  html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop { width: min(1312px,calc(100% - 48px)) !important; }
   html.yamuna-header-scrolled body .head-main .yamuna-header-desktop-logo { flex-basis: 148px !important; width: 148px !important; padding-left: 24px !important; }
   body .head-main .yamuna-header-logo-link { display: flex !important; width: 86px !important; height: 80px !important; align-items: center !important; }
   body .head-main .yamuna-header-logo-image { display: block !important; width: 86px !important; height: 80px !important; max-width: none !important; object-fit: contain !important; }
@@ -7706,11 +7771,11 @@ footer.yamuna-footer .powered-by-logo svg {
 #}
 @media (min-width: 1024px) {
   body:not(.template-home) .head-main .yamuna-header-desktop {
-    width: min(1088px, calc(100% - 48px)) !important;
+    width: min(1312px, calc(100% - 48px)) !important;
   }
 
   body:not(.template-home) .head-main .yamuna-header-desktop::before {
-    left: 0 !important;
+    left: 17.424242% !important;
   }
 
   body:not(.template-home) .head-main .yamuna-header-desktop-logo {
@@ -7720,11 +7785,11 @@ footer.yamuna-footer .powered-by-logo svg {
   }
 
   body:not(.template-home) .head-main .yamuna-header-logo-default {
-    display: none !important;
+    display: block !important;
   }
 
   body:not(.template-home) .head-main .yamuna-header-logo-scrolled {
-    display: block !important;
+    display: none !important;
   }
 
   body:not(.template-home) .head-main .yamuna-header-desktop-nav {
@@ -7755,11 +7820,11 @@ footer.yamuna-footer .powered-by-logo svg {
     visibility: hidden;
     transform: translate3d(100%, 0, 0) !important;
     transition: transform .42s cubic-bezier(.22, .61, .36, 1), opacity .24s ease, visibility 0s linear .42s !important;
-    z-index: 31000 !important;
+    z-index: 41000 !important;
   }
 
   body .js-modal-overlay[data-modal-id="#modal-cart"] {
-    z-index: 30000 !important;
+    z-index: 40500 !important;
   }
 
   body #modal-cart.modal.modal-show {
@@ -8917,6 +8982,36 @@ body.template-search .yamuna-plp-body .label-circle {
   text-align: center;
 }
 
+{# Cenário 006: load-more matches the brand capsule, not theme btn-primary. #}
+body.template-category .js-load-more.btn,
+body.template-search .js-load-more.btn {
+  display: inline-flex;
+  min-height: 48px;
+  padding: 12px 32px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 30px;
+  background: #A31460 !important;
+  background-color: #A31460 !important;
+  color: #fff !important;
+  font-family: 'Raleway', sans-serif !important;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+body.template-category .js-load-more.btn:hover,
+body.template-category .js-load-more.btn:focus,
+body.template-search .js-load-more.btn:hover,
+body.template-search .js-load-more.btn:focus {
+  background: #8c1052 !important;
+  background-color: #8c1052 !important;
+  color: #fff !important;
+}
+
 body.template-category .yamuna-plp-item-actions {
   margin-top: auto;
   padding: 18px 28px 24px;
@@ -9591,7 +9686,7 @@ body.template-category .yamuna-plp-quick-filter.is-selected {
 
   body.template-category .head-main .yamuna-header-desktop,
   body.template-search .head-main .yamuna-header-desktop {
-    width: calc(100% - 128px) !important;
+    width: min(1312px, calc(100% - 48px)) !important;
     max-width: 1312px !important;
     height: 80px !important;
     overflow: visible !important;
@@ -9604,7 +9699,7 @@ body.template-category .yamuna-plp-quick-filter.is-selected {
 
   body.template-category .head-main .yamuna-header-desktop::before,
   body.template-search .head-main .yamuna-header-desktop::before {
-    left: 134px !important;
+    left: 17.424242% !important;
     z-index: 0 !important;
     transition: left .42s cubic-bezier(.22, .61, .36, 1) !important;
   }
@@ -9664,8 +9759,8 @@ body.template-category .yamuna-plp-quick-filter.is-selected {
 
   html.yamuna-header-scrolled body.template-category .head-main .yamuna-header-desktop,
   html.yamuna-header-scrolled body.template-search .head-main .yamuna-header-desktop {
-    width: calc(100% - 48px) !important;
-    max-width: 1320px !important;
+    width: min(1312px, calc(100% - 48px)) !important;
+    max-width: 1312px !important;
   }
 
   html.yamuna-header-scrolled body.template-category .head-main .yamuna-header-desktop::before,
@@ -10232,7 +10327,7 @@ body.template-search .yamuna-plp-sort {
 @media (min-width: 1024px) {
   body.template-category .category-controls,
   body.template-search .category-controls {
-    width: min(1312px, calc(100% - 128px));
+    width: min(1312px, calc(100% - 48px));
     max-width: 1312px;
     margin: 0 auto;
     padding: 48px 0 !important;
@@ -10247,7 +10342,7 @@ body.template-search .yamuna-plp-sort {
   body.template-search .yamuna-plp-hero,
   body.template-search .category-controls,
   body.template-search .yamuna-plp-body > .container {
-    width: min(1312px, calc(100% - 128px));
+    width: min(1312px, calc(100% - 48px));
     max-width: 1312px;
   }
 
@@ -11281,7 +11376,7 @@ body.template-search .yamuna-plp-body .item-image img {
 
   html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop,
   html.yamuna-header-scrolled body.template-product .head-main .yamuna-header-desktop {
-    width: min(1088px, calc(100% - 48px)) !important;
+    width: min(1312px, calc(100% - 48px)) !important;
   }
 
   html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop::before,
@@ -11868,7 +11963,7 @@ body.template-product .yamuna-pdp-rating-label:hover {
   }
 
   body[class] .head-main.compress .yamuna-header-desktop {
-    width: min(1088px, calc(100% - 80px)) !important;
+    width: min(1312px, calc(100% - 80px)) !important;
   }
 
   body[class] .head-main.compress .yamuna-header-desktop::before {
@@ -11981,18 +12076,26 @@ body.template-product .yamuna-pdp-rating-label:hover {
 
   body[class] .head-main .yamuna-header-desktop,
   body[class] .head-main.compress .yamuna-header-desktop {
-    width: min(1312px, calc(100% - 128px)) !important;
+    width: min(1312px, calc(100% - 48px)) !important;
     height: 80px !important;
     min-height: 80px !important;
     margin: 25px auto 0 !important;
     padding: 0 !important;
   }
 
-  body[class] .head-main .yamuna-header-desktop::before,
-  body[class] .head-main.compress .yamuna-header-desktop::before {
+  body[class] .head-main .yamuna-header-desktop::before {
     top: 0 !important;
     bottom: 0 !important;
     left: 224px !important;
+    border-radius: 54px !important;
+    background: #a31460 !important;
+    box-shadow: 4px 4px 4px -2px rgba(0, 0, 0, .25) !important;
+  }
+
+  body[class] .head-main.compress .yamuna-header-desktop::before {
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
     border-radius: 54px !important;
     background: #a31460 !important;
     box-shadow: 4px 4px 4px -2px rgba(0, 0, 0, .25) !important;
@@ -12047,15 +12150,17 @@ body.template-product .yamuna-pdp-rating-label:hover {
   }
 }
 
-{# Single desktop header geometry: smooth convergent animation on scroll #}
+{# Single desktop header geometry: the 1312px shell stays aligned with the
+   page; the magenta capsule starts inset and stretches left on scroll to
+   wrap the logo. #}
 @media (min-width: 1024px) {
   body[class] .head-main .yamuna-header-desktop,
   body[class] .head-main.compress .yamuna-header-desktop,
   html.yamuna-header-scrolled body[class] .head-main .yamuna-header-desktop {
     position: relative !important;
     display: block !important;
-    width: calc(100% - 48px) !important;
-    max-width: 1320px !important;
+    width: min(1312px, calc(100% - 48px)) !important;
+    max-width: 1312px !important;
     min-width: 0 !important;
     height: 80px !important;
     min-height: 80px !important;
@@ -12075,8 +12180,9 @@ body.template-product .yamuna-pdp-rating-label:hover {
     transition: left .55s cubic-bezier(.22, 1, .36, 1), box-shadow .4s ease !important;
   }
 
-  html.yamuna-header-scrolled body[class] .head-main .yamuna-header-desktop::before {
-    left: 60px !important;
+  html.yamuna-header-scrolled body[class] .head-main .yamuna-header-desktop::before,
+  body[class] .head-main.compress .yamuna-header-desktop::before {
+    left: 0 !important;
     box-shadow: 0 8px 28px rgba(163, 20, 96, 0.28) !important;
   }
 
@@ -12123,15 +12229,19 @@ body.template-product .yamuna-pdp-rating-label:hover {
   body[class] .head-main .yamuna-header-logo-default {
     opacity: 1 !important;
     transform: scale(1) !important;
+    visibility: visible !important;
+    display: block !important;
   }
   body[class] .head-main .yamuna-header-logo-scrolled {
     opacity: 0 !important;
     transform: scale(0.92) !important;
+    visibility: hidden !important;
+    display: block !important;
   }
   html.yamuna-header-scrolled body[class] .head-main .yamuna-header-logo-default {
     opacity: 0 !important;
     transform: scale(0.92) !important;
-    visibility: visible !important;
+    visibility: hidden !important;
   }
   html.yamuna-header-scrolled body[class] .head-main .yamuna-header-logo-scrolled {
     opacity: 1 !important;
@@ -12173,7 +12283,7 @@ body.template-product .yamuna-pdp-rating-label:hover {
     position: absolute !important;
     z-index: 2 !important;
     top: 0 !important;
-    right: 24px !important;
+    right: 20px !important;
     display: flex !important;
     width: 124px !important;
     height: 80px !important;
@@ -12223,7 +12333,7 @@ body.template-product .yamuna-pdp-rating-label:hover {
   body[class] .head-main .yamuna-header-desktop-search,
   html.yamuna-header-scrolled body[class] .head-main .yamuna-header-desktop-search { right: 164px !important; width: 392px !important; }
   body[class] .head-main .yamuna-header-desktop-utilities,
-  html.yamuna-header-scrolled body[class] .head-main .yamuna-header-desktop-utilities { right: 32px !important; width: 124px !important; }
+  html.yamuna-header-scrolled body[class] .head-main .yamuna-header-desktop-utilities { right: 20px !important; width: 124px !important; }
 }
 
 /* Toast popup feedback on add to cart */
@@ -16266,4 +16376,927 @@ body.template-blog-post > .yamuna-resale-wrap {
   }
 }
 
+{# Cenário 010: PLP/search mobile header stays pinned like the home header.
+   overflow-x: hidden on html/body breaks position:sticky below 768px. #}
+@media (max-width: 1023px) {
+  body.template-category .head-main,
+  body.template-category .head-main.head-fix,
+  body.template-search .head-main,
+  body.template-search .head-main.head-fix {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    left: 0 !important;
+    z-index: 1050 !important;
+    width: 100% !important;
+    height: 80px !important;
+    padding: 0 !important;
+    background: #F6F5F6 !important;
+    box-shadow: none !important;
+  }
 
+  body.template-category .head-main .yamuna-header-mobile,
+  body.template-search .head-main .yamuna-header-mobile {
+    background: #F6F5F6 !important;
+  }
+
+  body.template-category > .mt-4,
+  body.template-search > .mt-4 {
+    margin-top: 0 !important;
+    padding-top: 80px !important;
+  }
+}
+
+html.yamuna-filters-open body.template-category .head-main,
+html.yamuna-filters-open body.template-category .head-main.head-fix,
+html.yamuna-filters-open body.template-search .head-main,
+html.yamuna-filters-open body.template-search .head-main.head-fix {
+  z-index: 1 !important;
+}
+
+{# Filter drawer header: FILTROS and close (x) share one row, both mobile and desktop. #}
+#nav-filters.yamuna-plp-filters-modal .modal-header {
+  position: relative !important;
+  display: flex !important;
+  min-height: 56px !important;
+  margin: 0 !important;
+  padding: 16px 20px 12px 24px !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  box-sizing: border-box !important;
+}
+
+#nav-filters.yamuna-plp-filters-modal .modal-close {
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  left: auto !important;
+  order: 2 !important;
+  display: flex !important;
+  width: 24px !important;
+  height: 24px !important;
+  margin: 0 0 0 auto !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform: none !important;
+  border-radius: 50% !important;
+  background: #f1eef1 !important;
+  z-index: 2 !important;
+}
+
+{# PLP mobile: FILTROS trigger and Ordenar por on the same baseline. #}
+@media (max-width: 1023px) {
+  body.template-category .category-controls,
+  body.template-search .category-controls {
+    display: flex !important;
+    min-height: 0 !important;
+    margin: 0 auto !important;
+    padding: 24px 0 24px !important;
+    align-items: center !important;
+  }
+
+  body.template-category .category-controls .row,
+  body.template-search .category-controls .row {
+    position: relative !important;
+    display: flex !important;
+    width: 100% !important;
+    min-height: 30px !important;
+    margin: 0 !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  body.template-category .category-controls .row > .col-auto,
+  body.template-search .category-controls .row > .col-auto {
+    display: flex !important;
+    height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    align-items: center !important;
+  }
+
+  body.template-category .yamuna-plp-filter-trigger,
+  body.template-search .yamuna-plp-filter-trigger {
+    display: inline-flex !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    align-items: center !important;
+  }
+
+  body.template-category .yamuna-plp-sort,
+  body.template-search .yamuna-plp-sort {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+    display: flex !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    margin: 0 0 0 auto !important;
+    padding: 0 !important;
+    align-items: center !important;
+    transform: none !important;
+  }
+
+  body.template-category .yamuna-plp-sort-label,
+  body.template-search .yamuna-plp-sort-label {
+    display: flex !important;
+    height: 30px !important;
+    margin: 0 !important;
+    align-items: center !important;
+    font-size: 14px !important;
+    line-height: 16px !important;
+  }
+}
+
+#nav-filters.yamuna-plp-filters-modal .yamuna-plp-filter-option-content,
+#nav-filters.yamuna-plp-filters-modal .yamuna-plp-filter-option-content.checkbox {
+  display: flex !important;
+  align-items: center !important;
+  margin-bottom: 0 !important;
+  padding: 10px 16px 10px 12px !important;
+}
+
+#nav-filters.yamuna-plp-filters-modal .yamuna-plp-filter-option.is-selected .yamuna-plp-filter-option-content {
+  padding-right: 16px !important;
+  padding-left: 12px !important;
+}
+
+#nav-filters.yamuna-plp-filters-modal .yamuna-plp-filter-icon {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+}
+
+#nav-filters.yamuna-plp-filters-modal .yamuna-plp-filter-remove {
+  display: none;
+  margin-left: auto !important;
+  flex: 0 0 auto;
+  align-self: center;
+  color: #238482 !important;
+  font-family: Arial, sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+}
+
+#nav-filters.yamuna-plp-filters-modal .is-selected .yamuna-plp-filter-remove {
+  display: flex !important;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+}
+
+{# Cenário 014 / 017: equal card gutters and button row locked to the bottom
+   so a 1-line vs 2-line product name does not shift COMPRAR. #}
+body.template-category .yamuna-plp-body .js-item-product,
+body.template-search .yamuna-plp-body .js-item-product {
+  display: flex !important;
+}
+
+body.template-category .yamuna-plp-body .item-product,
+body.template-search .yamuna-plp-body .item-product,
+body.template-category .yamuna-plp-body .js-product-container,
+body.template-search .yamuna-plp-body .js-product-container {
+  display: flex !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+}
+
+body.template-category .yamuna-plp-body .item-name,
+body.template-search .yamuna-plp-body .item-name {
+  display: -webkit-box !important;
+  min-height: calc(1.2em * 2);
+  overflow: hidden !important;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 1.2;
+}
+
+body.template-category .yamuna-plp-body .yamuna-plp-item-actions,
+body.template-search .yamuna-plp-body .yamuna-plp-item-actions {
+  margin-top: auto !important;
+}
+
+{# Cenário 015: show installment copy on mobile, stacked under the price. #}
+@media (max-width: 1023px) {
+  body.template-category .js-product-table .item-installments,
+  body.template-search .js-product-table .item-installments,
+  body.template-category .yamuna-plp-body .js-product-table .item-installments,
+  body.template-search .yamuna-plp-body .js-product-table .item-installments {
+    display: block !important;
+    margin: 4px 0 0 !important;
+    color: #9e9e9e !important;
+    font-family: 'Dosis', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 18px !important;
+    white-space: normal !important;
+  }
+
+  body.template-category .yamuna-plp-body .js-product-table .item-price-container,
+  body.template-search .yamuna-plp-body .js-product-table .item-price-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+  }
+
+  body.template-category .yamuna-plp-body .js-product-table .item-product,
+  body.template-search .yamuna-plp-body .js-product-table .item-product {
+    height: auto !important;
+    min-height: 456px !important;
+  }
+
+  body.template-category .yamuna-plp-body .js-product-table .item-image,
+  body.template-search .yamuna-plp-body .js-product-table .item-image {
+    width: calc(100% - 40px) !important;
+    margin: 16px 20px 0 !important;
+  }
+
+  body.template-category .yamuna-plp-body .js-product-table .item-description,
+  body.template-search .yamuna-plp-body .js-product-table .item-description {
+    padding: 12px 20px 0 !important;
+  }
+
+  body.template-category .yamuna-plp-body .yamuna-plp-item-actions,
+  body.template-search .yamuna-plp-body .yamuna-plp-item-actions {
+    padding: 12px 20px 20px !important;
+  }
+}
+
+{# Cenário 016: mobile footer mark closer to the compact Figma lockup. #}
+@media (max-width: 767px) {
+  footer.yamuna-footer .yamuna-footer-logo {
+    max-width: 96px !important;
+    margin: 0 auto 20px !important;
+  }
+
+  footer.yamuna-footer .yamuna-footer-logo-img {
+    width: 96px !important;
+    max-width: 96px !important;
+    height: auto !important;
+  }
+}
+
+{# Keep the outlined Compre 3 pill (border + bag icon) on mobile, but let
+   long prices wrap inside the card padding instead of overflowing. #}
+body.template-category .yamuna-plp-body .yamuna-plp-buy-three,
+body.template-search .yamuna-plp-body .yamuna-plp-buy-three {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+body.template-category .yamuna-plp-body .yamuna-plp-buy-three span,
+body.template-category .yamuna-plp-body .yamuna-plp-buy-three-prefix,
+body.template-category .yamuna-plp-body .yamuna-plp-buy-three-price,
+body.template-search .yamuna-plp-body .yamuna-plp-buy-three span,
+body.template-search .yamuna-plp-body .yamuna-plp-buy-three-prefix,
+body.template-search .yamuna-plp-body .yamuna-plp-buy-three-price {
+  margin: 0 !important;
+}
+
+@media (max-width: 1023px) {
+  body.template-category .yamuna-plp-body .yamuna-plp-item-actions,
+  body.template-search .yamuna-plp-body .yamuna-plp-item-actions {
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  body.template-category .yamuna-plp-body .yamuna-plp-item-actions form,
+  body.template-search .yamuna-plp-body .yamuna-plp-item-actions form {
+    min-width: 0 !important;
+    gap: 8px !important;
+  }
+
+  body.template-category .yamuna-plp-body .yamuna-plp-buy-three,
+  body.template-search .yamuna-plp-body .yamuna-plp-buy-three {
+    display: flex !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 28px !important;
+    padding: 6px 8px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    flex-wrap: nowrap !important;
+    overflow: hidden !important;
+    border: 1px solid #238482 !important;
+    border-radius: 24px !important;
+    background: #fff !important;
+    color: #238482 !important;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    line-height: 14px !important;
+    letter-spacing: 0 !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+  }
+
+  body.template-category .yamuna-plp-body .yamuna-plp-buy-three img,
+  body.template-search .yamuna-plp-body .yamuna-plp-buy-three img {
+    display: block !important;
+    width: 14px !important;
+    min-width: 14px !important;
+    height: 14px !important;
+    margin: 0 !important;
+    flex: 0 0 14px !important;
+  }
+
+  body.template-category .yamuna-plp-body .yamuna-plp-buy-three-prefix,
+  body.template-category .yamuna-plp-body .yamuna-plp-buy-three-price,
+  body.template-search .yamuna-plp-body .yamuna-plp-buy-three-prefix,
+  body.template-search .yamuna-plp-body .yamuna-plp-buy-three-price {
+    display: inline !important;
+    margin: 0 !important;
+    min-width: 0 !important;
+    font: inherit !important;
+    color: inherit !important;
+    white-space: nowrap !important;
+  }
+}
+
+{# FILTROS / Ordenar por: the theme JS writes inline top: headerHeight for
+   sticky controls. Combined with position:relative that offset painted the
+   bar over the first product card. Keep the row in normal flow. #}
+@media (max-width: 1023px) {
+  body.template-category .js-category-controls,
+  body.template-category .category-controls,
+  body.template-search .js-category-controls,
+  body.template-search .category-controls {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    z-index: 2 !important;
+    display: flex !important;
+    width: calc(100% - 24px) !important;
+    max-width: none !important;
+    min-height: 30px !important;
+    margin: 0 auto !important;
+    padding: 16px 0 32px !important;
+    overflow: visible !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  body.template-category .category-controls.is-sticky,
+  body.template-search .category-controls.is-sticky {
+    position: relative !important;
+    top: auto !important;
+    box-shadow: none !important;
+  }
+
+  body.template-category .category-controls .row,
+  body.template-search .category-controls .row {
+    position: relative !important;
+    display: flex !important;
+    width: 100% !important;
+    min-height: 30px !important;
+    margin: 0 !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    transform: none !important;
+  }
+
+  body.template-category .yamuna-plp-sort,
+  body.template-search .yamuna-plp-sort {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+    display: flex !important;
+    width: auto !important;
+    max-width: none !important;
+    min-height: 30px !important;
+    margin: 0 0 0 auto !important;
+    padding: 0 !important;
+    flex: 0 0 auto !important;
+    transform: none !important;
+  }
+
+  body.template-category .yamuna-plp-sort-label,
+  body.template-search .yamuna-plp-sort-label {
+    position: static !important;
+    display: flex !important;
+    width: auto !important;
+    height: 30px !important;
+    margin: 0 !important;
+    padding: 0 18px 0 0 !important;
+    align-items: center !important;
+    line-height: 16px !important;
+  }
+
+  body.template-category .yamuna-plp-body,
+  body.template-search .yamuna-plp-body {
+    position: relative !important;
+    z-index: 1 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+}
+
+{# Desktop nav: PRODUTOS sits in a dropdown wrapper, so line-height alone
+   left it a few pixels above QUEM SOMOS / REVENDA / BLOG. Same flex box. #}
+@media (min-width: 1024px) {
+  body[class] .head-main .yamuna-header-desktop-nav {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  body[class] .head-main .yamuna-header-desktop-nav > .nav-list-link,
+  body[class] .head-main .yamuna-header-desktop-nav .yamuna-products-menu,
+  body[class] .head-main .yamuna-header-desktop-nav .yamuna-products-menu > .nav-item-container,
+  body[class] .head-main .yamuna-header-desktop-nav .yamuna-products-menu > .nav-item-container > .nav-list-link {
+    display: flex !important;
+    height: 80px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    align-items: center !important;
+    line-height: 1 !important;
+  }
+
+  body[class] .head-main .yamuna-header-desktop-nav .yamuna-products-menu {
+    overflow: visible !important;
+    flex: 0 0 auto !important;
+  }
+}
+
+{# Drawers tuck under the magenta capsule with a solid white fill so the
+   rounded header does not leave holes. Empty-cart Figma banners stay.
+   cart-totals stays off the ajax panel so quantity/remove can complete. #}
+@media (min-width: 1024px) {
+  body[class] .head-main,
+  body[class] .head-main.head-fix,
+  body.template-home .head-main,
+  body.template-home .head-main.head-fix {
+    z-index: 40000 !important;
+  }
+
+  body[class] .head-main .yamuna-header-desktop {
+    isolation: isolate;
+  }
+
+  body[class] .head-main,
+  body[class] .head-main.head-fix,
+  body[class] .head-main.compress,
+  body.template-home .head-main,
+  body.template-home .head-main.head-fix,
+  html.yamuna-header-scrolled body[class] .head-main,
+  html.yamuna-header-scrolled body[class] .head-main.head-fix,
+  html.yamuna-header-scrolled body.template-home .head-main,
+  html.yamuna-header-scrolled body.template-home .head-main.head-fix {
+    padding-top: 0 !important;
+  }
+
+  body[class] .head-main .yamuna-header-desktop,
+  body[class] .head-main.compress .yamuna-header-desktop,
+  body.template-home .head-main .yamuna-header-desktop,
+  html.yamuna-header-scrolled body[class] .head-main .yamuna-header-desktop,
+  html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop {
+    margin-top: 0 !important;
+  }
+
+  body[class] .head-main .yamuna-header-desktop::before,
+  body.template-home .head-main .yamuna-header-desktop::before,
+  html.yamuna-header-scrolled body[class] .head-main .yamuna-header-desktop::before,
+  body[class] .head-main.compress .yamuna-header-desktop::before {
+    z-index: 3 !important;
+    top: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-left-radius: 54px !important;
+    border-bottom-right-radius: 54px !important;
+  }
+
+  html.yamuna-header-scrolled body[class] .head-main .yamuna-header-desktop::before,
+  html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop::before,
+  body[class] .head-main.compress .yamuna-header-desktop::before {
+    left: 0 !important;
+  }
+
+  {# Keep the nav stacking context open so the mega-menu can sit under the
+     capsule, but never let scroll rules bury the links behind the pill. #}
+  body[class] .head-main .yamuna-header-desktop-nav,
+  body.template-home .head-main .yamuna-header-desktop-nav,
+  html.yamuna-header-scrolled body[class] .head-main .yamuna-header-desktop-nav,
+  html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop-nav {
+    z-index: auto !important;
+  }
+
+  body[class] .head-main .yamuna-header-desktop-logo,
+  body[class] .head-main .yamuna-header-desktop-search,
+  body[class] .head-main .yamuna-header-desktop-utilities,
+  html.yamuna-header-scrolled body[class] .head-main .yamuna-header-desktop-logo,
+  html.yamuna-header-scrolled body[class] .head-main .yamuna-header-desktop-search,
+  html.yamuna-header-scrolled body[class] .head-main .yamuna-header-desktop-utilities {
+    z-index: 4 !important;
+  }
+
+  body[class] .head-main .yamuna-header-desktop-nav > .nav-list-link,
+  body[class] .head-main .yamuna-products-menu > .nav-item-container,
+  html.yamuna-header-scrolled body[class] .head-main .yamuna-header-desktop-nav > .nav-list-link,
+  html.yamuna-header-scrolled body[class] .head-main .yamuna-products-menu > .nav-item-container {
+    position: relative !important;
+    z-index: 4 !important;
+  }
+
+  html.yamuna-header-scrolled body[class] #modal-cart,
+  html.yamuna-header-scrolled body[class] #modal-cart.modal {
+    top: 0 !important;
+  }
+
+  body[class] .head-main .desktop-dropdown,
+  body[class] .head-main .yamuna-products-dropdown,
+  body[class] .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown,
+  body[class] .head-main .yamuna-header-desktop-search .search-suggest,
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown {
+    top: var(--yamuna-panel-top, 0px) !important;
+    z-index: 1 !important;
+    padding-top: var(--yamuna-panel-overlap, 105px) !important;
+    background: #fff !important;
+    background-color: #fff !important;
+    box-sizing: border-box !important;
+  }
+
+  body[class] .head-main .yamuna-products-menu:hover .yamuna-products-dropdown,
+  body[class] .head-main .nav-dropdown:hover > .desktop-dropdown {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  body[class] .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown {
+    height: calc(358px + var(--yamuna-panel-overlap, 105px)) !important;
+    overflow: hidden !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 24px !important;
+    border-bottom-left-radius: 24px !important;
+  }
+
+  body[class] .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown::after {
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: auto !important;
+    width: min(420px, 38%) !important;
+    height: 100% !important;
+    border-radius: 0 0 24px 0 !important;
+    background-position: center right !important;
+    background-size: cover !important;
+    opacity: 1 !important;
+  }
+
+  body[class] .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems {
+    width: calc(100% - min(420px, 38%)) !important;
+  }
+
+  body[class] #modal-cart,
+  body[class] #modal-cart.modal,
+  body.template-home #modal-cart,
+  body:not(.template-home) #modal-cart {
+    top: var(--yamuna-panel-top, 0px) !important;
+    z-index: 29000 !important;
+    background: #fff !important;
+    background-color: #fff !important;
+  }
+
+  body[class] #modal-cart .js-ajax-cart-panel,
+  body.template-home #modal-cart .js-ajax-cart-panel {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    background: #fff !important;
+    background-color: #fff !important;
+  }
+
+  body[class] #modal-cart .modal-body,
+  body.template-home #modal-cart .modal-body {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[class] #modal-cart .js-ajax-cart-list,
+  body.template-home #modal-cart .js-ajax-cart-list {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  body[class] #modal-cart:has(.js-cart-item) .yamuna-cart-dropdown-footer,
+  body.template-home #modal-cart:has(.js-cart-item) .yamuna-cart-dropdown-footer {
+    position: relative !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    z-index: 2 !important;
+    display: flex !important;
+    flex: 0 0 auto !important;
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: 0 !important;
+    background: #fff !important;
+  }
+
+  body[class] #modal-cart:has(.js-cart-item) .yamuna-cart-dropdown-footer p {
+    display: block !important;
+    position: static !important;
+  }
+
+  body[class] #modal-cart:has(.js-cart-item) .yamuna-cart-discount {
+    position: relative !important;
+    top: auto !important;
+  }
+
+  body[class] #modal-cart:has(.js-cart-item) .yamuna-cart-checkout {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+  }
+
+  body[class] .js-modal-overlay[data-modal-id="#modal-cart"] {
+    z-index: 28000 !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  body[class] .head-main,
+  body[class] .head-main.head-fix {
+    z-index: 40000 !important;
+  }
+
+  body[class] #modal-cart.modal {
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-height: none !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    z-index: 41000 !important;
+  }
+
+  body[class] #nav-hamburger.modal-nav-hamburger {
+    top: 80px !important;
+    height: calc(100dvh - 80px) !important;
+    min-height: 0 !important;
+    z-index: 29000 !important;
+  }
+
+  body[class] .js-modal-overlay[data-modal-id="#modal-cart"] {
+    z-index: 40500 !important;
+  }
+
+  body[class] .js-modal-overlay[data-modal-id="#nav-hamburger"] {
+    z-index: 28000 !important;
+  }
+}
+
+body[class] #modal-cart:not(:has(.js-cart-item)) .yamuna-cart-dropdown-footer,
+body[class] #modal-cart:not(:has(.js-cart-item)) .yamuna-cart-summary,
+body[class] #modal-cart:has(.js-cart-item) .yamuna-cart-empty-footer,
+body[class] #modal-cart:has(.js-cart-item) .js-empty-ajax-cart {
+  display: none !important;
+}
+
+body[class] #modal-cart:not(:has(.js-cart-item)) .yamuna-cart-empty-footer {
+  display: block !important;
+}
+
+body[class] #modal-cart .js-empty-ajax-cart .alert-info {
+  display: none !important;
+}
+
+body[class] #modal-cart:not(:has(.js-cart-item)) .js-empty-ajax-cart {
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  display: block !important;
+  flex: 1 1 auto !important;
+  padding: 20px !important;
+}
+
+body[class] #modal-cart:not(:has(.js-cart-item)) .yamuna-empty-cart-content,
+body.template-home #modal-cart:not(:has(.js-cart-item)) .yamuna-empty-cart-content {
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  display: block !important;
+}
+
+body[class] #modal-cart .yamuna-empty-cart-content > p,
+body[class] #modal-cart .yamuna-empty-cart-content > strong {
+  display: block !important;
+  color: #4a1d3a !important;
+  font-family: Dosis, Roboto, Arial, sans-serif !important;
+  text-align: center !important;
+}
+
+body[class] #modal-cart .yamuna-empty-cart-content > p {
+  margin: 0 0 2px !important;
+  font-size: 18px !important;
+  font-weight: 500 !important;
+}
+
+body[class] #modal-cart .yamuna-empty-cart-content > strong {
+  margin: 0 0 16px !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+}
+
+body[class] #modal-cart .yamuna-empty-cart-links {
+  display: grid !important;
+  gap: 16px !important;
+}
+
+body[class] #modal-cart .yamuna-empty-cart-link,
+body.template-home #modal-cart .yamuna-empty-cart-link,
+body:not(.template-home) #modal-cart .yamuna-empty-cart-link {
+  position: relative !important;
+  display: flex !important;
+  height: 90px !important;
+  padding: 0 !important;
+  align-items: flex-end !important;
+  overflow: hidden !important;
+  border-radius: 8px !important;
+  background: #d9d9d9 !important;
+  background-image: none !important;
+  color: #fff !important;
+  filter: none !important;
+  text-decoration: none !important;
+}
+
+body[class] #modal-cart .yamuna-empty-cart-link-cosmetics,
+body.template-home #modal-cart .yamuna-empty-cart-link-cosmetics {
+  filter: none !important;
+}
+
+body[class] #modal-cart .yamuna-empty-cart-link::before {
+  position: absolute !important;
+  inset: 0 !important;
+  background-position: center !important;
+  background-size: cover !important;
+  filter: grayscale(1) !important;
+  content: '' !important;
+}
+
+body[class] #modal-cart .yamuna-empty-cart-link::after {
+  display: none !important;
+}
+
+body[class] #modal-cart .yamuna-empty-cart-link-super::before {
+  background-image: url('{{ 'images/yamuna/cart-empty-superfoods.png' | static_url }}') !important;
+}
+
+body[class] #modal-cart .yamuna-empty-cart-link-cosmetics::before {
+  background-image: url('{{ 'images/yamuna/cart-empty-cosmetics.png' | static_url }}') !important;
+}
+
+body[class] #modal-cart .yamuna-empty-cart-link span {
+  position: relative !important;
+  z-index: 1 !important;
+  display: inline-flex !important;
+  height: 28px !important;
+  margin: 0 !important;
+  padding: 0 14px !important;
+  align-items: center !important;
+  border-radius: 0 6px 0 0 !important;
+  background: #4a1d3a !important;
+  color: #fff !important;
+  font-family: Dosis, Roboto, Arial, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+}
+
+@media (min-width: 1024px) {
+  body[class] #modal-cart .yamuna-empty-cart-link {
+    height: 110px !important;
+  }
+
+  body[class] #modal-cart .yamuna-empty-cart-links {
+    gap: 20px !important;
+  }
+
+  body[class] #modal-cart .yamuna-empty-cart-link span {
+    height: 30px !important;
+    padding: 0 16px !important;
+    font-size: 14px !important;
+  }
+}
+
+body[class] #modal-cart .yamuna-cart-summary,
+body[class] #modal-cart .js-fulfillment-info,
+body[class] #modal-cart .js-shipping-calculator-container,
+body[class] #modal-cart #cart-shipping-container,
+body[class] #modal-cart [data-component="cart-totals"],
+body[class] #modal-cart .js-ajax-cart-submit {
+  display: none !important;
+}
+
+body[class] #modal-cart .yamuna-minicart-item,
+body[class] #modal-cart .cart-item.yamuna-minicart-item {
+  display: grid !important;
+  grid-template-columns: 88px minmax(0, 1fr) !important;
+  align-items: start !important;
+  column-gap: 16px !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+body[class] #modal-cart .yamuna-minicart-item-image,
+body[class] #modal-cart .yamuna-minicart-item-image a,
+body[class] #modal-cart .yamuna-minicart-item-image img {
+  width: 88px !important;
+  max-width: 88px !important;
+  height: 88px !important;
+  max-height: 88px !important;
+  object-fit: contain !important;
+}
+
+body[class] #modal-cart .js-cart-quantity-btn {
+  pointer-events: auto !important;
+}
+
+body[class] #modal-cart:not(:has(.js-cart-item)) .yamuna-cart-empty-footer {
+  position: relative !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  z-index: 3 !important;
+  display: flex !important;
+  flex: 0 0 auto !important;
+  flex-direction: column !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 0 0 24px !important;
+  background: #fff !important;
+}
+
+body[class] #modal-cart:not(:has(.js-cart-item)) .yamuna-cart-empty-footer .yamuna-cart-discount {
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  left: auto !important;
+}
+
+body[class] #modal-cart:not(:has(.js-cart-item)) .yamuna-cart-empty-footer .yamuna-cart-checkout,
+body[class] #modal-cart:has(.js-cart-item) .yamuna-cart-dropdown-footer .yamuna-cart-checkout,
+body[class] #modal-cart .yamuna-cart-checkout {
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  display: flex !important;
+  box-sizing: border-box !important;
+  width: calc(100% - 44px) !important;
+  max-width: none !important;
+  height: 46px !important;
+  margin: 16px 22px 0 !important;
+  padding: 0 !important;
+}
+
+body[class] #modal-cart:not(:has(.js-cart-item)) .yamuna-cart-empty-footer .yamuna-cart-checkout {
+  margin: 16px 22px 8px !important;
+  background: #c0bbc3 !important;
+}
+
+body[class] #modal-cart:has(.js-cart-item) .yamuna-cart-dropdown-footer {
+  display: block !important;
+}
+
+@media (max-width: 1023px) {
+  body[class] #modal-cart .modal-header,
+  body[class] #modal-cart .yamuna-cart-modal-header {
+    height: 58px !important;
+    min-height: 58px !important;
+    max-height: 58px !important;
+    padding: 0 12px !important;
+  }
+}
