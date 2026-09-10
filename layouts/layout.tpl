@@ -61,6 +61,26 @@
                     text-transform: uppercase !important;
                 }
             }
+
+            {# Mega-menu: CDN async CSS still locks height at 358px; keep this after async link. #}
+            @media (min-width: 1024px) {
+                body[class] .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown {
+                    height: auto !important;
+                    min-height: calc(48px + 320px + 56px + var(--yamuna-panel-overlap, 105px)) !important;
+                    max-height: none !important;
+                    box-sizing: border-box !important;
+                    overflow: hidden !important;
+                }
+                body[class] .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems {
+                    height: auto !important;
+                    max-height: none !important;
+                    margin: 0 !important;
+                    padding: 48px 34px 56px !important;
+                    align-content: start !important;
+                    box-sizing: border-box !important;
+                    overflow: visible !important;
+                }
+            }
         </style>
 
         {# Loads custom CSS added from Advanced Settings on the admin´s theme customization screen #}
@@ -143,15 +163,20 @@
 
         {{back_to_admin}}
 
-        {# Header = Advertising + Nav + Logo + Search + Ajax Cart #}
+        {# Header = Advertising + Nav + Logo + Search + Ajax Cart
+           Cart page uses the prod checkout logo-only header. #}
 
-        {% snipplet "header/header.tpl" %}
+        {% if template == 'cart' %}
+            {% snipplet "header/header-cart.tpl" %}
+        {% else %}
+            {% snipplet "header/header.tpl" %}
+        {% endif %}
 
         {# Page content #}
 
         {% if template != 'home' or (template == 'home' and settings.slider is empty) %}
 
-        <div class="{% if template == 'blog' or template == 'blog-post' or page.handle == 'revenda' or page.handle == 'quem-somos' or page.handle == 'quemsomos' or page.handle == 'nossomanifesto' or page.handle == 'nosso-manifesto' or page.handle == 'politicadeprivacidade' or page.handle == 'politica-de-privacidade' or page.handle == 'trabalheconosco' or page.handle == 'trabalhe-conosco' or page.handle == 'entrega' or page.handle == 'trocasedevolucoes' or page.handle == 'trocas-e-devolucoes' or page.handle == 'duvidasfrequentes' or page.handle == 'duvidas-frequentes' %}yamuna-resale-wrap{% else %}mt-4{% endif %}">
+        <div class="{% if template == 'cart' %}yamuna-cart-wrap{% elseif template == 'blog' or template == 'blog-post' or page.handle == 'revenda' or page.handle == 'quem-somos' or page.handle == 'quemsomos' or page.handle == 'nossomanifesto' or page.handle == 'nosso-manifesto' or page.handle == 'politicadeprivacidade' or page.handle == 'politica-de-privacidade' or page.handle == 'trabalheconosco' or page.handle == 'trabalhe-conosco' or page.handle == 'entrega' or page.handle == 'trocasedevolucoes' or page.handle == 'trocas-e-devolucoes' or page.handle == 'duvidasfrequentes' or page.handle == 'duvidas-frequentes' %}yamuna-resale-wrap{% else %}mt-4{% endif %}">
 
         {% endif %}
 
@@ -167,9 +192,13 @@
 
         {% snipplet "whatsapp-chat.tpl" %}
 
-        {# Footer #}
+        {# Footer — cart page uses the simplified checkout footer from prod #}
 
-        {% snipplet "footer/footer.tpl" %}
+        {% if template == 'cart' %}
+            {% snipplet "footer/footer-cart.tpl" %}
+        {% else %}
+            {% snipplet "footer/footer.tpl" %}
+        {% endif %}
 
         {% if cart.free_shipping.cart_has_free_shipping or cart.free_shipping.min_price_free_shipping.min_price %}
 
@@ -257,6 +286,9 @@
 
                     if (lower === 'tabela nutricional' || (lower.indexOf('tabela nutricional') === 0 && text.length < 40)) {
                         node.classList.add('yamuna-pdp-nutrition-btn');
+                        if (node.tagName === 'BUTTON' || node.tagName === 'A' || node.childNodes.length <= 1) {
+                            node.textContent = 'TABELA NUTRICIONAL';
+                        }
                         hasNutritionBtn = true;
                         continue;
                     }
@@ -282,7 +314,7 @@
                         var btn = document.createElement('button');
                         btn.type = 'button';
                         btn.className = 'yamuna-pdp-nutrition-btn';
-                        btn.textContent = 'Tabela nutricional';
+                        btn.textContent = 'TABELA NUTRICIONAL';
                         btn.addEventListener('click', function () {
                             if (typeof toggleInfo === 'function') {
                                 toggleInfo('informacao-nutricional');

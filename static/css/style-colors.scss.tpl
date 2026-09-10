@@ -1775,21 +1775,28 @@ input::-webkit-outer-spin-button{
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .yamuna-home-spot-buy-three-label {
   display: inline-flex;
   align-items: baseline;
+  gap: 0.35em;
   color: #238482;
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   line-height: normal;
+  letter-spacing: 0.02em;
+  word-spacing: 0.12em;
   text-align: center;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .yamuna-home-spot-buy-three-prefix {
+  margin-right: 0;
   font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .yamuna-home-spot-buy-three-price {
+  margin-left: 0;
   font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .yamuna-home-spot-buy-one {

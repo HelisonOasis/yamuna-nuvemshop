@@ -1533,12 +1533,19 @@ DOMContentLoaded.addEventOrExecute(() => {
 
             document.addEventListener('click', function(e) {
                 var applyBtn = e.target.closest('#nav-filters .js-yamuna-plp-apply');
+                if (applyBtn) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    applyYamunaFilters();
+                    closeYamunaFiltersNow();
+                    return;
+                }
+
                 var closeBtn = e.target.closest('#nav-filters .js-modal-close');
                 var overlayClick = e.target.closest('.js-modal-overlay[data-modal-id="#nav-filters"]');
                 if (!closeBtn && !overlayClick) return;
                 e.preventDefault();
                 e.stopImmediatePropagation();
-                if (applyBtn) applyYamunaFilters();
                 closeYamunaFiltersNow();
             }, true);
 
@@ -1562,8 +1569,10 @@ DOMContentLoaded.addEventOrExecute(() => {
 
             function selectedFilters() {
                 var selected = [];
-                options.forEach(function(option) {
-                    if (option.classList.contains('is-selected')) {
+                document.querySelectorAll('.js-yamuna-plp-filter').forEach(function(option) {
+                    var input = option.querySelector('input');
+                    var isOn = option.classList.contains('is-selected') || (input && input.checked);
+                    if (isOn) {
                         selected.push(normalize(option.getAttribute('data-yamuna-filter')));
                     }
                 });
@@ -1591,6 +1600,39 @@ DOMContentLoaded.addEventOrExecute(() => {
                 return false;
             }
 
+            function renderActiveFilterChips() {
+                var wrap = document.querySelector('.js-yamuna-plp-active-filters');
+                if (!wrap) return;
+
+                var chips = [];
+                document.querySelectorAll('.js-yamuna-plp-filter').forEach(function(option) {
+                    var input = option.querySelector('input');
+                    var isOn = option.classList.contains('is-selected') || (input && input.checked);
+                    if (!isOn) return;
+                    var labelEl = option.querySelector('.checkbox-text');
+                    var label = labelEl ? labelEl.textContent.trim() : (option.getAttribute('data-yamuna-filter') || '');
+                    var key = option.getAttribute('data-yamuna-filter') || '';
+                    chips.push({ key: key, label: label });
+                });
+
+                if (!chips.length) {
+                    wrap.innerHTML = '';
+                    wrap.hidden = true;
+                    wrap.classList.remove('is-visible');
+                    return;
+                }
+
+                var html = '<span class="yamuna-plp-active-filters-label">Filtros ativos:</span>';
+                chips.forEach(function(chip) {
+                    html += '<button type="button" class="yamuna-plp-active-filter-chip js-yamuna-plp-active-chip" data-yamuna-filter="' + chip.key.replace(/"/g, '&quot;') + '">' +
+                        '<span>' + chip.label + '</span><span class="yamuna-plp-active-filter-chip-remove" aria-hidden="true">×</span></button>';
+                });
+                html += '<a href="#" class="yamuna-plp-active-filters-clear js-yamuna-plp-clear">Limpar filtros</a>';
+                wrap.innerHTML = html;
+                wrap.hidden = false;
+                wrap.classList.add('is-visible');
+            }
+
             function applyYamunaFilters() {
                 var selected = selectedFilters();
                 var items = document.querySelectorAll('.yamuna-plp-body .js-item-product');
@@ -1601,12 +1643,20 @@ DOMContentLoaded.addEventOrExecute(() => {
                     var match = !selected.length || selected.every(function(filter) {
                         return itemMatchesFilter(tags, filter);
                     });
-                    item.style.display = match ? '' : 'none';
+                    item.classList.toggle('is-yamuna-filtered-out', !match);
                     if (match) visible += 1;
                 });
                 var empty = document.querySelector('.yamuna-plp-body [data-component="filter.message"]');
-                if (empty) empty.style.display = visible ? 'none' : '';
+                if (empty) {
+                    empty.hidden = visible > 0;
+                    empty.style.setProperty('display', visible ? 'none' : 'block', 'important');
+                }
+                var table = document.querySelector('.yamuna-plp-body .js-product-table');
+                if (table) table.classList.toggle('is-yamuna-filter-empty', visible === 0 && selected.length > 0);
+                renderActiveFilterChips();
             }
+
+            window.yamunaApplyPlpFilters = applyYamunaFilters;
 
             options.forEach(function(option) {
                 option.addEventListener('click', function(e) {
@@ -1617,22 +1667,42 @@ DOMContentLoaded.addEventOrExecute(() => {
                 });
             });
 
-            document.querySelectorAll('.js-yamuna-plp-apply').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    applyYamunaFilters();
+            document.addEventListener('click', function(e) {
+                var chip = e.target.closest('.js-yamuna-plp-active-chip');
+                if (!chip) return;
+                e.preventDefault();
+                var key = chip.getAttribute('data-yamuna-filter');
+                document.querySelectorAll('.js-yamuna-plp-filter').forEach(function(option) {
+                    if (option.getAttribute('data-yamuna-filter') !== key) return;
+                    option.classList.remove('is-selected');
+                    var input = option.querySelector('input');
+                    if (input) input.checked = false;
                 });
+                applyYamunaFilters();
             });
 
             document.querySelectorAll('.js-yamuna-plp-clear').forEach(function(button) {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
-                    options.forEach(function(option) {
+                    document.querySelectorAll('.js-yamuna-plp-filter').forEach(function(option) {
                         option.classList.remove('is-selected');
                         var input = option.querySelector('input');
                         if (input) input.checked = false;
                     });
                     applyYamunaFilters();
                 });
+            });
+
+            document.addEventListener('click', function(e) {
+                var clearLink = e.target.closest('.js-yamuna-plp-active-filters .js-yamuna-plp-clear');
+                if (!clearLink) return;
+                e.preventDefault();
+                document.querySelectorAll('.js-yamuna-plp-filter').forEach(function(option) {
+                    option.classList.remove('is-selected');
+                    var input = option.querySelector('input');
+                    if (input) input.checked = false;
+                });
+                applyYamunaFilters();
             });
         })();
 
@@ -1676,15 +1746,18 @@ DOMContentLoaded.addEventOrExecute(() => {
                 hideWhileScrollingSelector: ".js-hide-footer-while-scrolling",
                 productsBeforeLoadMoreButton: 50,
                 productsPerPage: 12,
-                {% if has_item_slider %}
-                    afterLoaded: function(){
+                afterLoaded: function(){
+                    {% if has_item_slider %}
                         LS.productItemSlider({ 
                             onInit: function(){
                                 updateItemSliderElementsPosition(jQueryNuvem(this.el));
                             }
                         });
-                    },
-                {% endif %}
+                    {% endif %}
+                    if (typeof window.yamunaApplyPlpFilters === 'function') {
+                        window.yamunaApplyPlpFilters();
+                    }
+                },
             });
         {% endif %}
     }();
@@ -2204,13 +2277,14 @@ DOMContentLoaded.addEventOrExecute(() => {
 
         // Calculate new discount percentage based on difference between filtered old and new prices
         const percentageDifference = window.moneyDifferenceCalculator.percentageDifferenceFromString(compare_price_value, price_value);
-        if(percentageDifference){
+        var offerPct = Number(percentageDifference) || 0;
+        if(offerPct > 0){
             $this_product_container.find(".js-offer-percentage").text(percentageDifference);
-            $this_product_container.find(".js-offer-label").css("display" , "table");
+            $this_product_container.find(".js-offer-label").removeClass("d-none yamuna-offer-zero").css("display" , "flex");
         }
 
-        if ($this_compare_price.css("display") == "none" || !percentageDifference) {
-            $this_product_container.find(".js-offer-label").hide();
+        if ($this_compare_price.css("display") == "none" || offerPct <= 0) {
+            $this_product_container.find(".js-offer-label").addClass("d-none yamuna-offer-zero").hide();
         }
         if ($this_add_to_cart.hasClass("nostock")) {
             var $stockLabel = $this_product_container.find(".js-stock-label");
@@ -3084,11 +3158,16 @@ DOMContentLoaded.addEventOrExecute(() => {
 
         jQueryNuvem(".js-shipping-calculator-current-zip").text(zipcode_from_cookie);
 
-        {# Hide the shipping calculator and show spinner  #}
+        {# Hide the shipping calculator and show spinner — PDP only (minicart stays input+Buscar) #}
 
-        jQueryNuvem(".js-shipping-calculator-head").addClass("with-zip").removeClass("with-form");
-        jQueryNuvem(".js-shipping-calculator-with-zipcode").addClass("transition-up-active");
-        jQueryNuvem(".js-shipping-calculator-spinner").show();
+        jQueryNuvem("#product-shipping-container .js-shipping-calculator-head").addClass("with-zip").removeClass("with-form");
+        jQueryNuvem("#product-shipping-container .js-shipping-calculator-with-zipcode").addClass("transition-up-active");
+        jQueryNuvem("#product-shipping-container .js-shipping-calculator-spinner").show();
+        jQueryNuvem("#modal-cart .js-shipping-calculator-head").addClass("with-form").removeClass("with-zip");
+        jQueryNuvem("#modal-cart .js-shipping-calculator-with-zipcode").removeClass("transition-up-active");
+        jQueryNuvem("#modal-cart .js-shipping-calculator-form").addClass("transition-up-active");
+        jQueryNuvem("#modal-cart .js-shipping-calculator-spinner").hide();
+        jQueryNuvem("#modal-cart .js-shipping-calculator-response").empty().hide();
     {% else %}
 
         {# If there is no cookie saved, show calcualtor #}
@@ -3217,8 +3296,15 @@ DOMContentLoaded.addEventOrExecute(() => {
     {# Only shipping input has value, cart has saved shipping and there is no branch selected #}
 
     calculateCartShippingOnLoad = function() {
-        {# Triggers function when a zipcode input is filled #}
-        if (jQueryNuvem("#cart-shipping-container .js-shipping-input").val()) {
+        {# Yamuna minicart: keep CEP as input+Buscar (prod). Do not auto-search on load. #}
+        var $minicartShip = jQueryNuvem("#modal-cart #cart-shipping-container");
+        if ($minicartShip.length) {
+            jQueryNuvem("#modal-cart .js-shipping-calculator-response").empty().hide();
+            jQueryNuvem("#modal-cart .js-shipping-calculator-spinner").hide();
+            jQueryNuvem("#modal-cart .js-shipping-calculator-head").addClass("with-form").removeClass("with-zip");
+            jQueryNuvem("#modal-cart .js-shipping-calculator-with-zipcode").removeClass("transition-up-active");
+            jQueryNuvem("#modal-cart .js-shipping-calculator-form").addClass("transition-up-active");
+        } else if (jQueryNuvem("#cart-shipping-container .js-shipping-input").val()) {
             // If user already had calculated shipping: recalculate shipping
             setTimeout(function() {
                 LS.calculateShippingAjax(
@@ -3627,4 +3713,36 @@ DOMContentLoaded.addEventOrExecute(() => {
         })();
         {% endif %}
 
+        {# Hide 0% OFF ribbons that the labels component may still emit. #}
+        function yamunaHideZeroOfferLabels(root) {
+            var scope = root && root.querySelectorAll ? root : document;
+            scope.querySelectorAll('.js-offer-label').forEach(function (el) {
+                var text = (el.textContent || '').replace(/\s+/g, ' ').trim();
+                var match = text.match(/(\d+)\s*%/);
+                var pct = match ? Number(match[1]) : NaN;
+                if (!match || pct <= 0) {
+                    el.classList.add('d-none', 'yamuna-offer-zero');
+                    el.style.display = 'none';
+                }
+            });
+        }
+        yamunaHideZeroOfferLabels(document);
+        document.addEventListener('yamuna:products-updated', function () {
+            yamunaHideZeroOfferLabels(document);
+        });
+        window.yamunaHideZeroOfferLabels = yamunaHideZeroOfferLabels;
+
+        var productTable = document.querySelector('.js-product-table');
+        if (productTable && window.MutationObserver) {
+            var offerHideTimer = null;
+            new MutationObserver(function () {
+                window.clearTimeout(offerHideTimer);
+                offerHideTimer = window.setTimeout(function () {
+                    yamunaHideZeroOfferLabels(productTable);
+                }, 50);
+            }).observe(productTable, { childList: true, subtree: true });
+        }
+
 });
+
+

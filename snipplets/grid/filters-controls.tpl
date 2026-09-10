@@ -47,6 +47,7 @@
             {% endif %}
         </div>
     </section>
+    <div class="yamuna-plp-active-filters js-yamuna-plp-active-filters" aria-live="polite" hidden></div>
     {% embed "snipplets/modal.tpl" with{modal_id: 'nav-filters', modal_class: 'filters yamuna-plp-filters-modal', modal_position: 'left', modal_transition: 'slide', modal_header: true, modal_width: 'full', modal_zindex_top: true } %}
         {% block modal_head %}
             {{'Filtros ' | translate }}
@@ -65,3 +66,5 @@
         {% include "snipplets/grid/filters.tpl" with {mobile: true, applied_filters: true} %}
     </div>
 {% endif %}
+
+

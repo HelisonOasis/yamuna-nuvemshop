@@ -24,7 +24,17 @@
 					{{ component('nubesdk-slot', { type: "before_product_detail_name" }) }}
 
 				{% endif %}
-			<h1 class="{% if template == 'product' %}js-product-name{% else %}text-center{% endif %} h2 h1-md {% if template == 'contact' %} text-md-left{% endif %}{% if settings.theme_rounded and template != 'product' %} text-primary{% endif %}" {% if template == "product" %}data-store="product-name-{{ product.id }}"{% endif %}>{% block page_header_text %}{% endblock %}</h1>
+			<div class="{% if template == 'product' %}yamuna-pdp-title-row{% endif %}">
+				<h1 class="{% if template == 'product' %}js-product-name{% else %}text-center{% endif %} h2 h1-md {% if template == 'contact' %} text-md-left{% endif %}{% if settings.theme_rounded and template != 'product' %} text-primary{% endif %}" {% if template == "product" %}data-store="product-name-{{ product.id }}"{% endif %}>{% block page_header_text %}{% endblock %}</h1>
+				{% if template == 'product' %}
+					<button type="button" class="yamuna-pdp-favorite js-yamuna-pdp-favorite wishlist-add" id="wishlist-button-{{ product.id }}" aria-label="{{ 'Favoritos' | translate }}" title="{{ 'Favoritos' | translate }}">
+						<svg id="wishlist-icon-{{ product.id }}" width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+							<circle cx="12" cy="12" r="12" fill="#BA546B"></circle>
+							<path d="M15.5156 6C14.8633 6 12.7824 6.62437 12 7.62077C11.2176 6.62437 9.13633 6 8.48438 6C7.13386 6 6.01229 7.03154 6.00037 8.35623C5.9686 11.8386 11.2227 15.6885 11.668 15.9894C11.7686 16.0573 11.884 16.0928 12.001 16.0928C12.1179 16.0928 12.2333 16.0573 12.3339 15.9894C12.7792 15.6885 18.0333 11.8386 18.0016 8.35623C17.9897 7.03154 16.8661 6 15.5156 6Z" fill="white"></path>
+						</svg>
+					</button>
+				{% endif %}
+			</div>
 			{% if template == 'product' %}
 				{# Figma 853:9590 - rating under title #}
 				{% set yamuna_rating_value = product.metafields.yamuna.rating | default(product.metafields.reviews.rating) | default('') %}

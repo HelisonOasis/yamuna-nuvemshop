@@ -154,9 +154,6 @@
       </div>
     </div>
 
-    {% if not is_gift %}
-      <div class="yamuna-cart-item-promo"><span>Adicione 2 produtos</span><span>para garantir <strong>5% OFF</strong></span></div>
-    {% endif %}
   </div>
 
   <div class="yamuna-minicart-item-controls">
@@ -190,7 +187,6 @@
     </div>
 
     {% if not is_gift %}
-      <span class="yamuna-cart-subscription">ASSINAR COM 15% OFF</span>
       <div class="cart-item-delete">
         <button type="button" class="btn" onclick="LS.removeItem({{ item.id }}, true)" data-component="line-item.remove" aria-label="{{ 'Remover' | translate }}">
           <img class="yamuna-cart-trash-icon" src="{{ 'images/yamuna/cart-trash-figma.svg' | static_url }}" alt="{{ 'Remover' | translate }}">

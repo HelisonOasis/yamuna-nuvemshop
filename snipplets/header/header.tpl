@@ -103,11 +103,23 @@
 
     <script>
         document.addEventListener('click', function(event) {
+            var panel = document.getElementById('yamuna-mobile-search');
+            var searchToggle = document.querySelector('.js-yamuna-mobile-search-toggle');
+            var menuTrigger = event.target.closest('[data-toggle="#nav-hamburger"]');
+
+            function closeMobileSearch() {
+                if (!panel) return;
+                panel.classList.remove('is-open');
+                panel.setAttribute('aria-hidden', 'true');
+                if (searchToggle) searchToggle.setAttribute('aria-expanded', 'false');
+            }
+
+            if (menuTrigger) closeMobileSearch();
+
             var trigger = event.target.closest('.js-yamuna-mobile-search-toggle');
             if (!trigger || !window.matchMedia('(max-width: 1023px)').matches) return;
 
             event.preventDefault();
-            var panel = document.getElementById('yamuna-mobile-search');
             if (!panel) return;
 
             var isOpen = panel.classList.toggle('is-open');
@@ -326,6 +338,45 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
+    {# Keep the page frozen while the hamburger drawer is open (iOS-safe). #}
+    (function() {
+      var lockedScrollY = 0;
+      var menu = document.getElementById('nav-hamburger');
+      if (!menu || !window.MutationObserver) return;
+
+      function lockScroll() {
+        lockedScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+        document.documentElement.classList.add('yamuna-menu-scroll-lock');
+        document.body.classList.add('overflow-none');
+        document.body.style.position = 'fixed';
+        document.body.style.top = '-' + lockedScrollY + 'px';
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.body.style.width = '100%';
+      }
+
+      function unlockScroll() {
+        document.documentElement.classList.remove('yamuna-menu-scroll-lock');
+        if (!document.querySelector('.js-modal.modal-show')) {
+          document.body.classList.remove('overflow-none');
+        }
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        document.body.style.right = '';
+        document.body.style.width = '';
+        window.scrollTo(0, lockedScrollY);
+      }
+
+      new MutationObserver(function() {
+        if (menu.classList.contains('modal-show')) {
+          lockScroll();
+        } else {
+          unlockScroll();
+        }
+      }).observe(menu, { attributes: true, attributeFilter: ['class'] });
+    })();
+
     // Auto-open desktop cart dropdown on add to cart
     window.yamunaAutoOpenCart = function() {
       var header = document.querySelector('.head-main .yamuna-header-desktop');
@@ -334,8 +385,8 @@
       }
       var cartModal = document.getElementById('modal-cart');
       if (cartModal) {
+        cartModal.style.removeProperty('display');
         cartModal.classList.add('modal-show');
-        cartModal.style.display = 'block';
       }
       if (window.innerWidth >= 1024 && !document.querySelector('.js-modal.modal-show:not(#modal-cart)')) {
         var overlay = document.querySelector('.js-modal-overlay[data-modal-id="#modal-cart"]');

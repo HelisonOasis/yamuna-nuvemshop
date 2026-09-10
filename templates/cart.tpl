@@ -1,11 +1,14 @@
-{# Yamuna pre-checkout cart page — Figma node 1576:11580 #}
+{# Yamuna pre-checkout cart page — matches yamuna.com.br/checkout #}
 {% set has_validation_messages = cart.checkout_enabled_validation_messages | length > 0 %}
 {% set should_show_checkout_button = cart.checkout_enabled and not has_validation_messages %}
 
 <div id="shoppingCartPage" class="yamuna-cart-page" data-minimum="{{ settings.cart_minimum_value }}" data-store="cart-page">
   <div class="yamuna-cart-page-inner">
-    <a class="yamuna-cart-page-back" href="{{ store.products_url }}">&lt; Voltar</a>
-    <h1 class="yamuna-cart-page-title">{{ 'Carrinho de compras' | translate }}</h1>
+    <div class="yamuna-cart-nav">
+      <a class="yamuna-cart-page-back" href="{{ store.products_url }}">&lt; Voltar</a>
+      <h1 class="yamuna-cart-page-title">{{ 'Carrinho de compras' | translate }}</h1>
+      <span class="yamuna-cart-nav-spacer" aria-hidden="true"></span>
+    </div>
 
     {# Platform quirk: any POST to cart_url WITHOUT name=go_to_checkout returns
        HTTP 200 with an empty body (blank white page, ~0 B resources in Network).
@@ -61,16 +64,24 @@
           })
         }}
 
-        {# Platform totals kept for AJAX/shipping state, but WITHOUT go_to_checkout
-           (duplicate submit was able to POST the empty checkout handoff page). #}
-        <div class="yamuna-cart-page-platform-totals" hidden aria-hidden="true">
+        {# Mobile order summary (shipping + totals). Desktop keeps Finalizar only. #}
+        <div class="yamuna-cart-page-summary js-visible-on-cart-filled">
+          <h2 class="yamuna-cart-page-summary-title">Resumo do pedido</h2>
           {% include "snipplets/cart-totals.tpl" with {'cart_page': true, 'hide_checkout_button': true} %}
         </div>
       {% else %}
         {% if not error %}
           <div class="yamuna-cart-page-empty">
-            {{ component('alert', {'type': 'info', 'message': ('El carrito de compras está vacío.' | translate) }) }}
-            <a class="yamuna-cart-page-continue" href="{{ store.products_url }}">{{ 'Continuar comprando' | translate }}</a>
+            <img
+              class="yamuna-cart-page-empty-icon"
+              src="{{ 'images/yamuna/cart-empty-orders.svg' | static_url }}"
+              alt=""
+              width="127"
+              height="120"
+            />
+            <h2 class="yamuna-cart-page-empty-title">Seu carrinho de compras está vazio</h2>
+            <p class="yamuna-cart-page-empty-subtitle">Você não possui itens no carrinho</p>
+            <a class="yamuna-cart-page-continue yamuna-cart-page-empty-continue" href="{{ store.products_url }}">Continue comprando</a>
           </div>
         {% endif %}
       {% endif %}
@@ -99,5 +110,11 @@
       })();
     </script>
   </div>
+
+  <div class="yamuna-checkout-extras">
+    {% include "snipplets/cart/cart-recommendations.tpl" %}
+    {% include "snipplets/cart/cart-depositions.tpl" %}
+  </div>
+
   <div id="store-curr" class="hidden">{{ cart.currency }}</div>
 </div>

@@ -13,6 +13,7 @@
 {% set slide_item = slide_item | default(false) %}
 {% set columns = settings.grid_columns %}
 {% set is_pdp_related_spot = is_pdp_related_spot | default(false) %}
+{% set is_cart_reco_spot = is_cart_reco_spot | default(false) %}
 {% set is_home_product_spot = slide_item and section_name in ['primary', 'new', 'sale'] %}
 {% set is_yamuna_spot_card = is_home_product_spot or is_pdp_related_spot %}
 {% set spot_ns = is_pdp_related_spot ? 'yamuna-pdp-spot' : 'yamuna-home-spot' %}
@@ -46,6 +47,11 @@
 {# Secondary images #}
 
 {% set show_secondary_image = settings.product_hover %}
+{% if is_cart_reco_spot %}
+    {% set show_secondary_image = false %}
+    {% set image_priority_high = true %}
+{% endif %}
+{% set image_priority_high = image_priority_high | default(false) %}
 
 {% if settings.theme_rounded %}
     <div class="js-item-product {% if highlighted_products_setting_name %}js-products-{{ highlighted_products_setting_name }}-product{% endif %} {% if not slide_item %}{{ grid_classes }}{% endif %}" data-product-type="list" data-product-id="{{ product.id }}" data-store="product-item-{{ product.id }}" data-component="product-list-item" data-component-value="{{ product.id }}" data-grid-classes="{{ grid_classes }}" data-yamuna-tags="{{ product.name | lower }}">
@@ -60,7 +66,12 @@
 
         {% set product_url_with_selected_variant = has_filters ?  ( product.url | add_param('variant', product.selected_or_first_available_variant.id)) : product.url  %}
 
-        {% set image_classes = 'js-item-image lazyautosizes ' ~ (not image_priority_high ? 'lazyload') ~ ' fade-in img-absolute img-absolute-centered' %}
+        {# Cart reco: skip img-absolute-centered — theme translateX(-50%) clips/shifts jars when left:0 is forced #}
+        {% if is_cart_reco_spot %}
+            {% set image_classes = 'js-item-image lazyautosizes ' ~ (not image_priority_high ? 'lazyload') ~ ' fade-in img-absolute' %}
+        {% else %}
+            {% set image_classes = 'js-item-image lazyautosizes ' ~ (not image_priority_high ? 'lazyload') ~ ' fade-in img-absolute img-absolute-centered' %}
+        {% endif %}
             
         {% set data_expand = show_image_slider ? '50' : '-10' %}
             
@@ -104,13 +115,13 @@
 
         {{ component(
             'product-item-image', {
-                image_lazy: true,
-                image_lazy_js: true,
+                image_lazy: not is_cart_reco_spot,
+                image_lazy_js: not is_cart_reco_spot,
                 image_data_expand: data_expand,
                 image_secondary_data_sizes: 'auto',
                 secondary_image: show_secondary_image,
                 slider: show_image_slider,
-                placeholder: true,
+                placeholder: not is_cart_reco_spot,
                 image_priority_high: image_priority_high,
                 custom_content: floating_elements,
                 slider_pagination_container: true,
@@ -146,7 +157,7 @@
 
                 {{ component('nubesdk-slot', { type: "before_product_grid_item_name" }) }}
 
-                <div class="js-item-name item-name {% if reduced_item %}mb-2{% else %}mb-3{% endif %}" data-store="product-item-name-{{ product.id }}"{% if is_yamuna_spot_card %} style="display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"{% endif %}>{{ product.name }}</div>
+                <div class="js-item-name item-name {% if reduced_item %}mb-2{% else %}mb-3{% endif %}" data-store="product-item-name-{{ product.id }}"{% if is_yamuna_spot_card and not is_cart_reco_spot %} style="display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"{% elseif is_cart_reco_spot %} style="display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:1; overflow:hidden; text-overflow:ellipsis; white-space:normal;"{% endif %}>{{ product.name }}</div>
 
                 {{ component('nubesdk-slot', { type: "after_product_grid_item_name" }) }}
 
@@ -188,13 +199,17 @@
 
                 {% if is_yamuna_spot_card and product_can_show_installments %}
                     {% if is_pdp_related_spot %}
-                        {# Figma 838:4078: "ou 10x de R$4,99 sem juros" beside price. #}
+                        {# PDP related: "ou 10x de R$4,99 sem juros". Cart checkout: "ou até Nx de R$X no cartão". #}
                         {% set spot_installments = product.get_max_installments(false) %}
                         {% if not spot_installments or spot_installments.installment <= 1 %}
                             {% set spot_installments = product.get_max_installments %}
                         {% endif %}
                         <div class="{{ spot_ns }}-payment">
-                            ou {{ spot_installments.installment }}x de {{ (product.price / spot_installments.installment) | money }} sem juros
+                            {% if is_cart_reco_spot %}
+                                ou até {{ spot_installments.installment }}x de {{ (product.price / spot_installments.installment) | money }} no cartão
+                            {% else %}
+                                ou {{ spot_installments.installment }}x de {{ (product.price / spot_installments.installment) | money }} sem juros
+                            {% endif %}
                         </div>
                     {% else %}
                         <div class="{{ spot_ns }}-payment">
@@ -255,7 +270,7 @@
                                 </button>
                                 <button type="submit" class="js-addtocart js-prod-submit-form yamuna-plp-buy-three" data-quantity="3" data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}">
                                     <img src="{{ 'images/yamuna/home-spot-bag-teal.svg' | static_url }}" alt="" aria-hidden="true" />
-                                    <span class="yamuna-plp-buy-three-prefix">{{ 'Compre 3' | translate }}</span> <span class="yamuna-plp-buy-three-price">{{ 'por' | translate }} {{ three_products_price }} {{ 'cada' | translate }}</span>
+                                    <span class="yamuna-plp-buy-three-prefix">{{ 'Compre 3' | translate }}</span><span class="yamuna-plp-buy-three-price"> {{ 'por' | translate }} {{ three_products_price }} {{ 'cada' | translate }}</span>
                                 </button>
                             </form>
                         {% endif %}
@@ -291,7 +306,10 @@
                                         </button>
                                         <button type="button" class="js-addtocart js-prod-submit-form btn btn-secondary btn-small w-100 {{ spot_ns }}-buy-three {{ state }}" data-quantity="3" {% if state == 'nostock' %}disabled{% endif %} data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}">
                                             <img class="{{ spot_ns }}-bag" src="{{ 'images/yamuna/home-spot-bag-teal.svg' | static_url }}" alt="" aria-hidden="true" />
-                                            <span class="{{ spot_ns }}-buy-three-label"><span class="{{ spot_ns }}-buy-three-prefix">Compre 3</span><span class="{{ spot_ns }}-buy-three-price"> por {{ three_products_price }}{% if is_pdp_related_spot %} cada{% endif %}</span></span>
+                                            <span class="{{ spot_ns }}-buy-three-label">
+                                              <span class="{{ spot_ns }}-buy-three-prefix">Compre 3</span>
+                                              <span class="{{ spot_ns }}-buy-three-price">{% if is_cart_reco_spot %}por {{ three_products_price }} cada{% else %}por {{ three_products_price }}{% if is_pdp_related_spot %} cada{% endif %}{% endif %}</span>
+                                            </span>
                                         </button>
                                     {% else %}
                                         <input type="submit" class="js-addtocart js-prod-submit-form {{ quickshop_button_primary_classes }} {{ state }}" value="{{ texts[state] | translate }}" {% if state == 'nostock' %}disabled{% endif %} data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}"/>

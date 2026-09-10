@@ -3,6 +3,7 @@
     <div class="js-product-table row">
         {% include 'snipplets/product_grid.tpl' %}
     </div>
+    <p class="js-yamuna-filter-empty text-center my-4" data-component="filter.message" hidden>{{ "No tenemos resultados para tu búsqueda. Por favor, intentá con otros filtros." | translate }}</p>
         {% include "snipplets/grid/pagination.tpl" with {infinite_scroll: true} %}
 {% else %}
     <h6 class="text-center my-2" data-component="filter.message">

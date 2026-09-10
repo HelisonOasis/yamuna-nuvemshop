@@ -8,29 +8,38 @@
   /* O drawer mobile abaixo segue o frame de 320px do Figma em style-async.scss.tpl.
      Estas regras complementam somente a apresentação desktop. */
   @media (min-width: 1024px) {
+    /* display only when .modal-show — otherwise .hide()/close cannot win over !important */
     body #modal-cart.modal {
       position: fixed !important;
       /* White panel starts at the viewport top so no gap sits above the capsule. */
       top: var(--yamuna-panel-top, 0px) !important;
       right: var(--yamuna-header-right, max(24px, calc((100vw - 1320px) / 2))) !important;
       left: auto !important;
+      display: none !important;
+      flex-direction: column !important;
       width: 424px !important;
       max-width: calc(100vw - 32px) !important;
-      height: min(759px, calc(100vh - var(--yamuna-panel-top, 0px) - 24px)) !important;
+      height: min(920px, calc(100vh - var(--yamuna-panel-top, 0px) - 16px)) !important;
       min-height: 0 !important;
       padding: 0 !important;
       overflow: hidden !important;
-      border-radius: 0 0 24px 24px !important;
+      border-radius: 0 !important;
       box-shadow: 4px 4px 8px rgba(0, 0, 0, .15) !important;
       transform: none !important;
       z-index: 29000 !important;
       background: #fff !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
     }
 
     body #modal-cart.modal.modal-show {
+      display: flex !important;
       right: var(--yamuna-header-right, max(24px, calc((100vw - 1320px) / 2))) !important;
       top: var(--yamuna-panel-top, 0px) !important;
       opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
     }
 
     body #modal-cart .modal-header,
@@ -114,6 +123,7 @@
     }
 
     body #modal-cart:not(:has(.js-cart-item)) .js-ajax-cart-list,
+    body #modal-cart:not(:has(.js-cart-item)) .yamuna-minicart-scroll,
     body #modal-cart:not(:has(.js-cart-item)) .yamuna-cart-shipping-promo,
     body #modal-cart:not(:has(.js-cart-item)) .js-visible-on-cart-filled,
     body #modal-cart:not(:has(.js-cart-item)) .yamuna-cart-dropdown-footer,
@@ -246,9 +256,27 @@
       display: none !important;
     }
 
+    body #modal-cart:has(.js-cart-item) .yamuna-minicart-scroll,
     body #modal-cart:has(.js-cart-item) .yamuna-cart-dropdown-footer,
     body #modal-cart:has(.js-cart-item) .yamuna-cart-shipping-promo {
-      display: block !important;
+      display: flex !important;
+    }
+
+    body #modal-cart:has(.js-cart-item) .yamuna-minicart-scroll {
+      flex: 1 1 auto !important;
+      flex-direction: column !important;
+      width: 100% !important;
+      min-height: 240px !important;
+      max-height: none !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+    }
+
+    body #modal-cart:has(.js-cart-item) .yamuna-cart-dropdown-footer {
+      flex: 0 0 auto !important;
+      flex-direction: column !important;
+      max-height: none !important;
+      overflow: visible !important;
     }
 
     /* Figma sacola desktop: image | body; controls under body column. */
@@ -414,8 +442,17 @@
       right: auto !important;
       bottom: auto !important;
       left: auto !important;
-      width: calc(100% - 44px) !important;
-      margin: 16px 22px 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 10px !important;
+      box-sizing: border-box !important;
+      width: calc(100% - 32px) !important;
+      height: 48px !important;
+      margin: 16px 16px 0 !important;
+      padding: 0 16px !important;
+      border: 0 !important;
+      border-radius: 999px !important;
     }
 
     body #modal-cart .yamuna-cart-item-promo {
@@ -465,7 +502,7 @@
     body #modal-cart .cart-item-quantity .form-quantity .row {
       display: flex !important;
       flex-wrap: nowrap !important;
-      width: 88px !important;
+      width: 96px !important;
       height: 32px !important;
       margin: 0 !important;
       padding: 0 !important;
@@ -474,64 +511,76 @@
 
     body #modal-cart .cart-item-quantity .form-quantity {
       overflow: hidden !important;
-      border: 0 !important;
-      border-radius: 4px !important;
+      border: 1px solid #c0bbc3 !important;
+      border-radius: 999px !important;
+      background: #fff !important;
     }
 
     body #modal-cart .cart-item-quantity .form-quantity-icon,
     body #modal-cart .cart-item-quantity .form-control {
       box-sizing: border-box !important;
-      height: 32px !important;
-      min-height: 32px !important;
+      height: 30px !important;
+      min-height: 30px !important;
       margin: 0 !important;
+      border: 0 !important;
       border-radius: 0 !important;
     }
 
     body #modal-cart .cart-item-quantity .form-quantity-icon {
       display: flex !important;
-      flex: 0 0 25.5px !important;
-      width: 25.5px !important;
+      flex: 0 0 30px !important;
+      width: 30px !important;
       padding: 0 !important;
       align-items: center !important;
       justify-content: center !important;
-      border: 1px solid #c0bbc3 !important;
-      background: rgba(192, 187, 195, 0.28) !important;
-      color: #9e929e !important;
-      font-family: 'Inter', sans-serif !important;
-      font-size: 18px !important;
-      line-height: 30px !important;
+      background: transparent !important;
+      color: #4a1d3a !important;
+      font-family: Dosis, Roboto, Arial, sans-serif !important;
+      font-size: 16px !important;
+      line-height: 1 !important;
     }
 
-    body #modal-cart .cart-item-quantity .yamuna-cart-minus {
-      border-radius: 4px 0 0 4px !important;
-    }
-
+    body #modal-cart .cart-item-quantity .yamuna-cart-minus,
     body #modal-cart .cart-item-quantity .form-quantity-icon:last-child {
-      border-radius: 0 4px 4px 0 !important;
+      border-radius: 0 !important;
     }
 
     body #modal-cart .cart-item-quantity .form-quantity .col {
-      flex: 0 0 37px !important;
-      width: 37px !important;
-      max-width: 37px !important;
+      flex: 0 0 34px !important;
+      width: 34px !important;
+      max-width: 34px !important;
       padding: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
     }
 
-    body #modal-cart .cart-item-quantity .form-control {
-      display: block !important;
-      width: 37px !important;
+    body #modal-cart .cart-item-quantity .form-control,
+    body #modal-cart .cart-item-quantity .js-cart-quantity-input {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 34px !important;
+      height: 30px !important;
+      min-height: 30px !important;
       padding: 0 !important;
-      border-top: 1px solid #c0bbc3 !important;
-      border-right: 0 !important;
-      border-bottom: 1px solid #c0bbc3 !important;
-      border-left: 0 !important;
+      margin: 0 !important;
+      border: 0 !important;
       background: #fff !important;
-      color: #393747 !important;
-      font-family: 'Inter', sans-serif !important;
-      font-size: 18px !important;
-      font-weight: 400 !important;
+      color: #4a1d3a !important;
+      font-family: Dosis, Roboto, Arial, sans-serif !important;
+      font-size: 16px !important;
+      font-weight: 700 !important;
       line-height: 30px !important;
       text-align: center !important;
+      appearance: textfield !important;
+      -moz-appearance: textfield !important;
+    }
+
+    body #modal-cart .cart-item-quantity .js-cart-quantity-input::-webkit-outer-spin-button,
+    body #modal-cart .cart-item-quantity .js-cart-quantity-input::-webkit-inner-spin-button {
+      -webkit-appearance: none !important;
+      margin: 0 !important;
     }
 
     body #modal-cart .cart-item-delete {
@@ -653,9 +702,9 @@
       display: none !important;
     }
 
-    /* Figma: breathing room under COMPRAR CTA - keep button in normal flow */
+    /* Breathing room under COMPRAR — match prod (20px) */
     body #modal-cart .yamuna-cart-dropdown-footer {
-      padding-bottom: 28px !important;
+      padding-bottom: 20px !important;
     }
 
     body #modal-cart .yamuna-cart-checkout {
@@ -676,6 +725,8 @@
       right: 0 !important;
       bottom: 0 !important;
       left: 0 !important;
+      display: none !important;
+      flex-direction: column !important;
       width: 100vw !important;
       max-width: none !important;
       height: 100dvh !important;
@@ -687,6 +738,16 @@
       border-radius: 0 !important;
       background: #fff !important;
       z-index: 41000 !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    body #modal-cart.modal.modal-show {
+      display: flex !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
     }
 
     body .js-modal-overlay[data-modal-id="#modal-cart"] {
@@ -829,30 +890,67 @@
       left: auto !important;
       display: flex !important;
       flex-wrap: nowrap !important;
-      width: 81px !important;
-      height: 30px !important;
+      align-items: center !important;
+      width: 96px !important;
+      height: 32px !important;
       margin: 0 !important;
       padding: 0 !important;
     }
 
+    body #modal-cart .cart-item-quantity .form-quantity {
+      overflow: hidden !important;
+      border: 1px solid #c0bbc3 !important;
+      border-radius: 999px !important;
+      background: #fff !important;
+    }
+
     body #modal-cart .cart-item-quantity .form-quantity-icon {
-      flex: 0 0 23px !important;
-      width: 23px !important;
-      height: 30px !important;
-    }
-
-    body #modal-cart .cart-item-quantity .form-control-container {
-      flex: 0 0 35px !important;
-      width: 35px !important;
-      max-width: 35px !important;
-      padding: 0 !important;
-    }
-
-    body #modal-cart .cart-item-quantity .form-control {
-      width: 35px !important;
+      display: flex !important;
+      flex: 0 0 30px !important;
+      width: 30px !important;
       height: 30px !important;
       min-height: 30px !important;
+      align-items: center !important;
+      justify-content: center !important;
+      border: 0 !important;
+      background: transparent !important;
+      color: #4a1d3a !important;
+      font-family: Dosis, Roboto, Arial, sans-serif !important;
+      font-size: 16px !important;
+      line-height: 1 !important;
+    }
+
+    body #modal-cart .cart-item-quantity .form-control-container,
+    body #modal-cart .cart-item-quantity .form-quantity .col {
+      display: flex !important;
+      flex: 0 0 34px !important;
+      width: 34px !important;
+      max-width: 34px !important;
       padding: 0 !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    body #modal-cart .cart-item-quantity .form-control,
+    body #modal-cart .cart-item-quantity .js-cart-quantity-input {
+      display: block !important;
+      box-sizing: border-box !important;
+      width: 34px !important;
+      height: 30px !important;
+      min-height: 30px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      background: #fff !important;
+      color: #4a1d3a !important;
+      font-family: Dosis, Roboto, Arial, sans-serif !important;
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      line-height: 30px !important;
+      text-align: center !important;
+      vertical-align: middle !important;
+      appearance: textfield !important;
+      -moz-appearance: textfield !important;
     }
 
     body #modal-cart .cart-item-delete {
@@ -923,8 +1021,15 @@
       bottom: auto !important;
       left: auto !important;
       box-sizing: border-box !important;
-      width: calc(100% - 40px) !important;
-      margin: 16px 20px 8px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 10px !important;
+      width: calc(100% - 24px) !important;
+      height: 48px !important;
+      margin: 16px 12px 0 !important;
+      border: 0 !important;
+      border-radius: 999px !important;
     }
 
     /* Exact Figma geometry (node 286:12876). These rules stay in the cart template so the
@@ -1024,8 +1129,7 @@
       min-height: 0 !important;
       padding: 0 !important;
       flex-direction: column !important;
-      overflow-x: hidden !important;
-      overflow-y: auto !important;
+      overflow: hidden !important;
     }
 
     body #modal-cart .modal-body > .js-nubesdk-slot {
@@ -1091,19 +1195,32 @@
       content: '' !important;
     }
 
-    body #modal-cart .modal-body > .js-ajax-cart-list {
+    body #modal-cart .yamuna-minicart-scroll {
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      flex: 1 1 auto !important;
+      flex-direction: column !important;
+      min-height: 200px !important;
+      max-height: none !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+    }
+
+    body #modal-cart .yamuna-minicart-scroll .js-ajax-cart-list {
       width: 100% !important;
       margin: 0 !important;
       padding: 0 12px !important;
       box-sizing: border-box !important;
+      display: block !important;
+      overflow: visible !important;
+      flex: 0 0 auto !important;
     }
 
     body #modal-cart .modal-body > .cart-row:not(.js-ajax-cart-list):not(.js-empty-ajax-cart) {
       display: none !important;
-    }
-
-    body #modal-cart .modal-body > .js-ajax-cart-list {
-      display: block !important;
     }
 
     /* Never force-show empty cards when AJAX already injected line items
@@ -1128,8 +1245,16 @@
       display: none !important;
     }
 
+    body #modal-cart:has(.js-cart-item) .yamuna-minicart-scroll {
+      display: flex !important;
+    }
+
     body #modal-cart:has(.js-cart-item) .yamuna-cart-dropdown-footer {
-      display: block !important;
+      display: flex !important;
+      flex: 0 0 auto !important;
+      flex-direction: column !important;
+      max-height: none !important;
+      overflow: visible !important;
     }
 
     /* Mobile Figma: qty | ASSINAR | trash on one row */
@@ -1168,39 +1293,57 @@
 
 </style>
 
-{# Progress / Promo Banner from Figma #}
-{% set cart_qty = cart.items_count %}
-{% set promo_text = 'FALTAM 2 PRODUTOS PARA GARANTIR 5% OFF' %}
-{% set promo_progress = '33%' %}
-{% if cart_qty == 1 %}
-  {% set promo_text = 'FALTAM 2 PRODUTOS PARA GARANTIR 5% OFF' %}
-  {% set promo_progress = '33%' %}
-{% elseif cart_qty == 2 %}
-  {% set promo_text = 'FALTA 1 PRODUTO PARA GARANTIR 5% OFF' %}
-  {% set promo_progress = '66%' %}
-{% elseif cart_qty >= 3 %}
-  {% set promo_text = 'VOCÊ GARANTIU 15% OFF!' %}
-  {% set promo_progress = '100%' %}
+{# Production-like minicart body (yamuna.com.br): top 5% OFF bar, free-shipping
+   progress, line items, CEP + quotes, Subtotal/Frete/Total, COMPRAR.
+   Keep drawer height / navbar alignment from the CSS shell above. #}
+
+{% set has_free_shipping = cart.free_shipping.cart_has_free_shipping or cart.free_shipping.min_price_free_shipping.min_price %}
+{% set show_cart_fulfillment = settings.shipping_calculator_cart_page and (store.has_shipping or store.branches) %}
+
+<div class="yamuna-cart-top-promo">
+  <img src="{{ 'images/yamuna/cart-discount.svg' | static_url }}" alt="" aria-hidden="true">
+  <span>5% OFF ACIMA DE 3 UNIDADES</span>
+</div>
+
+{% if has_free_shipping and cart.free_shipping.min_price_free_shipping.min_price_raw > 0 %}
+  <div class="yamuna-cart-free-shipping js-visible-on-cart-filled" {% if cart.items_count == 0 %}style="display:none;"{% endif %}>
+    {% include "snipplets/shipping/shipping-free-rest.tpl" %}
+  </div>
 {% endif %}
 
-<div class="yamuna-cart-shipping-promo js-visible-on-cart-filled" {% if cart.items_count == 0 %}style="display:none;"{% endif %}>
-  <span class="yamuna-cart-promo-text">{{ promo_text }}</span>
-  <i class="yamuna-cart-promo-bar" aria-hidden="true"><b class="yamuna-cart-promo-progress" style="width: {{ promo_progress }};"></b></i>
-</div>
+<div class="yamuna-minicart-scroll js-visible-on-cart-filled" {% if cart.items_count == 0 %}style="display:none;"{% endif %}>
+  <div class="js-ajax-cart-list cart-row" style="position:relative; z-index:1;">
+      {% if cart.items %}
+        {% for item in cart.items %}
+          {% include "snipplets/cart-item-ajax.tpl" %}
+        {% endfor %}
+      {% endif %}
+  </div>
 
-<div class="js-ajax-cart-list cart-row" style="position:relative; z-index:1; padding:0 12px;">
-    {# Cart panel items #}
-    {% if cart.items %}
-      {% for item in cart.items %}
-        {% include "snipplets/cart-item-ajax.tpl" %}
-      {% endfor %}
-    {% endif %}
-</div>
+  {{ component('nubesdk-slot', { type: "after_line_items" }) }}
 
-{{ component('nubesdk-slot', { type: "after_line_items" }) }}
+  {% if show_cart_fulfillment %}
+    <div class="js-fulfillment-info js-allows-non-shippable yamuna-minicart-fulfillment" {% if not cart.has_shippable_products %}style="display: none"{% endif %}>
+      <div class="js-visible-on-cart-filled js-has-new-shipping js-shipping-calculator-container">
+        <div class="js-shipping-method-unavailable alert alert-warning row m-1" style="display: none;">
+          <div class="col-11 text-left"><strong>{{ 'El medio de envío que habías elegido ya no se encuentra disponible para este carrito. ' | translate }}</strong></br>
+            {{ '¡No te preocupes! Podés elegir otro.' | translate}}</div>
+        </div>
+        <div id="cart-shipping-container" class="yamuna-minicart-shipping" {% if cart.items_count == 0 %} style="display: none;"{% endif %} data-shipping-url="{{ store.shipping_calculator_url }}">
+          <span id="cart-selected-shipping-method" data-code="{{ cart.shipping_data.code }}" class="hidden">{{ cart.shipping_data.name }}</span>
+          {% if store.has_shipping %}
+            {% include "snipplets/shipping/shipping-calculator.tpl" with { 'product_detail': false, 'minicart_shipping': true } %}
+          {% endif %}
+          {% if store.branches %}
+            {% include "snipplets/shipping/branches.tpl" with {'product_detail': false} %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>
 
 <div class="js-empty-ajax-cart cart-row" {% if cart.items_count > 0 %}style="display:none;"{% endif %}>
- 	{# Cart panel empty #}
     <div class="alert alert-info" data-component="cart.empty-message">{{ "El carrito de compras está vacío." | translate }} </div>
     <div class="yamuna-empty-cart-content">
       <p>Sua sacola est&aacute; vazia!</p>
@@ -1211,6 +1354,7 @@
       </div>
     </div>
 </div>
+
 <div id="error-ajax-stock" style="display: none;">
 	<div class="alert alert-warning">
      	{{ "¡Uy! No tenemos más stock de este producto para agregarlo al carrito. Si querés podés" | translate }}<a href="{{ store.products_url }}" class="btn-link ml-1">{{ "ver otros acá" | translate }}</a>
@@ -1218,24 +1362,111 @@
 </div>
 
 <div class="yamuna-cart-dropdown-footer js-visible-on-cart-filled" {% if cart.items_count == 0 %}style="display:none;"{% endif %}>
-  <div class="yamuna-cart-discount">15% OFF ACIMA DE 3 UNIDADES</div>
-  <p>{{ 'Digite seu cep para consultar as opções de entrega' | translate }}</p>
+  <div class="yamuna-minicart-totals">
+    {{ component('cart-totals', {
+      shipping_enabled: show_cart_fulfillment,
+      shipping_discount_row_enabled: true,
+      payment_discount_price_enabled: false,
+      installments_enabled: false,
+      totals_divider: false,
+      text_classes: {
+        subtotal: 'yamuna-minicart-totals-row',
+        subtotals_row: 'yamuna-minicart-totals-row',
+        subtotals_prices: 'yamuna-minicart-totals-price',
+        shipping_costs: 'yamuna-minicart-totals-row',
+        shipping_costs_price: 'yamuna-minicart-totals-price',
+        shipping_costs_calculating: 'yamuna-minicart-totals-muted',
+        shipping_costs_empty: 'yamuna-minicart-totals-muted',
+        shipping_discount_row: 'yamuna-minicart-totals-row yamuna-minicart-totals-discount',
+        total: 'yamuna-minicart-totals-row yamuna-minicart-totals-total',
+        total_price: 'yamuna-minicart-totals-total-price',
+      },
+    }) }}
+  </div>
+
   <a class="yamuna-cart-checkout" href="{{ store.cart_url }}" data-yamuna-cart-page="1" data-component="cart.checkout-button"><img src="{{ 'images/yamuna/cart-bag.svg' | static_url }}" alt="">{{ 'Comprar' | translate }}</a>
 </div>
 <script>
   (function () {
+    function closeYamunaCartModal() {
+      var modal = document.getElementById('modal-cart');
+      if (!modal) return;
+      modal.classList.remove('modal-show');
+      modal.style.removeProperty('display');
+      document.body.classList.remove('overflow-none');
+      var overlay = document.querySelector('.js-modal-overlay[data-modal-id="#modal-cart"]');
+      if (overlay) {
+        overlay.style.display = 'none';
+      }
+      var header = document.querySelector('.head-main .yamuna-header-desktop');
+      if (header) header.classList.remove('yamuna-cart-dropdown-open');
+    }
+
+    document.addEventListener('click', function (e) {
+      var closeBtn = e.target && e.target.closest && e.target.closest('#modal-cart .js-modal-close, #modal-cart .yamuna-cart-modal-close');
+      if (!closeBtn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      closeYamunaCartModal();
+    }, true);
+
     document.addEventListener('click', function (e) {
       var link = e.target && e.target.closest && e.target.closest('a.yamuna-cart-checkout[data-yamuna-cart-page]');
       if (!link) return;
       e.preventDefault();
       e.stopImmediatePropagation();
-      {# Force a top-level GET — POST to /comprar/ without go_to_checkout returns an empty 200. #}
       window.location.href = link.href;
+    }, true);
+
+    /* Minicart CEP: always start as input+Buscar (prod), never "already searched". */
+    var allowMinicartShippingReset = true;
+    function resetMinicartShippingUi() {
+      if (!allowMinicartShippingReset) return;
+      var modal = document.querySelector('#modal-cart');
+      var root = document.querySelector('#modal-cart #cart-shipping-container');
+      if (!root) return;
+      if (modal) modal.classList.remove('yamuna-shipping-searched');
+      var head = root.querySelector('.js-shipping-calculator-head');
+      var form = root.querySelector('.js-shipping-calculator-form');
+      var zipUi = root.querySelector('.js-shipping-calculator-with-zipcode');
+      var resp = root.querySelector('.js-shipping-calculator-response');
+      var spinner = root.querySelector('.js-shipping-calculator-spinner');
+      if (head) {
+        head.classList.add('with-form');
+        head.classList.remove('with-zip');
+      }
+      if (form) form.classList.add('transition-up-active');
+      if (zipUi) zipUi.classList.remove('transition-up-active');
+      if (resp) {
+        resp.innerHTML = '';
+        resp.style.display = 'none';
+      }
+      if (spinner) spinner.style.display = 'none';
+    }
+
+    resetMinicartShippingUi();
+    [0, 150, 400, 900, 1600].forEach(function (ms) {
+      window.setTimeout(resetMinicartShippingUi, ms);
+    });
+
+    document.addEventListener('click', function (e) {
+      if (e.target && e.target.closest && e.target.closest('#modal-cart .js-calculate-shipping')) {
+        allowMinicartShippingReset = false;
+        var modal = document.querySelector('#modal-cart');
+        if (modal) modal.classList.add('yamuna-shipping-searched');
+        return;
+      }
+      var openCart = e.target && e.target.closest && e.target.closest('[data-toggle="#modal-cart"], [data-modal="#modal-cart"], .js-modal-open[data-toggle="#modal-cart"], a[href="#modal-cart"]');
+      if (openCart) {
+        allowMinicartShippingReset = true;
+        window.setTimeout(resetMinicartShippingUi, 0);
+        window.setTimeout(resetMinicartShippingUi, 200);
+        window.setTimeout(resetMinicartShippingUi, 600);
+      }
     }, true);
   })();
 </script>
 
 <div class="yamuna-cart-empty-footer" {% if cart.items_count > 0 %}style="display:none;"{% endif %}>
-  <div class="yamuna-cart-discount">15% OFF ACIMA DE 3 UNIDADES</div>
   <button class="yamuna-cart-checkout" type="button" disabled><img src="{{ 'images/yamuna/cart-bag.svg' | static_url }}" alt="">{{ 'Comprar' | translate }}</button>
 </div>

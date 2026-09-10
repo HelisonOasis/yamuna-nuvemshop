@@ -81,6 +81,6 @@
 	</label>
 </div>
 <div class="yamuna-plp-filter-actions">
-	<a href="#" class="js-modal-close js-yamuna-plp-apply yamuna-plp-filter-apply">{{ 'Filtrar' | translate }}</a>
+	<a href="#" class="js-yamuna-plp-apply yamuna-plp-filter-apply" role="button">{{ 'Filtrar' | translate }}</a>
 	<a href="#" class="js-yamuna-plp-clear yamuna-plp-clear-filters">{{ 'Limpar filtros' | translate }}</a>
 </div>
