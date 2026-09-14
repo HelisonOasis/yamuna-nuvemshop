@@ -17,7 +17,10 @@
                 </div>
             </div>
         </div>
-        <div id="product-description-accordions">
+    </div>
+    {# Full-bleed accordion band (Figma C012/C013) — outside .container #}
+    <div id="product-description-accordions">
+        <div class="yamuna-pdp-accordions-inner">
             {% include 'snipplets/product/product-description-blocks.tpl' with { product_description_blocks_view: 'accordions' } %}
         </div>
     </div>
@@ -26,12 +29,15 @@
 {# Related products #}
 {% include 'snipplets/product/product-related.tpl' %}
 
-{# Reviews (Figma: after related products) #}
-<div class="yamuna-pdp-reviews">
+{# Reviews (Figma / prod: after related — Konfidency mounts into #reviewsapp) #}
+<div class="yamuna-pdp-reviews" data-store="product-reviews-{{ product.id }}">
     {% if settings.show_product_fb_comment_box %}
         <div class="fb-comments section-fb-comments" data-href="{{ product.social_url }}" data-num-posts="5" data-width="100%"></div>
     {% endif %}
-    <div id="reviewsapp"></div>
+    {{ component('nubesdk-slot', { type: "before_product_reviews" }) }}
+    <div id="reviewsapp" class="yamuna-konfidency-reviews" data-product-id="{{ product.id }}"></div>
+    <div class="konfidency-reviews" data-sku="{{ product.id }}"></div>
+    {{ component('nubesdk-slot', { type: "after_product_reviews" }) }}
 </div>
 
 {# Newsletter (Figma: after reviews) #}

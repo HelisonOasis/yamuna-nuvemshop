@@ -37,7 +37,7 @@
     {% set sections_products = sections.sale.products %}
     {% set section_name = 'sale' %}
     {% set highlighted_products_setting_name = 'sale' %}
-    {% set section_title = 'Encontre o ama' %}
+    {% set section_title = 'Encontre o que ama' %}
     {% set section_format = settings.sale_products_format %}
 {% endif %}
 

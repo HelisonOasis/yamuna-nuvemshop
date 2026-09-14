@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="js-informative-banner-icon-{{ banner_index }} col-auto">
                 {% set yamuna_benefit_icon = banner_index == 1 ? 'benefit-shipping.svg' : (banner_index == 2 ? 'benefit-pix.svg' : (banner_index == 3 ? 'benefit-discount.svg' : (banner_index == 4 ? 'benefit-family.svg' : 'benefit-card.svg'))) %}
-                <img class="yamuna-benefit-icon" src="{{ ('images/yamuna/' ~ yamuna_benefit_icon) | static_url }}" alt="" width="36" height="36" />
+                <img class="yamuna-benefit-icon" src="{{ ('images/yamuna/' ~ yamuna_benefit_icon) | static_url }}" alt="" width="24" height="24" />
             </div>
             <div class="col p-0">
                 <h3 class="js-informative-banner-title js-informative-banner-title-{{ banner_index }} h5 m-0">{{ banner_services_title }}</h3>

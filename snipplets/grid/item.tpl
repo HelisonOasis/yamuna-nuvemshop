@@ -44,9 +44,8 @@
     {% set control_prev_svg_id = 'chevron' %}    
 {% endif %}
 
-{# Secondary images #}
-
-{% set show_secondary_image = settings.product_hover %}
+{# Secondary images — enable hover swap like production (077/078/079). #}
+{% set show_secondary_image = true %}
 {% if is_cart_reco_spot %}
     {% set show_secondary_image = false %}
     {% set image_priority_high = true %}

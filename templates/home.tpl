@@ -75,11 +75,13 @@
   /* Keep the two product CTAs below the price while the compiled CSS refreshes. */
   @media (min-width: 768px) {
     [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image {
-      height: 360px;
+      flex: 1 1 auto;
+      height: auto !important;
+      min-height: 180px;
     }
 
     [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-description {
-      padding: 5px 6.73% 0 !important;
+      padding: 10px 0 !important;
     }
   }
 
@@ -91,38 +93,69 @@
 
     [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-slide {
       width: 429.333px !important;
-      height: 580px !important;
+      height: 539px !important;
       padding: 0 6.6667px !important;
+      box-sizing: border-box !important;
     }
 
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .js-item-product,
     [data-store^="home-products-"].section-featured-home .yamuna-home-products .item,
     [data-store^="home-products-"].section-featured-home .yamuna-home-products .js-product-container {
-      height: 580px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      height: 100% !important;
+      min-height: 0 !important;
     }
 
     [data-store^="home-products-"].section-featured-home .yamuna-home-products .item {
-      overflow: hidden;
+      overflow: hidden !important;
+      margin-bottom: 0 !important;
+      padding: 0 12px 10px !important;
       border-radius: 12px;
       background: #fff;
+      box-sizing: border-box !important;
     }
 
     [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image {
-      height: 360px !important;
-      margin: 24px 6.73% 0 !important;
+      flex: 1 1 auto !important;
+      min-height: 180px !important;
+      height: auto !important;
+      margin: 16px 0 0 !important;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-description {
+      flex: 0 0 auto !important;
+      padding: 10px 0 !important;
     }
 
     [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions {
+      position: static !important;
+      flex: 0 0 auto !important;
+      top: auto !important;
       right: auto !important;
-      left: 50% !important;
-      width: 360px !important;
-      transform: translateX(-50%) !important;
+      bottom: auto !important;
+      left: auto !important;
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      transform: none !important;
     }
 
     [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions .btn {
-      width: 360px !important;
+      width: 100% !important;
       min-height: 40px !important;
       height: 40px !important;
       padding: 0 24px !important;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions .btn.mb-2,
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions .btn.mb-3 {
+      margin-bottom: 8px !important;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions .btn:last-child,
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions .yamuna-home-spot-buy-three {
+      margin-bottom: 0 !important;
     }
   }
 
@@ -179,6 +212,37 @@
   }
 
   @media (max-width: 767px) {
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-slide {
+      height: 460px !important;
+      padding: 0 !important;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item,
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .js-product-container {
+      display: flex !important;
+      flex-direction: column !important;
+      height: 100% !important;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item {
+      padding: 0 24px 22px !important;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image {
+      flex: 1 1 auto !important;
+      min-height: 140px !important;
+      height: auto !important;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions {
+      position: static !important;
+      right: auto !important;
+      bottom: auto !important;
+      left: auto !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
     [data-store="home-image-text-module"] .js-home-modules.section-banners-home {
       margin-bottom: 0 !important;
     }

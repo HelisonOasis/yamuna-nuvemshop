@@ -90,10 +90,28 @@ document.addEventListener('lazybeforeunveil', function(e){
 
 {# Newsletter da home: o envio padrão fica bloqueado para nunca expor dados na URL (Perfit). #}
 (function () {
+    var newsletterFeedbackHideTimer = null;
+
+    function hideNewsletterFeedback(feedback) {
+        if (newsletterFeedbackHideTimer) {
+            clearTimeout(newsletterFeedbackHideTimer);
+            newsletterFeedbackHideTimer = null;
+        }
+        if (feedback) {
+            feedback.hidden = true;
+        }
+    }
+
     function showNewsletterFeedback(feedback, message, text) {
         if (feedback && message) {
             message.textContent = text;
             feedback.hidden = false;
+            if (newsletterFeedbackHideTimer) {
+                clearTimeout(newsletterFeedbackHideTimer);
+            }
+            newsletterFeedbackHideTimer = setTimeout(function () {
+                hideNewsletterFeedback(feedback);
+            }, 5000);
         }
     }
 
@@ -150,7 +168,7 @@ document.addEventListener('lazybeforeunveil', function(e){
         var phone = document.getElementById('newsletter-phone');
 
         if (close) {
-            close.addEventListener('click', function () { feedback.hidden = true; });
+            close.addEventListener('click', function () { hideNewsletterFeedback(feedback); });
         }
 
         if (phone) {

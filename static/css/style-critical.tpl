@@ -1430,20 +1430,28 @@ p{
   padding: 50px 0;
 }
 
-{# Yamuna home: benefits bar #}
+{# Yamuna home: benefits bar — Figma 156:3366 (icon 24 / gap 18 / bar 73) #}
 [data-store="banner-services"] .section-informative-banners {
-  padding: 24px 0;
+  padding: 0;
 }
 
 [data-store="banner-services"] .service-item {
-  margin: 0;
+  margin: 0 !important;
 }
 
 [data-store="banner-services"] .yamuna-benefit-icon {
   display: block;
-  width: 36px;
-  height: 36px;
+  width: 24px;
+  height: 24px;
   max-width: none;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  [data-store="banner-services"] .yamuna-benefit-icon {
+    width: 34px;
+    height: 34px;
+  }
 }
 
 {# Yamuna home: native product card layout #}
@@ -1527,30 +1535,34 @@ p{
   }
 
   [data-store^="home-products-"] .yamuna-home-products .swiper-slide {
-    height: 412px;
+    height: 460px;
     padding: 0 !important;
   }
 
   [data-store^="home-products-"] .yamuna-home-products .item,
   [data-store^="home-products-"] .yamuna-home-products .js-product-container {
-    display: block;
+    display: flex;
+    flex-direction: column;
     position: relative;
     height: 100%;
-    min-height: 412px;
+    min-height: 0;
   }
 
   [data-store^="home-products-"] .yamuna-home-products .item {
     overflow: hidden;
+    padding: 0 24px 22px;
     border-radius: 8px;
     background: #f6f5f6;
     box-shadow: none;
+    box-sizing: border-box;
   }
 
   [data-store^="home-products-"] .yamuna-home-products .item-image {
+    flex: 1 1 auto;
     width: auto;
-    height: 132px;
-    min-height: 132px;
-    margin: 6px 6px 0;
+    height: auto;
+    min-height: 140px;
+    margin: 12px 0 0;
     overflow: hidden;
     border-radius: 8px;
     background: #fff;
@@ -1604,10 +1616,7 @@ p{
 
   [data-store^="home-products-"] .yamuna-home-products .item-actions {
     display: block;
-    position: absolute;
-    right: 6px;
-    bottom: 6px;
-    left: 6px;
+    position: static;
     height: auto;
     margin: 0;
     padding: 0;
@@ -1770,12 +1779,57 @@ p{
 .item-product-reduced.item-product:hover {
   box-shadow: none;
 }
-.product-item-secondary-images-loaded:not(.product-item-secondary-images-disabled):hover .item-image-featured {
-  opacity: 0;
-  transition-delay: .05s;
+/* 077/078 — prod-like image swap on hover.
+   Secondary stacks above featured inside .item-image.
+   Do NOT make the <a> position:relative — that becomes the containing
+   block for absolute imgs and collapses to 0 height (blank images). */
+@media (min-width: 768px) {
+  .js-product-item-private-with-secondary-images,
+  .js-item-with-secondary-image {
+    overflow: hidden;
+  }
+
+  .js-product-item-private-with-secondary-images .item-image-secondary,
+  .js-product-item-private-with-secondary-images .js-product-item-secondary-image-private,
+  .js-item-with-secondary-image .item-image-secondary {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain;
+    object-position: center;
+    transform: none !important;
+    -webkit-transform: none !important;
+    -ms-transform: none !important;
+    z-index: 1;
+  }
+
+  .js-product-item-private-with-secondary-images .item-image-featured,
+  .js-item-with-secondary-image .item-image-featured {
+    z-index: 2;
+    opacity: 1;
+  }
 }
-.product-item-secondary-images-loaded:not(.product-item-secondary-images-disabled):hover .item-image-featured ~ .item-image-secondary{
+
+.product-item-secondary-images-loaded:not(.product-item-secondary-images-disabled):hover .item-image-featured,
+.js-product-item-private-with-secondary-images.product-item-secondary-images-loaded:not(.product-item-secondary-images-disabled):hover .item-image-featured,
+.js-product-item-private-with-secondary-images.item-with-two-images:hover .item-image-featured,
+.js-item-with-secondary-image.item-with-two-images:hover .item-image-featured {
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.product-item-secondary-images-loaded:not(.product-item-secondary-images-disabled):hover .item-image-featured ~ .item-image-secondary,
+.js-product-item-private-with-secondary-images.product-item-secondary-images-loaded:not(.product-item-secondary-images-disabled):hover .item-image-featured ~ .item-image-secondary,
+.js-product-item-private-with-secondary-images.item-with-two-images:hover .item-image-secondary,
+.js-product-item-private-with-secondary-images.item-with-two-images:hover .js-product-item-secondary-image-private,
+.js-item-with-secondary-image.item-with-two-images:hover .item-image-secondary {
+  display: block;
   opacity: 1;
+  transition: opacity .3s ease;
 }
 .item-slider-pagination-container {
   position: absolute;

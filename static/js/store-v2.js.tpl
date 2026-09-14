@@ -204,10 +204,28 @@ document.addEventListener('lazybeforeunveil', function(e){
 
 {# Newsletter da home: o envio padrão fica bloqueado para nunca expor dados na URL (Perfit). #}
 (function () {
+    var newsletterFeedbackHideTimer = null;
+
+    function hideNewsletterFeedback(feedback) {
+        if (newsletterFeedbackHideTimer) {
+            clearTimeout(newsletterFeedbackHideTimer);
+            newsletterFeedbackHideTimer = null;
+        }
+        if (feedback) {
+            feedback.hidden = true;
+        }
+    }
+
     function showNewsletterFeedback(feedback, message, text) {
         if (feedback && message) {
             message.textContent = text;
             feedback.hidden = false;
+            if (newsletterFeedbackHideTimer) {
+                clearTimeout(newsletterFeedbackHideTimer);
+            }
+            newsletterFeedbackHideTimer = setTimeout(function () {
+                hideNewsletterFeedback(feedback);
+            }, 5000);
         }
     }
 
@@ -264,7 +282,7 @@ document.addEventListener('lazybeforeunveil', function(e){
         var phone = document.getElementById('newsletter-phone');
 
         if (close) {
-            close.addEventListener('click', function () { feedback.hidden = true; });
+            close.addEventListener('click', function () { hideNewsletterFeedback(feedback); });
         }
 
         if (phone) {
@@ -1435,6 +1453,45 @@ DOMContentLoaded.addEventOrExecute(() => {
 	{#/*============================================================================
 	  #Product grid
 	==============================================================================*/ #}
+
+    {# /* // Secondary image on mouseover (077/078/079 — match prod hover swap) */ #}
+    if (window.innerWidth > 767) {
+        jQueryNuvem(document).on("mouseenter", ".js-item-with-secondary-image:not(.item-with-two-images), .js-product-item-private-with-secondary-images:not(.item-with-two-images)", function () {
+            var $item = jQueryNuvem(this);
+            var secondary = this.querySelector(".js-item-image-secondary, .item-image-secondary, .js-product-item-secondary-image-private, .js-product-item-image-secondary-private");
+            if (!secondary) return;
+
+            secondary.style.display = "block";
+            $item.addClass("product-item-secondary-images-loaded");
+
+            var onLoaded = function () {
+                $item.addClass("item-with-two-images");
+                secondary.removeEventListener("lazyloaded", onLoaded);
+            };
+
+            if (secondary.classList.contains("lazyloaded") || (secondary.complete && secondary.naturalWidth > 1)) {
+                $item.addClass("item-with-two-images");
+            } else {
+                secondary.addEventListener("lazyloaded", onLoaded);
+                if (window.lazySizes && typeof window.lazySizes.loader !== "undefined") {
+                    try { window.lazySizes.loader.unveil(secondary); } catch (e) {}
+                }
+                {# Fallback if lazyloaded never fires #}
+                setTimeout(function () {
+                    if (!$item.hasClass("item-with-two-images")) {
+                        $item.addClass("item-with-two-images");
+                    }
+                }, 400);
+            }
+        });
+
+        {# Re-scan lazy images after home carousels finish layout #}
+        setTimeout(function () {
+            if (window.lazySizes && window.lazySizes.loader && typeof window.lazySizes.loader.checkElems === "function") {
+                try { window.lazySizes.loader.checkElems(); } catch (e) {}
+            }
+        }, 600);
+    }
 
     var $category_controls = jQueryNuvem(".js-category-controls");
     var mobile_nav_height = jQueryNuvem(".js-head-main").innerHeight();

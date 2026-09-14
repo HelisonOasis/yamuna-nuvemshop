@@ -113,10 +113,10 @@
 							{% endif %}
 						</div>
 						<div class="js-swiper-home-control js-swiper-home-prev{% if mobile %}-mobile{% endif %} swiper-button-prev d-none d-md-block" aria-label="Slide anterior">
-							<img class="yamuna-home-hero-arrow-icon" src="{{ 'images/yamuna/hero-arrow-prev.svg' | static_url }}" alt="" style="transform: scaleX(-1);">
+							<svg class="yamuna-home-hero-arrow-icon icon-inline" aria-hidden="true"><use xlink:href="#chevron"/></svg>
 						</div>
 						<div class="js-swiper-home-control js-swiper-home-next{% if mobile %}-mobile{% endif %} swiper-button-next d-none d-md-block" aria-label="Próximo slide">
-							<img class="yamuna-home-hero-arrow-icon" src="{{ 'images/yamuna/hero-arrow-next.svg' | static_url }}" alt="">
+							<svg class="yamuna-home-hero-arrow-icon icon-inline" aria-hidden="true"><use xlink:href="#chevron"/></svg>
 						</div>
 					</div>
 				</div>

@@ -1275,10 +1275,10 @@ input::-webkit-outer-spin-button{
   background: rgba($main-foreground, .1);
 }
 
-{# Yamuna home: benefits bar #}
+{# Yamuna home: benefits bar — Figma 156:3365 / cenário 083 #}
 [data-store="banner-services"] .section-informative-banners {
   margin: 0;
-  background: rgba(#c0bbc3, .2);
+  background: #f8f7f8;
   color: #1b1a21;
 }
 
@@ -1288,16 +1288,18 @@ input::-webkit-outer-spin-button{
 
 [data-store="banner-services"] .service-item h3 {
   font-family: 'Roboto', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1.2;
+  color: #1b1a21;
 }
 
 [data-store="banner-services"] .service-item p {
   font-family: 'Dosis', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1.2;
+  color: #1b1a21;
 }
 
 {# Yamuna home: native product card layout #}
@@ -1371,9 +1373,17 @@ input::-webkit-outer-spin-button{
 
 .section-featured-home {
   position: relative;
-  padding: 32px 0;
+  padding: 24px 0;
   margin: 0;
+  overflow: visible;
   background: #f8f7f8;
+}
+
+@media (min-width: 768px) {
+  {# Space above title + room for pagination below cards. #}
+  body.template-home .section-featured-home {
+    padding: 80px 0 32px;
+  }
 }
 
 .section-featured-home .container {
@@ -1454,19 +1464,26 @@ input::-webkit-outer-spin-button{
   line-height: 15px;
 }
 
+{# Cenário 087: Figma slide marker — 20px below card CTAs, 8×8 dots, 8px gap.
+   Keep pagination outside the swiper overflow so it is never clipped. #}
 .section-featured-home .products-carousel-pagination {
   position: relative;
   bottom: auto;
+  z-index: 2;
   display: flex;
   justify-content: center;
-  gap: 5px;
-  margin-top: 10px;
+  gap: 8px;
+  /* Figma: ~20px from card bottom to slide markers */
+  margin-top: 20px;
+  margin-bottom: 0;
+  height: 8px;
 }
 
 .section-featured-home .products-carousel-pagination .swiper-pagination-bullet {
   width: 8px;
   height: 8px;
   margin: 0;
+  border-radius: 8px;
   background: #a31460;
   opacity: .5;
 }
@@ -1477,22 +1494,51 @@ input::-webkit-outer-spin-button{
 
 .section-featured-home .yamuna-home-products .swiper-button-prev,
 .section-featured-home .yamuna-home-products .swiper-button-next {
-  width: 24px;
-  height: 24px;
-  border: 0;
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
   color: #238482;
   fill: #238482;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.42);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .section-featured-home .yamuna-home-products .swiper-button-prev {
-  /* Offset the previous control beyond the first card. The mirrored SVG
-     otherwise makes it overlap the card while the next control sits outside. */
-  left: -24px;
+  /* Over the first card (inside the section, not in page gutters). */
+  left: 20px;
 }
 
 .section-featured-home .yamuna-home-products .swiper-button-next {
-  right: -8px;
+  right: 20px;
+}
+
+.section-featured-home .yamuna-home-products .swiper-button-prev .icon-inline,
+.section-featured-home .yamuna-home-products .swiper-button-next .icon-inline,
+.section-featured-home .yamuna-home-products .swiper-button-prev svg,
+.section-featured-home .yamuna-home-products .swiper-button-next svg {
+  width: 18px;
+  height: 18px;
+  color: #238482;
+  fill: #238482;
+}
+
+/* Kill theme svg-solid / svg-circle magenta chrome on product arrows */
+.section-featured-home .yamuna-home-products .swiper-button-prev.svg-circle,
+.section-featured-home .yamuna-home-products .swiper-button-next.svg-circle,
+.section-featured-home .yamuna-home-products .swiper-button-prev.svg-solid,
+.section-featured-home .yamuna-home-products .swiper-button-next.svg-solid,
+.section-featured-home .yamuna-home-products .swiper-button-prev.svg-icon-text,
+.section-featured-home .yamuna-home-products .swiper-button-next.svg-icon-text {
+  border: 1px solid rgba(255, 255, 255, 0.55) !important;
+  background: rgba(255, 255, 255, 0.42) !important;
+  fill: #238482 !important;
+  line-height: normal !important;
 }
 
 @media (min-width: 768px) {
@@ -1501,7 +1547,7 @@ input::-webkit-outer-spin-button{
   .section-featured-home .yamuna-home-products .swiper-button-prev,
   .section-featured-home .yamuna-home-products .swiper-button-next {
     top: calc(50% + 24px);
-    margin-top: -12px;
+    margin-top: -20px;
   }
 }
 
@@ -1519,26 +1565,29 @@ input::-webkit-outer-spin-button{
   .section-featured-home .yamuna-home-products .swiper-button-prev,
   .section-featured-home .yamuna-home-products .swiper-button-next {
     /* Title (22px + 25px margin), image offset (24px) and half of the
-       300px image frame; minus half of the 96px touch target. */
-    top: 173px;
+       300px image frame; minus half of the 40px glass circle. */
+    top: 201px;
     display: flex !important;
     width: 40px;
-    height: 96px;
+    height: 40px;
     margin-top: 0;
     padding: 0;
     align-items: center;
     justify-content: center;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.42);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
 
   .section-featured-home .yamuna-home-products .swiper-button-prev {
-    left: -24px;
+    left: 20px;
   }
 
   .section-featured-home .yamuna-home-products .swiper-button-next {
-    right: -8px;
+    right: 20px;
   }
 
   .section-featured-home .yamuna-home-products .swiper-button-prev .icon-inline,
@@ -1549,44 +1598,68 @@ input::-webkit-outer-spin-button{
   .section-featured-home .yamuna-home-products .swiper-button-prev:after,
   .section-featured-home .yamuna-home-products .swiper-button-next:after {
     display: block;
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border: solid #238482;
     border-width: 0 2px 2px 0;
     content: '';
   }
 
   .section-featured-home .yamuna-home-products .swiper-button-prev:after {
+    margin-left: 2px;
     transform: rotate(135deg);
   }
 
   .section-featured-home .yamuna-home-products .swiper-button-next:after {
+    margin-right: 2px;
     transform: rotate(-45deg);
   }
 }
 
-{# Yamuna product spot: product v5 (Figma node 635:5831). #}
+{# Yamuna product spot — Figma product v7 (flex, not absolute CTAs).
+   Image absorbs leftover height; price stays ~10px above COMPRAR;
+   card padding-bottom is 10px desktop / 22px mobile so CTAs never clip. #}
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-slide {
-  height: 580px !important;
-  padding: 0 6.6667px;
+  height: 539px !important;
+  /* Kill theme .p-3 on slides — it stole height and clipped the CTAs. */
+  padding: 0 6.6667px !important;
+  box-sizing: border-box;
+}
+
+[data-store^="home-products-"].section-featured-home .yamuna-home-products .js-item-product {
+  height: 100%;
 }
 
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .item,
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .js-product-container {
   position: relative;
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
 }
 
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .item {
   overflow: hidden;
+  margin-bottom: 0 !important;
+  /* Figma: sides ~12px, bottom 10px under secondary CTA. */
+  padding: 0 12px 10px !important;
   border-radius: 12px;
   background: #fff;
 }
 
+[data-store^="home-products-"].section-featured-home .yamuna-home-products .js-product-container {
+  flex: 1 1 auto;
+  width: 100%;
+}
+
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image {
-  /* Reserve enough room for product details and both CTAs on desktop. */
-  height: 360px;
-  margin: 24px 6.73% 0;
+  /* Flex grow fills leftover space — no max-height or space pools under CTAs. */
+  flex: 1 1 auto;
+  min-height: 180px;
+  height: auto !important;
+  margin: 16px 0 0;
   border: 0 !important;
   background: transparent;
   aspect-ratio: auto;
@@ -1598,10 +1671,97 @@ input::-webkit-outer-spin-button{
   object-fit: contain;
 }
 
+/* 077/078/079 — secondary image hover swap on home product cards.
+   Frame images inside the fixed .item-image box (already height:360px).
+   Absolute imgs must use .item-image as containing block — never the <a>. */
+@media (min-width: 768px) {
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image {
+    position: relative;
+    overflow: hidden !important;
+  }
+
+  /* Keep product image link out of the positioning chain so absolute
+     imgs size against .item-image (360px), not a collapsed <a>. */
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image .js-product-item-image-link-private {
+    position: static !important;
+  }
+
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image .item-image-featured,
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image .item-image-secondary,
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image .js-item-image-secondary,
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image .js-product-item-secondary-image-private,
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image .img-absolute,
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image .img-absolute-centered {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    object-fit: contain;
+    object-position: center;
+    transform: none !important;
+    -webkit-transform: none !important;
+    -ms-transform: none !important;
+  }
+
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image .item-image-featured {
+    z-index: 2;
+    /* Override stuck .fade-in { opacity:0 } when lazySizes lags behind absolute framing */
+    opacity: 1;
+    transition: opacity .3s ease;
+  }
+
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image.item-with-two-images:hover .item-image-featured,
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image.product-item-secondary-images-loaded:hover .item-image-featured {
+    opacity: 0;
+  }
+
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image.item-with-two-images:hover .item-image-secondary,
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image.product-item-secondary-images-loaded:hover .item-image-secondary,
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image.item-with-two-images:hover .js-product-item-secondary-image-private,
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image.product-item-secondary-images-loaded:hover .js-product-item-secondary-image-private {
+    display: block;
+    opacity: 1;
+  }
+
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image .item-image-secondary,
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image .js-item-image-secondary,
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image .js-product-item-secondary-image-private {
+    z-index: 1;
+  }
+
+  /* Keep name / price / CTAs above the image frame so clicks work. */
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-description {
+    position: relative;
+    z-index: 5;
+  }
+
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions {
+    position: relative;
+    z-index: 5;
+  }
+
+  /* 079: do not stack arrows above cards */
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-button-prev,
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-button-next {
+    z-index: 2;
+  }
+
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-slide {
+    position: relative;
+    z-index: 1;
+  }
+}
+
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-description {
+  flex: 0 0 auto;
   min-height: 0;
-  /* The theme's py-4 utility is !important, so this must override it. */
-  padding: 5px 6.73% 0 !important;
+  /* Theme py-4 is !important — override; 10px gap before CTAs like Figma. */
+  padding: 10px 0 !important;
   border-bottom: 0;
   color: #4a1d3a;
   font-family: 'Dosis', sans-serif;
@@ -1695,14 +1855,19 @@ input::-webkit-outer-spin-button{
 }
 
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions {
-  position: absolute;
-  right: 6.73%;
-  bottom: 24px;
-  left: 6.73%;
+  /* Document flow — never absolute. Card padding-bottom owns the 10px inset. */
+  position: static !important;
+  flex: 0 0 auto;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
   display: block;
+  width: 100%;
   height: auto;
-  margin: 0;
-  padding: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
   visibility: visible;
   opacity: 1;
 }
@@ -1736,16 +1901,24 @@ input::-webkit-outer-spin-button{
   text-transform: uppercase;
 }
 
+[data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions .btn:last-child {
+  margin-bottom: 0;
+}
+
+[data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions .yamuna-home-spot-buy-three,
+[data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions .btn.yamuna-home-spot-buy-three {
+  margin-bottom: 0;
+}
+
 @media (min-width: 1200px) {
   [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions {
-    right: auto;
-    left: 50%;
-    width: 360px;
-    transform: translateX(-50%);
+    position: static !important;
+    width: 100%;
+    transform: none !important;
   }
 
   [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions .btn {
-    width: 360px;
+    width: 100%;
     height: 40px;
     min-height: 40px;
     padding: 0 24px;
@@ -1803,6 +1976,7 @@ input::-webkit-outer-spin-button{
   border: 1px solid #238482;
   color: #fff;
   background: #238482;
+  font-family: 'Raleway', sans-serif;
 }
 
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .yamuna-home-spot-buy-three {
@@ -1818,19 +1992,41 @@ input::-webkit-outer-spin-button{
   }
 
   [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-slide {
-    /* Keep the CTAs close to the price without reducing the product image. */
-    height: 520px !important;
+    height: 460px !important;
     padding: 0 !important;
   }
 
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item,
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .js-product-container {
+    height: 100% !important;
+  }
+
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item {
+    /* Figma mobile: padding ~12 24 22 */
+    padding: 0 24px 22px !important;
+  }
+
   [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image {
-    height: 300px;
-    margin-top: 24px;
+    flex: 1 1 auto;
+    min-height: 140px;
+    height: auto !important;
+    margin-top: 12px;
   }
 
   [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-description {
-    /* Separate the product image from its title. */
-    padding-top: 24px;
+    padding: 10px 0 !important;
+  }
+
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions {
+    position: static !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+  }
+
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions .yamuna-home-spot-buy-three,
+  [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions .btn.yamuna-home-spot-buy-three {
+    margin-bottom: 0 !important;
   }
 }
 
@@ -1888,6 +2084,7 @@ input::-webkit-outer-spin-button{
 
   .textbanner-image {
     padding-top: 100%;
+    overflow: hidden;
   }
 
   .textbanner-image.overlay:after {
@@ -1966,15 +2163,29 @@ input::-webkit-outer-spin-button{
   }
 }
 
+{# Cenário 090: Figma ~33px above handle / bottom air before next section. #}
+.section-home-content-placeholder.section-instagram-placeholder {
+  padding: 33px 20px 40px;
+}
+
 .section-instagram-placeholder {
-  padding-top: 70px;
-  padding-bottom: 86px;
+  padding-top: 33px;
+  padding-bottom: 40px;
 
   a {
     display: inline-flex;
     align-items: center;
     gap: 12px;
     color: #a31460;
+  }
+
+  h2 {
+    margin: 0;
+    color: #a31460;
+    font-family: 'Dosis', sans-serif;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: normal;
   }
 
   svg {
@@ -2011,6 +2222,7 @@ input::-webkit-outer-spin-button{
 
   .textbanner-image {
     padding-top: 125%;
+    overflow: hidden;
   }
 
   .textbanner-image.overlay:after {
@@ -2075,7 +2287,7 @@ input::-webkit-outer-spin-button{
 
 .section-testimonials-home {
   overflow: hidden;
-  padding: 60px 0 80px;
+  padding: 80px 0;
 }
 
 .testimonials-title {
@@ -2257,14 +2469,15 @@ input::-webkit-outer-spin-button{
     align-items: center;
     width: min(390px, calc(100vw - 48px));
     gap: 12px;
-    padding: 15px 16px;
-    border: 1px solid rgba(255, 255, 255, .42);
-    border-radius: 14px;
-    color: #fff;
-    background: #238482;
-    box-shadow: 0 12px 28px rgba(66, 22, 52, .35);
+    padding: 12px 18px;
+    border: 0;
+    border-left: 4px solid #a31460 !important;
+    border-radius: 8px;
+    color: #393747;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .12);
     font-family: 'Raleway', sans-serif;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 600;
     line-height: 1.25;
     animation: newsletter-feedback-enter .28s ease-out;
@@ -2281,9 +2494,9 @@ input::-webkit-outer-spin-button{
     flex: 0 0 25px;
     align-items: center;
     justify-content: center;
-    border: 1px solid #fff;
+    border: 2px solid #a31460 !important;
     border-radius: 50%;
-    color: #fff;
+    color: #a31460 !important;
     font-family: Arial, sans-serif;
     font-size: 15px;
     font-weight: 700;
@@ -2291,6 +2504,7 @@ input::-webkit-outer-spin-button{
 
   &-feedback-message {
     flex: 1;
+    color: #393747;
   }
 
   &-feedback-close {
@@ -2298,7 +2512,7 @@ input::-webkit-outer-spin-button{
     height: 26px;
     padding: 0;
     border: 0;
-    color: #fff;
+    color: #9e929e;
     background: transparent;
     font-family: Arial, sans-serif;
     font-size: 24px;
@@ -2308,6 +2522,7 @@ input::-webkit-outer-spin-button{
 
     &:hover,
     &:focus {
+      color: #393747;
       opacity: 1;
     }
   }
@@ -2359,7 +2574,7 @@ input::-webkit-outer-spin-button{
     min-height: 42px;
     margin: -9px 0 0;
     color: #f6f5f6;
-    font-family: 'Dosis', sans-serif;
+    font-family: 'Raleway', sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 1.5;
@@ -2457,7 +2672,7 @@ input::-webkit-outer-spin-button{
   }
 
   .section-home-content-placeholder {
-    padding: 58px 20px;
+    padding: 40px 20px;
 
     h2 {
       font-size: 24px;
@@ -2465,8 +2680,13 @@ input::-webkit-outer-spin-button{
   }
 
   .section-instagram-placeholder {
-    padding-top: 52px;
-    padding-bottom: 64px;
+    padding-top: 24px;
+    padding-bottom: 32px;
+
+    h2 {
+      font-size: 24px;
+      font-weight: 500;
+    }
 
     svg {
       width: 23px;
@@ -2525,8 +2745,8 @@ input::-webkit-outer-spin-button{
       line-height: 26px;
     }
     h2 {
-      font-size: 16px;
-      line-height: 21px;
+      font-size: 14px;
+      line-height: 130%;
     }
   }
   .newsletter-fields {
@@ -2565,13 +2785,18 @@ input::-webkit-outer-spin-button{
   }
 
   .section-testimonials-home {
-    padding: 48px 0 56px;
+    padding: 0;
   }
 
   .testimonials-title {
     margin-bottom: 50px;
+    color: #a31460;
     font-family: 'Raleway', sans-serif;
     font-size: 18px;
+    font-weight: 500;
+    line-height: normal;
+    text-align: center;
+    text-transform: uppercase;
   }
 
   .testimonials-slider {

@@ -408,10 +408,87 @@
                 initYamunaPdpRating();
             }
 
+            {# C022: ALL-CAPS (or all-caps words) product names → sentence case #}
+            function yamunaNormalizeProductTitleText(raw) {
+                var text = String(raw || '').replace(/\s+/g, ' ').trim();
+                if (!text) {
+                    return text;
+                }
+
+                var letters = text.replace(/[^A-Za-zÀ-ÿ]/g, '');
+                if (!letters) {
+                    return text;
+                }
+
+                var upperCount = (letters.match(/[A-ZÀ-Ý]/g) || []).length;
+                var mostlyUpper = upperCount / letters.length >= 0.5;
+
+                var words = text.split(' ');
+                var hasAllCapsWord = false;
+                for (var w = 0; w < words.length; w++) {
+                    var wordLetters = words[w].replace(/[^A-Za-zÀ-ÿ]/g, '');
+                    if (
+                        wordLetters.length >= 3 &&
+                        wordLetters === wordLetters.toUpperCase() &&
+                        wordLetters !== wordLetters.toLowerCase()
+                    ) {
+                        hasAllCapsWord = true;
+                        break;
+                    }
+                }
+
+                if (!mostlyUpper && !hasAllCapsWord) {
+                    return text;
+                }
+
+                var lower = text.toLowerCase();
+                for (var i = 0; i < lower.length; i++) {
+                    if (/[a-zà-ÿ]/i.test(lower.charAt(i))) {
+                        return lower.slice(0, i) + lower.charAt(i).toUpperCase() + lower.slice(i + 1);
+                    }
+                }
+                return lower;
+            }
+
+            function normalizeYamunaProductTitles(root) {
+                var scope = root || document;
+                var nodes = scope.querySelectorAll('.js-item-name, .js-product-name, [data-store^="product-item-name-"], [data-store^="product-name-"]');
+                for (var i = 0; i < nodes.length; i++) {
+                    var node = nodes[i];
+                    var current = (node.textContent || '').replace(/\s+/g, ' ').trim();
+                    var next = yamunaNormalizeProductTitleText(current);
+                    if (next && next !== current) {
+                        node.textContent = next;
+                    }
+                    node.setAttribute('data-yamuna-title-normalized', '1');
+                }
+            }
+
+            function initYamunaTitleNormalization() {
+                normalizeYamunaProductTitles(document);
+                if (window.MutationObserver) {
+                    var observer = new MutationObserver(function (mutations) {
+                        for (var m = 0; m < mutations.length; m++) {
+                            var added = mutations[m].addedNodes;
+                            for (var n = 0; n < added.length; n++) {
+                                if (added[n].nodeType === 1) {
+                                    normalizeYamunaProductTitles(added[n]);
+                                }
+                            }
+                        }
+                    });
+                    observer.observe(document.body, { childList: true, subtree: true });
+                }
+            }
+
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initYamunaProductDescriptionUi);
+                document.addEventListener('DOMContentLoaded', function () {
+                    initYamunaProductDescriptionUi();
+                    initYamunaTitleNormalization();
+                });
             } else {
                 initYamunaProductDescriptionUi();
+                initYamunaTitleNormalization();
             }
 
             {# LS.ready.then function waits to Jquery and private Tiendanube JS to be loaded before executing what´s inside #}
@@ -438,9 +515,38 @@
                     return window.innerWidth <= 1023;
                 }
 
+                function getSortSelect(sort) {
+                    return sort && sort.querySelector('select.js-sort-by, select.js-sort-by-private, select[data-component="sort-by"], select.form-select');
+                }
+
+                function syncSortCurrent(sort) {
+                    var group = sort.querySelector('.form-group');
+                    var select = getSortSelect(sort);
+                    if (!group || !select || isMobileSort()) {
+                        return;
+                    }
+
+                    var current = group.querySelector('.yamuna-plp-sort-current');
+                    if (!current) {
+                        current = document.createElement('span');
+                        current.className = 'yamuna-plp-sort-current';
+                        current.setAttribute('aria-hidden', 'true');
+                        group.insertBefore(current, select);
+                    }
+
+                    var text = select.options[select.selectedIndex]
+                        ? select.options[select.selectedIndex].text
+                        : '';
+                    if (current.textContent !== text) {
+                        current.textContent = text;
+                    }
+                }
+
                 function updateSortLabel(sort) {
                     var label = sort.querySelector('.yamuna-plp-sort-label');
-                    var select = sort.querySelector('.js-sort-by');
+                    var select = getSortSelect(sort);
+
+                    syncSortCurrent(sort);
 
                     if (isMobileSort() && label && select && window.location.search.indexOf('sort_by=') !== -1) {
                         var selectedText = select.options[select.selectedIndex].text;
@@ -462,6 +568,13 @@
                     });
                 }
 
+                document.addEventListener('change', function (event) {
+                    var sort = event.target.closest && event.target.closest('.yamuna-plp-sort');
+                    if (sort && event.target.matches('select')) {
+                        syncSortCurrent(sort);
+                    }
+                }, true);
+
                 document.addEventListener('click', function (event) {
                     var option = event.target.closest('.yamuna-plp-sort-option');
 
@@ -481,14 +594,21 @@
                         return;
                     }
 
-                    var label = event.target.closest('.yamuna-plp-sort-label');
-
-                    if (label && isMobileSort()) {
-                        var sort = label.closest('.yamuna-plp-sort');
-                        event.preventDefault();
-                        event.stopPropagation();
-                        var isOpen = sort.classList.toggle('is-open');
-                        label.setAttribute('aria-expanded', String(isOpen));
+                    {# Mobile: whole sort control (value + chevron) is the hit target. #}
+                    var sortHit = event.target.closest('.yamuna-plp-sort');
+                    if (
+                        sortHit &&
+                        isMobileSort() &&
+                        !event.target.closest('.yamuna-plp-sort-options') &&
+                        !event.target.closest('.yamuna-plp-sort-option')
+                    ) {
+                        var label = sortHit.querySelector('.yamuna-plp-sort-label');
+                        if (label) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            var isOpen = sortHit.classList.toggle('is-open');
+                            label.setAttribute('aria-expanded', String(isOpen));
+                        }
                         return;
                     }
 
@@ -513,6 +633,7 @@
                     syncSortLabels();
                 }
 
+                window.addEventListener('resize', syncSortLabels);
                 new MutationObserver(syncSortLabels).observe(document.documentElement, { childList: true, subtree: true });
             })();
         </script>

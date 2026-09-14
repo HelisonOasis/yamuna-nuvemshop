@@ -2,9 +2,35 @@
 
 <section data-store="home-newsletter">
     <style>
+        [data-store="home-newsletter"] .newsletter-copy h3,
+        [data-store="home-newsletter"] .js-home-newsletter-heading {
+            margin: 0 0 4px !important;
+            color: #fff !important;
+            font-family: 'Raleway', sans-serif !important;
+            font-size: 32px !important;
+            font-weight: 700 !important;
+            line-height: 1.2 !important;
+            text-transform: uppercase !important;
+        }
+
+        [data-store="home-newsletter"] .newsletter-copy h2,
+        [data-store="home-newsletter"] .js-home-newsletter-title,
+        [data-store="home-newsletter"] .js-home-newstetter-title {
+            margin: 0 !important;
+            color: #fff !important;
+            font-family: 'Raleway', sans-serif !important;
+            font-size: 24px !important;
+            font-weight: 500 !important;
+            line-height: 1.3 !important;
+        }
+
         [data-store="home-newsletter"] .newsletter-consent,
         [data-store="home-newsletter"] .newsletter-consent span {
+            color: #f6f5f6 !important;
             font-family: 'Raleway', sans-serif !important;
+            font-size: 16px !important;
+            font-weight: 400 !important;
+            line-height: 1.5 !important;
         }
 
         @media (min-width: 1024px) {
@@ -108,12 +134,30 @@
                 text-align: center !important;
             }
 
-            [data-store="home-newsletter"] .newsletter-copy h2 {
+            [data-store="home-newsletter"] .newsletter-copy h2,
+            [data-store="home-newsletter"] .js-home-newsletter-title,
+            [data-store="home-newsletter"] .js-home-newstetter-title {
                 font-family: 'Raleway', sans-serif !important;
                 font-size: 14px !important;
                 font-style: normal !important;
                 font-weight: 500 !important;
                 line-height: 130% !important;
+            }
+
+            [data-store="home-newsletter"] .newsletter-copy h3,
+            [data-store="home-newsletter"] .js-home-newsletter-heading {
+                font-family: 'Raleway', sans-serif !important;
+                font-size: 20px !important;
+                font-weight: 700 !important;
+                line-height: 1.3 !important;
+            }
+
+            [data-store="home-newsletter"] .newsletter-consent,
+            [data-store="home-newsletter"] .newsletter-consent span {
+                font-family: 'Raleway', sans-serif !important;
+                font-size: 16px !important;
+                font-weight: 400 !important;
+                line-height: 1.5 !important;
             }
 
             [data-store="home-newsletter"] .newsletter-consent {
@@ -166,8 +210,8 @@
                 order: 4;
                 min-height: 40px !important;
                 margin: 0 !important;
-                font-size: 14px !important;
-                line-height: 1.3 !important;
+                font-size: 16px !important;
+                line-height: 1.5 !important;
             }
 
             [data-store="home-newsletter"] .newsletter-btn {
@@ -199,8 +243,8 @@
                 <div class="col-12">
                     <div id="home-newsletter-form-container" class="js-newsletter newsletter">
                         <div class="newsletter-copy">
-                            <h3>{{ 'Newsletter' | translate }}</h3>
-                            <h2 class="js-home-newstetter-title">{{ settings.news_title }}</h2>
+                            <h3 class="js-home-newsletter-heading">{{ 'Newsletter' | translate }}</h3>
+                            <h2 class="js-home-newsletter-title js-home-newstetter-title">{{ settings.news_title }}</h2>
                         </div>
 
                         {% if contact and contact.type == 'newsletter' %}
