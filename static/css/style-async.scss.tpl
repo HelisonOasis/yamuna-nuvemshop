@@ -5976,25 +5976,24 @@ footer.yamuna-footer .powered-by-logo svg {
     margin-right: 16px;
     flex: 0 0 16px;
     content: '';
-    background: url('{{ 'images/yamuna/menu-icon-kits.svg' | static_url }}') center / contain no-repeat;
+    background: url('{{ 'images/yamuna/menu-icon-degustacao.svg' | static_url }}') center / contain no-repeat;
   }
 
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(1) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-kits.svg' | static_url }}'); }
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(2) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-manteiga.svg' | static_url }}'); }
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(3) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-castanhas.svg' | static_url }}'); }
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(4) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-coco.svg' | static_url }}'); }
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(5) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-shampoo.svg' | static_url }}'); }
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(6) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-sabonetes.svg' | static_url }}'); }
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(7) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-cafes.svg' | static_url }}'); }
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(8) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-chocolates.svg' | static_url }}'); }
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(9) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-temperos.svg' | static_url }}'); }
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(10) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-oleos.svg' | static_url }}'); }
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(11) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-adocantes.svg' | static_url }}'); }
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(12) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-leites.svg' | static_url }}'); }
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(13) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-nutraceuticos.svg' | static_url }}'); }
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(14) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-casa-sustentavel.svg' | static_url }}'); }
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(15) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-shampoo.svg' | static_url }}'); }
-  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(16) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-adocantes.svg' | static_url }}'); }
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(1) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-degustacao.svg' | static_url }}'); }
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(2) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-kits.svg' | static_url }}'); }
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(3) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-manteiga.svg' | static_url }}'); }
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(4) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-castanhas.svg' | static_url }}'); }
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(5) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-coco.svg' | static_url }}'); }
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(6) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-shampoo.svg' | static_url }}'); }
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(7) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-sabonetes.svg' | static_url }}'); }
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(8) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-cafes.svg' | static_url }}'); }
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(9) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-chocolates.svg' | static_url }}'); }
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(10) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-temperos.svg' | static_url }}'); }
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(11) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-oleos.svg' | static_url }}'); }
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(12) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-adocantes.svg' | static_url }}'); }
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(13) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-leites.svg' | static_url }}'); }
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(14) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-nutraceuticos.svg' | static_url }}'); }
+  body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(15) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-casa-sustentavel.svg' | static_url }}'); }
 }
 
 {# Desktop mini cart: native ajax content, presented as the Figma dropdown. #}
@@ -6615,21 +6614,23 @@ footer.yamuna-footer .powered-by-logo svg {
     font-family: Dosis,Arial,sans-serif !important; font-size: 16px !important; font-weight: 500 !important; line-height: 32px !important; text-transform: uppercase; white-space: nowrap;
   }
   body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item > .nav-list-link::before {
-    display: block; flex: 0 0 16px; width: 16px; height: 16px; margin-right: 16px; background: url('{{ 'images/yamuna/menu-icon-kits.svg' | static_url }}') center / contain no-repeat; content: '';
+    display: block; flex: 0 0 16px; width: 16px; height: 16px; margin-right: 16px; background: url('{{ 'images/yamuna/menu-icon-degustacao.svg' | static_url }}') center / contain no-repeat; content: '';
   }
-  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(2) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-manteiga.svg' | static_url }}'); }
-  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(3) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-castanhas.svg' | static_url }}'); }
-  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(4) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-coco.svg' | static_url }}'); }
-  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(5) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-shampoo.svg' | static_url }}'); }
-  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(6) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-sabonetes.svg' | static_url }}'); }
-  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(7) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-cafes.svg' | static_url }}'); }
-  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(8) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-chocolates.svg' | static_url }}'); }
-  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(9) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-temperos.svg' | static_url }}'); }
-  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(10) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-oleos.svg' | static_url }}'); }
-  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(11) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-adocantes.svg' | static_url }}'); }
-  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(12) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-leites.svg' | static_url }}'); }
-  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(13) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-nutraceuticos.svg' | static_url }}'); }
-  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(14) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-casa-sustentavel.svg' | static_url }}'); }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(1) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-degustacao.svg' | static_url }}'); }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(2) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-kits.svg' | static_url }}'); }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(3) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-manteiga.svg' | static_url }}'); }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(4) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-castanhas.svg' | static_url }}'); }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(5) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-coco.svg' | static_url }}'); }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(6) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-shampoo.svg' | static_url }}'); }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(7) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-sabonetes.svg' | static_url }}'); }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(8) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-cafes.svg' | static_url }}'); }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(9) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-chocolates.svg' | static_url }}'); }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(10) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-temperos.svg' | static_url }}'); }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(11) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-oleos.svg' | static_url }}'); }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(12) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-adocantes.svg' | static_url }}'); }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(13) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-leites.svg' | static_url }}'); }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(14) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-nutraceuticos.svg' | static_url }}'); }
+  body .yamuna-header-desktop-nav .nav-main-item.nav-dropdown .desktop-dropdown .desktop-list-subitems > .nav-item:nth-child(15) > .nav-list-link::before { background-image: url('{{ 'images/yamuna/menu-icon-casa-sustentavel.svg' | static_url }}'); }
 }
 
 {# Final shared desktop capsule: do not let legacy home/page rules collapse its three menu entries. #}
@@ -21960,8 +21961,13 @@ body.template-search .yamuna-plp-sort-label {
   line-height: 20px !important;
 }
 
-{# Desktop: form-group sizes to visible value; invisible select fills 100% hit box. #}
+{# Desktop: visible value + chevron; native select is inert; whole form-group opens custom menu. #}
 @media (min-width: 1024px) {
+  body.template-category .yamuna-plp-sort,
+  body.template-search .yamuna-plp-sort {
+    position: relative !important;
+  }
+
   body.template-category .yamuna-plp-sort .form-group,
   body.template-search .yamuna-plp-sort .form-group {
     position: relative !important;
@@ -21971,7 +21977,7 @@ body.template-search .yamuna-plp-sort-label {
     height: 44px !important;
     min-height: 44px !important;
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 0 22px 0 0 !important;
     align-items: center !important;
     border: 0 !important;
     border-radius: 0 !important;
@@ -21985,7 +21991,7 @@ body.template-search .yamuna-plp-sort-label {
     display: inline-flex !important;
     height: 44px !important;
     min-height: 44px !important;
-    padding: 0 22px 0 0 !important;
+    padding: 0 !important;
     align-items: center !important;
     color: #a31460 !important;
     font-family: 'Roboto', sans-serif !important;
@@ -22006,27 +22012,68 @@ body.template-search .yamuna-plp-sort-label {
   body.template-category .yamuna-plp-sort .form-select,
   body.template-category .yamuna-plp-sort select,
   body.template-search .yamuna-plp-sort .form-select,
-  body.template-search .yamuna-plp-sort select {
+  body.template-search .yamuna-plp-sort select,
+  body.template-category .yamuna-plp-sort .form-select-icon,
+  body.template-search .yamuna-plp-sort .form-select-icon {
     position: absolute !important;
-    top: 0 !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    clip: rect(0, 0, 0, 0) !important;
+  }
+
+  body.template-category .yamuna-plp-sort-options,
+  body.template-search .yamuna-plp-sort-options {
+    position: absolute !important;
+    top: calc(100% + 4px) !important;
     right: 0 !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    z-index: 3 !important;
+    z-index: 40 !important;
+    display: none !important;
+    width: max-content !important;
+    min-width: 180px !important;
+    margin: 0 !important;
+    padding: 4px 0 !important;
+    border: 1px solid #d7c9d1 !important;
+    background: #fff !important;
+    box-shadow: 0 6px 14px rgba(74, 29, 58, .16) !important;
+    list-style: none !important;
+  }
+
+  body.template-category .yamuna-plp-sort.is-open .yamuna-plp-sort-options,
+  body.template-search .yamuna-plp-sort.is-open .yamuna-plp-sort-options {
+    display: block !important;
+  }
+
+  body.template-category .yamuna-plp-sort-option,
+  body.template-search .yamuna-plp-sort-option {
     display: block !important;
     width: 100% !important;
-    min-width: 0 !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    padding: 10px 14px !important;
     border: 0 !important;
-    border-radius: 0 !important;
-    opacity: 0 !important;
-    appearance: none !important;
     background: transparent !important;
+    color: #a31460 !important;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 1.2 !important;
+    text-align: left !important;
+    white-space: nowrap !important;
     cursor: pointer !important;
-    box-sizing: border-box !important;
+  }
+
+  body.template-category .yamuna-plp-sort-option:hover,
+  body.template-category .yamuna-plp-sort-option:focus,
+  body.template-category .yamuna-plp-sort-option:active,
+  body.template-search .yamuna-plp-sort-option:hover,
+  body.template-search .yamuna-plp-sort-option:focus,
+  body.template-search .yamuna-plp-sort-option:active {
+    background: #f7edf3 !important;
+    outline: 0 !important;
   }
 }
 

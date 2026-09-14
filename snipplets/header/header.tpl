@@ -27,6 +27,7 @@
                 </div>
                 <div class="nav-dropdown-content desktop-dropdown yamuna-products-dropdown">
                     <ul class="desktop-list-subitems list-subitems nav-list-accordion">
+                        <li class="nav-item"><a class="nav-list-link" href="{{ '/degustacao' | setting_url }}">Degustação</a></li>
                         <li class="nav-item"><a class="nav-list-link" href="{{ '/kits-presentes' | setting_url }}">Kits e presentes</a></li>
                         <li class="nav-item"><a class="nav-list-link" href="{{ '/manteiga-ghee' | setting_url }}">Manteiga ghee</a></li>
                         <li class="nav-item"><a class="nav-list-link" href="{{ '/cremes-de-castanhas' | setting_url }}">Creme de castanhas</a></li>

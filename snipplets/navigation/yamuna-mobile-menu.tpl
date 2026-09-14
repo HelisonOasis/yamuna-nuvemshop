@@ -30,6 +30,7 @@
     <section class="yamuna-mobile-menu-products">
         <h2>PRODUTOS</h2>
         <ul>
+            <li><a href="{{ '/degustacao' | setting_url }}"><img src="{{ 'images/yamuna/menu-icon-degustacao.svg' | static_url }}" alt="" />DEGUSTAÇÃO</a></li>
             <li><a href="{{ '/kits-presentes' | setting_url }}"><img src="{{ 'images/yamuna/menu-category-kits.svg' | static_url }}" alt="" />KITS E PRESENTES</a></li>
             <li><a href="{{ '/manteiga-ghee' | setting_url }}"><img src="{{ 'images/yamuna/menu-category-manteiga.svg' | static_url }}" alt="" />MANTEIGA GHEE</a></li>
             <li><a href="{{ '/cremes-de-castanhas' | setting_url }}"><img src="{{ 'images/yamuna/menu-category-castanhas.svg' | static_url }}" alt="" />CREME DE CASTANHAS</a></li>

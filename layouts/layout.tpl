@@ -542,6 +542,32 @@
                     }
                 }
 
+                function applySortValue(sort, value, labelText) {
+                    var select = getSortSelect(sort);
+                    var label = sort.querySelector('.yamuna-plp-sort-label');
+                    var current = sort.querySelector('.yamuna-plp-sort-current');
+                    var url = new URL(window.location.href);
+
+                    if (current && labelText) {
+                        current.textContent = labelText;
+                    }
+                    if (isMobileSort() && label && labelText) {
+                        label.textContent = labelText;
+                    }
+                    if (select && value) {
+                        select.value = value;
+                    }
+
+                    sort.classList.remove('is-open');
+                    if (label) {
+                        label.setAttribute('aria-expanded', 'false');
+                    }
+
+                    url.searchParams.set('sort_by', value);
+                    url.searchParams.delete('page');
+                    window.location.assign(url.pathname + (url.search ? url.search : '') + url.hash);
+                }
+
                 function updateSortLabel(sort) {
                     var label = sort.querySelector('.yamuna-plp-sort-label');
                     var select = getSortSelect(sort);
@@ -568,6 +594,14 @@
                     });
                 }
 
+                function toggleSortMenu(sort) {
+                    var label = sort.querySelector('.yamuna-plp-sort-label');
+                    var isOpen = sort.classList.toggle('is-open');
+                    if (label) {
+                        label.setAttribute('aria-expanded', String(isOpen));
+                    }
+                }
+
                 document.addEventListener('change', function (event) {
                     var sort = event.target.closest && event.target.closest('.yamuna-plp-sort');
                     if (sort && event.target.matches('select')) {
@@ -578,37 +612,38 @@
                 document.addEventListener('click', function (event) {
                     var option = event.target.closest('.yamuna-plp-sort-option');
 
-                    if (option && isMobileSort()) {
+                    if (option) {
                         var optionSort = option.closest('.yamuna-plp-sort');
-                        var optionLabel = optionSort.querySelector('.yamuna-plp-sort-label');
-                        var url = new URL(window.location.href);
-
                         event.preventDefault();
                         event.stopPropagation();
-                        optionLabel.textContent = option.textContent.trim();
-                        optionSort.classList.remove('is-open');
-                        optionLabel.setAttribute('aria-expanded', 'false');
-                        url.searchParams.set('sort_by', option.getAttribute('data-sort-value'));
-                        url.searchParams.delete('page');
-                        window.location.assign(url.pathname + (url.search ? url.search : '') + url.hash);
+                        applySortValue(
+                            optionSort,
+                            option.getAttribute('data-sort-value'),
+                            option.textContent.trim()
+                        );
                         return;
                     }
 
-                    {# Mobile: whole sort control (value + chevron) is the hit target. #}
+                    {# Desktop: any click inside form-group (text, padding, gap, arrow) opens menu. #}
+                    var groupHit = event.target.closest('.yamuna-plp-sort .form-group');
+                    if (groupHit && !isMobileSort()) {
+                        var groupSort = groupHit.closest('.yamuna-plp-sort');
+                        event.preventDefault();
+                        event.stopPropagation();
+                        toggleSortMenu(groupSort);
+                        return;
+                    }
+
+                    {# Mobile: whole sort control is the hit target. #}
                     var sortHit = event.target.closest('.yamuna-plp-sort');
                     if (
                         sortHit &&
                         isMobileSort() &&
-                        !event.target.closest('.yamuna-plp-sort-options') &&
-                        !event.target.closest('.yamuna-plp-sort-option')
+                        !event.target.closest('.yamuna-plp-sort-options')
                     ) {
-                        var label = sortHit.querySelector('.yamuna-plp-sort-label');
-                        if (label) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                            var isOpen = sortHit.classList.toggle('is-open');
-                            label.setAttribute('aria-expanded', String(isOpen));
-                        }
+                        event.preventDefault();
+                        event.stopPropagation();
+                        toggleSortMenu(sortHit);
                         return;
                     }
 
@@ -616,10 +651,12 @@
                 }, true);
 
                 document.addEventListener('keydown', function (event) {
+                    var group = event.target.closest('.yamuna-plp-sort .form-group');
                     var label = event.target.closest('.yamuna-plp-sort-label');
-                    if (label && isMobileSort() && (event.key === 'Enter' || event.key === ' ')) {
+                    if ((group || label) && (event.key === 'Enter' || event.key === ' ')) {
+                        var sort = (group || label).closest('.yamuna-plp-sort');
                         event.preventDefault();
-                        label.click();
+                        toggleSortMenu(sort);
                     }
                 });
 
