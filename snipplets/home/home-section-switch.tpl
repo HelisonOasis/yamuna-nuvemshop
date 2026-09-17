@@ -6,7 +6,7 @@
             {% snipplet 'defaults/home/slider_help.tpl' %}
         {% else %}
             {% include 'snipplets/home/home-slider.tpl' %}
-            {% if has_mobile_slider %}
+            {% if has_mobile_slider or use_yamuna_prod_hero %}
                 {% include 'snipplets/home/home-slider.tpl' with {mobile: true} %}
             {% endif %}
         {% endif %}

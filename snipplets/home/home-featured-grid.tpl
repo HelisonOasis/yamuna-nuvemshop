@@ -50,7 +50,7 @@
 
         {% if use_slider %}
             <div class="col-12 p-0">
-                <div class="js-swiper-{{ highlighted_products_setting_name }} swiper-container p-md-1">
+                <div class="js-swiper-{{ highlighted_products_setting_name }} swiper-container">
                     <div class="swiper-wrapper">
         {% endif %}
 

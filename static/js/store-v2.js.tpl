@@ -905,24 +905,33 @@ DOMContentLoaded.addEventOrExecute(() => {
 
         var width = window.innerWidth;
         if (width > 767) {
-            var slider_autoplay = {delay: 6000,};
+            var slider_autoplay = {delay: 3000, disableOnInteraction: false};
         } else {
-            var slider_autoplay = false;
+            var slider_autoplay = {delay: 3000, disableOnInteraction: false};
         }
 
         var preloadImagesValue = false;
-        var lazyValue = true;
         var loopValue = true;
         var paginationClickableValue = true;
+
+        {# Yamuna hero uses custom banners (not settings.slider). Always loop when
+           there is more than one slide, and preload neighbors so the last slide
+           + loop clones do not stick on the lazy placeholder. #}
+        var homeHeroLazy = {
+            loadPrevNext: true,
+            loadPrevNextAmount: 2,
+            loadOnTransitionStart: true,
+        };
 
         createSwiper(
             '.js-home-slider', {
                 preloadImages: preloadImagesValue,
-                lazy: lazyValue,
-                {% if settings.slider | length > 0 %}
-                    loop: loopValue,
-                {% endif %}
+                lazy: homeHeroLazy,
+                watchSlidesVisibility: true,
+                loop: document.querySelectorAll('.js-home-slider > .swiper-wrapper > .swiper-slide').length > 1,
+                loopAdditionalSlides: 2,
                 autoplay: slider_autoplay,
+                speed: 500,
                 pagination: {
                     el: '.js-swiper-home-pagination',
                     clickable: paginationClickableValue,
@@ -931,6 +940,24 @@ DOMContentLoaded.addEventOrExecute(() => {
                     nextEl: '.js-swiper-home-next',
                     prevEl: '.js-swiper-home-prev',
                 },
+                on: {
+                    init: function () {
+                        this.updateSize();
+                        this.updateSlides();
+                        if (this.lazy && typeof this.lazy.load === 'function') {
+                            try { this.lazy.load(); } catch (e) {}
+                        }
+                    },
+                    slideChangeTransitionStart: function () {
+                        if (this.lazy && typeof this.lazy.load === 'function') {
+                            try { this.lazy.load(); } catch (e) {}
+                        }
+                    },
+                    resize: function () {
+                        this.updateSize();
+                        this.updateSlides();
+                    }
+                }
             },
             function(swiperInstance) {
                 window.homeSwiper = swiperInstance;
@@ -940,11 +967,12 @@ DOMContentLoaded.addEventOrExecute(() => {
         createSwiper(
             '.js-home-slider-mobile', {
                 preloadImages: preloadImagesValue,
-                lazy: lazyValue,
-                {% if settings.slider_mobile | length > 0 %}
-                    loop: loopValue,
-                {% endif %}
+                lazy: homeHeroLazy,
+                watchSlidesVisibility: true,
+                loop: document.querySelectorAll('.js-home-slider-mobile > .swiper-wrapper > .swiper-slide').length > 1,
+                loopAdditionalSlides: 2,
                 autoplay: slider_autoplay,
+                speed: 500,
                 pagination: {
                     el: '.js-swiper-home-pagination-mobile',
                     clickable: paginationClickableValue,
@@ -953,6 +981,18 @@ DOMContentLoaded.addEventOrExecute(() => {
                     nextEl: '.js-swiper-home-next-mobile',
                     prevEl: '.js-swiper-home-prev-mobile',
                 },
+                on: {
+                    init: function () {
+                        if (this.lazy && typeof this.lazy.load === 'function') {
+                            try { this.lazy.load(); } catch (e) {}
+                        }
+                    },
+                    slideChangeTransitionStart: function () {
+                        if (this.lazy && typeof this.lazy.load === 'function') {
+                            try { this.lazy.load(); } catch (e) {}
+                        }
+                    }
+                }
             },
             function(swiperInstance) {
                 window.homeMobileSwiper = swiperInstance;
@@ -976,6 +1016,12 @@ DOMContentLoaded.addEventOrExecute(() => {
                 slideVisibleClass: 'js-swiper-slide-visible',
                 spaceBetween: itemSwiperSpaceBetween,
                 centerInsufficientSlides: true,
+                loop: true,
+                speed: 500,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
                 navigation: {
                     nextEl: '.js-swiper-modules-next',
                     prevEl: '.js-swiper-modules-prev',
@@ -1022,7 +1068,7 @@ DOMContentLoaded.addEventOrExecute(() => {
 
             {% if has_featured_products_slider %}
 
-                window.swiperLoader('.js-swiper-featured', {
+                createSwiper('.js-swiper-featured', {
                     lazy: lazyVal,
                     watchOverflow: watchOverflowVal,
                     centerInsufficientSlides: centerInsufficientSlidesVal,
@@ -1030,9 +1076,9 @@ DOMContentLoaded.addEventOrExecute(() => {
                     watchSlideProgress: true,
                     watchSlidesVisibility: true,
                     slideVisibleClass: 'js-swiper-slide-visible',
-                {% if sections.primary.products | length > 3 %}
                     loop: true,
-                {% endif %}
+                    loopAdditionalSlides: 3,
+                    speed: 500,
                     navigation: {
                         nextEl: '.js-swiper-featured-next',
                         prevEl: '.js-swiper-featured-prev',
@@ -1042,13 +1088,15 @@ DOMContentLoaded.addEventOrExecute(() => {
                         clickable: true,
                     },
                     slidesPerView: slidesPerViewMobileVal,
-                    spaceBetween: 8,
+                    spaceBetween: 16,
                     breakpoints: {
                         768: {
                             slidesPerView: slidesPerViewTabletVal,
+                            spaceBetween: 24,
                         },
                         1200: {
                             slidesPerView: slidesPerViewDesktopVal,
+                            spaceBetween: 32,
                         }
                     }
                 });
@@ -1057,7 +1105,7 @@ DOMContentLoaded.addEventOrExecute(() => {
 
             {% if has_new_products_slider %}
 
-                window.swiperLoader('.js-swiper-new', {
+                createSwiper('.js-swiper-new', {
                     lazy: lazyVal,
                     watchOverflow: watchOverflowVal,
                     centerInsufficientSlides: centerInsufficientSlidesVal,
@@ -1065,9 +1113,9 @@ DOMContentLoaded.addEventOrExecute(() => {
                     watchSlideProgress: true,
                     watchSlidesVisibility: true,
                     slideVisibleClass: 'js-swiper-slide-visible',
-                {% if sections.new.products | length > 3 %}
                     loop: true,
-                {% endif %}
+                    loopAdditionalSlides: 3,
+                    speed: 500,
                     navigation: {
                         nextEl: '.js-swiper-new-next',
                         prevEl: '.js-swiper-new-prev',
@@ -1077,13 +1125,15 @@ DOMContentLoaded.addEventOrExecute(() => {
                         clickable: true,
                     },
                     slidesPerView: slidesPerViewMobileVal,
-                    spaceBetween: 8,
+                    spaceBetween: 16,
                     breakpoints: {
                         768: {
                             slidesPerView: slidesPerViewTabletVal,
+                            spaceBetween: 24,
                         },
                         1200: {
                             slidesPerView: slidesPerViewDesktopVal,
+                            spaceBetween: 32,
                         }
                     }
                 });
@@ -1092,7 +1142,7 @@ DOMContentLoaded.addEventOrExecute(() => {
 
             {% if has_sale_products_slider %}
 
-                window.swiperLoader('.js-swiper-sale', {
+                createSwiper('.js-swiper-sale', {
                     lazy: lazyVal,
                     watchOverflow: watchOverflowVal,
                     centerInsufficientSlides: centerInsufficientSlidesVal,
@@ -1100,9 +1150,9 @@ DOMContentLoaded.addEventOrExecute(() => {
                     watchSlideProgress: true,
                     watchSlidesVisibility: true,
                     slideVisibleClass: 'js-swiper-slide-visible',
-                {% if sections.sale.products | length > 3 %}
                     loop: true,
-                {% endif %}
+                    loopAdditionalSlides: 3,
+                    speed: 500,
                     navigation: {
                         nextEl: '.js-swiper-sale-next',
                         prevEl: '.js-swiper-sale-prev',
@@ -1112,13 +1162,15 @@ DOMContentLoaded.addEventOrExecute(() => {
                         clickable: true,
                     },
                     slidesPerView: slidesPerViewMobileVal,
-                    spaceBetween: 8,
+                    spaceBetween: 16,
                     breakpoints: {
                         768: {
                             slidesPerView: slidesPerViewTabletVal,
+                            spaceBetween: 24,
                         },
                         1200: {
                             slidesPerView: slidesPerViewDesktopVal,
+                            spaceBetween: 32,
                         }
                     }
                 });
@@ -1158,9 +1210,14 @@ DOMContentLoaded.addEventOrExecute(() => {
                 grabCursor: true,
                 centeredSlides: false,
                 slidesPerView: 1,
-                spaceBetween: 0,
+                spaceBetween: 24,
+                observer: true,
+                observeParents: true,
             }, function(swiperInstance) {
-                swiperInstance.slideToLoop(0, 0, false);
+                requestAnimationFrame(function () {
+                    swiperInstance.update();
+                    swiperInstance.slideToLoop(0, 0, false);
+                });
             });
         }
 
@@ -1171,8 +1228,11 @@ DOMContentLoaded.addEventOrExecute(() => {
             createSwiper('.js-swiper-blog', {
                 watchOverflow: true,
                 grabCursor: true,
-                slidesPerView: 1.15,
-                spaceBetween: 24,
+                loop: false,
+                speed: 500,
+                centeredSlides: false,
+                slidesPerView: 1,
+                spaceBetween: 16,
                 navigation: {
                     nextEl: '.js-swiper-blog-next',
                     prevEl: '.js-swiper-blog-prev',
@@ -1182,16 +1242,44 @@ DOMContentLoaded.addEventOrExecute(() => {
                     clickable: true,
                 },
                 breakpoints: {
+                    426: {
+                        slidesPerView: 1,
+                        spaceBetween: 20,
+                    },
                     768: {
                         slidesPerView: 2,
-                        spaceBetween: 36,
+                        spaceBetween: 24,
                     },
                     1200: {
                         slidesPerView: 3,
-                        spaceBetween: 48,
+                        spaceBetween: 32,
                     }
-                }
+                },
+            }, function(swiperInstance) {
+                requestAnimationFrame(function () {
+                    swiperInstance.update();
+                    swiperInstance.slideTo(0, 0, false);
+                });
             });
+        }
+
+        function prepareYamunaHomeBlogCard(card) {
+            var slide = card.cloneNode(true);
+            slide.classList.remove('yamuna-blog-card--grid', 'yamuna-blog-card--featured');
+            slide.classList.add('swiper-slide', 'yamuna-blog-card--home');
+            slide.querySelectorAll('img').forEach(function(img) {
+                var realSrc = img.getAttribute('data-src')
+                    || img.getAttribute('data-original')
+                    || (img.getAttribute('data-srcset') || '').split(' ')[0]
+                    || '';
+                if (realSrc && realSrc.indexOf('data:image') !== 0) {
+                    img.setAttribute('src', realSrc);
+                }
+                img.classList.remove('lazyload', 'lazyloading');
+                img.classList.add('lazyloaded');
+                img.style.opacity = '1';
+            });
+            return slide;
         }
 
         var homeBlogTrack = document.querySelector('.js-yamuna-home-blog-track');
@@ -1201,14 +1289,18 @@ DOMContentLoaded.addEventOrExecute(() => {
                 var cards = doc.querySelectorAll('.yamuna-blog-grid .js-yamuna-blog-card');
                 cards.forEach(function(card, index) {
                     if (index > 11) return;
-                    var slide = card.cloneNode(true);
-                    slide.classList.add('swiper-slide', 'yamuna-blog-card--home');
-                    homeBlogTrack.appendChild(slide);
+                    homeBlogTrack.appendChild(prepareYamunaHomeBlogCard(card));
                 });
                 initYamunaHomeBlogSwiper();
             }).catch(function() {
                 initYamunaHomeBlogSwiper();
             });
+        } else if (homeBlogTrack) {
+            homeBlogTrack.querySelectorAll('.js-yamuna-blog-card').forEach(function(card) {
+                card.classList.remove('yamuna-blog-card--grid');
+                card.classList.add('yamuna-blog-card--home');
+            });
+            initYamunaHomeBlogSwiper();
         } else {
             initYamunaHomeBlogSwiper();
         }
@@ -1325,12 +1417,14 @@ DOMContentLoaded.addEventOrExecute(() => {
             loop: alternativeLoopVal,
             watchOverflow: true,
             centerInsufficientSlides: true,
+            centeredSlides: true,
             threshold: 5,
             watchSlideProgress: true,
             watchSlidesVisibility: true,
             slideVisibleClass: 'js-swiper-slide-visible',
             slidesPerView: 1.15,
             spaceBetween: 16,
+            breakpointsBase: 'container',
             navigation: {
                 nextEl: '.yamuna-pdp-related .js-swiper-related-next',
                 prevEl: '.yamuna-pdp-related .js-swiper-related-prev',
@@ -1339,21 +1433,30 @@ DOMContentLoaded.addEventOrExecute(() => {
                 768: {
                     slidesPerView: 2,
                     spaceBetween: 20,
+                    centeredSlides: false,
                 },
                 1200: {
                     slidesPerView: 3,
                     spaceBetween: 30,
+                    centeredSlides: false,
                 }
             },
             on: {
                 init: function () {
-                    {# Prefer container width so DevTools mobile emulation stays correct. #}
-                    var containerWidth = this.width || (this.el && this.el.clientWidth) || window.innerWidth;
+                    {# Prefer container width so mobile / DevTools emulation stay at 1.15 + peek, centered. #}
+                    var containerWidth = (this.el && this.el.clientWidth) || this.width || window.innerWidth;
                     if (containerWidth < 768) {
                         this.params.slidesPerView = 1.15;
                         this.params.spaceBetween = 16;
+                        this.params.centeredSlides = true;
                         this.currentBreakpoint = false;
                         this.update();
+                        this.params.slidesPerView = 1.15;
+                        this.params.spaceBetween = 16;
+                        this.params.centeredSlides = true;
+                        if (typeof this.updateSlides === 'function') this.updateSlides();
+                        if (typeof this.updateSize === 'function') this.updateSize();
+                        if (typeof this.slideTo === 'function') this.slideTo(0, 0);
                     }
                 }
             }
@@ -1399,8 +1502,9 @@ DOMContentLoaded.addEventOrExecute(() => {
             };
             createSwiper('.js-informative-banners', {
                 slidesPerView: 1,
-                speed: 600,
-                loop: false,
+                speed: 500,
+                loop: true,
+                loopAdditionalSlides: 2,
                 watchOverflow: true,
                 centerInsufficientSlides: true,
                 autoplay: yamunaBenefitsAutoplay,
@@ -1420,6 +1524,7 @@ DOMContentLoaded.addEventOrExecute(() => {
                         slidesPerView: 5,
                         autoplay: false,
                         allowTouchMove: false,
+                        loop: false,
                     }
                 },
                 on: {
@@ -3277,17 +3382,10 @@ DOMContentLoaded.addEventOrExecute(() => {
         removeShippingSuboptions();
 
         {% if template == 'product' %}
-            {# Keep CEP form visible on PDP after calculate (yamuna.com.br) #}
-            setTimeout(function () {
-                jQueryNuvem("#product-shipping-container .js-shipping-calculator-head").addClass("with-form").removeClass("with-zip");
-                jQueryNuvem("#product-shipping-container .js-shipping-calculator-with-zipcode").removeClass("transition-up-active");
-                jQueryNuvem("#product-shipping-container .js-shipping-calculator-form").addClass("transition-up-active");
-            }, 50);
-            setTimeout(function () {
-                jQueryNuvem("#product-shipping-container .js-shipping-calculator-head").addClass("with-form").removeClass("with-zip");
-                jQueryNuvem("#product-shipping-container .js-shipping-calculator-with-zipcode").removeClass("transition-up-active");
-                jQueryNuvem("#product-shipping-container .js-shipping-calculator-form").addClass("transition-up-active");
-            }, 600);
+            {# 025: show "Entregas para o CEP" summary after calculate (native with-zip) #}
+            jQueryNuvem("#product-shipping-container .js-shipping-calculator-head").addClass("with-zip").removeClass("with-form");
+            jQueryNuvem("#product-shipping-container .js-shipping-calculator-with-zipcode").addClass("transition-up-active");
+            jQueryNuvem("#product-shipping-container .js-shipping-calculator-form").removeClass("transition-up-active");
         {% endif %}
 	});
 
@@ -3555,8 +3653,9 @@ DOMContentLoaded.addEventOrExecute(() => {
             };
             createSwiper('.js-informative-banners', {
                 slidesPerView: 1,
-                speed: 600,
-                loop: false,
+                speed: 500,
+                loop: true,
+                loopAdditionalSlides: 2,
                 watchOverflow: true,
                 centerInsufficientSlides: true,
                 autoplay: yamunaBenefitsAutoplay,
@@ -3576,6 +3675,7 @@ DOMContentLoaded.addEventOrExecute(() => {
                         slidesPerView: 5,
                         autoplay: false,
                         allowTouchMove: false,
+                        loop: false,
                     }
                 },
                 on: {

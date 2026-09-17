@@ -167,11 +167,13 @@
                 document.documentElement.style.setProperty('--yamuna-menu-left', (headerRect.left + beforeLeft) + 'px');
                 document.documentElement.style.setProperty('--yamuna-menu-width', Math.max(0, headerRect.width - beforeLeft - beforeRight) + 'px');
                 document.documentElement.style.setProperty('--yamuna-menu-top', (headerRect.top + beforeTop + beforeHeight) + 'px');
-                // Drawers start at the viewport top; overlap pads content under the capsule.
+                // Drawers/panels start at viewport top; overlap pads content under the capsule.
+                // Keep panel-top at 0 so white panels extend up and never leave a gap ("buraco").
                 document.documentElement.style.setProperty('--yamuna-panel-top', '0px');
                 document.documentElement.style.setProperty('--yamuna-panel-overlap', Math.max(0, headerRect.top + beforeTop + beforeHeight) + 'px');
                 document.documentElement.style.setProperty('--yamuna-header-top', headerRect.top + 'px');
                 document.documentElement.style.setProperty('--yamuna-header-right', Math.max(0, window.innerWidth - headerRect.right) + 'px');
+                document.documentElement.style.setProperty('--yamuna-header-height', Math.max(0, headerRect.height) + 'px');
             }
 
             function syncDesktopPanelsDuringTransition() {

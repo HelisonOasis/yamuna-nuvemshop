@@ -2,8 +2,8 @@
 {% if product.media_count > 0 %}
     <div class="yamuna-product-gallery-desktop">
         {% for media in product.media if media.isImage %}
-            <a href="{{ media | product_image_url('4k') }}" data-fancybox="product-gallery" class="yamuna-product-gallery-item">
-                <img src="{{ media | product_image_url('huge') }}" alt="{{ media.alt }}" loading="{{ loop.first ? 'eager' : 'lazy' }}" {% if loop.first %}fetchpriority="high"{% endif %} />
+            <a href="{{ media | product_image_url('original') }}" data-fancybox="product-gallery" class="yamuna-product-gallery-item">
+                <img src="{{ media | product_image_url('original') }}" alt="{{ media.alt }}" loading="{{ loop.first ? 'eager' : 'lazy' }}" {% if loop.first %}fetchpriority="high"{% endif %} />
             </a>
         {% endfor %}
     </div>

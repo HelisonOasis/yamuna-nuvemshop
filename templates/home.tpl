@@ -1,5 +1,6 @@
-{% set has_main_slider = settings.slider and settings.slider is not empty %}
-{% set has_mobile_slider = settings.toggle_slider_mobile and settings.slider_mobile and settings.slider_mobile is not empty %}
+{% set use_yamuna_prod_hero = true %}
+{% set has_main_slider = use_yamuna_prod_hero or (settings.slider and settings.slider is not empty) %}
+{% set has_mobile_slider = use_yamuna_prod_hero or (settings.toggle_slider_mobile and settings.slider_mobile and settings.slider_mobile is not empty) %}
 {% set has_informative_banners = settings.banner_services and (settings.banner_services_01_title or settings.banner_services_02_title or settings.banner_services_03_title or settings.banner_services_04_title or settings.banner_services_05_title) %}
 {% set has_category_banners =  settings.banner_01_show or settings.banner_02_show or settings.banner_03_show %}
 {% set has_welcome =  settings.welcome_message %}
@@ -21,6 +22,23 @@
   body.template-home,
   body.template-home .background-main {
     background-color: #fff !important;
+  }
+
+  /* Mobile cream band — same #FBF7F0 as desktop (beats stale async #f8f7f8). */
+  @media (max-width: 767px) {
+    body.template-home .js-home-sections-container,
+    body.template-home [data-store="banner-services"],
+    body.template-home [data-store="banner-services"] .section-informative-banners,
+    body.template-home .section-informative-banners,
+    body.template-home .section-yamuna-category-slider,
+    body.template-home [data-store="home-image-text-module"],
+    body.template-home .section-featured-home,
+    body.template-home [data-store^="home-products-"].section-featured-home,
+    body.template-home .section-yamuna-information,
+    body.template-home .section-yamuna-category-highlights {
+      background: #FBF7F0 !important;
+      background-color: #FBF7F0 !important;
+    }
   }
 
   /* Keep the mobile hero behind its persistent header while the async CSS is cached. */
@@ -63,6 +81,12 @@
   }
 
   @media (min-width: 768px) {
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products > .col-12 > .h1 {
+      margin-bottom: 32px !important;
+    }
+  }
+
+  @media (min-width: 768px) {
     .section-banners-home[data-store="home-banner-categories"] [class*="js-category-banner-title-"] {
       color: #fff !important;
       font-family: 'Dosis', sans-serif !important;
@@ -85,16 +109,26 @@
     }
   }
 
-  /* Shared Figma product-card spot for "Os mais vendidos", Promoções and Lançamentos. */
+  /* Shared product-card carousel — match prod: 3 cards, 32px gap, no peeks */
   @media (min-width: 1200px) {
     [data-store^="home-products-"].section-featured-home .container {
       max-width: 1312px !important;
     }
 
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products > .col-12 > .h1 {
+      margin-bottom: 32px !important;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-container {
+      overflow: hidden !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
     [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-slide {
-      width: 429.333px !important;
-      height: 539px !important;
-      padding: 0 6.6667px !important;
+      height: auto !important;
+      min-height: 539px !important;
+      padding: 0 !important;
       box-sizing: border-box !important;
     }
 
@@ -108,12 +142,13 @@
     }
 
     [data-store^="home-products-"].section-featured-home .yamuna-home-products .item {
-      overflow: hidden !important;
+      overflow: visible !important;
       margin-bottom: 0 !important;
-      padding: 0 12px 10px !important;
-      border-radius: 12px;
+      padding: 0 16px 16px !important;
+      border-radius: 8px;
       background: #fff;
       box-sizing: border-box !important;
+      box-shadow: 0 2px 12px rgba(57, 55, 71, 0.1);
     }
 
     [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image {
@@ -126,6 +161,14 @@
     [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-description {
       flex: 0 0 auto !important;
       padding: 10px 0 !important;
+      text-align: left !important;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .yamuna-home-spot-price-row {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 0 !important;
     }
 
     [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions {
@@ -171,17 +214,18 @@
     }
 
     [data-store="home-image-text-module"] {
-      padding: 0 12px;
+      padding: 0 16px;
     }
 
     [data-store="home-image-text-module"] .js-banner-container {
       width: 100% !important;
       grid-template-columns: 1fr;
-      gap: 14px;
+      gap: 32px;
     }
 
     [data-store="home-image-text-module"] .js-textbanner .row {
-      border-radius: 16px;
+      border-radius: 24px;
+      overflow: hidden;
     }
 
     [data-store="home-image-text-module"] .js-textbanner-text {
@@ -190,22 +234,29 @@
       bottom: 0;
       left: 0 !important;
       width: 100% !important;
-      height: 32px;
-      min-height: 32px;
-      padding: 0 8px 0 22px;
-      border-radius: 0 0 16px 16px;
+      max-width: 100% !important;
+      height: 48px;
+      min-height: 48px;
+      padding: 8px 16px;
+      border-radius: 24px;
+      box-sizing: border-box;
     }
 
     [data-store="home-image-text-module"] .textbanner-title {
+      font-family: 'Raleway', sans-serif;
       font-size: 14px;
+      font-weight: 600;
+      line-height: 1;
     }
 
     [data-store="home-image-text-module"] .js-textbanner-text .btn {
-      width: auto;
-      min-width: 91px;
-      min-height: 24px;
-      padding: 0 10px;
-      font-family: 'Dosis', sans-serif;
+      width: 120px;
+      min-width: 120px;
+      max-width: 120px;
+      height: 32px;
+      min-height: 32px;
+      padding: 0 12px;
+      font-family: 'Raleway', sans-serif;
       font-size: 14px;
       font-weight: 600;
     }
@@ -249,20 +300,29 @@
   }
 
   @media (min-width: 768px) and (max-width: 1023px) {
+    [data-store="home-image-text-module"] .js-banner-container {
+      gap: 32px;
+    }
+
     [data-store="home-image-text-module"] .js-textbanner-text {
-      height: clamp(40px, 4.7vw, 48px);
-      min-height: clamp(40px, 4.7vw, 48px);
-      padding: 0 clamp(10px, 1.5vw, 16px) 0 clamp(24px, 3vw, 30px);
+      height: 48px;
+      min-height: 48px;
+      padding: 8px 16px;
     }
 
     [data-store="home-image-text-module"] .textbanner-title {
-      font-size: clamp(16px, 1.9vw, 18px);
+      font-family: 'Raleway', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
     }
 
     [data-store="home-image-text-module"] .js-textbanner-text .btn {
-      min-width: clamp(108px, 12.3vw, 126px);
-      min-height: clamp(28px, 3.2vw, 32px);
-      font-size: clamp(15px, 1.7vw, 16px);
+      width: 120px;
+      min-width: 120px;
+      height: 32px;
+      min-height: 32px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 14px;
     }
   }
 

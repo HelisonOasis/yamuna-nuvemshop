@@ -1278,8 +1278,14 @@ input::-webkit-outer-spin-button{
 {# Yamuna home: benefits bar — Figma 156:3365 / cenário 083 #}
 [data-store="banner-services"] .section-informative-banners {
   margin: 0;
-  background: #f8f7f8;
+  background: #FBF7F0;
   color: #1b1a21;
+}
+
+@media (min-width: 1024px) {
+  [data-store="banner-services"] .section-informative-banners {
+    background: rgba(192, 187, 195, 0.2);
+  }
 }
 
 [data-store="banner-services"] .service-item {
@@ -1376,7 +1382,7 @@ input::-webkit-outer-spin-button{
   padding: 24px 0;
   margin: 0;
   overflow: visible;
-  background: #f8f7f8;
+  background: #FBF7F0;
 }
 
 @media (min-width: 768px) {
@@ -1495,8 +1501,8 @@ input::-webkit-outer-spin-button{
 .section-featured-home .yamuna-home-products .swiper-button-prev,
 .section-featured-home .yamuna-home-products .swiper-button-next {
   display: flex;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(255, 255, 255, 0.55);
@@ -1522,8 +1528,8 @@ input::-webkit-outer-spin-button{
 .section-featured-home .yamuna-home-products .swiper-button-next .icon-inline,
 .section-featured-home .yamuna-home-products .swiper-button-prev svg,
 .section-featured-home .yamuna-home-products .swiper-button-next svg {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   color: #238482;
   fill: #238482;
 }
@@ -1547,29 +1553,28 @@ input::-webkit-outer-spin-button{
   .section-featured-home .yamuna-home-products .swiper-button-prev,
   .section-featured-home .yamuna-home-products .swiper-button-next {
     top: calc(50% + 24px);
-    margin-top: -20px;
+    margin-top: -24px;
   }
 }
 
 @media (max-width: 767px) {
+  {# Home product titles: 54px above / 24px below (promoções rhythm). #}
   .section-featured-home {
-    padding: 16px 0 38px;
+    padding: 54px 0 38px;
   }
 
   .section-featured-home .h1 {
-    margin-bottom: 25px;
-    font-size: 18px;
+    margin-bottom: 24px;
+    font-size: 24px;
   }
 
   /* Keep product navigation visible and easy to tap on one-card carousels. */
   .section-featured-home .yamuna-home-products .swiper-button-prev,
   .section-featured-home .yamuna-home-products .swiper-button-next {
-    /* Title (22px + 25px margin), image offset (24px) and half of the
-       300px image frame; minus half of the 40px glass circle. */
     top: 201px;
     display: flex !important;
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     margin-top: 0;
     padding: 0;
     align-items: center;
@@ -1598,10 +1603,10 @@ input::-webkit-outer-spin-button{
   .section-featured-home .yamuna-home-products .swiper-button-prev:after,
   .section-featured-home .yamuna-home-products .swiper-button-next:after {
     display: block;
-    width: 10px;
-    height: 10px;
+    width: 14px;
+    height: 14px;
     border: solid #238482;
-    border-width: 0 2px 2px 0;
+    border-width: 0 3px 3px 0;
     content: '';
   }
 
@@ -1818,25 +1823,26 @@ input::-webkit-outer-spin-button{
 }
 
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .yamuna-home-spot-payment {
-  display: inline-flex !important;
-  flex: 0 0 auto;
-  margin: 0;
+  display: block !important;
+  flex: none;
+  margin: 4px 0 0;
   align-items: baseline;
   gap: 3px;
   color: #9e929e;
-  font-family: 'Dosis', sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-size: 14px;
   font-weight: 400;
-  line-height: 20px;
+  line-height: 1.35;
   vertical-align: baseline;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .yamuna-home-spot-price-row {
   display: flex;
+  flex-direction: column;
   flex-wrap: nowrap;
-  align-items: baseline;
-  gap: 2px;
+  align-items: flex-start;
+  gap: 0;
   width: 100%;
 }
 
@@ -2122,7 +2128,7 @@ input::-webkit-outer-spin-button{
     justify-content: center;
     gap: 8px;
     border: 0;
-    border-radius: 999px;
+    border-radius: 24px;
     color: #238482;
     font-family: 'Raleway', sans-serif;
     font-size: 14px;
@@ -2146,7 +2152,7 @@ input::-webkit-outer-spin-button{
   margin: 0;
   padding: 78px 20px;
   color: #a31460;
-  background: #f8f7f8;
+  background: #FBF7F0;
   text-align: center;
 
   .container {
@@ -2287,7 +2293,7 @@ input::-webkit-outer-spin-button{
 
 .section-testimonials-home {
   overflow: hidden;
-  padding: 80px 0;
+  padding: 64px 0;
 }
 
 .testimonials-title {
@@ -2785,14 +2791,14 @@ input::-webkit-outer-spin-button{
   }
 
   .section-testimonials-home {
-    padding: 0;
+    padding: 54px 0 64px;
   }
 
   .testimonials-title {
-    margin-bottom: 50px;
+    margin-bottom: 24px;
     color: #a31460;
     font-family: 'Raleway', sans-serif;
-    font-size: 18px;
+    font-size: 24px;
     font-weight: 500;
     line-height: normal;
     text-align: center;

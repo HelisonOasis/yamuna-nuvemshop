@@ -603,6 +603,14 @@ p{
 .section-slider-auto {
   height: auto;
 }
+
+{# 107: mobile hero match prod 375×600 #}
+@media (max-width: 767px) {
+  body.template-home .js-home-mobile-slider-visibility .section-slider,
+  body.template-home .js-home-slider-mobile {
+    height: calc(100vw * 600 / 375) !important;
+  }
+}
 .nube-slider-home {
   height: 100%;
 }

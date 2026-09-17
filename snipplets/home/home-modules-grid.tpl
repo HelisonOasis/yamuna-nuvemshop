@@ -20,18 +20,19 @@
 			{% for slide in section_banner %}
 
 				{% set yamuna_module_title = loop.index == 1 ? 'Cosméticos naturais' : (loop.index == 2 ? 'Alimentos saudáveis' : 'Ver mais') %}
+				{% set yamuna_module_link = loop.index == 1 ? '/shampoos-e-condicionadores-naturais' : (loop.index == 2 ? '/search/?q=alimentos' : slide.link) %}
 				{% set has_banner_text = true %}
 
 				{% set banner_size_classes = section_same_size  ? 'textbanner-image-equal-size textbanner-image-equal-size-md' : 'p-0' %}
 				{% set banner_image_size_classes =  section_same_size ? 'textbanner-image-background' : 'img-fluid d-block w-100' %}
 				{% set banner_margin_classes = not section_slider ? 'mb-4 mb-md-5 pb-2 pb-md-0' %}
 				{% set banner_info_columns_classes = 'col-md-6' ~ (not section_slider and loop.index is even ? ' order-md-first') %}
-				{% set banner_description_spacing_classes =  slide.button and slide.link ? 'mt-0 mb-3 pb-1' %}
+				{% set banner_description_spacing_classes =  slide.button and yamuna_module_link ? 'mt-0 mb-3 pb-1' %}
 
 				<div class="js-banner flexible-banner {% if section_slider %}swiper-slide{% endif %} position-relative overflow-none">
 					<div class="js-textbanner textbanner {{ banner_margin_classes }}">
-					{% if slide.link %}
-						<a href="{{ slide.link | setting_url }}" class="textbanner-link" aria-label="{{ 'Carrusel' | translate }} {{ loop.index }}">
+					{% if yamuna_module_link %}
+						<a href="{{ yamuna_module_link | setting_url }}" class="textbanner-link" aria-label="{{ yamuna_module_title }}">
 					{% endif %}
 							<div class="row no-gutters align-items-center">
 								<div class="js-textbanner-image-container textbanner-image position-relative {{ banner_size_classes }} col-md-6 overflow-none {% if settings.theme_rounded %}box-rounded{% endif %}">
@@ -66,11 +67,11 @@
 								{% if has_banner_text %}
 									<div class="js-textbanner-text text-center {{ banner_info_columns_classes }} p-3 px-md-5">
 										<h3 class="textbanner-title h3 h2-md">{{ slide.title | default(yamuna_module_title) }}</h3>
-										{% if slide.link %}<div class="btn btn-secondary btn-small"><span>{{ slide.button | default('Ver mais') }}</span><svg class="yamuna-home-module-cta-icon" aria-hidden="true"><use xlink:href="#arrow"/></svg></div>{% endif %}
+										{% if yamuna_module_link %}<span class="btn btn-secondary btn-small"><span>{{ slide.button | default('Ver mais') }}</span><svg class="yamuna-home-module-cta-icon" aria-hidden="true"><use xlink:href="#arrow"/></svg></span>{% endif %}
 									</div>
 								{% endif %}
 							</div>
-					{% if slide.link %}
+					{% if yamuna_module_link %}
 						</a>
 					{% endif %}
 					</div>

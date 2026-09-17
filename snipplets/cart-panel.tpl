@@ -23,7 +23,7 @@
       min-height: 0 !important;
       padding: 0 !important;
       overflow: hidden !important;
-      border-radius: 0 !important;
+      border-radius: 0 0 54px 54px !important;
       box-shadow: 4px 4px 8px rgba(0, 0, 0, .15) !important;
       transform: none !important;
       z-index: 29000 !important;

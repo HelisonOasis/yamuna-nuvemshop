@@ -522,11 +522,20 @@
                 function syncSortCurrent(sort) {
                     var group = sort.querySelector('.form-group');
                     var select = getSortSelect(sort);
-                    if (!group || !select || isMobileSort()) {
+                    if (!group || !select) {
                         return;
                     }
 
                     var current = group.querySelector('.yamuna-plp-sort-current');
+
+                    {# Mobile must not show the desktop value span over "Ordenar por". #}
+                    if (isMobileSort()) {
+                        if (current && current.parentNode) {
+                            current.parentNode.removeChild(current);
+                        }
+                        return;
+                    }
+
                     if (!current) {
                         current = document.createElement('span');
                         current.className = 'yamuna-plp-sort-current';

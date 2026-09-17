@@ -51,7 +51,7 @@
 				{% endblock input_prepend_content %}
 				{% block input_append_content %}
 				<div class="col-6 col-lg-5 pl-0">
-					<button class="js-calculate-shipping btn btn-secondary btn-block" aria-label="{{ 'Calcular envío' | translate }}">	
+					<button type="button" class="js-calculate-shipping btn btn-secondary btn-block" aria-label="{{ 'Calcular envío' | translate }}">	
 						<span class="js-calculate-shipping-wording">{% if product_detail or minicart_shipping %}Buscar{% else %}{{ "Calcular" | translate }}{% endif %}</span>
 						<span class="js-calculating-shipping-wording" style="display: none;">{{ "Calculando" | translate }}</span>
 						<span class="float-right loading" style="display: none;">
