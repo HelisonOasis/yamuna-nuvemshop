@@ -1,38 +1,34 @@
-{# Only remove this if you want to take away the theme onboarding advices #}
+{# Yamuna 404 — layout igual produção (yamuna.com.br/404) #}
 {% set show_help = not has_products %}
 
-{% if not show_help %}
-	{% embed "snipplets/page-header.tpl" %}
-		{% block page_header_text %}{{ "Error" | translate }} - {{ "404" | translate }}{% endblock page_header_text %}
-	{% endembed %}
-{% endif %}
-
-<section id="404">
-	<div class="container">
-		<div class="row">
-			<div class="col-12 text-center">
-				<p class="mb-1">{{ "La página que estás buscando no existe." | translate }}</p></br>
-			</div>
-		</div>
-		{% set related_products = sections.primary.products | take(4) | shuffle %}
-		{% if related_products | length > 1 %}
-			<div class="row">
-				<div class="col-12 text-center">
-					{{ "Quizás te interesen los siguientes productos." | translate }}
-				</div>
-			</div>
-			<div class="row mt-3">
-				{% for related in related_products %}
-					{% include 'snipplets/grid/item.tpl' with {product : related} %}
-				{% endfor %}
-			</div>
-		{% endif %}
+<section class="yamuna-404-page" id="404" aria-label="Página não encontrada">
+	<div class="yamuna-404-inner">
+		<img
+			class="yamuna-404-illustration"
+			src="{{ 'images/yamuna/404/erro404.png' | static_url }}"
+			alt=""
+			width="402"
+			height="303"
+			loading="eager"
+			decoding="async"
+		>
+		<img
+			class="yamuna-404-title-img"
+			src="{{ 'images/yamuna/404/404-title.png' | static_url }}"
+			alt="404 — Página não encontrada"
+			width="525"
+			height="223"
+			loading="eager"
+			decoding="async"
+		>
 	</div>
 </section>
 
-{# Here we will add an example as a help, you can delete this after you upload your products #}
+{% include 'snipplets/empty-related-products.tpl' %}
+
+{# Onboarding do tema (só se a loja ainda não tiver produtos) #}
 {% if show_help %}
-    <div id="product-example">
-        {% snipplet 'defaults/show_help_product.tpl' %}
-    </div>
+	<div id="product-example">
+		{% snipplet 'defaults/show_help_product.tpl' %}
+	</div>
 {% endif %}

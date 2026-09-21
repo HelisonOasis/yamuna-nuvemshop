@@ -50,18 +50,20 @@
   document.addEventListener('DOMContentLoaded', function () {
     var el = document.querySelector('.js-swiper-cart-reco');
     if (!el || typeof Swiper === 'undefined') return;
+    /* Match home / PDP related: 1 / 2 / 3 slides, ~30px gap on desktop */
     new Swiper(el, {
       slidesPerView: 1,
-      spaceBetween: 12,
+      spaceBetween: 16,
       watchOverflow: true,
+      observer: true,
+      observeParents: true,
       navigation: {
         nextEl: '.js-swiper-cart-reco-next',
         prevEl: '.js-swiper-cart-reco-prev',
       },
       breakpoints: {
-        768: { slidesPerView: 3, spaceBetween: 16 },
-        1024: { slidesPerView: 3, spaceBetween: 16 },
-        1280: { slidesPerView: 4, spaceBetween: 20 },
+        768: { slidesPerView: 2, spaceBetween: 16 },
+        992: { slidesPerView: 3, spaceBetween: 30 },
       },
     });
   });

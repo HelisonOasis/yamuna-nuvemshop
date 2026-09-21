@@ -1420,12 +1420,32 @@
 
     /* Minicart CEP: always start as input+Buscar (prod), never "already searched". */
     var allowMinicartShippingReset = true;
-    function resetMinicartShippingUi() {
-      if (!allowMinicartShippingReset) return;
+    var shippingCalcPending = false;
+    var suppressShippingErrorsUntil = 0;
+
+    function hideEl(el) {
+      if (!el) return;
+      el.style.setProperty('display', 'none', 'important');
+    }
+
+    function showEl(el, display) {
+      if (!el) return;
+      el.style.setProperty('display', display || 'block', 'important');
+    }
+
+    function hideShippingErrors(modal) {
+      var root = modal || document.getElementById('modal-cart');
+      if (!root) return;
+      root.querySelectorAll('.js-ship-calculator-error').forEach(hideEl);
+    }
+
+    function resetMinicartShippingUi(force) {
+      if (!force && !allowMinicartShippingReset) return;
       var modal = document.querySelector('#modal-cart');
       var root = document.querySelector('#modal-cart #cart-shipping-container');
       if (!root) return;
       if (modal) modal.classList.remove('yamuna-shipping-searched');
+      shippingCalcPending = false;
       var head = root.querySelector('.js-shipping-calculator-head');
       var form = root.querySelector('.js-shipping-calculator-form');
       var zipUi = root.querySelector('.js-shipping-calculator-with-zipcode');
@@ -1439,9 +1459,123 @@
       if (zipUi) zipUi.classList.remove('transition-up-active');
       if (resp) {
         resp.innerHTML = '';
-        resp.style.display = 'none';
+        hideEl(resp);
       }
-      if (spinner) spinner.style.display = 'none';
+      hideEl(spinner);
+      hideShippingErrors(modal);
+      clearShippingButtonLoading(root);
+    }
+
+    function clearShippingButtonLoading(root) {
+      if (!root) return;
+      root.querySelectorAll('.js-shipping-calculator-spinner, .js-calculate-shipping .loading').forEach(hideEl);
+      root.querySelectorAll('.js-calculate-shipping-wording').forEach(function (element) {
+        element.style.removeProperty('display');
+      });
+      root.querySelectorAll('.js-calculating-shipping-wording').forEach(hideEl);
+    }
+
+    function clearCartItemSpinners() {
+      document.querySelectorAll('#modal-cart .js-cart-input-spinner, #modal-cart .cart-item-spinner').forEach(hideEl);
+    }
+
+    function clearMinicartLoading(opts) {
+      opts = opts || {};
+      clearCartItemSpinners();
+      if (opts.skipShipping && shippingCalcPending) return;
+      var root = document.querySelector('#modal-cart #cart-shipping-container');
+      clearShippingButtonLoading(root);
+      shippingCalcPending = false;
+    }
+
+    function clearDisabledMinicartControls() {
+      document.querySelectorAll('#modal-cart .js-cart-quantity-btn[disabled], #modal-cart [data-component="line-item.remove"][disabled]').forEach(function (element) {
+        element.removeAttribute('disabled');
+      });
+    }
+
+    function markEmptyingIfLastItem(cartModal, fromMinus) {
+      if (!cartModal) return;
+      var items = cartModal.querySelectorAll('.js-cart-item');
+      if (items.length !== 1) return;
+      if (fromMinus) {
+        var input = items[0].querySelector('.js-cart-quantity-input');
+        var qty = (input && parseInt(input.value, 10)) || 1;
+        if (qty > 1) return;
+      }
+      cartModal.classList.add('yamuna-cart-is-emptying');
+      suppressShippingErrorsUntil = Date.now() + 4000;
+      hideShippingErrors(cartModal);
+      shippingCalcPending = false;
+      clearShippingButtonLoading(cartModal.querySelector('#cart-shipping-container'));
+    }
+
+    function resetEmptyMinicartShippingState() {
+      var modal = document.getElementById('modal-cart');
+      if (!modal || modal.querySelector('.js-cart-item')) {
+        if (modal && modal.querySelector('.js-cart-item')) {
+          modal.classList.remove('yamuna-cart-is-emptying');
+        }
+        return;
+      }
+      allowMinicartShippingReset = true;
+      shippingCalcPending = false;
+      suppressShippingErrorsUntil = Date.now() + 4000;
+      hideShippingErrors(modal);
+      resetMinicartShippingUi(true);
+      modal.classList.remove('yamuna-cart-is-emptying');
+    }
+
+    function settleCartItemLoading() {
+      clearCartItemSpinners();
+      clearDisabledMinicartControls();
+      [80, 200, 500, 1200, 2500].forEach(function (ms) {
+        window.setTimeout(function () {
+          clearCartItemSpinners();
+          clearDisabledMinicartControls();
+        }, ms);
+      });
+    }
+
+    function onShippingCalcSettled() {
+      var modal = document.getElementById('modal-cart');
+      var root = document.querySelector('#modal-cart #cart-shipping-container');
+      if (!root) return;
+      var resp = root.querySelector('.js-shipping-calculator-response');
+      var hasResponse = resp && resp.innerHTML && resp.innerHTML.trim() && resp.style.display !== 'none';
+      var hasError = false;
+      root.querySelectorAll('.js-ship-calculator-error').forEach(function (el) {
+        if (el.style.display && el.style.display !== 'none') hasError = true;
+      });
+      if (hasResponse || hasError || !shippingCalcPending) {
+        clearShippingButtonLoading(root);
+        shippingCalcPending = false;
+        window.clearTimeout(window.yamunaMinicartShippingFallback);
+      }
+      if (Date.now() < suppressShippingErrorsUntil || (modal && (modal.classList.contains('yamuna-cart-is-emptying') || !modal.querySelector('.js-cart-item')))) {
+        hideShippingErrors(modal);
+      }
+    }
+
+    /* A plataforma substitui o conteúdo do minicart via AJAX. Ao concluir a
+       atualização, qualquer indicador de carregamento residual é removido. */
+    var minicartModal = document.getElementById('modal-cart');
+    if (minicartModal && window.MutationObserver && !window.yamunaMinicartLoadingObserver) {
+      window.yamunaMinicartLoadingObserver = new MutationObserver(function () {
+        window.clearTimeout(window.yamunaMinicartLoadingTimer);
+        window.yamunaMinicartLoadingTimer = window.setTimeout(function () {
+          clearMinicartLoading({ skipShipping: true });
+          clearDisabledMinicartControls();
+          onShippingCalcSettled();
+          resetEmptyMinicartShippingState();
+        }, 120);
+      });
+      window.yamunaMinicartLoadingObserver.observe(minicartModal, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['style', 'class', 'disabled']
+      });
     }
 
     resetMinicartShippingUi();
@@ -1451,14 +1585,50 @@
 
     document.addEventListener('click', function (e) {
       if (e.target && e.target.closest && e.target.closest('#modal-cart .js-calculate-shipping')) {
-        allowMinicartShippingReset = false;
         var modal = document.querySelector('#modal-cart');
+        if (modal && (!modal.querySelector('.js-cart-item') || modal.classList.contains('yamuna-cart-is-emptying'))) {
+          e.preventDefault();
+          e.stopPropagation();
+          hideShippingErrors(modal);
+          return;
+        }
+        allowMinicartShippingReset = false;
+        shippingCalcPending = true;
         if (modal) modal.classList.add('yamuna-shipping-searched');
+        window.clearTimeout(window.yamunaMinicartShippingFallback);
+        window.yamunaMinicartShippingFallback = window.setTimeout(function () {
+          clearMinicartLoading();
+          shippingCalcPending = false;
+        }, 4000);
+        return;
+      }
+      var removeItem = e.target && e.target.closest && e.target.closest('#modal-cart [data-component="line-item.remove"]');
+      var quantityAction = e.target && e.target.closest && e.target.closest('#modal-cart .js-cart-quantity-btn');
+      if (removeItem || quantityAction) {
+        var cartModal = document.getElementById('modal-cart');
+        var isMinus = !!(quantityAction && (
+          quantityAction.getAttribute('data-component') === 'quantity.minus' ||
+          (quantityAction.classList && quantityAction.classList.contains('yamuna-cart-minus')) ||
+          (quantityAction.closest && quantityAction.closest('[data-component="quantity.minus"], .yamuna-cart-minus'))
+        ));
+        if (removeItem) {
+          markEmptyingIfLastItem(cartModal, false);
+        } else if (isMinus) {
+          markEmptyingIfLastItem(cartModal, true);
+        }
+        /* Do not wipe shipping quotes on qty/remove — that triggers a platform
+           CEP recalculation that fails and shows "Erro no cálculo". */
+        shippingCalcPending = false;
+        hideShippingErrors(cartModal);
+        settleCartItemLoading();
+        window.clearTimeout(window.yamunaMinicartControlsFallback);
+        window.yamunaMinicartControlsFallback = window.setTimeout(clearDisabledMinicartControls, 8000);
         return;
       }
       var openCart = e.target && e.target.closest && e.target.closest('[data-toggle="#modal-cart"], [data-modal="#modal-cart"], .js-modal-open[data-toggle="#modal-cart"], a[href="#modal-cart"]');
       if (openCart) {
         allowMinicartShippingReset = true;
+        shippingCalcPending = false;
         window.setTimeout(resetMinicartShippingUi, 0);
         window.setTimeout(resetMinicartShippingUi, 200);
         window.setTimeout(resetMinicartShippingUi, 600);

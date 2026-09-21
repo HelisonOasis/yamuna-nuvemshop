@@ -63,7 +63,7 @@
             </a>
             <a {% if settings.ajax_cart and template != 'cart' %}href="#" class="yamuna-header-action js-modal-open js-toggle-cart" data-toggle="#modal-cart"{% else %}href="{{ store.cart_url }}" class="yamuna-header-action"{% endif %} aria-label="{{ 'Sacola' | translate }}">
                 <img src="{{ 'images/yamuna/header-bag.svg' | static_url }}" alt="" aria-hidden="true" />
-                <span class="yamuna-header-cart-count js-cart-widget-amount badge-amount">{{ "{1}" | translate(cart.items_count ) }}</span>
+                <span class="yamuna-header-cart-count js-cart-widget-amount badge-amount" style="position:absolute!important;top:-6px!important;right:-4px!important;bottom:auto!important;left:auto!important;z-index:10!important;display:flex!important;align-items:center!important;justify-content:center!important;min-width:21px!important;width:21px!important;height:20px!important;min-height:20px!important;padding:0!important;border:0!important;border-radius:9999px!important;background:#fff!important;background-color:#fff!important;color:#1B1A21!important;font-family:Raleway,sans-serif!important;font-size:10px!important;font-weight:700!important;line-height:1!important;box-sizing:border-box!important;pointer-events:none!important;box-shadow:none!important;">{{ "{1}" | translate(cart.items_count ) }}</span>
             </a>
         </div>
     </div>
@@ -82,7 +82,7 @@
             </a>
             <a {% if settings.ajax_cart and template != 'cart' %}href="#" class="yamuna-header-mobile-action js-modal-open js-toggle-cart" data-toggle="#modal-cart"{% else %}href="{{ store.cart_url }}" class="yamuna-header-mobile-action"{% endif %} aria-label="{{ 'Sacola' | translate }}">
                 <img class="yamuna-header-mobile-glyph" src="{{ 'images/yamuna/header-cart-mobile.svg' | static_url }}" alt="" aria-hidden="true" />
-                <span class="yamuna-header-mobile-cart-count js-cart-widget-amount badge-amount">{{ "{1}" | translate(cart.items_count ) }}</span>
+                <span class="yamuna-header-mobile-cart-count js-cart-widget-amount badge-amount" style="position:absolute!important;top:auto!important;bottom:0!important;right:-0.25rem!important;z-index:10!important;display:flex!important;align-items:center!important;justify-content:center!important;min-width:0!important;width:auto!important;height:auto!important;padding:0.2rem 0.5rem!important;border:1px solid #a31462!important;border-radius:9999px!important;background:#fff!important;background-color:#fff!important;color:#1B1A21!important;font-family:Raleway,sans-serif!important;font-size:10px!important;font-weight:700!important;line-height:1!important;box-sizing:border-box!important;pointer-events:none!important;box-shadow:none!important;">{{ "{1}" | translate(cart.items_count ) }}</span>
             </a>
             <a class="yamuna-header-mobile-action js-modal-open" href="#" data-toggle="#nav-hamburger" aria-label="{{ 'Menu' | translate }}">
                 <img class="yamuna-header-mobile-glyph" src="{{ 'images/yamuna/header-menu-mobile.svg' | static_url }}" alt="" aria-hidden="true" />
@@ -340,6 +340,46 @@
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
+
+    {# 113 — open Produtos mega-menu only while the trigger is hovered/focused. #}
+    (function() {
+      var menus = document.querySelectorAll('.yamuna-products-menu');
+      if (!menus.length) return;
+
+      function panel(menu) {
+        return menu.querySelector('.yamuna-products-dropdown, .desktop-dropdown');
+      }
+
+      function openMenu(menu) {
+        menu.classList.add('is-open');
+        var dd = panel(menu);
+        if (!dd) return;
+        dd.style.setProperty('visibility', 'visible', 'important');
+        dd.style.setProperty('opacity', '1', 'important');
+        dd.style.setProperty('pointer-events', 'auto', 'important');
+        dd.style.setProperty('transition', 'none', 'important');
+      }
+
+      function closeMenu(menu) {
+        menu.classList.remove('is-open');
+        var dd = panel(menu);
+        if (!dd) return;
+        dd.style.setProperty('visibility', 'hidden', 'important');
+        dd.style.setProperty('opacity', '0', 'important');
+        dd.style.setProperty('pointer-events', 'none', 'important');
+        dd.style.setProperty('transition', 'none', 'important');
+      }
+
+      menus.forEach(function(menu) {
+        closeMenu(menu);
+        menu.addEventListener('mouseenter', function() { openMenu(menu); });
+        menu.addEventListener('mouseleave', function() { closeMenu(menu); });
+        menu.addEventListener('focusin', function() { openMenu(menu); });
+        menu.addEventListener('focusout', function(e) {
+          if (!menu.contains(e.relatedTarget)) closeMenu(menu);
+        });
+      });
+    })();
 
     {# Keep the page frozen while the hamburger drawer is open (iOS-safe). #}
     (function() {

@@ -14,7 +14,7 @@
 {% set columns = settings.grid_columns %}
 {% set is_pdp_related_spot = is_pdp_related_spot | default(false) %}
 {% set is_cart_reco_spot = is_cart_reco_spot | default(false) %}
-{% set is_home_product_spot = slide_item and section_name in ['primary', 'new', 'sale'] %}
+{% set is_home_product_spot = slide_item and section_name in ['primary', 'new', 'sale', 'empty-related'] %}
 {% set is_yamuna_spot_card = is_home_product_spot or is_pdp_related_spot %}
 {% set spot_ns = is_pdp_related_spot ? 'yamuna-pdp-spot' : 'yamuna-home-spot' %}
 {% set spot_qty_class = is_pdp_related_spot ? 'js-pdp-spot-add-quantity' : 'js-home-spot-add-quantity' %}
@@ -251,7 +251,7 @@
             {% endif %}
         </div>
         {% if not reduced_item %}
-            {% if template == 'category' or template == 'search' %}
+            {% if (template == 'category' or template == 'search') and not is_pdp_related_spot %}
                 <div class="yamuna-plp-item-actions">
                     {% if product.available and product.display_price %}
                         {% if product.isSubscribable() or product.variations %}
@@ -277,7 +277,7 @@
                         <a href="{{ product.url }}" class="yamuna-plp-buy-one">{{ 'Consultar' | translate }}</a>
                     {% endif %}
                 </div>
-            {% elseif settings.quick_shop %}
+            {% elseif settings.quick_shop or is_pdp_related_spot %}
                 <div class="item-actions row justify-content-center{% if settings.theme_rounded %} m-0 mb-3{% endif %}">
                     {% if product.available and product.display_price %}
                         <div class="col-8 col-md-6 pr-1">

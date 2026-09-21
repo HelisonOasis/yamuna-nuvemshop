@@ -1,5 +1,7 @@
 {% if store.allows_checkout_styling %}
 
+@import url("https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap");
+
 {#/*============================================================================
 checkout.scss.tpl
 
@@ -17,14 +19,14 @@ checkout.scss.tpl
 
 {# /* // Colors */ #}
 
-$accent-brand-color: {{ settings.primary_color | default('rgb(77, 190, 207)' | raw ) }};
+$accent-brand-color: #a31460;
 $foreground-color: {{ settings.text_color | default('rgb(102, 102, 102)' | raw ) }};
-$background-color: {{ settings.background_color | default('rgb(252, 252, 252)' | raw ) }};
+$background-color: #f6f6f6;
 
-{# /* // Font */ #}
+{# /* // Font - Yamuna site stack */ #}
 
-$heading-font: {{ settings.font_headings | default('Muli') | raw }};
-$body-font: {{ settings.font_rest | default('Muli') | raw }};
+$heading-font: Raleway, sans-serif;
+$body-font: Dosis, sans-serif;
 
 {# /* // Box */ #}
 $box-border-color: rgba($foreground-color, .3);
@@ -90,7 +92,7 @@ $xl: 1200px;
 
   {#### Color tokens #}
 
-  {% set accent_color = settings.primary_color %}
+  {% set accent_color = '#a31460' %}
   {% set main_foreground = settings.text_color %}
   {% set main_background = settings.background_color %}
 
@@ -150,30 +152,26 @@ $xl: 1200px;
   --label-foreground: var(--main-background);
   --label-background: var(--accent-color);
 
-  {# Header #}
-  --header-foreground: {{ settings.head_background == 'light' ? 'var(--main-foreground)' : 'var(--main-background)' }};
-  --header-background: {{
-    settings.head_background == 'light' ? 'var(--main-background)' :
-    settings.head_background == 'dark' ? 'var(--main-foreground)' :
-    'var(--accent-color)'
-  }};
-  --header-logo-max-width: 100%;
-  --header-logo-max-height: 80px;
+  {# Header - Yamuna /comprar style #}
+  --header-foreground: #a31460;
+  --header-background: #f6f6f6;
+  --header-logo-max-width: 160px;
+  --header-logo-max-height: 96px;
 
-  {# Footer #}
-  --footer-foreground: {{ settings.footer_colors ? settings.footer_foreground_color : 'var(--accent-color)' }};
-  --footer-background: {{ settings.footer_colors ? settings.footer_background_color : 'var(--main-foreground-opacity-10)' }};
+  {# Footer - Yamuna cart burgundy #}
+  --footer-foreground: #ffffff;
+  --footer-background: #501735;
 
   {#### Typography #}
 
   {# Headings #}
-  --heading-font: {{ settings.font_headings | default('Muli') | raw }};
-  --heading-font-weight: bold;
+  --heading-font: Raleway, sans-serif;
+  --heading-font-weight: 700;
   --heading-text-transform: none;
   --heading-letter-spacing: normal;
 
   {# Header #}
-  --header-logo-font: var(--heading-font);
+  --header-logo-font: Raleway, sans-serif;
   --header-logo-font-size: 20px;
   --header-logo-font-weight: 700;
   --header-logo-text-transform: none;
@@ -221,10 +219,8 @@ a {
 {# /* // Headbar */ #}
 
 .headbar {
-  background: {% if settings.head_background == 'light' %}$background-color{% elseif settings.head_background == 'dark' %}$foreground-color{% else %}$accent-brand-color{% endif %};
-  {% if settings.head_background == 'light' %}
-    border-bottom: 1px solid rgba($accent-brand-color, .2);
-  {% endif %}
+  background: #f6f6f6 !important;
+  border-bottom: 0;
   box-shadow: none;
 
   .container {
@@ -1287,6 +1283,99 @@ a {
     background: $background-color;
   }
 
+}
+
+
+{# Yamuna checkout brand overrides #}
+body {
+  font-family: Dosis, sans-serif !important;
+  background-color: #f6f6f6 !important;
+  color: #000 !important;
+}
+
+h1, h2, h3, h4,
+.panel-header,
+.title,
+.btn-primary,
+button.btn-primary {
+  font-family: Raleway, sans-serif !important;
+}
+
+.form-control,
+.input-label,
+.has-float-label label,
+.form-options-content {
+  font-family: Dosis, sans-serif !important;
+}
+
+.headbar {
+  text-align: center !important;
+  padding-top: 28px !important;
+  padding-bottom: 18px !important;
+}
+.headbar .container .row {
+  justify-content: center !important;
+}
+#headbar-left {
+  text-align: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 0 0 100% !important;
+}
+.headbar-logo-text {
+  display: inline-block !important;
+  width: 138px !important;
+  height: 96px !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+  color: transparent !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  text-indent: -9999px !important;
+  background: url("https://d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static/images/yamuna/logo-yamuna-reference.png") center / contain no-repeat !important;
+}
+.headbar-logo-text:hover,
+.headbar-logo-text:focus {
+  color: transparent !important;
+  opacity: 0.92;
+}
+.security-seal {
+  color: #4a1d3a !important;
+}
+.btn-primary {
+  background: #a31460 !important;
+  border-color: #a31460 !important;
+  color: #fff !important;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background: #8c1052 !important;
+  border-color: #8c1052 !important;
+}
+.table-footer,
+.table-price {
+  color: #a31460 !important;
+}
+.radio.shipping-option.active,
+.shipping-option.active {
+  border-color: #a31460 !important;
+}
+.checkout-footer,
+.orderstatus-footer {
+  background: #501735 !important;
+  color: #fff !important;
+}
+
+@media (max-width: 767px) {
+  .headbar {
+    padding-top: 16px !important;
+    padding-bottom: 12px !important;
+  }
+  .headbar-logo-text {
+    width: 96px !important;
+    height: 72px !important;
+  }
 }
 
 {% endif %}

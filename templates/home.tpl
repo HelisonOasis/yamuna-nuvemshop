@@ -24,22 +24,26 @@
     background-color: #fff !important;
   }
 
-  /* Mobile cream band — same #FBF7F0 as desktop (beats stale async #f8f7f8). */
-  @media (max-width: 767px) {
-    body.template-home .js-home-sections-container,
-    body.template-home [data-store="banner-services"],
-    body.template-home [data-store="banner-services"] .section-informative-banners,
-    body.template-home .section-informative-banners,
-    body.template-home .section-yamuna-category-slider,
-    body.template-home [data-store="home-image-text-module"],
-    body.template-home .section-featured-home,
-    body.template-home [data-store^="home-products-"].section-featured-home,
-    body.template-home .section-yamuna-information,
-    body.template-home .section-yamuna-category-highlights {
-      background: #FBF7F0 !important;
-      background-color: #FBF7F0 !important;
-    }
+{# Mobile only — mirror desktop: cream band + benefits wash. #}
+@media (max-width: 767px) {
+  body.template-home .js-home-sections-container,
+  body.template-home [data-store="banner-services"],
+  body.template-home .section-yamuna-category-slider,
+  body.template-home [data-store="home-image-text-module"],
+  body.template-home .section-featured-home,
+  body.template-home [data-store^="home-products-"].section-featured-home,
+  body.template-home .section-yamuna-information,
+  body.template-home .section-yamuna-category-highlights {
+    background: #f6f6f6 !important;
+    background-color: #f6f6f6 !important;
   }
+
+  body.template-home [data-store="banner-services"] .section-informative-banners,
+  body.template-home .section-informative-banners {
+    background: rgba(192, 187, 195, 0.2) !important;
+    background-color: rgba(192, 187, 195, 0.2) !important;
+  }
+}
 
   /* Keep the mobile hero behind its persistent header while the async CSS is cached. */
   @media (max-width: 1023px) {

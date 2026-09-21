@@ -86,7 +86,7 @@
 {% set slider_container_class = 'swiper-container p-md-1' %}
 {% set swiper_wrapper_class = 'swiper-wrapper' %}
 {% set slider_control_class = 'icon-inline icon-2x' %}
-{% set slider_controls_container_class = 'd-none d-md-block svg-circle svg-circle-big svg-icon-text' %}
+{% set slider_controls_container_class = 'svg-circle svg-circle-big svg-icon-text' %}
 {% set slider_controls_thickness_class = settings.icons_solid ? 'svg-solid' %}
 {% set slider_control_prev_class = 'swiper-button-prev ' ~ slider_controls_container_class ~ ' ' ~ slider_controls_thickness_class %}
 {% set slider_control_next_class = 'swiper-button-next ' ~ slider_controls_container_class ~ ' ' ~ slider_controls_thickness_class %}
@@ -118,6 +118,7 @@
                 slider_container: 'js-swiper-related ' ~ slider_container_class,
                 slider_wrapper: swiper_wrapper_class,
                 slider_control: slider_control_class,
+                slider_control_pagination: 'js-swiper-related-pagination ' ~ slider_control_pagination_class,
                 slider_control_prev_container: 'js-swiper-related-prev ' ~ slider_control_prev_class,
                 slider_control_prev: 'icon-flip-horizontal',
                 slider_control_next_container: 'js-swiper-related-next ' ~ slider_control_next_class,

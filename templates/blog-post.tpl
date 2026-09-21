@@ -18,3 +18,6 @@
 		</article>
 	</div>
 </div>
+
+{# Produtos relacionados ao tema do post (prod: yamuna.com.br/aprenda/*) #}
+{% include 'snipplets/blog/blog-related-products.tpl' %}

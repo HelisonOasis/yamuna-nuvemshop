@@ -15,7 +15,7 @@
 {% endmacro %}
 
 {% import _self as banner_services %}
-<div class="section-informative-banners js-informative-banners-container" {% if not has_informative_banners %}style="display: none"{% endif %}>
+<div class="section-informative-banners js-informative-banners-container"{% if not has_informative_banners %} style="display: none;"{% endif %}>
     <div class="container">
         <div class="row">
             <div class="js-informative-banners swiper-container">

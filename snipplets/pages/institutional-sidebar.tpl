@@ -10,9 +10,6 @@
 				<a href="/nossomanifesto" {% if current_handle == 'nossomanifesto' %}class="is-active"{% endif %}>Nosso manifesto</a>
 			</li>
 			<li>
-				<a href="/encontrar" {% if current_handle == 'encontrar' %}class="is-active"{% endif %}>Onde encontrar</a>
-			</li>
-			<li>
 				<a href="/PoliticaDePrivacidade" {% if current_handle == 'politicadeprivacidade' %}class="is-active"{% endif %}>Política de privacidade</a>
 			</li>
 			<li>
@@ -23,9 +20,6 @@
 			</li>
 			<li>
 				<a href="/entrega" {% if current_handle == 'entrega' %}class="is-active"{% endif %}>Regras de frete grátis</a>
-			</li>
-			<li>
-				<a href="/regulamento-afiliados" {% if current_handle == 'regulamento-afiliados' %}class="is-active"{% endif %}>Regulamento Afiliados</a>
 			</li>
 		</ul>
 	</nav>

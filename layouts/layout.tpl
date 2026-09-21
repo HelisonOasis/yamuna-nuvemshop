@@ -89,6 +89,187 @@
             {{ settings.css_code | raw }}
         </style>
 
+        {# 043 — hero arrows: larger/thicker stroke SVG, centered in glass #}
+        <style id="yamuna-hero-arrows-043">
+          @media (min-width: 768px) {
+            body.template-home .js-home-main-slider-container .js-swiper-home-prev,
+            body.template-home .js-home-main-slider-container .js-swiper-home-next {
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              padding: 0 !important;
+              line-height: 0 !important;
+              border-color: rgba(255, 255, 255, 0.95) !important;
+              background: rgba(255, 255, 255, 0.9) !important;
+              background-color: rgba(255, 255, 255, 0.9) !important;
+              color: #238482 !important;
+            }
+            body.template-home .js-home-main-slider-container .js-swiper-home-prev::before,
+            body.template-home .js-home-main-slider-container .js-swiper-home-next::before,
+            body.template-home .js-home-main-slider-container .js-swiper-home-prev::after,
+            body.template-home .js-home-main-slider-container .js-swiper-home-next::after {
+              display: none !important;
+              content: none !important;
+              width: 0 !important;
+              height: 0 !important;
+              margin: 0 !important;
+              border: 0 !important;
+              font-size: 0 !important;
+              background: none !important;
+            }
+            body.template-home .js-home-main-slider-container .yamuna-home-hero-arrow-icon,
+            body.template-home .js-home-main-slider-container .js-swiper-home-prev svg.yamuna-home-hero-arrow-icon,
+            body.template-home .js-home-main-slider-container .js-swiper-home-next svg.yamuna-home-hero-arrow-icon {
+              display: block !important;
+              width: 26px !important;
+              height: 26px !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              color: #238482 !important;
+              fill: none !important;
+              stroke: #238482 !important;
+              stroke-width: 3.25 !important;
+              transform: none !important;
+              opacity: 1 !important;
+              flex: 0 0 auto !important;
+            }
+            body.template-home .js-home-main-slider-container .yamuna-home-hero-arrow-icon polyline {
+              stroke: #238482 !important;
+              stroke-width: 3.25 !important;
+              stroke-linecap: round !important;
+              stroke-linejoin: round !important;
+              fill: none !important;
+            }
+          }
+        </style>
+
+        {# 113 — mega-menu: closed has no ghost hitbox; opens only on Produtos hover #}
+        <style id="yamuna-nav-dropdown-113">
+          @media (min-width: 1024px) {
+            html body[class] .head-main .yamuna-header-desktop-nav .yamuna-products-menu > .yamuna-products-dropdown,
+            html body[class] .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown > .desktop-dropdown,
+            html body.template-home .head-main .yamuna-header-desktop-nav .yamuna-products-menu > .yamuna-products-dropdown,
+            html body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown > .desktop-dropdown {
+              visibility: hidden !important;
+              opacity: 0 !important;
+              pointer-events: none !important;
+              transition: none !important;
+            }
+            html body[class] .head-main .yamuna-header-desktop-nav .yamuna-products-menu:hover > .yamuna-products-dropdown,
+            html body[class] .head-main .yamuna-header-desktop-nav .yamuna-products-menu.is-open > .yamuna-products-dropdown,
+            html body[class] .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown:hover > .desktop-dropdown,
+            html body[class] .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown.is-open > .desktop-dropdown,
+            html body.template-home .head-main .yamuna-header-desktop-nav .yamuna-products-menu:hover > .yamuna-products-dropdown,
+            html body.template-home .head-main .yamuna-header-desktop-nav .yamuna-products-menu.is-open > .yamuna-products-dropdown,
+            html body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown:hover > .desktop-dropdown,
+            html body.template-home .head-main .yamuna-header-desktop-nav .nav-main-item.nav-dropdown.is-open > .desktop-dropdown {
+              visibility: visible !important;
+              opacity: 1 !important;
+              pointer-events: auto !important;
+              transition: none !important;
+            }
+          }
+        </style>
+
+        {# 012 — institutional pages: content starts below fixed mobile header #}
+        <style id="yamuna-inst-pages-012">
+          @media (max-width: 1023px) {
+            body.template-page {
+              padding-top: 80px !important;
+            }
+            body.template-page .head-main,
+            body.template-page .head-main.head-fixed,
+            body.template-page .head-main .yamuna-header-mobile {
+              background: #fff !important;
+              background-color: #fff !important;
+            }
+            body.template-page .yamuna-about-page .yamuna-about-layout {
+              padding: 16px 16px 64px !important;
+            }
+          }
+        </style>
+
+        {# 039 — mobile cart badge = yamuna.com.br (#cart-qty-label-mob) #}
+        <style id="yamuna-cart-badge-039">
+          @media (max-width: 1023px) {
+            body .head-main .yamuna-header-mobile .yamuna-header-mobile-cart-count,
+            body .head-main .yamuna-header-mobile-actions .yamuna-header-mobile-cart-count,
+            body .head-main .yamuna-header-mobile-action .yamuna-header-mobile-cart-count,
+            body .head-main .yamuna-header-mobile-action .js-cart-widget-amount,
+            body .head-main .yamuna-header-mobile-action .badge-amount,
+            body .head-main span.yamuna-header-mobile-cart-count.js-cart-widget-amount.badge-amount {
+              position: absolute !important;
+              top: auto !important;
+              bottom: 0 !important;
+              right: -0.25rem !important;
+              left: auto !important;
+              z-index: 10 !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              min-width: 0 !important;
+              width: auto !important;
+              height: auto !important;
+              padding: 0.2rem 0.5rem !important;
+              border: 0 !important;
+              border-radius: 9999px !important;
+              background: #fff !important;
+              background-color: #fff !important;
+              color: #1B1A21 !important;
+              font-family: 'Raleway', sans-serif !important;
+              font-size: 10px !important;
+              font-weight: 700 !important;
+              line-height: 1 !important;
+              box-shadow: none !important;
+              box-sizing: border-box !important;
+              pointer-events: none !important;
+            }
+          }
+        </style>
+
+        {# 011 — 404: fundo branco contínuo (sem faixas #f6f6f6). #}
+        {% if template == '404' %}
+        <style id="yamuna-404-bg-011">
+          html body.template-404,
+          body.template-404,
+          body.template-404 > .mt-4,
+          body.template-404 .yamuna-404-page {
+            background: #fff !important;
+            background-color: #fff !important;
+          }
+          body.template-404 > .mt-4 {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+          }
+        </style>
+        {% endif %}
+
+        {# Mobile mirrors desktop band: cream sections + grey wash on benefits bar. #}
+        {% if template == 'home' %}
+        <style id="yamuna-home-cream-band">
+          @media (max-width: 767px) {
+            body.template-home .js-home-sections-container,
+            body.template-home [data-store="banner-services"],
+            body.template-home .section-yamuna-category-slider,
+            body.template-home [data-store="home-image-text-module"],
+            body.template-home .section-featured-home,
+            body.template-home [data-store^="home-products-"].section-featured-home,
+            body.template-home .section-yamuna-information,
+            body.template-home .section-yamuna-category-highlights {
+              background: #f6f6f6 !important;
+              background-color: #f6f6f6 !important;
+            }
+
+            /* Same desktop ≥1024 wash — composites to ~#efebe7 over cream parent. */
+            body.template-home [data-store="banner-services"] .section-informative-banners,
+            body.template-home .section-informative-banners {
+              background: rgba(192, 187, 195, 0.2) !important;
+              background-color: rgba(192, 187, 195, 0.2) !important;
+            }
+          }
+        </style>
+        {% endif %}
+
         {#/*============================================================================
             #Javascript: Needed before HTML loads
         ==============================================================================*/#}

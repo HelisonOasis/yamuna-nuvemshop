@@ -129,10 +129,14 @@
 							{% endif %}
 						</div>
 						<div class="js-swiper-home-control js-swiper-home-prev{% if mobile %}-mobile{% endif %} swiper-button-prev d-none d-md-block" aria-label="Slide anterior">
-							<svg class="yamuna-home-hero-arrow-icon icon-inline" aria-hidden="true"><use xlink:href="#chevron"/></svg>
+							<svg class="yamuna-home-hero-arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+								<polyline points="15 6 9 12 15 18" fill="none" stroke="currentColor" stroke-width="3.25" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
 						</div>
 						<div class="js-swiper-home-control js-swiper-home-next{% if mobile %}-mobile{% endif %} swiper-button-next d-none d-md-block" aria-label="Próximo slide">
-							<svg class="yamuna-home-hero-arrow-icon icon-inline" aria-hidden="true"><use xlink:href="#chevron"/></svg>
+							<svg class="yamuna-home-hero-arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+								<polyline points="9 6 15 12 9 18" fill="none" stroke="currentColor" stroke-width="3.25" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
 						</div>
 					</div>
 				</div>
