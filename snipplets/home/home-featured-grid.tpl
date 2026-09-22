@@ -23,7 +23,7 @@
     {% set sections_products = sections.primary.products %}
     {% set section_name = 'primary' %}
     {% set highlighted_products_setting_name = 'featured' %}
-{% set section_title = 'Os mais vendidos' %}
+    {% set section_title = 'Os mais vendidos' %}
     {% set section_format = settings.featured_products_format %}
 {% endif %}
 {% if new_products %}

@@ -16,7 +16,7 @@
           {% endif %}
           <li><a href="{{ store.url }}/revenda">Revenda e Lojistas</a></li>
           {% if store.email %}
-            <li><a href="mailto:{{ store.email }}">Contato via E-mail</a></li>
+            <li><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=contato@yamuna.com.br" target="_blank" rel="noopener">Contato via E-mail</a></li>
           {% endif %}
           {% if whatsapp_link %}
             <li><a href="{{ whatsapp_link }}" target="_blank" rel="noopener">Comprar com Whatsapp</a></li>
@@ -37,6 +37,9 @@
       <section class="yamuna-cart-checkout-footer-section yamuna-cart-checkout-footer-security" aria-labelledby="cart-footer-security">
         <h2 id="cart-footer-security">SEGURANÇA</h2>
         <div class="yamuna-cart-checkout-footer-security-logos">
+          <img class="yamuna-security-google" src="{{ 'images/yamuna/security-google.svg' | static_url }}" alt="Google Safe Browsing" loading="lazy" />
+          <img class="yamuna-security-site" src="{{ 'images/yamuna/security-site.svg' | static_url }}" alt="Site seguro" loading="lazy" />
+          <img class="yamuna-security-ssl" src="{{ 'images/yamuna/security-ssl.svg' | static_url }}" alt="SSL seguro" loading="lazy" />
           {% if store.afip %}
             <div class="footer-logo afip seal-afip">{{ store.afip | raw }}</div>
           {% endif %}

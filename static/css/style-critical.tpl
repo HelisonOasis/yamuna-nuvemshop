@@ -598,17 +598,19 @@ p{
 {# /* // Sliders */ #}
 
 .section-slider {
-  height: 60vh;
+  height: 52vh;
+  max-height: 560px;
 }
 .section-slider-auto {
   height: auto;
 }
 
-{# 107: mobile hero match prod 375×600 #}
+{# Shorter mobile hero so the benefits bar is visible in the first viewport. #}
 @media (max-width: 767px) {
   body.template-home .js-home-mobile-slider-visibility .section-slider,
   body.template-home .js-home-slider-mobile {
-    height: calc(100vw * 600 / 375) !important;
+    height: calc(100vw * 480 / 375) !important;
+    max-height: 520px;
   }
 }
 .nube-slider-home {
@@ -689,10 +691,11 @@ p{
   line-height: 30px;
 }
 
-{# Yamuna home: desktop hero content overlay #}
+{# Yamuna home: desktop hero — shorter so benefits bar peeks in. #}
 @media (min-width: 768px) {
   [data-store="home-slider"] .section-slider {
-    height: 700px;
+    height: 520px;
+    max-height: 560px;
   }
 
   [data-store="home-slider"] .swiper-text {

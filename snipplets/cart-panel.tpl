@@ -1291,6 +1291,38 @@
 
   }
 
+  /* Platform progressive-discount label → short "5% Off:" in minicart totals.
+     AJAX redraw uses .cart-promotion-detail; SSR may use .cart-promotion-label
+     or the first cell of .js-total-promotions-detail-row. */
+  body #modal-cart .cart-promotion-detail,
+  body #modal-cart .cart-promotion-label,
+  body #modal-cart .js-total-promotions-detail-row > :first-child {
+    font-size: 0 !important;
+    line-height: 0 !important;
+  }
+
+  body #modal-cart .cart-promotion-detail > *,
+  body #modal-cart .cart-promotion-label > *,
+  body #modal-cart .js-total-promotions-detail-row > :first-child > * {
+    display: none !important;
+  }
+
+  body #modal-cart .cart-promotion-detail::before,
+  body #modal-cart .cart-promotion-label::before,
+  body #modal-cart .js-total-promotions-detail-row > :first-child::before {
+    content: "5% Off:";
+    font-family: Dosis, Roboto, Arial, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    line-height: 1.4 !important;
+    color: #000 !important;
+  }
+
+  body #modal-cart .cart-promotion-number {
+    font-size: 16px !important;
+    line-height: 1.4 !important;
+  }
+
 </style>
 
 {# Production-like minicart body (yamuna.com.br): top 5% OFF bar, free-shipping
@@ -1418,6 +1450,33 @@
       window.location.href = link.href;
     }, true);
 
+    /* Shorten platform progressive-discount copy in minicart totals. */
+    function shortenMinicartPromoLabels() {
+      var modal = document.getElementById('modal-cart');
+      if (!modal) return;
+      var nodes = modal.querySelectorAll(
+        '.cart-promotion-detail, .cart-promotion-label, .js-total-promotions-detail-row > :first-child'
+      );
+      nodes.forEach(function (el) {
+        if (el.classList.contains('cart-promotion-number') || el.classList.contains('text-right')) return;
+        var text = (el.textContent || '').replace(/\s+/g, ' ').trim();
+        if (!text || /^5%\s*Off:?$/i.test(text)) return;
+        if (/%\s*OFF|OFF em|comprando/i.test(text)) {
+          el.textContent = '5% Off:';
+        }
+      });
+    }
+
+    shortenMinicartPromoLabels();
+    var promoObserverRoot = document.getElementById('modal-cart');
+    if (promoObserverRoot && window.MutationObserver) {
+      var promoTimer = null;
+      new MutationObserver(function () {
+        if (promoTimer) clearTimeout(promoTimer);
+        promoTimer = setTimeout(shortenMinicartPromoLabels, 50);
+      }).observe(promoObserverRoot, { childList: true, subtree: true, characterData: true });
+    }
+
     /* Minicart CEP: always start as input+Buscar (prod), never "already searched". */
     var allowMinicartShippingReset = true;
     var shippingCalcPending = false;
@@ -1504,6 +1563,9 @@
         if (qty > 1) return;
       }
       cartModal.classList.add('yamuna-cart-is-emptying');
+      /* The AJAX cart refresh can replace the modal class attribute. Keep the
+         transition state on <body> as well, which is outside that refresh. */
+      document.body.classList.add('yamuna-cart-is-emptying');
       suppressShippingErrorsUntil = Date.now() + 4000;
       hideShippingErrors(cartModal);
       shippingCalcPending = false;
@@ -1515,6 +1577,7 @@
       if (!modal || modal.querySelector('.js-cart-item')) {
         if (modal && modal.querySelector('.js-cart-item')) {
           modal.classList.remove('yamuna-cart-is-emptying');
+          document.body.classList.remove('yamuna-cart-is-emptying');
         }
         return;
       }
@@ -1524,6 +1587,8 @@
       hideShippingErrors(modal);
       resetMinicartShippingUi(true);
       modal.classList.remove('yamuna-cart-is-emptying');
+      /* The empty-cart selector keeps shipping UI hidden after this point. */
+      document.body.classList.remove('yamuna-cart-is-emptying');
     }
 
     function settleCartItemLoading() {
@@ -1552,7 +1617,7 @@
         shippingCalcPending = false;
         window.clearTimeout(window.yamunaMinicartShippingFallback);
       }
-      if (Date.now() < suppressShippingErrorsUntil || (modal && (modal.classList.contains('yamuna-cart-is-emptying') || !modal.querySelector('.js-cart-item')))) {
+      if (Date.now() < suppressShippingErrorsUntil || document.body.classList.contains('yamuna-cart-is-emptying') || (modal && (modal.classList.contains('yamuna-cart-is-emptying') || !modal.querySelector('.js-cart-item')))) {
         hideShippingErrors(modal);
       }
     }
@@ -1586,7 +1651,7 @@
     document.addEventListener('click', function (e) {
       if (e.target && e.target.closest && e.target.closest('#modal-cart .js-calculate-shipping')) {
         var modal = document.querySelector('#modal-cart');
-        if (modal && (!modal.querySelector('.js-cart-item') || modal.classList.contains('yamuna-cart-is-emptying'))) {
+        if (modal && (!modal.querySelector('.js-cart-item') || modal.classList.contains('yamuna-cart-is-emptying') || document.body.classList.contains('yamuna-cart-is-emptying'))) {
           e.preventDefault();
           e.stopPropagation();
           hideShippingErrors(modal);

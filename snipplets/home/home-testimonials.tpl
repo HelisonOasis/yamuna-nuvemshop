@@ -1,70 +1,122 @@
 <section class="section-testimonials-home" data-store="home-testimonials">
     <style id="testimonials-layout-mobile-fix">
-        .section-testimonials-home .testimonials-nav {
-            display: none;
+        .section-testimonials-home .testimonials-slider {
+            position: relative;
+            overflow: hidden;
         }
 
+        .section-testimonials-home .testimonials-nav {
+            display: flex;
+            position: absolute;
+            top: 50%;
+            z-index: 5;
+            width: 40px;
+            height: 40px;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(35, 132, 130, 0.35);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            color: #238482;
+            line-height: 0;
+            overflow: hidden;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .section-testimonials-home .testimonials-nav:after {
+            display: block;
+            width: 9px;
+            height: 9px;
+            border: solid currentColor;
+            border-width: 0 0 2.5px 2.5px;
+            box-sizing: border-box;
+            content: '';
+        }
+
+        .section-testimonials-home .testimonials-nav--prev {
+            left: 4px;
+            right: auto;
+        }
+
+        .section-testimonials-home .testimonials-nav--prev:after {
+            transform: translateX(1.5px) rotate(45deg);
+        }
+
+        .section-testimonials-home .testimonials-nav--next {
+            right: 4px;
+            left: auto;
+        }
+
+        .section-testimonials-home .testimonials-nav--next:after {
+            transform: translateX(-1.5px) rotate(225deg);
+        }
+
+        @media (min-width: 768px) {
+            .section-testimonials-home .testimonials-nav {
+                width: 48px;
+                height: 48px;
+            }
+
+            .section-testimonials-home .testimonials-nav--prev {
+                left: 12px;
+            }
+
+            .section-testimonials-home .testimonials-nav--next {
+                right: 12px;
+            }
+        }
+
+        /* Desktop: exactly 3 equal cards filling the track (no 460px hole). */
         @media (min-width: 1024px) {
             .section-testimonials-home .testimonials-slider {
                 width: 100% !important;
                 max-width: none !important;
                 margin: 0 !important;
-                overflow: visible !important;
+                overflow: hidden !important;
+                padding-left: 56px !important;
+                padding-right: 56px !important;
             }
 
             .section-testimonials-home .testimonials-grid.swiper-wrapper {
-                display: grid !important;
+                display: flex !important;
                 width: 100% !important;
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-                transform: none !important;
-                transition: none !important;
+                align-items: stretch !important;
             }
 
-            .section-testimonials-home .testimonial-card.swiper-slide {
-                width: auto !important;
-                height: 300px;
-                flex: none !important;
-            }
-
-            .section-testimonials-home .testimonial-card.swiper-slide-duplicate {
-                display: none !important;
-            }
-
-            .section-testimonials-home .testimonial-card.swiper-slide:before {
-                display: none !important;
-            }
-
-            .section-testimonials-home .testimonial-stars,
-            .section-testimonials-home .testimonial-text,
-            .section-testimonials-home .testimonial-author {
-                left: 50% !important;
-                transform: translateX(-50%) !important;
-            }
-
-            .section-testimonials-home .testimonial-quote {
-                left: 48px !important;
-            }
-        }
-
-        @media (min-width: 1024px) and (max-width: 1199px) {
             .section-testimonials-home .testimonial-card.swiper-slide {
                 display: flex !important;
-                height: 260px;
-                padding: 112px 18px 18px;
-                align-items: center;
-                flex-direction: column;
-                justify-content: flex-start;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+                box-sizing: border-box !important;
+                /* Do NOT set width:!important — Swiper inline width must win over 460px. */
+                min-width: 0 !important;
+                max-width: none !important;
+                flex: 0 0 auto !important;
+                height: 300px !important;
+                min-height: 300px !important;
+                padding: 72px 24px 28px !important;
             }
 
             .section-testimonials-home .testimonial-card.swiper-slide:before {
-                top: 70px;
-                height: 180px;
+                top: 90px !important;
+                left: 50% !important;
+                width: min(400px, calc(100% - 48px)) !important;
+                height: 210px !important;
+                transform: translateX(-50%) !important;
+                display: block !important;
             }
 
             .section-testimonials-home .testimonial-quote {
-                top: 54px;
-                left: 32px !important;
-                width: 76px;
+                position: absolute !important;
+                top: 72px !important;
+                left: calc(50% - min(200px, 42%)) !important;
+                width: 108px !important;
+                transform: none !important;
             }
 
             .section-testimonials-home .testimonial-stars,
@@ -75,23 +127,40 @@
                 top: auto !important;
                 left: auto !important;
                 transform: none !important;
+                width: min(360px, 90%) !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
             }
 
             .section-testimonials-home .testimonial-stars {
-                width: auto !important;
-                margin: 0 0 14px !important;
+                margin: 0 0 16px !important;
+                justify-content: center !important;
             }
 
             .section-testimonials-home .testimonial-text {
-                width: 100% !important;
-                margin: 0 0 8px !important;
-                font-size: 16px !important;
-                line-height: 1.3 !important;
+                margin: 0 0 12px !important;
             }
 
             .section-testimonials-home .testimonial-author {
-                width: 100% !important;
-                font-size: 14px !important;
+                margin: 0 !important;
+            }
+        }
+
+        @media (min-width: 1024px) and (max-width: 1199px) {
+            .section-testimonials-home .testimonial-card.swiper-slide {
+                height: 260px !important;
+                min-height: 260px !important;
+                padding: 56px 18px 18px !important;
+            }
+
+            .section-testimonials-home .testimonial-card.swiper-slide:before {
+                top: 70px !important;
+                height: 180px !important;
+            }
+
+            .section-testimonials-home .testimonial-quote {
+                top: 54px !important;
+                width: 76px !important;
             }
         }
 
@@ -179,60 +248,14 @@
                 margin: 0 !important;
             }
 
-            .section-testimonials-home .testimonials-nav {
-                position: absolute;
-                top: 50%;
-                z-index: 3;
-                display: inline-flex;
-                width: 40px;
-                height: 40px;
-                min-width: 40px;
-                min-height: 40px;
-                max-width: 40px;
-                max-height: 40px;
-                margin: 0;
-                padding: 0;
-                align-items: center;
-                justify-content: center;
-                box-sizing: border-box;
-                border: 1px solid rgba(35, 132, 130, 0.22);
-                border-radius: 50%;
-                background: #fff;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-                color: #238482;
-                line-height: 0;
-                overflow: hidden;
-                transform: translateY(-50%);
-            }
-
-            .section-testimonials-home .testimonials-nav:after {
-                display: block;
-                width: 9px;
-                height: 9px;
-                margin: 0;
-                padding: 0;
-                border: solid currentColor;
-                border-width: 0 0 2.5px 2.5px;
-                box-sizing: border-box;
-                content: '';
-            }
-
             .section-testimonials-home .testimonials-nav--prev {
                 left: 2px;
-                transform: translateY(-50%);
-            }
-
-            .section-testimonials-home .testimonials-nav--prev:after {
-                transform: translateX(1.5px) rotate(45deg);
+                right: auto;
             }
 
             .section-testimonials-home .testimonials-nav--next {
                 right: 2px;
-                transform: translateY(-50%);
-            }
-
-            .section-testimonials-home .testimonials-nav--next:after {
-                transform: translateX(-1.5px) rotate(225deg);
+                left: auto;
             }
 
             .section-testimonials-home .testimonials-title {
@@ -266,9 +289,20 @@
             .section-testimonials-home .testimonials-slider {
                 max-width: 460px !important;
                 margin: 0 auto !important;
+                overflow: hidden !important;
+                padding-left: 40px !important;
+                padding-right: 40px !important;
+            }
+
+            .section-testimonials-home .testimonials-grid.swiper-wrapper {
+                display: flex !important;
             }
 
             .section-testimonials-home .testimonial-card.swiper-slide {
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+                flex: 0 0 100% !important;
                 min-height: 230px !important;
                 padding: 64px 18px 28px !important;
                 overflow: hidden !important;
@@ -280,34 +314,26 @@
 
             .section-testimonials-home .testimonial-quote {
                 top: 28px !important;
-                left: calc(50% - min(170px, 42%)) !important;
-                width: 64px !important;
+                width: 80px !important;
             }
 
             .section-testimonials-home .testimonial-stars,
             .section-testimonials-home .testimonial-text,
             .section-testimonials-home .testimonial-author,
             .section-testimonials-home .testimonial-card--long .testimonial-author {
-                max-width: 100% !important;
-                box-sizing: border-box !important;
+                width: min(280px, calc(100% - 32px)) !important;
             }
 
             .section-testimonials-home .testimonial-stars {
-                width: min(280px, calc(100% - 56px)) !important;
+                margin-bottom: 14px !important;
             }
 
             .section-testimonials-home .testimonial-text {
-                width: min(280px, calc(100% - 56px)) !important;
-                max-width: min(280px, calc(100% - 56px)) !important;
-                font-size: 14px !important;
-                line-height: 1.35 !important;
-                overflow-wrap: anywhere !important;
-                word-break: break-word !important;
+                font-size: 15px !important;
             }
 
             .section-testimonials-home .testimonial-author,
             .section-testimonials-home .testimonial-card--long .testimonial-author {
-                width: min(240px, calc(100% - 56px)) !important;
                 font-size: 13px !important;
             }
         }
@@ -336,6 +362,31 @@
     </style>
     <div class="container-fluid">
         <h2 class="testimonials-title">Depoimentos</h2>
+        <a class="yamuna-google-reviews-badge" href="https://www.google.com/maps/place/Yamuna+Artesanal" target="_blank" rel="noopener" aria-label="Mais de 1300 avaliações 5 estrelas no Google">
+            <span class="yamuna-google-reviews-badge__stars" aria-hidden="true">★★★★★</span>
+            <span class="yamuna-google-reviews-badge__text">+ de <strong>1.300</strong> avaliações 5 estrelas no Google</span>
+        </a>
+        <style>
+          .yamuna-google-reviews-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: fit-content;
+            max-width: 100%;
+            margin: 0 auto 28px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            background: rgba(163, 20, 96, 0.08);
+            color: #4a1d3a !important;
+            text-decoration: none !important;
+            font-family: 'Dosis', sans-serif;
+            font-size: 15px;
+            line-height: 1.3;
+          }
+          .yamuna-google-reviews-badge__stars { color: #f4b400; letter-spacing: 1px; font-size: 16px; }
+          .yamuna-google-reviews-badge__text strong { color: #a31460; }
+        </style>
         <div class="testimonials-slider js-swiper-testimonials swiper-container" aria-label="Depoimentos de clientes">
             <div class="testimonials-grid swiper-wrapper">
             <article class="testimonial-card testimonial-card--short swiper-slide">
@@ -362,28 +413,130 @@
                 <p class="testimonial-text">Produtos Fantásticos!! Saborosos, nutrem o corpo e a alma!</p>
                 <p class="testimonial-author">Maiara R.</p>
             </article>
+            <article class="testimonial-card testimonial-card--long swiper-slide">
+                <img class="testimonial-quote" src="{{ 'images/yamuna/icone-aspas.png' | static_url }}" alt="" aria-hidden="true" />
+                <div class="testimonial-stars" aria-label="5 de 5 estrelas">
+                    {% for i in 1..5 %}<img src="{{ 'images/yamuna/icone-estrela.svg' | static_url }}" alt="" />{% endfor %}
+                </div>
+                <p class="testimonial-text">Apaixonada pelos produtos! Qualidade e carinho em cada detalhe.</p>
+                <p class="testimonial-author">Kelly C.</p>
+            </article>
+            <article class="testimonial-card testimonial-card--short swiper-slide">
+                <img class="testimonial-quote" src="{{ 'images/yamuna/icone-aspas.png' | static_url }}" alt="" aria-hidden="true" />
+                <div class="testimonial-stars" aria-label="5 de 5 estrelas">
+                    {% for i in 1..5 %}<img src="{{ 'images/yamuna/icone-estrela.svg' | static_url }}" alt="" />{% endfor %}
+                </div>
+                <p class="testimonial-text">Golden Milk e Ghee são meus queridinhos. Surreal!</p>
+                <p class="testimonial-author">Raquel C.</p>
+            </article>
+            <article class="testimonial-card testimonial-card--long swiper-slide">
+                <img class="testimonial-quote" src="{{ 'images/yamuna/icone-aspas.png' | static_url }}" alt="" aria-hidden="true" />
+                <div class="testimonial-stars" aria-label="5 de 5 estrelas">
+                    {% for i in 1..5 %}<img src="{{ 'images/yamuna/icone-estrela.svg' | static_url }}" alt="" />{% endfor %}
+                </div>
+                <p class="testimonial-text">Atendimento impecável e produtos de altíssima qualidade.</p>
+                <p class="testimonial-author">Thiago P.</p>
+            </article>
             </div>
             <button type="button" class="testimonials-nav testimonials-nav--prev js-swiper-testimonials-prev" aria-label="Depoimento anterior"></button>
             <button type="button" class="testimonials-nav testimonials-nav--next js-swiper-testimonials-next" aria-label="Próximo depoimento"></button>
         </div>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                if (!window.matchMedia('(max-width: 1023px)').matches) return;
+            (function () {
+                function isDesktop() {
+                    return window.matchMedia('(min-width: 1024px)').matches;
+                }
 
-                var testimonialsSlider = document.querySelector('.js-swiper-testimonials');
-                var previousButton = document.querySelector('.js-swiper-testimonials-prev');
-                var nextButton = document.querySelector('.js-swiper-testimonials-next');
+                function lockWidths(sw) {
+                    if (!sw || !sw.slides) return;
+                    Array.prototype.forEach.call(sw.slides, function (slide) {
+                        if (isDesktop()) {
+                            if (slide.style.width) {
+                                slide.style.setProperty('width', slide.style.width, 'important');
+                            }
+                        } else {
+                            /* Tablet/mobile: one full card — never leave a cut neighbor peeking. */
+                            slide.style.setProperty('width', '100%', 'important');
+                            slide.style.setProperty('max-width', '100%', 'important');
+                            slide.style.setProperty('flex', '0 0 100%', 'important');
+                        }
+                    });
+                }
 
-                if (!testimonialsSlider || !previousButton || !nextButton) return;
+                function bind(sw) {
+                    if (!sw || sw.__yamunaTestimonialsLocked) return;
+                    sw.__yamunaTestimonialsLocked = true;
+                    if (!isDesktop()) {
+                        sw.params.slidesPerView = 1;
+                        sw.params.slidesPerGroup = 1;
+                        sw.params.spaceBetween = 0;
+                        if (sw.params.breakpoints) {
+                            Object.keys(sw.params.breakpoints).forEach(function (bp) {
+                                if (parseInt(bp, 10) < 1024) {
+                                    sw.params.breakpoints[bp].slidesPerView = 1;
+                                    sw.params.breakpoints[bp].spaceBetween = 0;
+                                }
+                            });
+                        }
+                        sw.update();
+                    }
+                    lockWidths(sw);
+                    sw.on('resize', function () {
+                        if (!isDesktop()) {
+                            sw.params.slidesPerView = 1;
+                            sw.params.spaceBetween = 0;
+                            sw.update();
+                        }
+                        lockWidths(sw);
+                    });
+                    sw.on('breakpoint', function () {
+                        requestAnimationFrame(function () {
+                            if (!isDesktop()) {
+                                sw.params.slidesPerView = 1;
+                                sw.params.spaceBetween = 0;
+                                sw.update();
+                            }
+                            lockWidths(sw);
+                        });
+                    });
+                    sw.on('slideChangeTransitionEnd', function () { lockWidths(sw); });
+                }
 
-                previousButton.addEventListener('click', function () {
-                    if (testimonialsSlider.swiper) testimonialsSlider.swiper.slidePrev();
+                function tryBind() {
+                    var el = document.querySelector('.js-swiper-testimonials');
+                    if (!el || !el.swiper) return false;
+                    var sw = el.swiper;
+                    if (!isDesktop()) {
+                        sw.params.slidesPerView = 1;
+                        sw.params.slidesPerGroup = 1;
+                        sw.params.spaceBetween = 0;
+                    }
+                    sw.update();
+                    lockWidths(sw);
+                    if (sw.slideToLoop) sw.slideToLoop(0, 0, false);
+                    lockWidths(sw);
+                    bind(sw);
+                    return true;
+                }
+
+                function start() {
+                    if (tryBind()) return;
+                    var tries = 0;
+                    var timer = setInterval(function () {
+                        tries += 1;
+                        if (tryBind() || tries > 40) clearInterval(timer);
+                    }, 150);
+                }
+
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', start);
+                } else {
+                    start();
+                }
+                window.addEventListener('load', function () {
+                    setTimeout(tryBind, 100);
                 });
-
-                nextButton.addEventListener('click', function () {
-                    if (testimonialsSlider.swiper) testimonialsSlider.swiper.slideNext();
-                });
-            });
+            })();
         </script>
     </div>
 </section>

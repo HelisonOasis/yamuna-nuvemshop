@@ -47,7 +47,7 @@
             </div>
             <a class="nav-list-link" href="{{ store.url }}/quem-somos/">Quem somos</a>
             <a class="nav-list-link" href="{{ store.url }}/revenda/">Revenda</a>
-            <a class="nav-list-link" href="{{ store.blog_url | default('/aprenda') }}">Blog</a>
+            <a class="nav-list-link" href="{{ store.blog_url | default('/aprenda') }}">Aprenda</a>
         </nav>
 
         <div class="yamuna-header-desktop-search">
@@ -55,9 +55,38 @@
         </div>
 
         <div class="yamuna-header-desktop-utilities">
-            <a class="yamuna-header-action" href="{{ customer ? store.customer_home_url : store.customer_login_url }}" aria-label="{{ 'Minha conta' | translate }}">
-                <img src="{{ 'images/yamuna/header-user.svg' | static_url }}" alt="" aria-hidden="true" />
-            </a>
+            <div class="yamuna-account-dropdown {% if customer %}is-logged{% endif %}">
+                <a class="yamuna-header-action yamuna-account-dropdown-trigger" href="{{ customer ? store.customer_home_url : store.customer_login_url }}" aria-label="{{ 'Minha conta' | translate }}" aria-haspopup="true" aria-expanded="false">
+                    <img src="{{ 'images/yamuna/header-user.svg' | static_url }}" alt="" aria-hidden="true" />
+                </a>
+                <div class="yamuna-account-dropdown-panel" role="menu">
+                    {% if customer %}
+                        <p class="yamuna-account-dropdown-welcome">
+                            Bem-vindo(a), <strong>{{ customer.name|split(' ')|slice(0, 1)|join }}</strong>
+                        </p>
+                        <a class="yamuna-account-dropdown-link" href="{{ store.customer_home_url }}">Minha conta</a>
+                        <a class="yamuna-account-dropdown-link" href="{{ store.customer_home_url }}">Meus pedidos</a>
+                        <a class="yamuna-account-dropdown-link" href="{{ store.customer_logout_url }}">Sair</a>
+                    {% else %}
+                        <div class="yamuna-account-dropdown-tabs">
+                            {% if 'mandatory' not in store.customer_accounts %}
+                                <a class="yamuna-account-dropdown-tab" href="{{ store.customer_register_url }}">Criar conta</a>
+                            {% endif %}
+                            <a class="yamuna-account-dropdown-tab is-active" href="{{ store.customer_login_url }}">Entrar</a>
+                        </div>
+
+                        {% embed "snipplets/forms/form.tpl" with{form_id: 'yamuna-quick-login-form', form_action: store.customer_login_url, form_custom_class: 'yamuna-account-dropdown-form', submit_custom_class: 'yamuna-account-dropdown-submit', submit_text: 'Entrar' | translate, data_store: 'account-login' } %}
+                            {% block form_body %}
+                                {% embed "snipplets/forms/form-input.tpl" with{type_hidden: true, input_value: current_url, input_name: 'redirect_to'} %}{% endembed %}
+                                {% embed "snipplets/forms/form-input.tpl" with{input_for: 'email', type_email: true, input_name: 'email', input_id: 'yamuna-quick-login-email', input_custom_class: 'yamuna-account-dropdown-input', input_label_text: 'E-mail' | translate, input_required: true } %}{% endembed %}
+                                {% embed "snipplets/forms/form-input.tpl" with{input_for: 'password', type_password: true, input_name: 'password', input_id: 'yamuna-quick-login-password', input_custom_class: 'yamuna-account-dropdown-input', input_label_text: 'Senha' | translate, input_required: true } %}{% endembed %}
+                            {% endblock %}
+                        {% endembed %}
+
+                        <a class="yamuna-account-dropdown-forgot" href="{{ store.customer_reset_password_url }}">Esqueceu sua senha?</a>
+                    {% endif %}
+                </div>
+            </div>
             <a class="yamuna-header-action" href="{{ store.url }}/favoritos/" aria-label="{{ 'Favoritos' | translate }}">
                 <img src="{{ 'images/yamuna/header-heart.svg' | static_url }}" alt="" aria-hidden="true" />
             </a>
@@ -437,15 +466,53 @@
       }
     };
 
+    window.yamunaCartToastTitleForQty = function(quantity) {
+      var qty = parseInt(quantity, 10);
+      if (!isFinite(qty) || qty < 1) {
+        qty = 1;
+      }
+      return qty > 1
+        ? (qty + ' produtos adicionados ao carrinho')
+        : 'Produto adicionado ao carrinho';
+    };
+
+    window.yamunaPositionCartToast = function(toast) {
+      if (!toast) return;
+      var utilities = document.querySelector('.yamuna-header-desktop-utilities');
+      if (window.innerWidth >= 1024 && utilities) {
+        var rect = utilities.getBoundingClientRect();
+        var vw = document.documentElement.clientWidth || window.innerWidth;
+        toast.style.top = Math.round(rect.bottom + 8) + 'px';
+        toast.style.right = Math.max(16, Math.round(vw - rect.right)) + 'px';
+        toast.style.left = 'auto';
+      } else {
+        toast.style.top = '';
+        toast.style.right = '';
+        toast.style.left = '';
+      }
+    };
+
     window.yamunaShowCartToast = function(title, subtitle) {
+      var qtyCandidate = parseInt(title, 10);
+      if (
+        title != null
+        && title !== ''
+        && isFinite(qtyCandidate)
+        && String(qtyCandidate) === String(title).trim()
+      ) {
+        title = window.yamunaCartToastTitleForQty(qtyCandidate);
+      }
+      title = title || 'Produto adicionado ao carrinho';
+      subtitle = subtitle || 'Seu carrinho foi atualizado';
+
       var toast = document.querySelector('.yamuna-cart-toast');
       if (!toast) {
         toast = document.createElement('div');
         toast.className = 'yamuna-cart-toast';
         toast.innerHTML = '<div class="yamuna-cart-toast-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" stroke="#238482" stroke-width="2"/><path d="M7 12.5l3.5 3.5L17 9" stroke="#238482" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
           '<div class="yamuna-cart-toast-text">' +
-            '<div class="yamuna-cart-toast-title">' + (title || 'Produto adicionado ao carrinho') + '</div>' +
-            '<div class="yamuna-cart-toast-subtitle">' + (subtitle || 'Seu carrinho foi atualizado') + '</div>' +
+            '<div class="yamuna-cart-toast-title">' + title + '</div>' +
+            '<div class="yamuna-cart-toast-subtitle">' + subtitle + '</div>' +
           '</div>' +
           '<button type="button" class="yamuna-cart-toast-close" aria-label="Fechar">&times;</button>';
         document.body.appendChild(toast);
@@ -453,10 +520,11 @@
           toast.classList.remove('yamuna-cart-toast-show');
         });
       } else {
-        if (title) toast.querySelector('.yamuna-cart-toast-title').textContent = title;
-        if (subtitle) toast.querySelector('.yamuna-cart-toast-subtitle').textContent = subtitle;
+        toast.querySelector('.yamuna-cart-toast-title').textContent = title;
+        toast.querySelector('.yamuna-cart-toast-subtitle').textContent = subtitle;
       }
 
+      window.yamunaPositionCartToast(toast);
       toast.classList.remove('yamuna-cart-toast-show');
       void toast.offsetWidth;
       toast.classList.add('yamuna-cart-toast-show');
@@ -468,6 +536,11 @@
         toast.classList.remove('yamuna-cart-toast-show');
       }, 4000);
     };
+
+    window.addEventListener('resize', function() {
+      var toast = document.querySelector('.yamuna-cart-toast.yamuna-cart-toast-show');
+      if (toast) window.yamunaPositionCartToast(toast);
+    });
 
   })();
 </script>

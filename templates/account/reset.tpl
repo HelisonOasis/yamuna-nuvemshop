@@ -1,42 +1,27 @@
-<section class="container mb-4 text-center">
-    <div class="row">
-        <div class="col-12">
-            {% include "snipplets/breadcrumbs.tpl" %}
-        </div>
-    </div>
-</section>
+<section class="yamuna-login-page" data-store="account-reset-page">
+  <h1 class="yamuna-login-heading">Mudar minha senha</h1>
 
-{% embed "snipplets/page-header.tpl" %}
-    {% block page_header_text %}{{ "Cambiar contraseña" | translate }}{% endblock page_header_text %}
-{% endembed %}
+  <div class="yamuna-login-card">
+    <p class="yamuna-login-intro">Vamos te enviar um e-mail para poder alterar sua senha.</p>
 
-<section class="account-page">
-    <div class="container">
-        <div class="row justify-content-md-center">
-            <div class="col-md-8">
-                <p class="text-center">{{ 'Vamos a enviarte un email para que puedas cambiar tu contraseña.' | translate }}</p>
+    {% if success %}
+      <div class="alert alert-success">{{ 'Pronto! Enviamos um e-mail para {1}' | translate(email) }}</div>
+    {% endif %}
 
-                {% if success %}
-                    <div class="alert alert-success">{{ '¡Listo! Te enviamos un email a {1}' | translate(email) }}</div>
-                {% endif %}
+    {% embed "snipplets/forms/form.tpl" with{form_id: 'resetpass-form', form_custom_class: 'yamuna-login-form', submit_custom_class: 'js-recaptcha-button btn-block yamuna-login-submit', submit_text: 'Enviar e-mail' | translate } %}
+      {% block form_body %}
+        {% embed "snipplets/forms/form-input.tpl" with{type_email: true, input_for: 'email', input_value: email, input_name: 'email', input_id: 'email', input_custom_class: 'yamuna-login-input', input_label_text: 'E-mail' | translate, input_required: true } %}
+          {% block input_form_alert %}
+            {% if failure %}
+              <div class="notification-centered notification-danger">{{ 'Não encontramos nenhuma conta registrada com este e-mail. Confira se está escrito corretamente.' | translate }}</div>
+            {% endif %}
+          {% endblock input_form_alert %}
+        {% endembed %}
+      {% endblock %}
+    {% endembed %}
 
-                {% embed "snipplets/forms/form.tpl" with{form_id: 'resetpass-form', submit_custom_class: 'btn-block', submit_text: 'Enviar email' | translate } %}
-                    {% block form_body %}
-
-                        {# Email input #}
-
-                        {% embed "snipplets/forms/form-input.tpl" with{type_email: true, input_for: 'email', input_value: email, input_name: 'email', input_id: 'email', input_label_text: 'Email' | translate } %}
-                            {% block input_label_text %}{{ 'Email' | translate }}{% endblock input_label_text %}
-                            {% block input_form_alert %}
-                                {% if failure %}
-                                    <div class="alert alert-danger">{{ 'No encontramos ninguna cuenta registrada con este email. Intentalo nuevamente chequeando que esté bien escrito.' | translate }}</div>
-                                {% endif %}
-                            {% endblock input_form_alert %}
-                        {% endembed %}
-                        
-                    {% endblock %}
-                {% endembed %}
-            </div>
-        </div>
-    </div>
+    <p class="yamuna-login-forgot-wrap">
+      <a href="{{ store.customer_login_url }}" class="yamuna-login-forgot">Voltar ao login</a>
+    </p>
+  </div>
 </section>

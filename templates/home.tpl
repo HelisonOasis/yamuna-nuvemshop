@@ -59,18 +59,32 @@
       overflow: visible !important;
     }
 
+    /* Cenario 127: smooth & soft white fade transition under mobile header. */
+    body.template-home .head-main {
+      overflow: visible !important;
+    }
+
     body.template-home .head-main::after {
       position: absolute !important;
-      top: calc(100% - 1px) !important;
+      top: 100% !important;
       right: 0 !important;
       left: 0 !important;
-      z-index: 1 !important;
+      z-index: 10 !important;
       display: block !important;
       width: 100% !important;
-      height: 96px !important;
+      height: 70px !important;
       content: '' !important;
       pointer-events: none !important;
-      background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, .96) 13%, rgba(255, 255, 255, .82) 31%, rgba(255, 255, 255, .55) 55%, rgba(255, 255, 255, .24) 78%, rgba(255, 255, 255, 0) 100%) !important;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 1.0) 0%, rgba(255, 255, 255, 0.85) 25%, rgba(255, 255, 255, 0.55) 50%, rgba(255, 255, 255, 0.25) 75%, rgba(255, 255, 255, 0) 100%) !important;
+      transition: opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) !important;
+    }
+
+    html.yamuna-header-scrolled body.template-home .head-main::after {
+      opacity: 0 !important;
+    }
+
+    html:has(#nav-hamburger.modal-show) body.template-home .head-main::after {
+      display: none !important;
     }
 
     body.template-home .head-main .yamuna-header-mobile,
@@ -266,6 +280,34 @@
     }
   }
 
+  /* Cenario 117: module bar label + CTA fit on narrow phones (320-375). */
+  @media (min-width: 320px) and (max-width: 375px) {
+    [data-store="home-image-text-module"] .js-textbanner-text {
+      gap: 6px;
+      padding: 6px 10px;
+    }
+
+    [data-store="home-image-text-module"] .textbanner-title {
+      min-width: 0;
+      flex: 1 1 auto;
+      padding-right: 4px;
+      font-size: 11px !important;
+      line-height: 1.15 !important;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    [data-store="home-image-text-module"] .js-textbanner-text .btn {
+      width: 96px !important;
+      min-width: 96px !important;
+      max-width: 96px !important;
+      flex: 0 0 96px;
+      padding: 0 8px !important;
+      font-size: 11px !important;
+    }
+  }
+
   @media (max-width: 767px) {
     [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-slide {
       height: 460px !important;
@@ -330,6 +372,58 @@
     }
   }
 
+  /* Product carousels: keep side gutters at 768/1024 (row + col-12.p-0
+     cancel .container padding; max-width:1312 only helps above ~1312px). */
+  @media (min-width: 768px) and (max-width: 1399px) {
+    body.template-home .section-featured-home,
+    body.template-home [data-store^="home-products-"].section-featured-home,
+    [data-store^="home-products-"].section-featured-home {
+      padding-left: 32px !important;
+      padding-right: 32px !important;
+      --yamuna-home-rail: max(20px, calc((100vw - 1280px) / 2));
+      --yamuna-home-section-pad: 32px;
+      --yamuna-home-container-inset: 0px;
+    }
+
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-container {
+      padding-left: 8px !important;
+      padding-right: 8px !important;
+    }
+
+    body.template-home [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-button-prev,
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-button-prev {
+      left: calc(var(--yamuna-home-rail) - var(--yamuna-home-section-pad) - var(--yamuna-home-container-inset)) !important;
+      right: auto !important;
+    }
+
+    body.template-home [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-button-next,
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-button-next {
+      right: calc(var(--yamuna-home-rail) - var(--yamuna-home-section-pad) - var(--yamuna-home-container-inset)) !important;
+      left: auto !important;
+    }
+  }
+
+  @media (min-width: 1400px) {
+    body.template-home [data-store^="home-products-"].section-featured-home,
+    [data-store^="home-products-"].section-featured-home {
+      --yamuna-home-rail: max(20px, calc((100vw - 1280px) / 2));
+      --yamuna-home-section-pad: 0px;
+      --yamuna-home-container-inset: max(0px, calc((100vw - 1312px) / 2));
+    }
+
+    body.template-home [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-button-prev,
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-button-prev {
+      left: calc(var(--yamuna-home-rail) - var(--yamuna-home-section-pad) - var(--yamuna-home-container-inset)) !important;
+      right: auto !important;
+    }
+
+    body.template-home [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-button-next,
+    [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-button-next {
+      right: calc(var(--yamuna-home-rail) - var(--yamuna-home-section-pad) - var(--yamuna-home-container-inset)) !important;
+      left: auto !important;
+    }
+  }
+
 </style>
 
 {% if show_component_help %}
@@ -345,26 +439,73 @@
 		{% set section = 'home_order_position_' ~ i %}
 		{% set section_select = attribute(settings,"#{section}") %}
 
-		{% if section_select not in newArray and section_select not in ['instafeed', 'newsletter', 'promotional', 'sale'] %}
+		{% if section_select not in newArray and section_select not in ['instafeed', 'newsletter', 'promotional', 'sale', 'new', 'products', 'modules'] %}
 			{% include 'snipplets/home/home-section-switch.tpl' %}
 			{% set newArray = newArray|merge([section_select]) %}
 
-			{# Product-family quick links live below the benefits bar. #}
+			{# Cenario 117: after benefits → Mais vendidos first, then categories + dual banners. #}
 			{% if section_select == 'informatives' %}
-				{% include 'snipplets/home/home-category-slider.tpl' %}
-			{% endif %}
+				{% if 'products' not in newArray %}
+					{% set section_select = 'products' %}
+					{% include 'snipplets/home/home-section-switch.tpl' %}
+					{% set newArray = newArray|merge(['products']) %}
+				{% endif %}
 
-			{# Keep the promotion carousel directly after the featured products carousel. #}
-			{% if section_select == 'products' and 'sale' not in newArray %}
+				{% include 'snipplets/home/home-category-slider.tpl' %}
+
+				{% if 'modules' not in newArray %}
+					{% set section_select = 'modules' %}
+					{% include 'snipplets/home/home-section-switch.tpl' %}
+					{% set newArray = newArray|merge(['modules']) %}
+				{% endif %}
+
 				{# Brand statement separates the first and second product carousels. #}
 				{% include 'snipplets/home/home-information-banner.tpl' %}
-				{% set section_select = 'sale' %}
-				{% include 'snipplets/home/home-section-switch.tpl' %}
-				{% set newArray = newArray|merge(['sale']) %}
+				{% set newArray = newArray|merge(['yamuna_information']) %}
+
+				{% if 'new' not in newArray %}
+					{% set section_select = 'new' %}
+					{% include 'snipplets/home/home-section-switch.tpl' %}
+					{% set newArray = newArray|merge(['new']) %}
+				{% endif %}
+
+				{% if 'sale' not in newArray %}
+					{% set section_select = 'sale' %}
+					{% include 'snipplets/home/home-section-switch.tpl' %}
+					{% set newArray = newArray|merge(['sale']) %}
+				{% endif %}
 			{% endif %}
 
 		{% endif %}
 	{% endfor %}
+
+	{# Fallback if informatives was not in home order. #}
+	{% if 'products' not in newArray or 'new' not in newArray or 'sale' not in newArray or 'modules' not in newArray %}
+		{% if 'products' not in newArray %}
+			{% set section_select = 'products' %}
+			{% include 'snipplets/home/home-section-switch.tpl' %}
+			{% set newArray = newArray|merge(['products']) %}
+		{% endif %}
+		{% if 'modules' not in newArray %}
+			{% set section_select = 'modules' %}
+			{% include 'snipplets/home/home-section-switch.tpl' %}
+			{% set newArray = newArray|merge(['modules']) %}
+		{% endif %}
+		{% if 'yamuna_information' not in newArray %}
+			{% include 'snipplets/home/home-information-banner.tpl' %}
+			{% set newArray = newArray|merge(['yamuna_information']) %}
+		{% endif %}
+		{% if 'new' not in newArray %}
+			{% set section_select = 'new' %}
+			{% include 'snipplets/home/home-section-switch.tpl' %}
+			{% set newArray = newArray|merge(['new']) %}
+		{% endif %}
+		{% if 'sale' not in newArray %}
+			{% set section_select = 'sale' %}
+			{% include 'snipplets/home/home-section-switch.tpl' %}
+			{% set newArray = newArray|merge(['sale']) %}
+		{% endif %}
+	{% endif %}
 
 	{% include 'snipplets/home/home-blog.tpl' %}
 
@@ -401,3 +542,4 @@
 {% if settings.home_promotional_popup %}
 	{% include 'snipplets/home/home-popup.tpl' %}
 {% endif %}
+

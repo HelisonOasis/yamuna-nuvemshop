@@ -3,7 +3,6 @@
 
 {% set has_footer_menu = settings.footer_menu and settings.footer_menu_show %}
 {% set has_footer_menu_secondary = settings.footer_menu_secondary and settings.footer_menu_secondary_show %}
-{% set has_footer_menu_tertiary = settings.footer_menu_tertiary and settings.footer_menu_tertiary_show %}
 {% set has_footer_about = settings.footer_about_show and (settings.footer_about_title or settings.footer_about_description) %}
 {% set has_payment_logos = settings.payments %}
 {% set has_shipping_logos = settings.shipping %}
@@ -71,7 +70,7 @@
 					<ul class="footer-menu">
 						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.whatsapp }}" target="_blank" rel="noopener">Atendimento ao Cliente</a></li>
 						<li class="footer-menu-item"><a class="footer-menu-link" href="/revenda">Revenda e Lojistas</a></li>
-						<li class="footer-menu-item"><span class="footer-menu-link">Contato via E-mail</span></li>
+						<li class="footer-menu-item"><a class="footer-menu-link" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=contato@yamuna.com.br" target="_blank" rel="noopener">Contato via E-mail</a></li>
 						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.whatsapp }}" target="_blank" rel="noopener">Comprar com WhatsApp</a></li>
 					</ul>
 				</div>
@@ -94,35 +93,6 @@
 						<li class="footer-menu-item"><a class="footer-menu-link" href="https://www.google.com/maps/place/Yamuna+Artesanal+%7C+F%C3%A1brica+e+loja+virtual+de+Produtos+Naturais+(Ghee)+-+Rod.+Roz%C3%A1lia+Paulina+Ferreira,+1897+-+P%C3%A2ntano+do+Sul,+Florian%C3%B3polis+-+SC,+88066-600/@-27.7698586,-48.5244642,15z/data=!4m6!3m5!1s0x952725aefc66dc8d:0x1f6bed5868b0b518!8m2!3d-27.7698586!4d-48.5244642!16s%2Fg%2F11f6fxbzqk?source=g.page.m.dd._&amp;g_ep=Eg1tbF8yMDI2MDgyM18wIJvbDyoASAJQAQ%3D%3D" target="_blank" rel="noopener">Avalie-nos no Google</a></li>
 					</ul>
 				</div>
-
-				{# Foot Nav Tertiary #}
-				{% if has_footer_menu_tertiary %}
-					<div class="col yamuna-footer-menu yamuna-footer-menu-tertiary">
-						{% if settings.footer_menu_tertiary_title %}
-							<h4 class="h3">{{ settings.footer_menu_tertiary_title }}</h4>
-						{% endif %}
-						<ul class="footer-menu">
-							{% for item in menus[settings.footer_menu_tertiary] %}
-								{% set footer_item_url = item.url %}
-								{% set footer_item_name = item.name | lower | trim %}
-								{% if footer_item_name == 'quem somos' %}
-									{% set footer_item_url = '/quem-somos' %}
-								{% elseif footer_item_name == 'manifesto' %}
-									{% set footer_item_url = '/nossomanifesto' %}
-								{% elseif footer_item_name == 'blog' %}
-									{% set footer_item_url = store.blog_url %}
-								{% elseif footer_item_name == 'atendimento ao cliente' %}
-									{% set footer_item_url = store.whatsapp %}
-								{% elseif footer_item_name == 'seja um revendedor' %}
-									{% set footer_item_url = '/revenda' %}
-								{% endif %}
-								<li class="footer-menu-item">
-									<a class="footer-menu-link" href="{{ footer_item_url }}" {% if footer_item_url | is_external %}target="_blank"{% endif %}>{{ item.name }}</a>
-								</li>
-							{% endfor %}
-						</ul>
-					</div>
-				{% endif %}
 
 				{# Contact info #}
 				{% if has_footer_contact_info %}

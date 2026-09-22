@@ -1,6 +1,6 @@
 <section class="yamuna-home-blog" data-store="home-blog">
 	<div class="container">
-		<h2 class="yamuna-home-blog-title">Blog</h2>
+		<h2 class="yamuna-home-blog-title">Aprenda</h2>
 		<div class="yamuna-home-blog-slider">
 			<div class="js-swiper-blog swiper-container">
 				<div class="swiper-wrapper js-yamuna-home-blog-track">

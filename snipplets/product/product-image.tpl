@@ -8,7 +8,7 @@
         {% endfor %}
     </div>
 {% endif %}
-<div class="yamuna-product-gallery-mobile d-lg-none">
+<div class="yamuna-product-gallery-mobile d-lg-none{% if product.media_count <= 1 %} yamuna-gallery-single{% else %} yamuna-gallery-multi{% endif %}">
 <div class="row" data-store="product-image-{{ product.id }}"> 
 	{% if show_thumbs %}
 		<div class="col-2 d-none d-md-block">

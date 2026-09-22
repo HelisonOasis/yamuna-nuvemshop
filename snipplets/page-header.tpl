@@ -36,19 +36,19 @@
 			</div>
 			{% if template == 'product' %}
 				{# Figma 853:9590 - rating under title #}
-				{% set yamuna_rating_value = product.metafields.yamuna.rating | default(product.metafields.reviews.rating) | default('') %}
+				{% set yamuna_rating_value = product.metafields.yamuna.rating | default(product.metafields.reviews.rating) | default(5) %}
 				{% set yamuna_rating_count = product.metafields.yamuna.rating_count | default(product.metafields.reviews.count) | default(0) %}
-				<div class="yamuna-pdp-rating js-yamuna-pdp-rating{% if not yamuna_rating_value %} is-empty{% endif %}"
+				<div class="yamuna-pdp-rating js-yamuna-pdp-rating"
 					data-rating="{{ yamuna_rating_value }}"
 					data-count="{{ yamuna_rating_count }}"
 					data-star-filled="{{ 'images/yamuna/pdp-star-filled.svg' | static_url }}"
 					data-star-empty="{{ 'images/yamuna/pdp-star-empty.svg' | static_url }}">
 					<div class="yamuna-pdp-rating-stars" aria-hidden="true">
 						{% for i in 1..5 %}
-							<img class="yamuna-pdp-rating-star js-yamuna-pdp-star" data-index="{{ i }}" src="{{ 'images/yamuna/pdp-star-empty.svg' | static_url }}" alt="" width="18" height="18" loading="lazy" />
+							<img class="yamuna-pdp-rating-star js-yamuna-pdp-star" data-index="{{ i }}" src="{{ 'images/yamuna/pdp-star-filled.svg' | static_url }}" alt="" width="18" height="18" loading="lazy" />
 						{% endfor %}
 					</div>
-					<a class="yamuna-pdp-rating-label js-yamuna-pdp-rating-label" href="#reviewsapp">Ver avaliações</a>
+					<a class="yamuna-pdp-rating-label js-yamuna-pdp-rating-label" href="#reviewsapp">{% if yamuna_rating_count > 0 %}{{ yamuna_rating_count }} avaliações{% else %}Ver avaliações{% endif %}</a>
 				</div>
 				<div class="yamuna-pdp-benefits" aria-label="Características do produto">
 					<div class="yamuna-pdp-benefit">

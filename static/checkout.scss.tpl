@@ -1342,6 +1342,16 @@ button.btn-primary {
 .security-seal {
   color: #4a1d3a !important;
 }
+.security-seal::after {
+  display: block;
+  margin-top: 6px;
+  color: #238482;
+  font-family: Dosis, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  content: "Checkout seguro · +1.300 avaliações 5★ no Google";
+}
 .btn-primary {
   background: #a31460 !important;
   border-color: #a31460 !important;

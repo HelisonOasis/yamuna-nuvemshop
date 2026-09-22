@@ -12,15 +12,19 @@
 {% endif %}
 {% set show_offer_label = offer_pct > 0 %}
 
+{# Spots + PDP: hide "5% OFF comprando 3 ou mais" progressive seals. #}
+{% set hide_spot_promotions = true %}
+
 {{ component(
   'labels', {
     defer_stock_label_text: true,
-    prioritize_promotion_over_offer: true,
+    without_promotion: true,
+    prioritize_promotion_over_offer: false,
     promotion_quantity_long_wording: true,
     promotion_nxm_long_wording: false,
     labels_classes: {
       group: 'js-labels-floating-group ' ~ (not show_offer_label ? 'yamuna-hide-offer ') ~ (product_detail and has_multiple_slides ? 'labels-product-slider'),
-      promotion: label_accent_classes,
+      promotion: label_accent_classes ~ ' d-none yamuna-hide-promotion',
       promotion_primary_text: 'd-block',
       promotion_secondary_text: 'font-smallest',
       offer: 'js-offer-label ' ~ (not show_offer_label ? 'd-none yamuna-offer-zero ') ~ (not has_custom_promotion_label ? 'label-circle ') ~ label_accent_classes,

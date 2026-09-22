@@ -1202,24 +1202,65 @@ DOMContentLoaded.addEventOrExecute(() => {
 
         {# /* // Testimonials slider */ #}
 
-        if (window.innerWidth < 1024) {
-            createSwiper('.js-swiper-testimonials', {
-                loop: true,
-                loopedSlides: 3,
-                watchOverflow: true,
-                grabCursor: true,
-                centeredSlides: false,
-                slidesPerView: 1,
-                spaceBetween: 24,
-                observer: true,
-                observeParents: true,
-            }, function(swiperInstance) {
-                requestAnimationFrame(function () {
-                    swiperInstance.update();
+        createSwiper('.js-swiper-testimonials', {
+            loop: true,
+            loopedSlides: 6,
+            loopAdditionalSlides: 6,
+            watchOverflow: true,
+            grabCursor: true,
+            centeredSlides: false,
+            centerInsufficientSlides: false,
+            slidesPerView: 1,
+            slidesPerGroup: 1,
+            spaceBetween: 0,
+            speed: 500,
+            observer: true,
+            observeParents: true,
+            watchSlidesProgress: true,
+            navigation: {
+                nextEl: '.js-swiper-testimonials-next',
+                prevEl: '.js-swiper-testimonials-prev',
+            },
+            breakpoints: {
+                1024: {
+                    slidesPerView: 3,
+                    slidesPerGroup: 1,
+                    spaceBetween: 24,
+                },
+            },
+        }, function(swiperInstance) {
+            function lockSlideWidths(sw) {
+                if (!sw || !sw.slides) return;
+                var desktop = window.matchMedia('(min-width: 1024px)').matches;
+                Array.prototype.forEach.call(sw.slides, function (slide) {
+                    if (desktop) {
+                        if (slide.style.width) {
+                            slide.style.setProperty('width', slide.style.width, 'important');
+                        }
+                    } else {
+                        slide.style.setProperty('width', '100%', 'important');
+                        slide.style.setProperty('max-width', '100%', 'important');
+                        slide.style.setProperty('flex', '0 0 100%', 'important');
+                    }
+                });
+            }
+            requestAnimationFrame(function () {
+                swiperInstance.update();
+                lockSlideWidths(swiperInstance);
+                if (swiperInstance.slideToLoop) {
                     swiperInstance.slideToLoop(0, 0, false);
+                }
+                lockSlideWidths(swiperInstance);
+            });
+            swiperInstance.on('resize', function () {
+                lockSlideWidths(swiperInstance);
+            });
+            swiperInstance.on('breakpoint', function () {
+                requestAnimationFrame(function () {
+                    lockSlideWidths(swiperInstance);
                 });
             });
-        }
+        });
 
         {# /* // Home blog carousel */ #}
 
@@ -1326,25 +1367,33 @@ DOMContentLoaded.addEventOrExecute(() => {
             function cardMatchesCat(card, cat) {
                 if (cat === 'all') return true;
                 var text = (card.textContent || '').toLowerCase();
-                if (cat === 'receitas') return /receita|gelato|muffin|panqueca|levain|p[aã]o|energy ball/.test(text);
-                if (cat === 'saude') return /sa[uú]de|colesterol|lactose|intestino|gordura|vitamina/.test(text);
+                try { text = text.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); } catch (e) {}
+                if (cat === 'receitas') return /receita|gelato|muffin|panqueca|levain|pao|energy ball/.test(text);
+                if (cat === 'saude') return /saude|colesterol|lactose|intestino|gordura|vitamina/.test(text);
                 if (cat === 'ayurveda') return /ayurveda|massala|masala|dosha/.test(text);
-                if (cat === 'conhecimento') return /benef[ií]cio|ci[eê]ncia|conhecimento|colesterol|gordura/.test(text);
+                if (cat === 'conhecimento') return /beneficio|ciencia|conhecimento|colesterol|gordura/.test(text);
                 return true;
             }
 
             function applyFilter() {
                 var q = (search && search.value ? search.value : '').toLowerCase().trim();
+                try { q = q.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); } catch (e) {}
                 var visible = 0;
+                cards = grid.querySelectorAll('.js-yamuna-blog-card');
                 cards.forEach(function(card) {
                     var text = (card.textContent || '').toLowerCase();
+                    try { text = text.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); } catch (e) {}
                     var catOk = cardMatchesCat(card, activeCat);
                     var qOk = !q || text.indexOf(q) !== -1;
                     var show = catOk && qOk;
                     card.hidden = !show;
+                    card.classList.toggle('is-search-hidden', !show);
                     if (show) visible += 1;
                 });
-                if (empty) empty.hidden = visible !== 0;
+                if (empty) {
+                    empty.hidden = visible !== 0;
+                    empty.classList.toggle('is-visible', visible === 0);
+                }
             }
 
             if (search) {
@@ -1365,6 +1414,15 @@ DOMContentLoaded.addEventOrExecute(() => {
                     applyFilter();
                 });
             });
+
+            /* Keep infinite-scroll / AJAX cards in the filtered set */
+            var cardsObserver = window.MutationObserver ? new MutationObserver(function() {
+                cards = grid.querySelectorAll('.js-yamuna-blog-card');
+                applyFilter();
+            }) : null;
+            if (cardsObserver) {
+                cardsObserver.observe(grid, { childList: true });
+            }
         })();
 
 
@@ -1761,28 +1819,36 @@ DOMContentLoaded.addEventOrExecute(() => {
             }
         });
 
-        {# Force 1 card on mobile — Swiper sometimes keeps desktop breakpoint after init. #}
+        {# Force 1 card on mobile / 2 on tablet — Swiper can keep wrong breakpoint after init. #}
         (function () {
-            function yamunaForceRelatedOneCard() {
+            function yamunaForceRelatedSlides() {
                 var el = document.querySelector('.yamuna-pdp-related .js-swiper-related');
                 var sw = el && el.swiper;
                 if (!sw) return;
                 var w = window.innerWidth || document.documentElement.clientWidth || 0;
-                if (w >= 768) return;
-                sw.params.slidesPerView = 1;
-                sw.params.spaceBetween = 0;
-                sw.params.centeredSlides = false;
-                sw.params.centerInsufficientSlides = false;
-                sw.currentBreakpoint = false;
+                if (w < 768) {
+                    sw.params.slidesPerView = 1;
+                    sw.params.spaceBetween = 0;
+                    sw.params.centeredSlides = false;
+                    sw.params.centerInsufficientSlides = false;
+                    sw.currentBreakpoint = false;
+                } else if (w < 1200) {
+                    sw.params.slidesPerView = 2;
+                    sw.params.slidesPerGroup = 1;
+                    sw.params.spaceBetween = 0;
+                    sw.params.centeredSlides = false;
+                    sw.params.centerInsufficientSlides = false;
+                } else {
+                    return;
+                }
                 if (typeof sw.update === 'function') sw.update();
                 if (typeof sw.updateSlides === 'function') sw.updateSlides();
                 if (typeof sw.updateSize === 'function') sw.updateSize();
-                if (typeof sw.slideTo === 'function') sw.slideTo(0, 0);
             }
-            yamunaForceRelatedOneCard();
-            setTimeout(yamunaForceRelatedOneCard, 100);
-            setTimeout(yamunaForceRelatedOneCard, 400);
-            window.addEventListener('resize', yamunaForceRelatedOneCard);
+            yamunaForceRelatedSlides();
+            setTimeout(yamunaForceRelatedSlides, 100);
+            setTimeout(yamunaForceRelatedSlides, 400);
+            window.addEventListener('resize', yamunaForceRelatedSlides);
         })();
 
         {# Complementary products #}
@@ -2897,6 +2963,9 @@ DOMContentLoaded.addEventOrExecute(() => {
                             speed: 0,
                         },
                     },
+                    {% else %}
+                    slidesPerView: 1,
+                    spaceBetween: 0,
                     {% endif %}
                     pagination: {
                         el: '.js-swiper-product-pagination',
@@ -2911,12 +2980,35 @@ DOMContentLoaded.addEventOrExecute(() => {
                         init: function () {
                             jQueryNuvem(".js-product-slider-placeholder").hide();
                             jQueryNuvem(".js-swiper-product").css("visibility", "visible").css("height", "auto");
+                            {% if has_multiple_slides %}
+                            /* Tablet: 2 images when gallery has 2+; single stays full-width. */
+                            if (window.innerWidth >= 768 && window.innerWidth < 1360) {
+                                this.params.slidesPerView = 2;
+                                this.params.spaceBetween = 12;
+                                this.update();
+                            }
+                            {% endif %}
                             {% if product.video_url %}
                                 if (window.innerWidth < 768) {
                                     productSwiperHeight = jQueryNuvem(".js-swiper-product").height();
                                     jQueryNuvem(".js-product-video-slide").height(productSwiperHeight);
                                 }
                             {% endif %}
+                        },
+                        resize: function () {
+                            {% if has_multiple_slides %}
+                            if (window.innerWidth >= 768 && window.innerWidth < 1360) {
+                                this.params.slidesPerView = 2;
+                                this.params.spaceBetween = 12;
+                            } else if (window.innerWidth < 768) {
+                                this.params.slidesPerView = 1;
+                                this.params.spaceBetween = 0;
+                            }
+                            {% else %}
+                            this.params.slidesPerView = 1;
+                            this.params.spaceBetween = 0;
+                            {% endif %}
+                            this.update();
                         },
                         {% if product.video_url %}
                             slideChangeTransitionEnd: function () {
@@ -3135,6 +3227,12 @@ DOMContentLoaded.addEventOrExecute(() => {
             spotQuantityInput.value = button.getAttribute('data-quantity') || '1';
         }
 
+        var toastQuantityInput = form.querySelector('.js-quantity-input, .js-home-spot-add-quantity, .js-pdp-spot-add-quantity');
+        var toastQuantity = parseInt(
+            button.getAttribute('data-quantity') || (toastQuantityInput && toastQuantityInput.value) || '1',
+            10
+        ) || 1;
+
         var originalLabel = button.tagName === 'INPUT' ? button.value : (button.textContent || '').trim();
         var originalHtml = button.tagName === 'INPUT' ? '' : button.innerHTML;
         button.disabled = true;
@@ -3153,7 +3251,7 @@ DOMContentLoaded.addEventOrExecute(() => {
                     button.innerHTML = originalHtml;
                 }
                 if (window.yamunaShowCartToast) {
-                    window.yamunaShowCartToast();
+                    window.yamunaShowCartToast(toastQuantity);
                 }
             },
             function() {
@@ -3296,7 +3394,7 @@ DOMContentLoaded.addEventOrExecute(() => {
                 var callback_add_to_cart = function(html_notification_related_products, html_notification_cross_selling) {
 
                     if (window.yamunaShowCartToast) {
-                        window.yamunaShowCartToast();
+                        window.yamunaShowCartToast(quantity || requestedQuantity || 1);
                     }
 
                     {# Animate cart amount #}
@@ -3879,6 +3977,73 @@ DOMContentLoaded.addEventOrExecute(() => {
         {% endif %}
     {% endif %}
 
+    {% if template == 'account.register' %}
+        (function () {
+            var pf = document.querySelector('.js-yamuna-signup-pf');
+            var pj = document.querySelector('.js-yamuna-signup-pj');
+            var typeInputs = document.querySelectorAll('.js-yamuna-signup-type');
+            var back = document.querySelector('.js-yamuna-signup-pj-back');
+
+            function setType(type) {
+                if (!pf || !pj) { return; }
+                var isCompany = type === 'company';
+                pj.hidden = !isCompany;
+                pf.hidden = isCompany;
+                typeInputs.forEach(function (input) {
+                    input.checked = input.value === type;
+                });
+            }
+
+            typeInputs.forEach(function (input) {
+                input.addEventListener('change', function () {
+                    setType(input.value);
+                });
+            });
+
+            if (back) {
+                back.addEventListener('click', function () {
+                    setType('person');
+                });
+            }
+
+            function maskCpf(value) {
+                var digits = value.replace(/\D/g, '').slice(0, 11);
+                return digits
+                    .replace(/(\d{3})(\d)/, '$1.$2')
+                    .replace(/(\d{3})(\d)/, '$1.$2')
+                    .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            }
+
+            function maskDate(value) {
+                var digits = value.replace(/\D/g, '').slice(0, 8);
+                return digits
+                    .replace(/(\d{2})(\d)/, '$1/$2')
+                    .replace(/(\d{2})(\d)/, '$1/$2');
+            }
+
+            function maskPhone(value) {
+                var digits = value.replace(/\D/g, '').slice(0, 11);
+                if (digits.length > 10) {
+                    return digits.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+                }
+                return digits.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+            }
+
+            var cpf = document.querySelector('.js-yamuna-cpf');
+            var birth = document.querySelector('.js-yamuna-birthdate');
+            var phone = document.querySelector('.js-yamuna-phone');
+            if (cpf) {
+                cpf.addEventListener('input', function () { cpf.value = maskCpf(cpf.value); });
+            }
+            if (birth) {
+                birth.addEventListener('input', function () { birth.value = maskDate(birth.value); });
+            }
+            if (phone) {
+                phone.addEventListener('input', function () { phone.value = maskPhone(phone.value); });
+            }
+        })();
+    {% endif %}
+
     {# Show the success or error message when resending the validation link #}
 
     {% if template == 'account.register' or template == 'account.login' %}
@@ -4097,6 +4262,9 @@ DOMContentLoaded.addEventOrExecute(() => {
                     speed: 0,
                 },
             },
+            {% else %}
+            slidesPerView: 1,
+            spaceBetween: 0,
             {% endif %}
             pagination: {
                 el: '.js-swiper-product-pagination',
@@ -4111,6 +4279,28 @@ DOMContentLoaded.addEventOrExecute(() => {
                 init: function () {
                     jQueryNuvem(".js-product-slider-placeholder").hide();
                     jQueryNuvem(".js-swiper-product").css("visibility", "visible").css("height", "auto");
+                    {% if product.images_count > 1 %}
+                    if (window.innerWidth >= 768 && window.innerWidth < 1360) {
+                        this.params.slidesPerView = 2;
+                        this.params.spaceBetween = 12;
+                        this.update();
+                    }
+                    {% endif %}
+                },
+                resize: function () {
+                    {% if product.images_count > 1 %}
+                    if (window.innerWidth >= 768 && window.innerWidth < 1360) {
+                        this.params.slidesPerView = 2;
+                        this.params.spaceBetween = 12;
+                    } else if (window.innerWidth < 768) {
+                        this.params.slidesPerView = 1;
+                        this.params.spaceBetween = 0;
+                    }
+                    {% else %}
+                    this.params.slidesPerView = 1;
+                    this.params.spaceBetween = 0;
+                    {% endif %}
+                    this.update();
                 },
             },
         });
@@ -4132,6 +4322,7 @@ DOMContentLoaded.addEventOrExecute(() => {
             var priceCards = document.querySelector('.yamuna-pdp-price-cards');
             var productPrice = document.getElementById('price_display');
             var buyThreeCard = document.querySelector('[data-yamuna-buy-three]');
+            var buyOneCard = document.querySelector('[data-yamuna-buy-one]');
 
             if (!priceCards || !productPrice || !buyThreeCard) {
                 return;
@@ -4171,16 +4362,39 @@ DOMContentLoaded.addEventOrExecute(() => {
                 });
             }
 
-            buyThreeCard.addEventListener('click', function () {
+            function setQuantityAndAdd(quantity) {
                 var quantityInput = document.querySelector('#product_form .js-quantity-input');
+                var addButton = document.querySelector('#product_form .js-addtocart.js-prod-submit-form:not(.js-addtocart-placeholder)');
 
-                if (!quantityInput) {
-                    return;
+                if (quantityInput) {
+                    quantityInput.value = quantity;
+                    quantityInput.dispatchEvent(new Event('change', { bubbles: true }));
                 }
 
-                quantityInput.value = 3;
-                quantityInput.dispatchEvent(new Event('change', { bubbles: true }));
-                buyThreeCard.classList.add('is-selected');
+                if (buyOneCard) {
+                    buyOneCard.classList.toggle('is-selected', quantity === 1);
+                }
+                buyThreeCard.classList.toggle('is-selected', quantity === 3);
+
+                if (addButton && !addButton.disabled) {
+                    addButton.click();
+                }
+            }
+
+            if (buyOneCard) {
+                buyOneCard.addEventListener('click', function () {
+                    setQuantityAndAdd(1);
+                });
+                buyOneCard.addEventListener('keydown', function (event) {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        setQuantityAndAdd(1);
+                    }
+                });
+            }
+
+            buyThreeCard.addEventListener('click', function () {
+                setQuantityAndAdd(3);
             });
 
             new MutationObserver(updateCardPrices).observe(productPrice, {

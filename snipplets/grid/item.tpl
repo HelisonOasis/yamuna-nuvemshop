@@ -259,7 +259,7 @@
                                 {{ 'Comprar' | translate }}
                             </a>
                         {% else %}
-                            {% set three_products_price = (product.price * 3) | money %}
+                            {% set three_unit_price = (product.price * 0.95) | money %}
                             <form class="js-product-form" method="post" action="{{ store.cart_url }}">
                                 <input type="hidden" name="add_to_cart" value="{{product.id}}" />
                                 <input class="js-home-spot-add-quantity" type="hidden" name="quantity" value="1" />
@@ -269,7 +269,7 @@
                                 </button>
                                 <button type="submit" class="js-addtocart js-prod-submit-form yamuna-plp-buy-three" data-quantity="3" data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}">
                                     <img src="{{ 'images/yamuna/home-spot-bag-teal.svg' | static_url }}" alt="" aria-hidden="true" />
-                                    <span class="yamuna-plp-buy-three-prefix">{{ 'Compre 3' | translate }}</span><span class="yamuna-plp-buy-three-price"> {{ 'por' | translate }} {{ three_products_price }} {{ 'cada' | translate }}</span>
+                                    <span class="yamuna-plp-buy-three-prefix">{{ 'Compre 3' | translate }}</span><span class="yamuna-plp-buy-three-price"> {{ 'por' | translate }} {{ three_unit_price }} {{ 'cada' | translate }}</span>
                                 </button>
                             </form>
                         {% endif %}
@@ -297,7 +297,7 @@
                                     {% set texts = {'cart': "Comprar", 'contact': "Consultar precio", 'nostock': "Sin stock", 'catalog': "Consultar"} %}
 
                                     {% if is_yamuna_spot_card %}
-                                        {% set three_products_price = is_pdp_related_spot ? (product.price | money) : ((product.price * 3) | money) %}
+                                        {% set three_unit_price = (product.price * 0.95) | money %}
                                         <input class="{{ spot_qty_class }}" type="hidden" name="quantity" value="1" />
                                         <button type="button" class="js-addtocart js-prod-submit-form {{ quickshop_button_primary_classes }} {{ spot_ns }}-buy-one {{ state }}" data-quantity="1" {% if state == 'nostock' %}disabled{% endif %} data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}">
                                             <img class="{{ spot_ns }}-bag" src="{{ 'images/yamuna/home-spot-bag-white.svg' | static_url }}" alt="" aria-hidden="true" />
@@ -307,7 +307,7 @@
                                             <img class="{{ spot_ns }}-bag" src="{{ 'images/yamuna/home-spot-bag-teal.svg' | static_url }}" alt="" aria-hidden="true" />
                                             <span class="{{ spot_ns }}-buy-three-label">
                                               <span class="{{ spot_ns }}-buy-three-prefix">Compre 3</span>
-                                              <span class="{{ spot_ns }}-buy-three-price">{% if is_cart_reco_spot %}por {{ three_products_price }} cada{% else %}por {{ three_products_price }}{% if is_pdp_related_spot %} cada{% endif %}{% endif %}</span>
+                                              <span class="{{ spot_ns }}-buy-three-price">por {{ three_unit_price }} cada</span>
                                             </span>
                                         </button>
                                     {% else %}

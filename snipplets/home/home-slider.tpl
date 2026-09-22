@@ -38,7 +38,7 @@
 {% if not mobile %}
 <div class="js-home-main-slider-container {% if not has_main_slider %}hidden{% endif %}">
 {% endif %}
-	<div class="js-live-preview-home-slider-container {% if mobile %}js-home-mobile-slider{% else %}js-home-main-slider{% endif %}-visibility {% if has_main_slider and has_mobile_slider %}{% if mobile %}d-md-none{% else %}d-none d-md-block{% endif %}{% elseif not settings.toggle_slider_mobile and mobile and not use_yamuna_prod_hero %}hidden{% endif %} {% if not settings.slider_full %} mt-4{% endif %} mb-4">
+	<div class="js-live-preview-home-slider-container {% if mobile %}js-home-mobile-slider{% else %}js-home-main-slider{% endif %}-visibility {% if has_main_slider and has_mobile_slider %}{% if mobile %}d-md-none{% else %}d-none d-md-block{% endif %}{% elseif not settings.toggle_slider_mobile and mobile and not use_yamuna_prod_hero %}hidden{% endif %} {% if not settings.slider_full %} mt-4{% endif %} mb-0">
 		<div class="container{% if settings.slider_full %}-fluid{% endif %}">
 			<div class="row">
 				<div class="col js-home-slider-col section-slider{% if settings.slider_full %} p-0{% endif %}{% if has_auto_height_slider %} section-slider-auto{% endif %}">

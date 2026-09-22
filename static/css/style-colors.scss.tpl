@@ -1603,10 +1603,11 @@ input::-webkit-outer-spin-button{
   .section-featured-home .yamuna-home-products .swiper-button-prev:after,
   .section-featured-home .yamuna-home-products .swiper-button-next:after {
     display: block;
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
     border: solid #238482;
-    border-width: 0 3px 3px 0;
+    /* 044: match hero banner chevron weight (stroke ~3.25). */
+    border-width: 0 4px 4px 0;
     content: '';
   }
 
@@ -1993,8 +1994,8 @@ input::-webkit-outer-spin-button{
 
 @media (max-width: 767px) {
   [data-store^="home-products-"].section-featured-home .container {
-    padding-right: 24px;
-    padding-left: 24px;
+    padding-right: 12px;
+    padding-left: 12px;
   }
 
   [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-slide {
@@ -2325,11 +2326,11 @@ input::-webkit-outer-spin-button{
 
 .testimonial-card.swiper-slide {
   position: relative;
-  width: 460px;
+  width: 100%;
   height: 300px;
   min-height: 0;
   padding: 0;
-  flex: 0 0 460px;
+  flex: 0 0 auto;
   background: transparent;
   color: #4a1d3a;
   text-align: center;

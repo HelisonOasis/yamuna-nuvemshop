@@ -5,7 +5,8 @@
 {% set max_blog_related = 8 %}
 {% set title_l = post.title | lower %}
 {% set summary_l = post.summary | default('') | lower %}
-{% set hay = title_l ~ ' ' ~ summary_l %}
+{% set content_l = post.content | default('') | striptags | lower %}
+{% set hay = title_l ~ ' ' ~ summary_l ~ ' ' ~ content_l %}
 
 {% set seed_url = '' %}
 

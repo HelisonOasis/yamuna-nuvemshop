@@ -16,7 +16,8 @@
     {% set buy_three_pix_price = buy_three_unit_price * (1 - payment_discount_rate) %}
     {% set max_installments = product.get_max_installments(false) %}
     <div class="yamuna-pdp-price-cards" data-yamuna-pix-discount="{{ product.maxPaymentDiscount.value }}">
-    <div class="js-price-container price-container mb-4 yamuna-pdp-price-card yamuna-pdp-price-card-unit" data-store="product-price-{{ product.id }}" data-combined-discount="{{ product.isPromotionEligibleForCombinedDiscount ? 'true' : 'false' }}">
+    <div class="js-price-container price-container mb-4 yamuna-pdp-price-card yamuna-pdp-price-card-unit is-selected" role="button" tabindex="0" data-yamuna-buy-one aria-label="Adicionar 1 unidade ao carrinho" data-store="product-price-{{ product.id }}" data-combined-discount="{{ product.isPromotionEligibleForCombinedDiscount ? 'true' : 'false' }}" style="cursor:pointer">
+        <span class="yamuna-pdp-price-card-heading">Unidade</span>
         <span class="d-inline-block">
             <h4 id="compare_price_display" class="js-compare-price-display price-compare font-weight-normal mb-0" {% if not product.compare_at_price or not product.display_price %}style="display:none;"{% else %} style="display:block;"{% endif %}>{% if product.compare_at_price and product.display_price %}{{ product.compare_at_price | money }}{% endif %}</h4>
         </span>
@@ -72,7 +73,7 @@
             })
         }}
     </div>
-    <button class="yamuna-pdp-price-card yamuna-pdp-price-card-buy-three" type="button" data-yamuna-buy-three aria-label="Selecionar 3 unidades">
+    <button class="yamuna-pdp-price-card yamuna-pdp-price-card-buy-three" type="button" data-yamuna-buy-three aria-label="Adicionar 3 unidades ao carrinho">
         <span class="yamuna-pdp-price-card-heading">Compre 3</span>
         <span class="yamuna-pdp-price-card-discount" aria-hidden="true">
             <img src="{{ 'images/yamuna/pdp-buy-three-discount.svg' | static_url }}" alt="" />
@@ -101,23 +102,7 @@
 
 {{ component('nubesdk-slot', { type: "after_product_detail_price" }) }}
 
-{{ component('promotions-details', {
-    promotions_details_classes: {
-        container: 'js-product-promo-container mb-4',
-        promotion_title: 'h4 mb-2 text-accent',
-        valid_scopes: 'mb-0',
-        categories_combinable: 'mb-0',
-        not_combinable: 'font-small opacity-60 mt-1 mb-0',
-        progressive_discounts_table: 'table mb-2 mt-3',
-        progressive_discounts_hidden_table: 'table-body-inverted',
-        progressive_discounts_show_more_link: 'btn-link btn-link-primary mb-4',
-        progressive_discounts_show_more_icon: 'icon-inline',
-        progressive_discounts_hide_icon: 'icon-inline icon-flip-vertical',
-        progressive_discounts_promotion_quantity: 'font-weight-light text-lowercase'
-    },
-    accordion_show_svg_id: 'chevron-down',
-    accordion_hide_svg_id: 'chevron-down',
-}) }}
+{# Progressive "5% OFF comprando 3 ou mais" promo copy removed (Cenário). #}
 
 {{ component('nubesdk-slot', { type: "before_product_detail_payment_options" }) }}
 
