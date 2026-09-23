@@ -8,12 +8,18 @@
 {# Pre-checkout cart row — Figma 1576:11580 #}
 {% set unit_compare = item.compare_at_price %}
 {% set has_unit_compare = unit_compare and unit_compare > item.unit_price %}
+{% set buy_three_threshold = 3 %}
+{% set buy_three_rate = 0.95 %}
+{% set show_buy_three_unit = not is_gift and item.quantity >= buy_three_threshold %}
+{% set buy_three_unit_price = item.unit_price * buy_three_rate %}
+{% set buy_three_line_total = buy_three_unit_price * item.quantity %}
 {% set cart_page_installments = item.product.get_max_installments(false) %}
 {% if not cart_page_installments or cart_page_installments.installment <= 1 %}
   {% set cart_page_installments = item.product.get_max_installments %}
 {% endif %}
+{% set cart_page_installment_base = show_buy_three_unit ? buy_three_line_total : item.subtotal %}
 
-<div class="js-cart-item {% if item.product.is_non_shippable %}js-cart-item-non-shippable{% else %}js-cart-item-shippable{% endif %} yamuna-cart-row" data-item-id="{{ item.id }}" data-gift="{{ is_gift ? 'true' : 'false' }}" data-store="cart-item-{{ item.product.id }}" data-component="cart.line-item">
+<div class="js-cart-item {% if item.product.is_non_shippable %}js-cart-item-non-shippable{% else %}js-cart-item-shippable{% endif %} yamuna-cart-row" data-item-id="{{ item.id }}" data-gift="{{ is_gift ? 'true' : 'false' }}" data-store="cart-item-{{ item.product.id }}" data-component="cart.line-item" data-yamuna-unit-price="{{ item.unit_price }}" data-yamuna-promo-threshold="{{ buy_three_threshold }}" data-yamuna-promo-rate="{{ buy_three_rate }}">
 
   {% if not is_gift %}
     <div class="yamuna-cart-row-delete cart-item-delete">
@@ -83,10 +89,15 @@
       <div class="yamuna-cart-row-price-compare">{{ item.compare_at_price | money }}</div>
       <div class="yamuna-cart-row-price">{{ "Gratis" | translate }}</div>
     {% else %}
-      <div class="js-cart-item-unit-price-compare-price-container yamuna-cart-row-price-compare" data-line-item-id="{{ item.id }}"{% if not has_unit_compare %} style="display: none"{% endif %}>
+      {# Same buy-3 De/Por as minicart when qty >= 3 #}
+      <div class="yamuna-cart-page-unit-promo{% if not show_buy_three_unit %} is-hidden{% endif %}" data-yamuna-unit-promo>
+        <p class="yamuna-cart-page-unit-de">De <span class="yamuna-cart-page-unit-de-value" data-yamuna-unit-de>{{ item.unit_price | money }}</span></p>
+        <p class="yamuna-cart-page-unit-por"><span class="yamuna-cart-page-unit-por-label">Por</span> <span class="yamuna-cart-page-unit-por-value" data-yamuna-unit-por>{{ buy_three_unit_price | money }}</span></p>
+      </div>
+      <div class="js-cart-item-unit-price-compare-price-container yamuna-cart-row-price-compare" data-line-item-id="{{ item.id }}"{% if not has_unit_compare or show_buy_three_unit %} style="display: none"{% endif %}>
         <span class="js-cart-item-unit-price-compare-price" data-line-item-id="{{ item.id }}" data-component="compare_price.value" data-component-value='{{ unit_compare | money }}'>{{ unit_compare | money }}</span>
       </div>
-      <div class="js-cart-item-unit-price yamuna-cart-row-price" data-line-item-id="{{ item.id }}">{{ item.unit_price | money }}</div>
+      <div class="js-cart-item-unit-price yamuna-cart-row-price{% if show_buy_three_unit %} is-hidden{% endif %}" data-line-item-id="{{ item.id }}" data-yamuna-unit-plain>{{ item.unit_price | money }}</div>
     {% endif %}
   </div>
 
@@ -95,12 +106,12 @@
       <div class="yamuna-cart-row-price-compare">{{ item.compare_at_price_subtotal | money }}</div>
       <div class="yamuna-cart-row-price">{{ "Gratis" | translate }}</div>
     {% else %}
-      <div class="js-cart-item-subtotal-compare-price-container" data-line-item-id="{{ item.id }}" style="display: none" aria-hidden="true">
-        <span class="js-cart-item-subtotal-compare-price" data-line-item-id="{{ item.id }}" data-component="subtotal_compare_price.value" data-component-value='{{ item.compare_at_price_subtotal | money }}'>{{ item.compare_at_price_subtotal | money }}</span>
+      <div class="js-cart-item-subtotal-compare-price-container yamuna-cart-row-price-compare{% if show_buy_three_unit %} is-visible{% endif %}" data-line-item-id="{{ item.id }}" data-yamuna-line-compare{% if not show_buy_three_unit %} style="display: none" aria-hidden="true"{% endif %}>
+        <span class="js-cart-item-subtotal-compare-price" data-line-item-id="{{ item.id }}" data-component="subtotal_compare_price.value" data-component-value='{{ item.subtotal | money }}'>{{ item.subtotal | money }}</span>
       </div>
-      <div class="js-cart-item-subtotal yamuna-cart-row-price" data-line-item-id="{{ item.id }}" data-component="subtotal.value" data-component-value='{{ item.subtotal | money }}'>{{ item.subtotal | money }}</div>
+      <div class="js-cart-item-subtotal yamuna-cart-row-price" data-line-item-id="{{ item.id }}" data-component="subtotal.value" data-component-value='{{ item.subtotal | money }}' data-yamuna-line-total>{% if show_buy_three_unit %}{{ buy_three_line_total | money }}{% else %}{{ item.subtotal | money }}{% endif %}</div>
       {% if cart_page_installments and cart_page_installments.installment > 1 %}
-        <div class="yamuna-cart-row-installments">em {{ cart_page_installments.installment }}x de {{ (item.subtotal / cart_page_installments.installment) | money }} sem juros</div>
+        <div class="yamuna-cart-row-installments" data-yamuna-installments data-installment-count="{{ cart_page_installments.installment }}">em {{ cart_page_installments.installment }}x de {{ (cart_page_installment_base / cart_page_installments.installment) | money }} sem juros</div>
       {% endif %}
     {% endif %}
   </div>
@@ -108,6 +119,10 @@
 
 {% else %}
 {# Minicart / ajax cart - Figma: image | body; controls row (qty|ASSINAR|trash). #}
+{% set buy_three_threshold = 3 %}
+{% set buy_three_rate = 0.95 %}
+{% set show_buy_three_unit = not is_gift and item.quantity >= buy_three_threshold %}
+{% set buy_three_unit_price = item.unit_price * buy_three_rate %}
 <div class="js-cart-item {% if item.product.is_non_shippable %}js-cart-item-non-shippable{% else %}js-cart-item-shippable{% endif %} cart-item yamuna-minicart-item" data-item-id="{{ item.id }}" data-gift="{{ is_gift ? 'true' : 'false' }}" data-store="cart-item-{{ item.product.id }}" data-component="cart.line-item">
 
   <div class="yamuna-minicart-item-image">
@@ -140,16 +155,21 @@
         {% endif %}
       </h6>
 
-      <div class="cart-item-subtotal" data-component="line-item.subtotal">
+      <div class="cart-item-subtotal" data-component="line-item.subtotal" data-yamuna-unit-price="{{ item.unit_price }}" data-yamuna-promo-threshold="{{ buy_three_threshold }}" data-yamuna-promo-rate="{{ buy_three_rate }}">
         {% if is_gift %}
           <div class="price-compare font-small opacity-50">{{ item.compare_at_price_subtotal | money }}</div>
           <div class="h6 mt-1">{{ "Gratis" | translate }}</div>
         {% else %}
+          {# Prod-like unit pricing when buy-3 promo applies (qty >= 3): De / Por #}
+          <div class="yamuna-minicart-unit-promo{% if not show_buy_three_unit %} is-hidden{% endif %}" data-yamuna-unit-promo>
+            <p class="yamuna-minicart-unit-de">De <span class="yamuna-minicart-unit-de-value" data-yamuna-unit-de>{{ item.unit_price | money }}</span></p>
+            <p class="yamuna-minicart-unit-por"><span class="yamuna-minicart-unit-por-label">Por</span> <span class="yamuna-minicart-unit-por-value" data-yamuna-unit-por>{{ buy_three_unit_price | money }}</span></p>
+          </div>
           <div class="js-cart-item-subtotal-compare-price-container" data-line-item-id="{{ item.id }}"{% if hide_compare_price_subtotal %} style="display: none"{% endif %}>
             <span class="text-accent font-small font-weight-bold mr-1">-{{ discount_percentage }}%</span>
             <span class="js-cart-item-subtotal-compare-price price-compare font-small opacity-50 mr-0" data-line-item-id="{{ item.id }}" data-component="subtotal_compare_price.value" data-component-value='{{ item.compare_at_price_subtotal | money }}'>{{ item.compare_at_price_subtotal | money }}</span>
           </div>
-          <div class="js-cart-item-subtotal h6 {% if not hide_compare_price_subtotal %}mt-1{% endif %}" data-line-item-id="{{ item.id }}" data-component="subtotal.value" data-component-value='{{ item.subtotal | money }}'>{{ item.subtotal | money }}</div>
+          <div class="js-cart-item-subtotal h6 {% if not hide_compare_price_subtotal %}mt-1{% endif %}{% if show_buy_three_unit %} is-hidden{% endif %}" data-line-item-id="{{ item.id }}" data-component="subtotal.value" data-component-value='{{ item.subtotal | money }}'>{{ item.subtotal | money }}</div>
         {% endif %}
       </div>
     </div>

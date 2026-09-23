@@ -2,7 +2,7 @@
     {% block page_header_text %}{{ 'Orden #{1}' | translate(order.number) }}{% endblock page_header_text %}
 {% endembed %}
 
-<section class="account-page">
+<section class="account-page yamuna-account-page">
     <div class="container" data-store="account-order-detail-{{ order.id }}">
     	<div class="row">
             <div class="col-md-4">
@@ -122,7 +122,7 @@
                             {{ order.subtotal | money }}
                         </p>
                     {% endif %}  
-                    <h3 class="text-center font-primary">
+                    <h3 class="yamuna-order-detail-total font-primary">
                        <strong>{{ 'Total' | translate }}:</strong>
                         <strong>{{ order.total | money }}</strong>
                     </h3>

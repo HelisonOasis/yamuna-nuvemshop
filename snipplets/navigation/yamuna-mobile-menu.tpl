@@ -1,12 +1,19 @@
 {# Mobile navigation adapted to the Yamuna Figma menu.
    Icons sourced from yamuna.com.br /img/m/ menu markers. #}
 <nav class="yamuna-mobile-menu" aria-label="{{ 'Menú' | translate }}">
-    <div class="yamuna-mobile-menu-account">
+    <div class="yamuna-mobile-menu-account{% if customer %} yamuna-mobile-menu-account--logged{% endif %}">
         {% if customer %}
-            <a href="{{ store.customer_home_url }}" class="yamuna-mobile-menu-login">
-                <img src="{{ 'images/yamuna/menu-user.svg' | static_url }}" alt="" />
-                <span>{{ 'Mi cuenta' | translate }}</span>
-            </a>
+            <p class="yamuna-mobile-menu-welcome">
+                <img src="{{ 'images/yamuna/menu-user.svg' | static_url }}" alt="" aria-hidden="true" />
+                <span>Bem-vindo(a), {{ customer.name|split(' ')|slice(0, 1)|join }}</span>
+            </p>
+            <div class="yamuna-mobile-menu-account-actions">
+                <a href="{{ store.customer_home_url }}" class="yamuna-mobile-menu-login">
+                    <span>MINHA CONTA</span>
+                </a>
+                <span class="yamuna-mobile-menu-account-divider" aria-hidden="true"></span>
+                <a href="{{ store.customer_logout_url }}" class="yamuna-mobile-menu-logout">SAIR</a>
+            </div>
         {% else %}
             <a href="{{ store.customer_login_url }}" class="yamuna-mobile-menu-login">
                 <img src="{{ 'images/yamuna/menu-user.svg' | static_url }}" alt="" />
@@ -21,12 +28,68 @@
 
     <form class="yamuna-mobile-menu-search js-search-container js-search-form" action="{{ store.search_url }}" method="get">
         <input class="yamuna-mobile-menu-search-input js-search-input" autocomplete="off" type="search" name="q" placeholder="BUSCAR POR..." aria-label="{{ 'Buscar' | translate }}" />
+        <button type="button" class="yamuna-search-clear yamuna-mobile-menu-search-clear js-yamuna-search-clear" aria-label="Limpar busca">
+            <svg class="icon-inline icon-w-10" aria-hidden="true"><use xlink:href="#times"/></svg>
+        </button>
         <button type="submit" class="yamuna-mobile-menu-search-submit" aria-label="{{ 'Buscar' | translate }}">
             <img src="{{ 'images/yamuna/menu-search.svg' | static_url }}" alt="" aria-hidden="true" />
         </button>
     </form>
 
     <div class="yamuna-mobile-menu-search-suggest js-search-suggest"></div>
+
+    <script>
+    (function () {
+      function bindDrawerSearch() {
+        var menu = document.querySelector('#nav-hamburger .yamuna-mobile-menu');
+        if (!menu) return;
+        var suggest = menu.querySelector('.yamuna-mobile-menu-search-suggest');
+        var input = menu.querySelector('.yamuna-mobile-menu-search-input');
+        if (!suggest) return;
+
+        function syncSearchState() {
+          var hasResults = !!suggest.querySelector('.search-suggest-list, .js-search-suggest-all-link, .yamuna-search-suggest-item');
+          var hidden = suggest.style.display === 'none';
+          menu.classList.toggle('yamuna-menu-has-search', hasResults && !hidden);
+        }
+
+        var obs = new MutationObserver(syncSearchState);
+        obs.observe(suggest, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
+
+        if (input) {
+          input.addEventListener('input', function () {
+            if (!input.value) {
+              suggest.innerHTML = '';
+              suggest.style.display = 'none';
+              menu.classList.remove('yamuna-menu-has-search');
+            }
+          });
+        }
+
+        menu.addEventListener('click', function (e) {
+          var clearBtn = e.target.closest('.js-yamuna-search-clear');
+          if (!clearBtn || !menu.contains(clearBtn)) return;
+          e.preventDefault();
+          e.stopPropagation();
+          if (input) {
+            input.value = '';
+            input.focus();
+          }
+          suggest.innerHTML = '';
+          suggest.style.display = 'none';
+          menu.classList.remove('yamuna-menu-has-search');
+        });
+
+        syncSearchState();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindDrawerSearch);
+      } else {
+        bindDrawerSearch();
+      }
+    })();
+    </script>
 
     <section class="yamuna-mobile-menu-products">
         <h2>PRODUTOS</h2>

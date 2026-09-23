@@ -64,9 +64,23 @@
                         <p class="yamuna-account-dropdown-welcome">
                             Bem-vindo(a), <strong>{{ customer.name|split(' ')|slice(0, 1)|join }}</strong>
                         </p>
-                        <a class="yamuna-account-dropdown-link" href="{{ store.customer_home_url }}">Minha conta</a>
-                        <a class="yamuna-account-dropdown-link" href="{{ store.customer_home_url }}">Meus pedidos</a>
-                        <a class="yamuna-account-dropdown-link" href="{{ store.customer_logout_url }}">Sair</a>
+                        <div class="yamuna-account-dropdown-links">
+                            <a class="yamuna-account-dropdown-link" href="{{ store.customer_home_url }}">
+                                <span class="yamuna-account-dropdown-link-label">Minha conta</span>
+                            </a>
+                            <a class="yamuna-account-dropdown-link" href="{{ store.customer_home_url }}">
+                                <span class="yamuna-account-dropdown-link-label">Meus pedidos</span>
+                            </a>
+                            <a class="yamuna-account-dropdown-link yamuna-account-dropdown-wishlist" href="{{ store.url }}/favoritos/">
+                                <span class="yamuna-account-dropdown-link-label yamuna-account-dropdown-wishlist-label">
+                                    <svg class="yamuna-account-dropdown-wishlist-icon" width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path fill="#000000" d="M14.5833 1.5975C13.645 1.6121 12.727 1.87404 11.9223 2.35689C11.1176 2.83974 10.4545 3.52639 10 4.3475C9.54553 3.52639 8.88244 2.83974 8.0777 2.35689C7.27295 1.87404 6.35504 1.6121 5.41667 1.5975C3.92078 1.66249 2.51142 2.31688 1.49649 3.41769C0.481549 4.51851 -0.0564591 5.97627 0 7.4725C0 11.2617 3.98833 15.4 7.33333 18.2058C8.08018 18.8334 9.02446 19.1775 10 19.1775C10.9755 19.1775 11.9198 18.8334 12.6667 18.2058C16.0117 15.4 20 11.2617 20 7.4725C20.0565 5.97627 19.5185 4.51851 18.5035 3.41769C17.4886 2.31688 16.0792 1.66249 14.5833 1.5975ZM11.5958 16.9308C11.1492 17.307 10.584 17.5133 10 17.5133C9.41604 17.5133 8.85085 17.307 8.40417 16.9308C4.1225 13.3383 1.66667 9.89167 1.66667 7.4725C1.6097 6.4181 1.97197 5.38394 2.67447 4.59558C3.37697 3.80722 4.36269 3.32863 5.41667 3.26417C6.47064 3.32863 7.45637 3.80722 8.15886 4.59558C8.86136 5.38394 9.22363 6.4181 9.16667 7.4725C9.16667 7.69351 9.25446 7.90548 9.41074 8.06176C9.56702 8.21804 9.77899 8.30583 10 8.30583C10.221 8.30583 10.433 8.21804 10.5893 8.06176C10.7455 7.90548 10.8333 7.69351 10.8333 7.4725C10.7764 6.4181 11.1386 5.38394 11.8411 4.59558C12.5436 3.80722 13.5294 3.32863 14.5833 3.26417C15.6373 3.32863 16.623 3.80722 17.3255 4.59558C18.028 5.38394 18.3903 6.4181 18.3333 7.4725C18.3333 9.89167 15.8775 13.3383 11.5958 16.9275V16.9308Z"/>
+                                    </svg>
+                                    <span class="yamuna-account-dropdown-wishlist-text">Lista de desejos</span>
+                                </span>
+                            </a>
+                        </div>
+                        <a class="yamuna-account-dropdown-logout" href="{{ store.customer_logout_url }}">Sair</a>
                     {% else %}
                         <div class="yamuna-account-dropdown-tabs">
                             {% if 'mandatory' not in store.customer_accounts %}
@@ -87,7 +101,7 @@
                     {% endif %}
                 </div>
             </div>
-            <a class="yamuna-header-action" href="{{ store.url }}/favoritos/" aria-label="{{ 'Favoritos' | translate }}">
+            <a class="yamuna-header-action yamuna-header-favorites" href="{{ store.url }}/favoritos/" aria-label="{{ 'Favoritos' | translate }}" title="{{ 'Favoritos' | translate }}">
                 <img src="{{ 'images/yamuna/header-heart.svg' | static_url }}" alt="" aria-hidden="true" />
             </a>
             <a {% if settings.ajax_cart and template != 'cart' %}href="#" class="yamuna-header-action js-modal-open js-toggle-cart" data-toggle="#modal-cart"{% else %}href="{{ store.cart_url }}" class="yamuna-header-action"{% endif %} aria-label="{{ 'Sacola' | translate }}">
@@ -123,6 +137,9 @@
         <form class="yamuna-mobile-search-form js-search-container js-search-form" action="{{ store.search_url }}" method="get">
             <div class="form-group m-0">
                 <input class="yamuna-mobile-search-input js-search-input form-control" autocomplete="off" type="search" name="q" placeholder="BUSCAR POR..." aria-label="{{ 'Buscar' | translate }}" />
+                <button type="button" class="yamuna-search-clear js-yamuna-search-clear" aria-label="Fechar busca">
+                    <svg class="icon-inline icon-w-10" aria-hidden="true"><use xlink:href="#times"/></svg>
+                </button>
                 <button type="submit" class="yamuna-mobile-search-submit" aria-label="{{ 'Buscar' | translate }}">
                     <img src="{{ 'images/yamuna/menu-search.svg' | static_url }}" alt="" aria-hidden="true" />
                 </button>
@@ -142,9 +159,43 @@
                 panel.classList.remove('is-open');
                 panel.setAttribute('aria-hidden', 'true');
                 if (searchToggle) searchToggle.setAttribute('aria-expanded', 'false');
+                var input = panel.querySelector('.yamuna-mobile-search-input');
+                var suggest = panel.querySelector('.js-search-suggest');
+                if (input) {
+                    input.value = '';
+                    input.blur();
+                }
+                if (suggest) {
+                    suggest.innerHTML = '';
+                    suggest.style.display = 'none';
+                }
             }
 
             if (menuTrigger) closeMobileSearch();
+
+            var clearBtn = event.target.closest('.js-yamuna-search-clear');
+            if (clearBtn) {
+                event.preventDefault();
+                event.stopPropagation();
+                var desktopWrap = clearBtn.closest('.yamuna-header-desktop-search');
+                if (desktopWrap) {
+                    var deskInput = desktopWrap.querySelector('.js-search-input');
+                    var deskSuggest = desktopWrap.querySelector('.js-search-suggest');
+                    if (deskInput) {
+                        deskInput.value = '';
+                        deskInput.blur();
+                    }
+                    if (deskSuggest) {
+                        deskSuggest.classList.remove('yamuna-search-open');
+                        deskSuggest.style.display = 'none';
+                    }
+                    var head = document.querySelector('.head-main');
+                    if (head) head.classList.remove('yamuna-dropdown-open');
+                    return;
+                }
+                closeMobileSearch();
+                return;
+            }
 
             var trigger = event.target.closest('.js-yamuna-mobile-search-toggle');
             if (!trigger || !window.matchMedia('(max-width: 1023px)').matches) return;
@@ -158,6 +209,8 @@
             if (isOpen) {
                 var input = panel.querySelector('.yamuna-mobile-search-input');
                 window.setTimeout(function() { input && input.focus(); }, 0);
+            } else {
+                closeMobileSearch();
             }
         });
     </script>
@@ -166,56 +219,135 @@
         @media (min-width: 1024px) {
             html {
                 --yamuna-panel-top: 0px;
-                --yamuna-panel-overlap: 105px;
+                --yamuna-panel-overlap: 80px;
+            }
+            {# Theme .head-main { transform: scale(1) } traps position:fixed panels inside the
+               header. Kill it on desktop so drawers/menus anchor to the viewport. #}
+            .head-main,
+            .js-head-main,
+            .head-main.head-fixed,
+            .head-main.transition-soft {
+                -webkit-transform: none !important;
+                -ms-transform: none !important;
+                transform: none !important;
             }
         }
     </style>
     <script>
         (function() {
-            function syncDesktopPanels() {
-                if (!window.matchMedia('(min-width: 1024px)').matches) return;
+            var clearanceLocked = false;
+            var transitionTimers = [];
+
+            function parseBoxValue(value, basis) {
+                if (value == null || value === '' || value === 'auto') return NaN;
+                var n = parseFloat(value);
+                if (isNaN(n)) return NaN;
+                if (String(value).indexOf('%') !== -1) return (n / 100) * basis;
+                return n;
+            }
+
+            function syncDesktopPanels(options) {
+                options = options || {};
+                if (!window.matchMedia('(min-width: 1024px)').matches) {
+                    document.documentElement.style.setProperty('--yamuna-header-clearance', '80px');
+                    clearanceLocked = false;
+                    return;
+                }
 
                 var header = document.querySelector('.yamuna-header-desktop');
                 if (!header) return;
 
                 var headerRect = header.getBoundingClientRect();
                 var headerBefore = window.getComputedStyle(header, '::before');
-                var beforeLeft = parseFloat(headerBefore.left);
-                var beforeRight = parseFloat(headerBefore.right);
-                var beforeTop = parseFloat(headerBefore.top);
-                var beforeHeight = parseFloat(headerBefore.height);
+                var beforeLeft = parseBoxValue(headerBefore.left, headerRect.width);
+                var beforeRight = parseBoxValue(headerBefore.right, headerRect.width);
+                var beforeTop = parseBoxValue(headerBefore.top, headerRect.height);
+                var beforeHeight = parseBoxValue(headerBefore.height, headerRect.height);
 
                 if (isNaN(beforeLeft)) beforeLeft = 0;
                 if (isNaN(beforeRight)) beforeRight = 0;
                 if (isNaN(beforeTop)) beforeTop = 0;
-                if (isNaN(beforeHeight)) beforeHeight = headerRect.height;
+                // ::before height can read as 0/auto during transitions — fall back to capsule box.
+                if (isNaN(beforeHeight) || beforeHeight < 1) beforeHeight = headerRect.height;
 
-                document.documentElement.style.setProperty('--yamuna-desktop-panel-left', (headerRect.left + beforeLeft) + 'px');
-                document.documentElement.style.setProperty('--yamuna-desktop-panel-width', Math.max(0, headerRect.width - beforeLeft - beforeRight) + 'px');
-                document.documentElement.style.setProperty('--yamuna-desktop-panel-top', (headerRect.top + beforeTop + beforeHeight) + 'px');
-                document.documentElement.style.setProperty('--yamuna-menu-left', (headerRect.left + beforeLeft) + 'px');
-                document.documentElement.style.setProperty('--yamuna-menu-width', Math.max(0, headerRect.width - beforeLeft - beforeRight) + 'px');
-                document.documentElement.style.setProperty('--yamuna-menu-top', (headerRect.top + beforeTop + beforeHeight) + 'px');
-                // Drawers/panels start at viewport top; overlap pads content under the capsule.
-                // Keep panel-top at 0 so white panels extend up and never leave a gap ("buraco").
+                var capsuleLeft = headerRect.left + beforeLeft;
+                var capsuleWidth = Math.max(0, headerRect.width - beforeLeft - beforeRight);
+                var capsuleBottom = headerRect.top + beforeTop + beforeHeight;
+                // Prefer the real painted bottom of the magenta bar when measurable.
+                if (headerBefore.height && headerBefore.height !== 'auto' && beforeHeight >= 1) {
+                    capsuleBottom = Math.max(capsuleBottom, headerRect.top + beforeTop + beforeHeight);
+                }
+                capsuleBottom = Math.max(capsuleBottom, headerRect.bottom);
+
+                document.documentElement.style.setProperty('--yamuna-desktop-panel-left', capsuleLeft + 'px');
+                document.documentElement.style.setProperty('--yamuna-desktop-panel-width', capsuleWidth + 'px');
+                document.documentElement.style.setProperty('--yamuna-desktop-panel-top', capsuleBottom + 'px');
+                document.documentElement.style.setProperty('--yamuna-menu-left', capsuleLeft + 'px');
+                document.documentElement.style.setProperty('--yamuna-menu-width', capsuleWidth + 'px');
+                document.documentElement.style.setProperty('--yamuna-menu-top', capsuleBottom + 'px');
+                // Panels start at viewport top; overlap pads content under the capsule (no buraco).
                 document.documentElement.style.setProperty('--yamuna-panel-top', '0px');
-                document.documentElement.style.setProperty('--yamuna-panel-overlap', Math.max(0, headerRect.top + beforeTop + beforeHeight) + 'px');
+                document.documentElement.style.setProperty('--yamuna-panel-overlap', Math.max(0, capsuleBottom) + 'px');
                 document.documentElement.style.setProperty('--yamuna-header-top', headerRect.top + 'px');
                 document.documentElement.style.setProperty('--yamuna-header-right', Math.max(0, window.innerWidth - headerRect.right) + 'px');
                 document.documentElement.style.setProperty('--yamuna-header-height', Math.max(0, headerRect.height) + 'px');
+
+                if (!clearanceLocked || options.forceClearance) {
+                    var clearance = Math.max(110, Math.round(capsuleBottom));
+                    clearance = Math.min(clearance, 160);
+                    document.documentElement.style.setProperty('--yamuna-header-clearance', clearance + 'px');
+                    if (!options.skipLock) clearanceLocked = true;
+                }
             }
 
             function syncDesktopPanelsDuringTransition() {
+                transitionTimers.forEach(function(id) { window.clearTimeout(id); });
+                transitionTimers = [];
+                syncDesktopPanels({ forceClearance: true, skipLock: true });
+                clearanceLocked = false;
+                [16, 50, 100, 200, 350, 550, 750].forEach(function(ms) {
+                    transitionTimers.push(window.setTimeout(function() {
+                        syncDesktopPanels({ forceClearance: true });
+                    }, ms));
+                });
+            }
+
+            var lastScrolled = null;
+            function onScrollOrClassChange() {
+                var scrolled = document.documentElement.classList.contains('yamuna-header-scrolled')
+                    || !!(document.querySelector('.head-main.compress'));
                 syncDesktopPanels();
-                window.setTimeout(syncDesktopPanels, 100);
-                window.setTimeout(syncDesktopPanels, 300);
-                window.setTimeout(syncDesktopPanels, 650);
+                if (lastScrolled === null) {
+                    lastScrolled = scrolled;
+                    return;
+                }
+                if (scrolled !== lastScrolled) {
+                    lastScrolled = scrolled;
+                    // Expand/compress animates padding/width — keep panels glued during the tween.
+                    syncDesktopPanelsDuringTransition();
+                }
             }
 
             syncDesktopPanelsDuringTransition();
             window.addEventListener('load', syncDesktopPanelsDuringTransition);
             window.addEventListener('resize', syncDesktopPanelsDuringTransition);
-            window.addEventListener('scroll', syncDesktopPanelsDuringTransition, { passive: true });
+            window.addEventListener('scroll', onScrollOrClassChange, { passive: true });
+
+            // Theme toggles .compress / yamuna-header-scrolled without always firing scroll last.
+            if (window.MutationObserver) {
+                var headMain = document.querySelector('.js-head-main, .head-main');
+                var observeTarget = headMain || document.documentElement;
+                new MutationObserver(function() { onScrollOrClassChange(); }).observe(observeTarget, {
+                    attributes: true,
+                    attributeFilter: ['class']
+                });
+                if (headMain) {
+                    new MutationObserver(function() { onScrollOrClassChange(); }).observe(document.documentElement, {
+                        attributes: true,
+                        attributeFilter: ['class']
+                    });
+                }
+            }
         })();
     </script>
 

@@ -16,6 +16,8 @@
 	{% include 'snipplets/pages/duvidas-frequentes.tpl' %}
 {% elseif page.handle == 'programa-de-beneficios' %}
 	{% include 'snipplets/pages/programa-de-beneficios.tpl' %}
+{% elseif page.handle == 'favoritos' or page.handle == 'lista-de-desejos' or page.handle == 'listadedesejos' %}
+	{% include 'snipplets/pages/favoritos.tpl' %}
 {% else %}
 	{% embed "snipplets/page-header.tpl" %}
 		{% block page_header_text %}{{ page.name }}{% endblock page_header_text %}

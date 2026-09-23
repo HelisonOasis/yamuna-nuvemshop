@@ -58,7 +58,7 @@
             {% if use_slider %}
                 {% include 'snipplets/grid/item.tpl' with {'slide_item': true, 'section_name': section_name} %}
             {% else %}
-                {% include 'snipplets/grid/item.tpl' %}
+                {% include 'snipplets/grid/item.tpl' with {'section_name': section_name} %}
             {% endif %}
         {% endfor %}
 

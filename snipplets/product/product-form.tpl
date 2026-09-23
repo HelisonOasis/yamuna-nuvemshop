@@ -9,7 +9,7 @@
 
 {{ component('nubesdk-slot', { type: "before_product_detail_price" }) }}
 
-{% if not is_subscription_only_product %}
+{% if not is_subscription_only_product and product.available %}
     {% set buy_three_unit_price = product.price * 0.95 %}
     {% set payment_discount_rate = product.maxPaymentDiscount.value / 100 %}
     {% set unit_pix_price = product.price * (1 - payment_discount_rate) %}
@@ -214,6 +214,10 @@
 
 {# Product form, includes: Variants, CTA and Shipping calculator #}
 
+{% if not product.available and not store.is_catalog %}
+    {% include 'snipplets/product/product-avise-me.tpl' %}
+{% endif %}
+
  <form id="product_form" class="js-product-form" method="post" action="{{ store.cart_url }}" data-store="product-form-{{ product.id }}">
 	<input type="hidden" name="add_to_cart" value="{{product.id}}" />
  	{% if product.variations %}
@@ -248,6 +252,7 @@
 
     {{ component('nubesdk-slot', { type: "before_product_detail_add_to_cart" }) }}
 
+    {% if product.available or store.is_catalog %}
     <div class="form-row mb-2">
         {% if show_product_quantity %}
             {% include "snipplets/product/product-quantity.tpl" %}
@@ -321,6 +326,7 @@
             </div>
         {% endif %}
     </div>
+    {% endif %}
 
     {{ component('nubesdk-slot', { type: "after_product_detail_add_to_cart" }) }}
 
@@ -358,7 +364,7 @@
 
         {# Shipping calculator and branch link #}
 
-        <div id="product-shipping-container" class="product-shipping-calculator list" {% if not product.display_price or not product.has_stock %}style="display:none;"{% endif %} data-shipping-url="{{ store.shipping_calculator_url }}">
+        <div id="product-shipping-container" class="product-shipping-calculator list" {% if not product.display_price %}style="display:none;"{% endif %} data-shipping-url="{{ store.shipping_calculator_url }}">
 
             {% if store.has_shipping %}
                 {% include "snipplets/shipping/shipping-calculator.tpl" with {'shipping_calculator_variant' : product.selected_or_first_available_variant, 'product_detail': true} %}

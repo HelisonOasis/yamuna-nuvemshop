@@ -12,24 +12,23 @@
 {% endif %}
 {% set show_offer_label = offer_pct > 0 %}
 
-{# Spots + PDP: hide "5% OFF comprando 3 ou mais" progressive seals. #}
-{% set hide_spot_promotions = true %}
-
+{# Never render progressive quantity seals ("5% OFF comprando 3 ou mais")
+   on spots / PDP — keep only real price-offer ribbons and stock labels. #}
 {{ component(
   'labels', {
     defer_stock_label_text: true,
     without_promotion: true,
     prioritize_promotion_over_offer: false,
-    promotion_quantity_long_wording: true,
+    promotion_quantity_long_wording: false,
     promotion_nxm_long_wording: false,
     labels_classes: {
-      group: 'js-labels-floating-group ' ~ (not show_offer_label ? 'yamuna-hide-offer ') ~ (product_detail and has_multiple_slides ? 'labels-product-slider'),
+      group: 'js-labels-floating-group yamuna-no-qty-promo ' ~ (not show_offer_label ? 'yamuna-hide-offer ') ~ (product_detail and has_multiple_slides ? 'labels-product-slider'),
       promotion: label_accent_classes ~ ' d-none yamuna-hide-promotion',
-      promotion_primary_text: 'd-block',
-      promotion_secondary_text: 'font-smallest',
+      promotion_primary_text: 'd-none',
+      promotion_secondary_text: 'd-none',
       offer: 'js-offer-label ' ~ (not show_offer_label ? 'd-none yamuna-offer-zero ') ~ (not has_custom_promotion_label ? 'label-circle ') ~ label_accent_classes,
       shipping: label_accent_classes,
-      no_stock: 'js-stock-label label label-default',
+      no_stock: 'js-stock-label label label-default' ~ (not product_detail ? ' d-none yamuna-hide-stock-label'),
     },
   })
 }}

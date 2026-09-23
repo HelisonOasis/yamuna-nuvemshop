@@ -90,11 +90,14 @@
             {{ settings.css_code | raw }}
         </style>
 
-        {# 043 — hero arrows: larger/thicker stroke SVG, centered in glass #}
+        {# 043 - hero arrows: vertically centered, pinned to banner edges #}
         <style id="yamuna-hero-arrows-043">
           @media (min-width: 768px) {
             body.template-home .js-home-main-slider-container .js-swiper-home-prev,
             body.template-home .js-home-main-slider-container .js-swiper-home-next {
+              top: 50% !important;
+              bottom: auto !important;
+              margin-top: -24px !important;
               display: flex !important;
               align-items: center !important;
               justify-content: center !important;
@@ -104,6 +107,14 @@
               background: rgba(255, 255, 255, 0.9) !important;
               background-color: rgba(255, 255, 255, 0.9) !important;
               color: #238482 !important;
+            }
+            body.template-home .js-home-main-slider-container .js-swiper-home-prev {
+              left: 8px !important;
+              right: auto !important;
+            }
+            body.template-home .js-home-main-slider-container .js-swiper-home-next {
+              right: 8px !important;
+              left: auto !important;
             }
             body.template-home .js-home-main-slider-container .js-swiper-home-prev::before,
             body.template-home .js-home-main-slider-container .js-swiper-home-next::before,
@@ -172,12 +183,835 @@
           }
         </style>
 
-        {# 012 — institutional pages: content starts below fixed mobile header #}
+        {# Physical header spacer — critical first-paint clearance for fixed header #}
+        <style id="yamuna-header-spacer-128">
+          .yamuna-header-spacer {
+            display: block;
+            width: 100%;
+            height: 80px;
+            flex-shrink: 0;
+            pointer-events: none;
+            visibility: hidden;
+          }
+          body.template-home .yamuna-header-spacer {
+            display: none;
+            height: 0;
+            overflow: hidden;
+          }
+          @media (min-width: 1024px) {
+            .yamuna-header-spacer {
+              height: var(--yamuna-header-clearance, 110px);
+            }
+            body:not(.template-home):not(.yamuna-account-auth) > .mt-4,
+            body:not(.template-home) > .yamuna-resale-wrap {
+              margin-top: 0 !important;
+              padding-top: 16px !important;
+            }
+          }
+
+          /* Cenário 138: Minha Conta — 40px below header (all breakpoints) */
+          body[class*="template-account-"]:not(.yamuna-account-auth) > .mt-4 {
+            margin-top: 0 !important;
+            padding-top: 40px !important;
+          }
+          body[class*="template-account-"]:not(.yamuna-account-auth) .page-header {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+            margin-bottom: 0 !important;
+          }
+          body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-account-page {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+          }
+        </style>
+
+        {# Cenário 128 — Minha Conta: Raleway + brand magenta (never theme purple) #}
+        <style id="yamuna-account-magenta-128">
+          /* Typography: Raleway across all logged-in account templates */
+          body[class*="template-account-"]:not(.yamuna-account-auth),
+          body[class*="template-account-"]:not(.yamuna-account-auth) .mt-4,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .page-header,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .page-header *,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-account-page,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-account-page *,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .account-page,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .account-page *,
+          body[class*="template-account-"]:not(.yamuna-account-auth) h1,
+          body[class*="template-account-"]:not(.yamuna-account-auth) h2,
+          body[class*="template-account-"]:not(.yamuna-account-auth) h3,
+          body[class*="template-account-"]:not(.yamuna-account-auth) h4,
+          body[class*="template-account-"]:not(.yamuna-account-auth) h5,
+          body[class*="template-account-"]:not(.yamuna-account-auth) h6,
+          body[class*="template-account-"]:not(.yamuna-account-auth) p,
+          body[class*="template-account-"]:not(.yamuna-account-auth) span,
+          body[class*="template-account-"]:not(.yamuna-account-auth) a,
+          body[class*="template-account-"]:not(.yamuna-account-auth) label,
+          body[class*="template-account-"]:not(.yamuna-account-auth) strong,
+          body[class*="template-account-"]:not(.yamuna-account-auth) small,
+          body[class*="template-account-"]:not(.yamuna-account-auth) button,
+          body[class*="template-account-"]:not(.yamuna-account-auth) input,
+          body[class*="template-account-"]:not(.yamuna-account-auth) select,
+          body[class*="template-account-"]:not(.yamuna-account-auth) textarea,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .form-label,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .form-control,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .btn,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .breadcrumbs {
+            font-family: 'Raleway', sans-serif !important;
+          }
+
+          /* Primary CTAs — ONLY on /account (do not leak to home/PLP/PDP) */
+          body[class*="template-account-"] .btn.btn-primary,
+          body[class*="template-account-"] a.btn.btn-primary,
+          body[class*="template-account-"] button.btn.btn-primary,
+          body[class*="template-account-"] .btn-primary,
+          body[class*="template-account-"] .btn.btn-primary.btn-small,
+          body[class*="template-account-"] a.btn.btn-primary.btn-small {
+            background: #a31460 !important;
+            background-color: #a31460 !important;
+            border-color: #a31460 !important;
+            color: #fff !important;
+            fill: #fff !important;
+            transition: background-color 0.2s ease, border-color 0.2s ease !important;
+          }
+          body[class*="template-account-"] .btn.btn-primary:hover,
+          body[class*="template-account-"] .btn.btn-primary:focus,
+          body[class*="template-account-"] a.btn.btn-primary:hover,
+          body[class*="template-account-"] a.btn.btn-primary:focus,
+          body[class*="template-account-"] .btn-primary:hover,
+          body[class*="template-account-"] .btn-primary:focus {
+            background: #6b0a3f !important;
+            background-color: #6b0a3f !important;
+            border-color: #6b0a3f !important;
+            color: #fff !important;
+            opacity: 1 !important;
+          }
+          body[class*="template-account-"] .btn.btn-primary:active,
+          body[class*="template-account-"] a.btn.btn-primary:active,
+          body[class*="template-account-"] .btn-primary:active {
+            background: #520731 !important;
+            background-color: #520731 !important;
+            border-color: #520731 !important;
+            color: #fff !important;
+            opacity: 1 !important;
+          }
+
+          /* All account interactive accents: links, icons, text-primary, order status */
+          body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-account-page a:not(.btn-primary):not(.btn),
+          body[class*="template-account-"]:not(.yamuna-account-auth) .account-page a:not(.btn-primary):not(.btn),
+          body[class*="template-account-"]:not(.yamuna-account-auth) .btn-link,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .btn-link-primary,
+          body[class*="template-account-"]:not(.yamuna-account-auth) a.btn-link,
+          body[class*="template-account-"]:not(.yamuna-account-auth) a.btn-link-primary,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-login-forgot,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-account-link-wrap a,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .text-primary,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .pending,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .authorized,
+          body[class*="template-account-"]:not(.yamuna-account-auth) span.pending,
+          body[class*="template-account-"]:not(.yamuna-account-auth) span.authorized {
+            color: #a31460 !important;
+            fill: #a31460 !important;
+            transition: color 0.2s ease, fill 0.2s ease !important;
+          }
+          body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-account-page a:not(.btn-primary):not(.btn):hover,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .account-page a:not(.btn-primary):not(.btn):hover,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .btn-link:hover,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .btn-link-primary:hover,
+          body[class*="template-account-"]:not(.yamuna-account-auth) a.btn-link-primary:hover,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-login-forgot:hover,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-account-link-wrap a:hover {
+            color: #6b0a3f !important;
+            fill: #6b0a3f !important;
+            opacity: 1 !important;
+          }
+          body[class*="template-account-"]:not(.yamuna-account-auth) .svg-icon-primary,
+          body[class*="template-account-"]:not(.yamuna-account-auth) svg.svg-icon-primary,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .svg-icon-primary use {
+            fill: #a31460 !important;
+            color: #a31460 !important;
+          }
+          /* Cenário 136: ALL non-pink account text = wine #4a1d3a (beats theme #000) */
+          body[class*="template-account-"]:not(.yamuna-account-auth) > .mt-4,
+          body[class*="template-account-"]:not(.yamuna-account-auth) > .mt-4 *:not(svg):not(path):not(use),
+          body[class*="template-account-"]:not(.yamuna-account-auth) .page-header,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .page-header *:not(svg):not(path):not(use),
+          body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-account-page,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-account-page *:not(svg):not(path):not(use),
+          body[class*="template-account-"]:not(.yamuna-account-auth) .account-page,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .account-page *:not(svg):not(path):not(use),
+          body[class*="template-account-"]:not(.yamuna-account-auth) .page-header h1,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .page-header .h1,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .page-header .h2,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .page-header .text-primary {
+            color: #4a1d3a !important;
+          }
+          /* Re-assert pink accents after wine * (head) */
+          body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-account-page a:not(.btn-primary):not(.btn),
+          body[class*="template-account-"]:not(.yamuna-account-auth) .account-page a:not(.btn-primary):not(.btn),
+          body[class*="template-account-"]:not(.yamuna-account-auth) .btn-link,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .btn-link-primary,
+          body[class*="template-account-"]:not(.yamuna-account-auth) a.btn-link,
+          body[class*="template-account-"]:not(.yamuna-account-auth) a.btn-link-primary,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-login-forgot,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-account-link-wrap a,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .text-primary,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .pending,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .authorized,
+          body[class*="template-account-"]:not(.yamuna-account-auth) span.pending,
+          body[class*="template-account-"]:not(.yamuna-account-auth) span.authorized {
+            color: #a31460 !important;
+            fill: #a31460 !important;
+          }
+          body[class*="template-account-"]:not(.yamuna-account-auth) .btn.btn-primary,
+          body[class*="template-account-"]:not(.yamuna-account-auth) a.btn.btn-primary,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .btn-primary,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .btn.btn-primary.btn-small,
+          body[class*="template-account-"]:not(.yamuna-account-auth) a.btn.btn-primary.btn-small {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-sizing: border-box !important;
+            height: 40px !important;
+            min-height: 40px !important;
+            padding: 0 24px !important;
+            border: 0 !important;
+            border-radius: 999px !important;
+            background: #a31460 !important;
+            background-color: #a31460 !important;
+            border-color: #a31460 !important;
+            color: #fff !important;
+            fill: #fff !important;
+            font-family: 'Raleway', sans-serif !important;
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.04em !important;
+            line-height: 1.2 !important;
+            text-transform: uppercase !important;
+          }
+          body[class*="template-account-"]:not(.yamuna-account-auth) .btn.btn-primary.d-block,
+          body[class*="template-account-"]:not(.yamuna-account-auth) a.btn.btn-primary.d-block {
+            display: flex !important;
+            width: 100% !important;
+          }
+          body[class*="template-account-"]:not(.yamuna-account-auth) .btn-secondary {
+            color: #a31460 !important;
+            border-color: #a31460 !important;
+            background: transparent !important;
+            transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease !important;
+          }
+          body[class*="template-account-"]:not(.yamuna-account-auth) .btn-secondary:hover,
+          body[class*="template-account-"]:not(.yamuna-account-auth) .btn-secondary:focus {
+            color: #fff !important;
+            border-color: #6b0a3f !important;
+            background: #6b0a3f !important;
+            opacity: 1 !important;
+          }
+        </style>
+
+        {# Home spot COMPRAR must stay teal — never inherit account magenta #}
+        <style id="yamuna-home-spot-teal-137">
+          body.template-home .yamuna-home-spot-buy-one,
+          body.template-home .btn.btn-primary.yamuna-home-spot-buy-one,
+          body.template-home .yamuna-home-products .item-actions .btn-primary,
+          body.template-home .yamuna-home-products .item-actions .yamuna-home-spot-buy-one,
+          body.template-home [data-store^="home-products-"] .yamuna-home-spot-buy-one,
+          body .btn.btn-primary.yamuna-home-spot-buy-one,
+          body .yamuna-home-spot-buy-one.btn-primary {
+            background: #238482 !important;
+            background-color: #238482 !important;
+            border-color: #238482 !important;
+            color: #fff !important;
+            fill: #fff !important;
+          }
+        </style>
+
+        {# Cenário 150: Esqueceu sua senha? = #A31460 #}
+        <style id="yamuna-forgot-link-150">
+          body .head-main .yamuna-account-dropdown-forgot,
+          body[class] .head-main .yamuna-account-dropdown-forgot,
+          body .yamuna-login-forgot,
+          body .yamuna-login-forgot-wrap .yamuna-login-forgot {
+            color: #a31460 !important;
+          }
+          body .head-main .yamuna-account-dropdown-forgot:hover,
+          body .head-main .yamuna-account-dropdown-forgot:focus,
+          body .yamuna-login-forgot:hover,
+          body .yamuna-login-forgot:focus {
+            color: #6b0a3f !important;
+          }
+        </style>
+
+        {# Cenário 152: inputs ≥16px no mobile — evita zoom automático no iOS #}
+        <style id="yamuna-ios-input-zoom-152">
+          @media (max-width: 1023px) {
+            html body input.form-control,
+            html body textarea.form-control,
+            html body select.form-control,
+            html body input[type="text"],
+            html body input[type="email"],
+            html body input[type="password"],
+            html body input[type="tel"],
+            html body input[type="search"],
+            html body input[type="number"],
+            html body input[type="url"],
+            html body input[type="date"],
+            html body select,
+            html body textarea,
+            html body .yamuna-mobile-search-input,
+            html body .yamuna-mobile-menu-search-input,
+            html body .yamuna-login-input,
+            html body .yamuna-account-dropdown-input,
+            html body .search-input {
+              font-size: 16px !important;
+            }
+          }
+        </style>
+
+        {# Cenário 153: botão X na barra de busca #}
+        <style id="yamuna-search-clear-153">
+          .yamuna-search-clear {
+            position: absolute !important;
+            top: 50% !important;
+            right: 40px !important;
+            z-index: 3 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 28px !important;
+            height: 28px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 50% !important;
+            background: transparent !important;
+            color: #4a1d3a !important;
+            fill: #4a1d3a !important;
+            cursor: pointer !important;
+            transform: translateY(-50%) !important;
+            opacity: 0.75 !important;
+          }
+          .yamuna-search-clear:hover,
+          .yamuna-search-clear:focus {
+            opacity: 1 !important;
+            background: rgba(74, 29, 58, 0.1) !important;
+            outline: 0 !important;
+          }
+          .yamuna-search-clear svg {
+            width: 12px !important;
+            height: 12px !important;
+            fill: currentColor !important;
+          }
+          body .head-main .yamuna-mobile-search-input.form-control {
+            padding-right: 76px !important;
+          }
+          body .head-main .yamuna-header-desktop-search .yamuna-search-clear {
+            right: 42px !important;
+            color: #fff !important;
+            fill: #fff !important;
+          }
+          body .head-main .yamuna-header-desktop-search .yamuna-search-clear:hover,
+          body .head-main .yamuna-header-desktop-search .yamuna-search-clear:focus {
+            background: rgba(255, 255, 255, 0.16) !important;
+          }
+          body .head-main .yamuna-header-desktop-search .search-input {
+            padding-right: 72px !important;
+          }
+          /* Esconde o X nativo do iOS/WebKit (type=search) — só o nosso botão */
+          html body input[type="search"]::-webkit-search-cancel-button,
+          html body .yamuna-mobile-search-input[type="search"]::-webkit-search-cancel-button,
+          html body .js-search-input[type="search"]::-webkit-search-cancel-button,
+          html body .search-input[type="search"]::-webkit-search-cancel-button {
+            -webkit-appearance: none !important;
+            appearance: none !important;
+            display: none !important;
+          }
+        </style>
+
+        {# Cenário 155: busca no drawer mobile — resultados sem quebrar menu #}
+        <style id="yamuna-drawer-search-155">
+          @media (max-width: 1023px) {
+            body #nav-hamburger .yamuna-mobile-menu {
+              display: flex !important;
+              flex-direction: column !important;
+            }
+            body #nav-hamburger .yamuna-mobile-menu-search {
+              position: relative !important;
+            }
+            body #nav-hamburger .yamuna-mobile-menu-search-clear {
+              position: absolute !important;
+              top: 50% !important;
+              right: 34px !important;
+              z-index: 2 !important;
+              display: inline-flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              width: 24px !important;
+              height: 24px !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              border: 0 !important;
+              border-radius: 50% !important;
+              background: transparent !important;
+              color: #4a1d3a !important;
+              fill: #4a1d3a !important;
+              cursor: pointer !important;
+              transform: translateY(-50%) !important;
+            }
+            body #nav-hamburger .yamuna-mobile-menu-search-input {
+              padding-right: 56px !important;
+            }
+            body #nav-hamburger .yamuna-mobile-menu-search-suggest {
+              flex: 1 1 auto !important;
+              min-height: 0 !important;
+              max-height: calc(100dvh - 200px) !important;
+              margin: 4px 12px 16px !important;
+              overflow-x: hidden !important;
+              overflow-y: auto !important;
+              -webkit-overflow-scrolling: touch !important;
+            }
+            body #nav-hamburger .yamuna-mobile-menu.yamuna-menu-has-search .yamuna-mobile-menu-products,
+            body #nav-hamburger .yamuna-mobile-menu.yamuna-menu-has-search .yamuna-mobile-menu-links,
+            body #nav-hamburger .yamuna-mobile-menu:has(.yamuna-mobile-menu-search-suggest .search-suggest-list) .yamuna-mobile-menu-products,
+            body #nav-hamburger .yamuna-mobile-menu:has(.yamuna-mobile-menu-search-suggest .search-suggest-list) .yamuna-mobile-menu-links,
+            body #nav-hamburger .yamuna-mobile-menu:has(.yamuna-mobile-menu-search-suggest .js-search-suggest-all-link) .yamuna-mobile-menu-products,
+            body #nav-hamburger .yamuna-mobile-menu:has(.yamuna-mobile-menu-search-suggest .js-search-suggest-all-link) .yamuna-mobile-menu-links {
+              display: none !important;
+            }
+            /* VER TODOS OS RESULTADOS — force 40px (beat theme .btn-primary padding:13px) */
+            html body #nav-hamburger a.js-search-suggest-all-link.btn.btn-primary,
+            html body #nav-hamburger .yamuna-mobile-menu-search-suggest a.js-search-suggest-all-link,
+            html body #nav-hamburger .yamuna-mobile-menu-search-suggest .btn.btn-primary,
+            html body .yamuna-mobile-menu-search-suggest a.js-search-suggest-all-link.btn.btn-primary,
+            html body .js-search-suggest a.js-search-suggest-all-link.btn.btn-primary,
+            html body .search-suggest a.js-search-suggest-all-link.btn.btn-primary {
+              display: flex !important;
+              width: 100% !important;
+              max-width: 100% !important;
+              height: 40px !important;
+              min-height: 40px !important;
+              max-height: 40px !important;
+              margin: 12px 0 8px !important;
+              padding: 0 16px !important;
+              align-items: center !important;
+              justify-content: center !important;
+              box-sizing: border-box !important;
+              border-radius: 999px !important;
+              background: #a31460 !important;
+              border: 0 !important;
+              border-color: #a31460 !important;
+              color: #fff !important;
+              font-family: "Raleway", sans-serif !important;
+              font-size: 13px !important;
+              font-weight: 600 !important;
+              line-height: 1 !important;
+              letter-spacing: .02em !important;
+              text-transform: uppercase !important;
+            }
+          }
+        </style>
+
+        {# Cenário 022: blog post — sem identificação de autor #}
+        <style id="yamuna-blog-author-022">
+          body.template-blog-post .yamuna-blog-post-page .post-author,
+          body.template-blog-post .yamuna-blog-post-page .blog-post-author,
+          body.template-blog-post .yamuna-blog-post-page .author,
+          body.template-blog-post .yamuna-blog-post-date a,
+          body.template-blog-post .yamuna-blog-post-date .author,
+          body.template-blog-post .yamuna-blog-post-date .post-author {
+            display: none !important;
+          }
+        </style>
+
+        {# Cenário 023: blog post — ocultar breadcrumb em mobile #}
+        <style id="yamuna-blog-breadcrumb-023">
+          @media (max-width: 1023px) {
+            body.template-blog-post .yamuna-blog-post-page .breadcrumbs,
+            body.template-blog-post .page-header .breadcrumbs {
+              display: none !important;
+            }
+          }
+        </style>
+
+        {# Blog post background #}
+        <style id="yamuna-blog-post-bg">
+          body.template-blog-post .yamuna-blog-post-page {
+            background: #f6f6f6 !important;
+          }
+        </style>
+
+        {# Cenario 024: blog post images capped like prod (~680px, no upscale) #}
+        <style id="yamuna-blog-images-024">
+          body.template-blog-post .yamuna-blog-post-page,
+          body.template-blog-post .yamuna-blog-post-body,
+          body.template-blog-post .yamuna-blog-post .post-content {
+            overflow-x: clip !important;
+            box-sizing: border-box !important;
+          }
+          /* Keep a centered reading column (do NOT force article to 100% width). */
+          body.template-blog-post .yamuna-blog-post-page > .container {
+            max-width: 960px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+          }
+          body.template-blog-post .yamuna-blog-post {
+            max-width: 100% !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+          }
+          body.template-blog-post .yamuna-blog-post-page img,
+          body.template-blog-post .yamuna-blog-post img,
+          body.template-blog-post .yamuna-blog-post-image,
+          body.template-blog-post .yamuna-blog-post .post-item-image {
+            display: block !important;
+            width: auto !important;
+            max-width: min(100%, 680px) !important;
+            height: auto !important;
+            max-height: 680px !important;
+            object-fit: contain !important;
+            object-position: center !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+          }
+          body.template-blog-post .yamuna-blog-post > .yamuna-blog-post-image,
+          body.template-blog-post .yamuna-blog-post img.yamuna-blog-post-image,
+          body.template-blog-post .yamuna-blog-post .yamuna-blog-post-image.post-item-image {
+            max-width: min(100%, 640px) !important;
+            max-height: 420px !important;
+            object-fit: cover !important;
+          }
+          @media (max-width: 1023px) {
+            body.template-blog-post .yamuna-blog-post-page img,
+            body.template-blog-post .yamuna-blog-post img {
+              max-height: 520px !important;
+            }
+            body.template-blog-post .yamuna-blog-post > .yamuna-blog-post-image,
+            body.template-blog-post .yamuna-blog-post img.yamuna-blog-post-image {
+              max-height: 360px !important;
+            }
+          }
+          body.template-blog-post .yamuna-blog-post-page figure,
+          body.template-blog-post .yamuna-blog-post-page picture,
+          body.template-blog-post .yamuna-blog-post-page table,
+          body.template-blog-post .yamuna-blog-post-page iframe,
+          body.template-blog-post .yamuna-blog-post-page video,
+          body.template-blog-post .yamuna-blog-post .post-content a {
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+          }
+        </style>
+
+        {# Blog related — grid no padrão PLP #}
+        <style id="yamuna-blog-related-grid">
+          body.template-blog-post .yamuna-blog-related {
+            background: #f6f6f6 !important;
+            padding: 24px 0 56px !important;
+          }
+          body.template-blog-post .yamuna-blog-related-grid {
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 16px 0 !important;
+            width: 100% !important;
+            padding: 0 16px 8px !important;
+            box-sizing: border-box !important;
+          }
+          body.template-blog-post .yamuna-blog-related-cell {
+            width: 100% !important;
+            height: auto !important;
+            padding: 0 0 16px !important;
+            box-sizing: border-box !important;
+          }
+          body.template-blog-post .yamuna-blog-related-cell .js-item-product,
+          body.template-blog-post .yamuna-blog-related-cell .item.item-product {
+            display: flex !important;
+            flex-direction: column !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            min-height: 0 !important;
+            height: auto !important;
+            margin: 0 !important;
+            overflow: visible !important;
+            border-radius: 12px !important;
+            background: #fff !important;
+          }
+          body.template-blog-post .yamuna-blog-related-cell .item-image,
+          body.template-blog-post .yamuna-blog-related-cell .js-item-image-container {
+            display: block !important;
+            width: calc(100% - 32px) !important;
+            max-width: 280px !important;
+            height: auto !important;
+            max-height: none !important;
+            aspect-ratio: 1 / 1 !important;
+            margin: 16px auto 0 !important;
+            overflow: hidden !important;
+            border-radius: 8px !important;
+            background: #fff !important;
+          }
+          body.template-blog-post .yamuna-blog-related-cell .item-image img,
+          body.template-blog-post .yamuna-blog-related-cell .js-item-image-container img,
+          body.template-blog-post .yamuna-blog-related-cell .img-absolute,
+          body.template-blog-post .yamuna-blog-related-cell .img-absolute-centered {
+            position: static !important;
+            top: auto !important;
+            left: auto !important;
+            display: block !important;
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
+            object-fit: contain !important;
+            object-position: center !important;
+            transform: none !important;
+          }
+          body.template-blog-post .yamuna-blog-related-cell .item-image-secondary,
+          body.template-blog-post .yamuna-blog-related-cell .product-item-image-secondary {
+            display: none !important;
+          }
+          body.template-blog-post .yamuna-blog-related-cell .item-description {
+            padding: 5px 28px 0 !important;
+            text-align: left !important;
+            border: 0 !important;
+            border-bottom: 0 !important;
+          }
+          body.template-blog-post .yamuna-blog-related-cell .item-name {
+            color: #4a1d3a !important;
+            font-family: 'Dosis', sans-serif !important;
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            text-align: left !important;
+          }
+          @media (min-width: 768px) {
+            body.template-blog-post .yamuna-blog-related-cell .item-name {
+              display: block !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              white-space: nowrap !important;
+              max-width: 100% !important;
+            }
+          }
+          body.template-blog-post .yamuna-blog-related-cell .item-price {
+            color: #4a1d3a !important;
+            font-family: 'Dosis', sans-serif !important;
+            font-size: 24px !important;
+            font-weight: 600 !important;
+          }
+          /* PLP offer ribbon (not circle) */
+          body.template-blog-post .yamuna-blog-related-cell .labels {
+            top: 0 !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            display: flex !important;
+            width: calc(100% - 24px) !important;
+            max-width: 300px !important;
+            justify-content: center !important;
+            z-index: 12 !important;
+          }
+          body.template-blog-post .yamuna-blog-related-cell .js-offer-label,
+          body.template-blog-post .yamuna-blog-related-cell .js-offer-label.label-circle {
+            display: flex !important;
+            width: 100% !important;
+            max-width: 300px !important;
+            height: 40px !important;
+            margin: 0 auto !important;
+            padding: 0 24px !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border-radius: 0 !important;
+            background-color: transparent !important;
+            background-image: url("{{ 'images/yamuna/offer-ribbon.svg' | static_url }}") !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+            background-size: 100% 100% !important;
+            color: #a31460 !important;
+            font-family: 'Dosis', sans-serif !important;
+            font-size: 18px !important;
+            font-weight: 700 !important;
+          }
+          body.template-blog-post .yamuna-blog-related-cell .js-offer-label span {
+            color: #a31460 !important;
+            font-family: 'Dosis', sans-serif !important;
+            font-size: 18px !important;
+            font-weight: 700 !important;
+          }
+          /* Hide frete gratis */
+          body.template-blog-post .yamuna-blog-related-cell .js-shipping-label-private,
+          body.template-blog-post .yamuna-blog-related-cell .js-free-shipping-minimum-label,
+          body.template-blog-post .yamuna-blog-related-cell [data-store="product-item-label-shipping"] {
+            display: none !important;
+          }
+          /* Force PLP CTAs visible (theme .item-actions is hover-only) */
+          body.template-blog-post .yamuna-blog-related-cell .item-actions,
+          body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-item-actions {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 10px !important;
+            width: 100% !important;
+            margin-top: auto !important;
+            padding: 12px 12px 16px !important;
+            border: 0 !important;
+            border-top: 0 !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+          }
+          body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-item-actions form,
+          body.template-blog-post .yamuna-blog-related-cell .item-actions form,
+          body.template-blog-post .yamuna-blog-related-cell .item-actions > div:first-child {
+            display: grid !important;
+            gap: 10px !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            visibility: visible !important;
+          }
+          body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-one,
+          body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-three,
+          body.template-blog-post .yamuna-blog-related-cell .yamuna-pdp-spot-buy-one,
+          body.template-blog-post .yamuna-blog-related-cell .yamuna-pdp-spot-buy-three,
+          body.template-blog-post .yamuna-blog-related-cell .item-actions .btn-primary,
+          body.template-blog-post .yamuna-blog-related-cell .item-actions .btn-secondary.js-addtocart {
+            display: flex !important;
+            width: 100% !important;
+            min-height: 40px !important;
+            height: auto !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            border: 1px solid #238482 !important;
+            border-radius: 24px !important;
+            background: #238482 !important;
+            color: #fff !important;
+            font-family: 'Roboto', sans-serif !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
+            white-space: normal !important;
+            text-align: center !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+          }
+          body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-three,
+          body.template-blog-post .yamuna-blog-related-cell .yamuna-pdp-spot-buy-three {
+            height: 42px !important;
+            min-height: 42px !important;
+            background: #fff !important;
+            color: #238482 !important;
+          }
+          body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-three span,
+          body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-three-prefix,
+          body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-three-price {
+            font-family: 'Roboto', sans-serif !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+          }
+          @media (max-width: 360px) {
+            body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-item-actions,
+            body.template-blog-post .yamuna-blog-related-cell .item-actions {
+              padding: 10px 8px 14px !important;
+            }
+            body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-one,
+            body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-three,
+            body.template-blog-post .yamuna-blog-related-cell .yamuna-pdp-spot-buy-one,
+            body.template-blog-post .yamuna-blog-related-cell .yamuna-pdp-spot-buy-three {
+              padding: 8px 6px !important;
+              gap: 4px !important;
+              font-size: 11px !important;
+              line-height: 1.2 !important;
+            }
+            body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-one img,
+            body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-three img {
+              width: 12px !important;
+              height: 12px !important;
+              margin-right: 4px !important;
+            }
+          }
+          body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-three,
+          body.template-blog-post .yamuna-blog-related-cell .yamuna-pdp-spot-buy-three,
+          body.template-blog-post .yamuna-blog-related-cell .item-actions .btn-secondary.js-addtocart {
+            background: #fff !important;
+            color: #238482 !important;
+          }
+          body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-one img,
+          body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-three img {
+            width: 14px !important;
+            height: 14px !important;
+            margin-right: 8px !important;
+            visibility: visible !important;
+          }
+          body.template-blog-post .yamuna-blog-related-cell .item-actions > div:last-child:not(.yamuna-avise-me-wrap):not(:first-child),
+          body.template-blog-post .yamuna-blog-related-cell .js-addtocart-placeholder {
+            display: none !important;
+          }
+          body.template-blog-post .yamuna-blog-related .swiper-button-prev,
+          body.template-blog-post .yamuna-blog-related .swiper-button-next,
+          body.template-blog-post .yamuna-blog-related .js-swiper-related-prev,
+          body.template-blog-post .yamuna-blog-related .js-swiper-related-next,
+          body.template-blog-post .yamuna-blog-related .swiper-pagination {
+            display: none !important;
+          }
+          @media (min-width: 768px) {
+            body.template-blog-post .yamuna-blog-related-grid {
+              grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+              gap: 20px 16px !important;
+              padding: 0 16px 16px !important;
+            }
+            body.template-blog-post .yamuna-blog-related-cell {
+              padding: 0 8px 32px !important;
+            }
+            body.template-blog-post .yamuna-blog-related-cell .js-item-product,
+            body.template-blog-post .yamuna-blog-related-cell .item.item-product {
+              min-height: 0 !important;
+            }
+            body.template-blog-post .yamuna-blog-related-cell .item-image,
+            body.template-blog-post .yamuna-blog-related-cell .js-item-image-container {
+              width: calc(100% - 40px) !important;
+              max-width: 280px !important;
+              height: auto !important;
+              max-height: none !important;
+              aspect-ratio: 1 / 1 !important;
+              margin: 20px auto 0 !important;
+            }
+            body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-item-actions,
+            body.template-blog-post .yamuna-blog-related-cell .item-actions {
+              padding: 14px 20px 20px !important;
+            }
+            body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-one,
+            body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-three {
+              font-family: 'Roboto', sans-serif !important;
+              font-size: 14px !important;
+              white-space: normal !important;
+            }
+          }
+          /* Desktop: 3-col grid like PLP */
+          @media (min-width: 1100px) {
+            body.template-blog-post .yamuna-blog-related-grid {
+              grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+              justify-content: center !important;
+              gap: 0 !important;
+            }
+            body.template-blog-post .yamuna-blog-related-cell {
+              padding: 0 16px 32px !important;
+            }
+            body.template-blog-post .yamuna-blog-related-cell .item-image,
+            body.template-blog-post .yamuna-blog-related-cell .js-item-image-container {
+              width: calc(100% - 56px) !important;
+              max-width: 320px !important;
+              height: auto !important;
+              max-height: none !important;
+              aspect-ratio: 1 / 1 !important;
+              margin: 24px auto 0 !important;
+            }
+            body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-one,
+            body.template-blog-post .yamuna-blog-related-cell .yamuna-plp-buy-three {
+              font-size: 14px !important;
+            }
+          }
+        </style>
+
+        {# 012 — institutional pages: solid white mobile header (clearance via .yamuna-header-spacer) #}
         <style id="yamuna-inst-pages-012">
           @media (max-width: 1023px) {
-            body.template-page {
-              padding-top: 80px !important;
-            }
             body.template-page .head-main,
             body.template-page .head-main.head-fixed,
             body.template-page .head-main .yamuna-header-mobile {
@@ -267,11 +1101,22 @@
             }
 
             html:has(#nav-hamburger.modal-show) body.template-home .head-main::after,
-            html:has(#nav-hamburger.modal-show) body[class].template-home .head-main::after {
+            html:has(#nav-hamburger.modal-show) body[class].template-home .head-main::after,
+            html body.template-home .head-main:has(.yamuna-mobile-search.is-open)::after,
+            html body[class].template-home .head-main:has(.yamuna-mobile-search.is-open)::after,
+            body.template-home .head-main:has(.yamuna-mobile-search.is-open)::after {
               display: none !important;
               height: 0 !important;
               content: none !important;
               background: none !important;
+              opacity: 0 !important;
+            }
+
+            /* Cenario 154: search panel above any residual fade */
+            html body.template-home .head-main .yamuna-mobile-search.is-open,
+            body.template-home .head-main .yamuna-mobile-search.is-open {
+              position: relative !important;
+              z-index: 20 !important;
             }
           }
         </style>
@@ -359,10 +1204,9 @@
             background-color: #F6F6F6 !important;
           }
 
-          /* Header fixo (80px): empurra o conteúdo para baixo em todos os breakpoints */
+          /* Clearance comes from .yamuna-header-spacer; keep overflow lock only */
           html body.template-404,
           body.template-404 {
-            padding-top: 80px !important;
             overflow-x: hidden !important;
             box-sizing: border-box !important;
           }
@@ -595,6 +1439,7 @@
 
     </head>
     <body class="{% if customer %}customer-logged-in{% endif %} template-{{ template | replace('.', '-') }}{% if yamuna_account_auth %} yamuna-account-auth{% endif %}" data-rounded-borders="{{ settings.theme_rounded ? 'true' : 'false' }}" data-solid-icons="{{ settings.icons_solid ? 'true' : 'false' }}">
+        <div id="yamuna-wishlist-config" hidden data-customer-id="{% if customer %}{{ customer.id }}{% endif %}" data-login-url="{{ store.customer_login_url }}"></div>
 
         {{ component('nubesdk-slot', { type: "before_main_content" }) }}
 
@@ -633,13 +1478,15 @@
             {% snipplet "header/header-cart.tpl" %}
         {% else %}
             {% snipplet "header/header.tpl" %}
+            {# Physical space for fixed header so content never sits underneath it. #}
+            <div class="js-yamuna-header-spacer yamuna-header-spacer" aria-hidden="true"></div>
         {% endif %}
 
         {# Page content #}
 
         {% if template != 'home' or (template == 'home' and settings.slider is empty) %}
 
-        <div class="{% if template == 'cart' %}yamuna-cart-wrap{% elseif yamuna_account_auth %}yamuna-login-wrap{% elseif template == 'blog' or template == 'blog-post' or page.handle == 'revenda' or page.handle == 'quem-somos' or page.handle == 'quemsomos' or page.handle == 'nossomanifesto' or page.handle == 'nosso-manifesto' or page.handle == 'politicadeprivacidade' or page.handle == 'politica-de-privacidade' or page.handle == 'trabalheconosco' or page.handle == 'trabalhe-conosco' or page.handle == 'entrega' or page.handle == 'trocasedevolucoes' or page.handle == 'trocas-e-devolucoes' or page.handle == 'duvidasfrequentes' or page.handle == 'duvidas-frequentes' %}yamuna-resale-wrap{% else %}mt-4{% endif %}">
+        <div class="{% if template == 'cart' %}yamuna-cart-wrap{% elseif yamuna_account_auth %}yamuna-login-wrap{% elseif template == 'blog' or template == 'blog-post' or page.handle == 'revenda' or page.handle == 'quem-somos' or page.handle == 'quemsomos' or page.handle == 'nossomanifesto' or page.handle == 'nosso-manifesto' or page.handle == 'politicadeprivacidade' or page.handle == 'politica-de-privacidade' or page.handle == 'trabalheconosco' or page.handle == 'trabalhe-conosco' or page.handle == 'entrega' or page.handle == 'trocasedevolucoes' or page.handle == 'trocas-e-devolucoes' or page.handle == 'duvidasfrequentes' or page.handle == 'duvidas-frequentes' %}yamuna-resale-wrap{% elseif page.handle == 'favoritos' or page.handle == 'lista-de-desejos' or page.handle == 'listadedesejos' %}yamuna-favoritos-wrap{% else %}mt-4{% endif %}">
 
         {% endif %}
 
@@ -869,10 +1716,102 @@
                 setTimeout(tryParse, 4000);
             }
 
+            {# Cenário 050: mobile PDP breadcrumb — sem scroll; "... > ... > texto" #}
+            function fitYamunaPdpBreadcrumb() {
+                var nav = document.querySelector('.yamuna-pdp-summary .js-yamuna-breadcrumbs, .yamuna-pdp-summary .breadcrumbs');
+                if (!nav) {
+                    return;
+                }
+
+                var crumbs = nav.querySelectorAll('.crumb');
+                var i;
+                for (i = 0; i < crumbs.length; i++) {
+                    if (!crumbs[i].getAttribute('data-yamuna-full-label')) {
+                        crumbs[i].setAttribute('data-yamuna-full-label', (crumbs[i].textContent || '').replace(/\s+/g, ' ').trim());
+                    }
+                }
+
+                function restore() {
+                    for (i = 0; i < crumbs.length; i++) {
+                        var full = crumbs[i].getAttribute('data-yamuna-full-label') || '';
+                        crumbs[i].textContent = full;
+                        crumbs[i].classList.remove('is-truncated', 'is-collapsed');
+                        if (crumbs[i].getAttribute('data-yamuna-title-set') === '1') {
+                            crumbs[i].removeAttribute('title');
+                            crumbs[i].removeAttribute('data-yamuna-title-set');
+                        }
+                        crumbs[i].removeAttribute('aria-label');
+                    }
+                }
+
+                function overflows() {
+                    return nav.scrollWidth > nav.clientWidth + 1;
+                }
+
+                restore();
+
+                if (window.innerWidth > 767 || crumbs.length < 2) {
+                    return;
+                }
+
+                if (!overflows()) {
+                    return;
+                }
+
+                {# Collapse non-last crumbs left→right into "..." until it fits. #}
+                for (i = 0; i < crumbs.length - 1; i++) {
+                    if (!overflows()) {
+                        break;
+                    }
+                    var crumb = crumbs[i];
+                    var label = crumb.getAttribute('data-yamuna-full-label') || '';
+                    crumb.textContent = '...';
+                    crumb.classList.add('is-collapsed');
+                    crumb.setAttribute('aria-label', label);
+                    if (!crumb.getAttribute('title') && label) {
+                        crumb.setAttribute('title', label);
+                        crumb.setAttribute('data-yamuna-title-set', '1');
+                    }
+                }
+
+                {# Still too long: ellipsis the last (current) crumb. #}
+                if (overflows() && crumbs.length) {
+                    var last = crumbs[crumbs.length - 1];
+                    last.classList.add('is-truncated');
+                    var lastLabel = last.getAttribute('data-yamuna-full-label') || '';
+                    if (lastLabel) {
+                        if (!last.getAttribute('title')) {
+                            last.setAttribute('title', lastLabel);
+                            last.setAttribute('data-yamuna-title-set', '1');
+                        }
+                        last.setAttribute('aria-label', lastLabel);
+                    }
+                }
+            }
+
+            function initYamunaPdpBreadcrumb() {
+                fitYamunaPdpBreadcrumb();
+                window.setTimeout(fitYamunaPdpBreadcrumb, 200);
+                window.setTimeout(fitYamunaPdpBreadcrumb, 800);
+                if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
+                    document.fonts.ready.then(function () {
+                        fitYamunaPdpBreadcrumb();
+                    });
+                }
+                if (!window.__yamunaBreadcrumb050Bound) {
+                    window.__yamunaBreadcrumb050Bound = true;
+                    window.addEventListener('resize', function () {
+                        window.clearTimeout(window.__yamunaBreadcrumb050Timer);
+                        window.__yamunaBreadcrumb050Timer = window.setTimeout(fitYamunaPdpBreadcrumb, 100);
+                    });
+                }
+            }
+
             function initYamunaProductDescriptionUi() {
                 moveProductAccordionHeadings();
                 styleYamunaProductDescription();
                 initYamunaPdpRating();
+                initYamunaPdpBreadcrumb();
             }
 
             {# C022: ALL-CAPS (or all-caps words) product names → sentence case #}
@@ -1175,6 +2114,653 @@
         {% if template == 'home' %}
             {% include 'snipplets/home/home-migration-popup.tpl' %}
         {% endif %}
+
+        {# Never show progressive quantity seals ("5% OFF comprando 3 ou mais"). #}
+        <script>
+        (function () {
+          function isQtyPromoSeal(el) {
+            if (!el || el.nodeType !== 1) return false;
+            if (el.classList && (el.classList.contains('js-offer-label') || el.classList.contains('js-stock-label') || el.classList.contains('js-shipping-label-private'))) return false;
+            var store = (el.getAttribute && el.getAttribute('data-store')) || '';
+            var ptype = (el.getAttribute && el.getAttribute('data-promotion-type')) || '';
+            if (/promotion/i.test(store) || /quantity/i.test(ptype)) return true;
+            var text = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            return /5%\s*OFF/i.test(text) && /comprando\s*3|3\s*ou\s*mais|acima\s*de\s*3/i.test(text);
+          }
+          function scrub(root) {
+            var scope = root && root.querySelectorAll ? root : document;
+            var nodes = scope.querySelectorAll('.labels .label, .labels .label-accent, [data-store*="promotion"], [data-promotion-type*="quantity"], .js-product-promo-container');
+            for (var i = 0; i < nodes.length; i++) {
+              if (isQtyPromoSeal(nodes[i]) || nodes[i].classList.contains('yamuna-hide-promotion') || (nodes[i].classList && nodes[i].classList.contains('js-product-promo-container'))) {
+                nodes[i].style.setProperty('display', 'none', 'important');
+                nodes[i].setAttribute('hidden', '');
+                nodes[i].setAttribute('aria-hidden', 'true');
+              }
+            }
+          }
+          function run() { scrub(document); }
+          if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+          else run();
+          if (window.MutationObserver) {
+            var t = null;
+            new MutationObserver(function () {
+              if (t) clearTimeout(t);
+              t = setTimeout(run, 50);
+            }).observe(document.documentElement, { childList: true, subtree: true });
+          }
+        })();
+        </script>
+
+        {# Last-wins: account Raleway + wine text #4a1d3a + magenta accents (Cenário 136) #}
+        <style id="yamuna-account-raleway-btn-128-end">
+          /* Cenário 138: 40px below header on all account pages */
+          html body[class*="template-account-"]:not(.yamuna-account-auth) > .mt-4 {
+            margin-top: 0 !important;
+            padding-top: 40px !important;
+          }
+          html body[class*="template-account-"]:not(.yamuna-account-auth) .page-header {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+          }
+
+          /* 1) Font: Raleway on account content */
+          html body[class*="template-account-"] > .mt-4,
+          html body[class*="template-account-"] > .mt-4 *:not(svg):not(path):not(use):not(circle):not(rect):not(line):not(polyline),
+          html body[class*="template-account-"] .page-header,
+          html body[class*="template-account-"] .page-header *:not(svg):not(path):not(use),
+          html body[class*="template-account-"] .yamuna-account-page,
+          html body[class*="template-account-"] .yamuna-account-page *:not(svg):not(path):not(use),
+          html body[class*="template-account-"] .account-page,
+          html body[class*="template-account-"] .account-page *:not(svg):not(path):not(use) {
+            font-family: "Raleway", sans-serif !important;
+          }
+
+          /* 2) Nuclear: every account content node = wine #4a1d3a (beats theme #000) */
+          html body[class*="template-account-"] > .mt-4,
+          html body[class*="template-account-"] > .mt-4 *:not(svg):not(path):not(use),
+          html body[class*="template-account-"] .page-header,
+          html body[class*="template-account-"] .page-header *:not(svg):not(path):not(use),
+          html body[class*="template-account-"] .yamuna-account-page,
+          html body[class*="template-account-"] .yamuna-account-page *:not(svg):not(path):not(use),
+          html body[class*="template-account-"] .account-page,
+          html body[class*="template-account-"] .account-page *:not(svg):not(path):not(use) {
+            color: #4a1d3a !important;
+          }
+
+          /* 3) Pink accents #A31460 — links, status, icons (after wine so they win) */
+          html body[class*="template-account-"] .yamuna-account-page a:not(.btn):not(.btn-primary),
+          html body[class*="template-account-"] .account-page a:not(.btn):not(.btn-primary),
+          html body[class*="template-account-"] .btn-link,
+          html body[class*="template-account-"] .btn-link-primary,
+          html body[class*="template-account-"] a.btn-link-primary,
+          html body[class*="template-account-"] a.btn-link-primary strong,
+          html body[class*="template-account-"] .yamuna-login-forgot,
+          html body[class*="template-account-"] .text-primary,
+          html body[class*="template-account-"] .pending,
+          html body[class*="template-account-"] .pending *,
+          html body[class*="template-account-"] .authorized,
+          html body[class*="template-account-"] .authorized *,
+          html body[class*="template-account-"] .yamuna-account-page [data-store="account-orders"] .col-7 .font-small strong,
+          html body[class*="template-account-"] .svg-icon-primary,
+          html body[class*="template-account-"] a.btn-link-primary svg,
+          html body[class*="template-account-"] a.btn-link-primary .icon-inline {
+            color: #a31460 !important;
+            fill: #a31460 !important;
+          }
+          html body[class*="template-account-"] .yamuna-account-page a:not(.btn):not(.btn-primary):hover,
+          html body[class*="template-account-"] .btn-link:hover,
+          html body[class*="template-account-"] .btn-link-primary:hover,
+          html body[class*="template-account-"] a.btn-link-primary:hover,
+          html body[class*="template-account-"] .yamuna-login-forgot:hover {
+            color: #6b0a3f !important;
+            fill: #6b0a3f !important;
+            opacity: 1 !important;
+          }
+
+          /* 4) Cenário 137: account CTAs = minicart COMPRAR (Raleway 16/600, BG #A31460) */
+          html body[class*="template-account-"] .btn.btn-primary,
+          html body[class*="template-account-"] a.btn.btn-primary,
+          html body[class*="template-account-"] button.btn.btn-primary,
+          html body[class*="template-account-"] .btn-primary,
+          html body[class*="template-account-"] .btn.btn-primary.btn-small,
+          html body[class*="template-account-"] a.btn.btn-primary.btn-small,
+          html body[class*="template-account-"] .btn-primary.btn-small,
+          html body[class*="template-account-"] .yamuna-login-submit,
+          html body .yamuna-account-page .btn.btn-primary,
+          html body .yamuna-account-page a.btn.btn-primary,
+          html body .yamuna-account-page .btn.btn-primary.btn-small,
+          html body .yamuna-account-page a.btn.btn-primary.btn-small,
+          html body .yamuna-account-page .yamuna-login-submit {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-sizing: border-box !important;
+            height: 40px !important;
+            min-height: 40px !important;
+            padding: 0 24px !important;
+            border: 0 !important;
+            border-radius: 999px !important;
+            background: #a31460 !important;
+            background-color: #a31460 !important;
+            border-color: #a31460 !important;
+            color: #fff !important;
+            fill: #fff !important;
+            font-family: "Raleway", sans-serif !important;
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.04em !important;
+            line-height: 1.2 !important;
+            text-transform: uppercase !important;
+            text-decoration: none !important;
+            opacity: 1 !important;
+            transition: background-color 0.2s ease, border-color 0.2s ease !important;
+          }
+          html body[class*="template-account-"] .btn.btn-primary.d-block,
+          html body[class*="template-account-"] a.btn.btn-primary.d-block,
+          html body[class*="template-account-"] .btn.btn-primary.w-100,
+          html body[class*="template-account-"] a.btn.btn-primary.w-100,
+          html body .yamuna-account-page .btn.btn-primary.d-block,
+          html body .yamuna-account-page a.btn.btn-primary.d-block {
+            display: flex !important;
+            width: 100% !important;
+          }
+          html body[class*="template-account-"] .btn.btn-primary:hover,
+          html body[class*="template-account-"] .btn.btn-primary:focus,
+          html body[class*="template-account-"] a.btn.btn-primary:hover,
+          html body[class*="template-account-"] a.btn.btn-primary:focus,
+          html body[class*="template-account-"] button.btn.btn-primary:hover,
+          html body[class*="template-account-"] button.btn.btn-primary:focus,
+          html body[class*="template-account-"] .btn-primary:hover,
+          html body[class*="template-account-"] .btn-primary:focus,
+          html body[class*="template-account-"] .btn.btn-primary.btn-small:hover,
+          html body[class*="template-account-"] a.btn.btn-primary.btn-small:hover,
+          html body[class*="template-account-"] .yamuna-login-submit:hover,
+          html body[class*="template-account-"] .yamuna-login-submit:focus,
+          html body .yamuna-account-page .btn.btn-primary:hover,
+          html body .yamuna-account-page .btn.btn-primary:focus,
+          html body .yamuna-account-page a.btn.btn-primary:hover,
+          html body .yamuna-account-page a.btn.btn-primary:focus,
+          html body .yamuna-account-page .yamuna-login-submit:hover,
+          html body .yamuna-account-page .yamuna-login-submit:focus {
+            background: #6b0a3f !important;
+            background-color: #6b0a3f !important;
+            border-color: #6b0a3f !important;
+            color: #fff !important;
+            opacity: 1 !important;
+          }
+          html body[class*="template-account-"] .btn.btn-primary:active,
+          html body[class*="template-account-"] a.btn.btn-primary:active,
+          html body .yamuna-account-page .btn.btn-primary:active,
+          html body .yamuna-account-page a.btn.btn-primary:active,
+          html body .yamuna-account-page .yamuna-login-submit:active {
+            background: #520731 !important;
+            background-color: #520731 !important;
+            border-color: #520731 !important;
+            color: #fff !important;
+            opacity: 1 !important;
+          }
+
+          /* Layout: Dados + Compras em coluna; cards de Dados em row ≥768px */
+          html body[class*="template-account-"] .yamuna-account-page > .container {
+            max-width: 1140px !important;
+          }
+          html body[class*="template-account-"] .yamuna-account-layout {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 24px !important;
+            width: 100% !important;
+          }
+          html body[class*="template-account-"] .yamuna-account-dados,
+          html body[class*="template-account-"] .yamuna-account-orders {
+            width: 100% !important;
+            min-width: 0 !important;
+          }
+          html body[class*="template-account-"] .yamuna-dados-cards {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 12px !important;
+            width: 100% !important;
+          }
+          html body[class*="template-account-"] .yamuna-dados-card {
+            flex: 1 1 auto !important;
+            min-width: 0 !important;
+            margin-bottom: 0 !important;
+          }
+          html body[class*="template-account-"] .yamuna-orders-grid {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+            width: 100% !important;
+            margin: 0 !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-item {
+            min-width: 0 !important;
+            width: 100% !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-item .yamuna-order-card {
+            width: 100% !important;
+            margin-bottom: 0 !important;
+            overflow: hidden !important;
+          }
+          @media (min-width: 768px) {
+            html body[class*="template-account-"] .yamuna-dados-cards {
+              flex-direction: row !important;
+              align-items: stretch !important;
+              gap: 20px !important;
+            }
+            html body[class*="template-account-"] .yamuna-dados-card {
+              flex: 1 1 0 !important;
+            }
+            html body[class*="template-account-"] .yamuna-orders-grid {
+              grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+              gap: 20px !important;
+            }
+            html body[class*="template-account-"] .yamuna-order-card .card-collapse-toggle {
+              display: none !important;
+            }
+            html body[class*="template-account-"] .yamuna-order-card:not(.active) > .card-body,
+            html body[class*="template-account-"] .yamuna-order-card:not(.active) > .card-footer {
+              display: block !important;
+            }
+            html body[class*="template-account-"] .yamuna-order-card > .card-header,
+            html body[class*="template-account-"] .yamuna-order-card > .card-header-collapse {
+              padding: 14px 16px !important;
+            }
+          }
+
+          /* Cenário 139+: accordion pedidos — esconde body (sem cortar header) */
+          html body[class*="template-account-"] .yamuna-order-card,
+          html body[class*="template-account-"] .yamuna-account-page .card.card-collapse,
+          html body[class*="template-account-"] .account-page .card.card-collapse {
+            height: auto !important;
+            overflow: visible !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-card:not(.active) > .card-body,
+          html body[class*="template-account-"] .yamuna-order-card:not(.active) > .card-footer,
+          html body[class*="template-account-"] .yamuna-account-page .card.card-collapse:not(.active) > .card-body,
+          html body[class*="template-account-"] .yamuna-account-page .card.card-collapse:not(.active) > .card-footer {
+            display: none !important;
+          }
+
+          /* Order card layout — textos em 1 linha */
+          html body[class*="template-account-"] .yamuna-order-card > .card-header,
+          html body[class*="template-account-"] .yamuna-order-card > .card-header-collapse {
+            display: flex !important;
+            align-items: center !important;
+            min-height: 52px !important;
+            padding: 12px 44px 12px 16px !important;
+            background: #f6f5f6 !important;
+            border-radius: 12px 12px 0 0 !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-card:not(.active) > .card-header,
+          html body[class*="template-account-"] .yamuna-order-card:not(.active) > .card-header-collapse {
+            border-radius: 12px !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-head {
+            display: flex !important;
+            align-items: center !important;
+            flex-wrap: nowrap !important;
+            gap: 10px !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            font-family: "Raleway", sans-serif !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-title {
+            flex: 1 1 auto !important;
+            min-width: 0 !important;
+            margin: 0 !important;
+            color: #a31460 !important;
+            font-family: "Raleway", sans-serif !important;
+            font-size: 16px !important;
+            font-weight: 700 !important;
+            line-height: 1.3 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            text-decoration: none !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-title strong {
+            font-weight: 700 !important;
+            color: inherit !important;
+            font-size: inherit !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-date {
+            flex: 0 0 auto !important;
+            color: #4a1d3a !important;
+            font-family: "Raleway", sans-serif !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            white-space: nowrap !important;
+            opacity: 0.85 !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-card .card-collapse-toggle {
+            top: 50% !important;
+            right: 8px !important;
+            transform: translateY(-50%) !important;
+            padding: 8px !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-card .card-collapse-toggle.active {
+            transform: translateY(-50%) rotate(180deg) !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-card > .card-body {
+            padding: 16px !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-card > .card-footer {
+            padding: 0 16px 16px !important;
+            background: transparent !important;
+            border: 0 !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-body {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 14px !important;
+            font-family: "Raleway", sans-serif !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-statuses {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 8px !important;
+            width: 100% !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-status {
+            display: flex !important;
+            align-items: center !important;
+            flex-wrap: nowrap !important;
+            gap: 6px !important;
+            margin: 0 !important;
+            color: #4a1d3a !important;
+            font-family: "Raleway", sans-serif !important;
+            font-size: 15px !important;
+            line-height: 1.35 !important;
+            white-space: nowrap !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-status .icon-inline {
+            flex: 0 0 auto !important;
+            width: 16px !important;
+            height: 16px !important;
+            fill: #a31460 !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-bottom {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 12px !important;
+            width: 100% !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-summary {
+            flex: 1 1 auto !important;
+            min-width: 0 !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-total {
+            margin: 0 0 4px !important;
+            color: #4a1d3a !important;
+            font-family: "Raleway", sans-serif !important;
+            font-size: 16px !important;
+            font-weight: 700 !important;
+            white-space: nowrap !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-detail {
+            color: #a31460 !important;
+            font-family: "Raleway", sans-serif !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            white-space: nowrap !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-thumb {
+            position: relative !important;
+            flex: 0 0 72px !important;
+            width: 72px !important;
+            height: 72px !important;
+            border-radius: 8px !important;
+            overflow: hidden !important;
+            background: #f6f5f6 !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-thumb-img {
+            display: block !important;
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+          }
+          html body[class*="template-account-"] .yamuna-order-card .yamuna-order-cta,
+          html body[class*="template-account-"] .yamuna-order-card .card-footer .btn.btn-primary,
+          html body[class*="template-account-"] .yamuna-order-card .card-footer a.btn.btn-primary {
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: clip !important;
+            font-size: 12px !important;
+            letter-spacing: 0.02em !important;
+            height: 40px !important;
+            min-height: 40px !important;
+            padding: 0 12px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+          }
+          /* Badge quantidade: texto branco (não herda vinho) */
+          html body[class*="template-account-"] .yamuna-order-thumb-pill,
+          html body[class*="template-account-"] .yamuna-order-thumb .yamuna-order-thumb-pill {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-width: 22px !important;
+            height: 22px !important;
+            padding: 0 6px !important;
+            border-radius: 999px !important;
+            background: #4a1d3a !important;
+            background-color: #4a1d3a !important;
+            color: #fff !important;
+            font-family: "Raleway", sans-serif !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            line-height: 1 !important;
+            z-index: 2 !important;
+          }
+          @media (min-width: 768px) {
+            html body[class*="template-account-"] .yamuna-order-card > .card-header,
+            html body[class*="template-account-"] .yamuna-order-card > .card-header-collapse {
+              padding: 14px 16px !important;
+            }
+            html body[class*="template-account-"] .yamuna-order-status {
+              font-size: 16px !important;
+            }
+            html body[class*="template-account-"] .yamuna-order-thumb {
+              flex-basis: 88px !important;
+              width: 88px !important;
+              height: 88px !important;
+            }
+            html body[class*="template-account-"] .yamuna-order-card .yamuna-order-cta,
+            html body[class*="template-account-"] .yamuna-order-card .card-footer .btn.btn-primary,
+            html body[class*="template-account-"] .yamuna-order-card .card-footer a.btn.btn-primary {
+              font-size: 14px !important;
+              height: 40px !important;
+              min-height: 40px !important;
+              padding: 0 24px !important;
+            }
+          }
+
+          /* 5) Cenário 135: tipografia Minha Conta
+             Mobile — títulos 20px, subtítulos 18px, textos 16px
+             Desktop — títulos 24px, subtítulos e textos 16px */
+          html body[class*="template-account-"]:not(.yamuna-account-auth) .page-header h1,
+          html body[class*="template-account-"]:not(.yamuna-account-auth) .page-header .h1,
+          html body[class*="template-account-"]:not(.yamuna-account-auth) .page-header .h2,
+          html body[class*="template-account-"] .yamuna-account-page .yamuna-account-section-title,
+          html body[class*="template-account-"] .yamuna-account-page h4.yamuna-account-section-title,
+          html body[class*="template-account-"] .yamuna-account-page .h4.yamuna-account-section-title {
+            font-size: 20px !important;
+            line-height: 1.3 !important;
+          }
+          html body[class*="template-account-"] .yamuna-account-page .box > h6,
+          html body[class*="template-account-"] .yamuna-account-page .box h6,
+          html body[class*="template-account-"] .account-page .box > h6,
+          html body[class*="template-account-"] .account-page .box h6,
+          html body[class*="template-account-"] .yamuna-account-page .card-header h4,
+          html body[class*="template-account-"] .yamuna-account-page .card-header h4 a,
+          html body[class*="template-account-"] .yamuna-account-page .card-header h4 strong,
+          html body[class*="template-account-"] .account-page .card-header h4,
+          html body[class*="template-account-"] .account-page .card-header h4 a,
+          html body[class*="template-account-"] .account-page .card-header h4 strong {
+            font-size: 18px !important;
+            line-height: 1.35 !important;
+          }
+          html body[class*="template-account-"] .yamuna-account-page .font-small,
+          html body[class*="template-account-"] .yamuna-account-page .box p,
+          html body[class*="template-account-"] .yamuna-account-page .box p *,
+          html body[class*="template-account-"] .yamuna-account-page .box .font-small,
+          html body[class*="template-account-"] .yamuna-account-page .box .font-small *,
+          html body[class*="template-account-"] .yamuna-account-page .card-body .font-small,
+          html body[class*="template-account-"] .yamuna-account-page .card-body .font-small *,
+          html body[class*="template-account-"] .yamuna-account-page .card-body p,
+          html body[class*="template-account-"] .yamuna-account-page .card-body p *,
+          html body[class*="template-account-"] .yamuna-account-page .card-header small,
+          html body[class*="template-account-"] .yamuna-account-page .card-body h4.mt-4,
+          html body[class*="template-account-"] .yamuna-account-page .card-body h4.mt-4 strong,
+          html body[class*="template-account-"] .account-page .font-small,
+          html body[class*="template-account-"] .account-page .box p,
+          html body[class*="template-account-"] .account-page .box p *,
+          html body[class*="template-account-"] .account-page .card-body .font-small,
+          html body[class*="template-account-"] .account-page .card-body .font-small *,
+          html body[class*="template-account-"] .account-page .card-body p,
+          html body[class*="template-account-"] .account-page .card-body p *,
+          html body[class*="template-account-"] .account-page .card-header small,
+          html body[class*="template-account-"] .account-page .card-body h4.mt-4,
+          html body[class*="template-account-"] .account-page .card-body h4.mt-4 strong {
+            font-size: 16px !important;
+            line-height: 1.45 !important;
+          }
+          @media (min-width: 768px) {
+            html body[class*="template-account-"]:not(.yamuna-account-auth) .page-header h1,
+            html body[class*="template-account-"]:not(.yamuna-account-auth) .page-header .h1,
+            html body[class*="template-account-"]:not(.yamuna-account-auth) .page-header .h2,
+            html body[class*="template-account-"] .yamuna-account-page .yamuna-account-section-title,
+            html body[class*="template-account-"] .yamuna-account-page h4.yamuna-account-section-title,
+            html body[class*="template-account-"] .yamuna-account-page .h4.yamuna-account-section-title {
+              font-size: 24px !important;
+            }
+            html body[class*="template-account-"] .yamuna-account-page .box > h6,
+            html body[class*="template-account-"] .yamuna-account-page .box h6,
+            html body[class*="template-account-"] .account-page .box > h6,
+            html body[class*="template-account-"] .account-page .box h6,
+            html body[class*="template-account-"] .yamuna-account-page .card-header h4,
+            html body[class*="template-account-"] .yamuna-account-page .card-header h4 a,
+            html body[class*="template-account-"] .yamuna-account-page .card-header h4 strong,
+            html body[class*="template-account-"] .account-page .card-header h4,
+            html body[class*="template-account-"] .account-page .card-header h4 a,
+            html body[class*="template-account-"] .account-page .card-header h4 strong {
+              font-size: 16px !important;
+            }
+          }
+
+          /* Cenário 157: Total do pedido — alinhado à esquerda (como Frete/Subtotal), Raleway 16px */
+          html body[class*="template-account-"] .yamuna-order-detail-total,
+          html body[class*="template-account-"] .yamuna-order-detail-total strong,
+          html body[class*="template-account-"] .yamuna-account-page h3.yamuna-order-detail-total,
+          html body[class*="template-account-"] .yamuna-account-page h3.yamuna-order-detail-total *,
+          html body[class*="template-account-"] .account-page h3.yamuna-order-detail-total,
+          html body[class*="template-account-"] .account-page h3.yamuna-order-detail-total * {
+            text-align: left !important;
+            font-family: "Raleway", sans-serif !important;
+            font-size: 16px !important;
+            line-height: 1.45 !important;
+            color: #4a1d3a !important;
+          }
+
+          /* Cenário 158: breadcrumb duplicado em desk — esconde bloco solto fora do page-header */
+          html body[class*="template-account-"]:not(.yamuna-account-auth) > .mt-4 > section.container .breadcrumbs,
+          html body[class*="template-account-"]:not(.yamuna-account-auth) section.container.mb-4.text-center > .row > .col-12 > .breadcrumbs,
+          html body[class*="template-account-"]:not(.yamuna-account-auth) .page-header .breadcrumbs ~ .breadcrumbs {
+            display: none !important;
+          }
+        </style>
+        <script id="yamuna-account-wine-force-136">
+        (function () {
+          var body = document.body;
+          if (!body || body.className.indexOf('template-account-') === -1) return;
+          if (body.classList.contains('yamuna-account-auth')) return;
+          var WINE = '#4a1d3a';
+          var PINK = '#a31460';
+          var WHITE = '#fff';
+          function isAccent(el) {
+            if (el.matches(
+              'a:not(.btn):not(.btn-primary), .btn-link, .btn-link-primary, a.btn-link-primary, .pending, .authorized, .text-primary, .yamuna-login-forgot, .svg-icon-primary'
+            )) return true;
+            if (el.closest('a:not(.btn):not(.btn-primary), .btn-link, .btn-link-primary, .pending, .authorized, .text-primary, .yamuna-login-forgot')) return true;
+            return false;
+          }
+          function isPrimaryBtn(el) {
+            return el.matches('.btn-primary, .btn.btn-primary, a.btn.btn-primary, button.btn.btn-primary, .yamuna-login-submit');
+          }
+          function isThumbPill(el) {
+            return el.matches('.yamuna-order-thumb-pill') || !!el.closest('.yamuna-order-thumb-pill');
+          }
+          function styleThumbPill(el) {
+            el.style.setProperty('background', '#4a1d3a', 'important');
+            el.style.setProperty('background-color', '#4a1d3a', 'important');
+            el.style.setProperty('color', WHITE, 'important');
+            el.style.setProperty('font-family', 'Raleway, sans-serif', 'important');
+            el.style.setProperty('font-size', '11px', 'important');
+            el.style.setProperty('font-weight', '600', 'important');
+          }
+          function stylePrimaryBtn(el) {
+            el.style.setProperty('display', el.classList.contains('d-block') || el.classList.contains('w-100') ? 'flex' : 'inline-flex', 'important');
+            el.style.setProperty('align-items', 'center', 'important');
+            el.style.setProperty('justify-content', 'center', 'important');
+            el.style.setProperty('box-sizing', 'border-box', 'important');
+            el.style.setProperty('height', '40px', 'important');
+            el.style.setProperty('min-height', '40px', 'important');
+            el.style.setProperty('padding', '0 24px', 'important');
+            el.style.setProperty('border', '0', 'important');
+            el.style.setProperty('border-radius', '999px', 'important');
+            el.style.setProperty('background', '#a31460', 'important');
+            el.style.setProperty('background-color', '#a31460', 'important');
+            el.style.setProperty('border-color', '#a31460', 'important');
+            el.style.setProperty('color', WHITE, 'important');
+            el.style.setProperty('font-family', 'Raleway, sans-serif', 'important');
+            el.style.setProperty('font-size', '16px', 'important');
+            el.style.setProperty('font-weight', '600', 'important');
+            el.style.setProperty('letter-spacing', '0.04em', 'important');
+            el.style.setProperty('line-height', '1.2', 'important');
+            el.style.setProperty('text-transform', 'uppercase', 'important');
+            el.style.setProperty('opacity', '1', 'important');
+          }
+          function paint(root) {
+            if (!root) return;
+            root.style.setProperty('color', WINE, 'important');
+            root.style.setProperty('font-family', 'Raleway, sans-serif', 'important');
+            var nodes = root.querySelectorAll('*:not(svg):not(path):not(use):not(circle):not(rect)');
+            for (var i = 0; i < nodes.length; i++) {
+              var el = nodes[i];
+              el.style.setProperty('font-family', 'Raleway, sans-serif', 'important');
+              if (isPrimaryBtn(el)) {
+                stylePrimaryBtn(el);
+                continue;
+              }
+              if (isThumbPill(el)) {
+                styleThumbPill(el);
+                continue;
+              }
+              if (isAccent(el)) {
+                el.style.setProperty('color', PINK, 'important');
+                continue;
+              }
+              el.style.setProperty('color', WINE, 'important');
+            }
+          }
+          function run() {
+            paint(document.querySelector('.yamuna-account-page'));
+            paint(document.querySelector('.account-page'));
+            paint(document.querySelector('.page-header'));
+            var mt = document.querySelector('body > .mt-4');
+            if (mt) paint(mt);
+          }
+          run();
+          if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+          window.addEventListener('load', run);
+        })();
+        </script>
+
+        {% include "snipplets/yamuna-wishlist.tpl" %}
 
     </body>
 </html>

@@ -1,4 +1,4 @@
-{% raw %}@charset "UTF-8":
+﻿{% raw %}@charset "UTF-8":
 
 /*============================================================================
 critical-css.tpl
@@ -691,7 +691,7 @@ p{
   line-height: 30px;
 }
 
-{# Yamuna home: desktop hero — shorter so benefits bar peeks in. #}
+{# Yamuna home: desktop hero - shorter so benefits bar peeks in. #}
 @media (min-width: 768px) {
   [data-store="home-slider"] .section-slider {
     height: 520px;
@@ -1211,7 +1211,16 @@ p{
   position: relative;
   z-index: 1040;  
   -webkit-backface-visibility: hidden;
-  -webkit-transform: scale(1);
+  /* scale(1) traps position:fixed menus; use translateZ paint hint instead */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+@media (min-width: 1024px) {
+  .head-main {
+    -webkit-transform: none;
+    transform: none;
+  }
 }
 
 .head-fix {
@@ -1441,7 +1450,7 @@ p{
   padding: 50px 0;
 }
 
-{# Yamuna home: benefits bar — Figma 156:3366 (icon 24 / gap 18 / bar 73) #}
+{# Yamuna home: benefits bar - Figma 156:3366 (icon 24 / gap 18 / bar 73) #}
 [data-store="banner-services"] .section-informative-banners {
   padding: 0;
 }
@@ -1646,6 +1655,20 @@ p{
     display: none;
   }
 
+  [data-store^="home-products-"] .yamuna-home-products .item-actions > div.yamuna-avise-me-wrap,
+  [data-store^="home-products-"] .yamuna-home-products .item-actions.yamuna-item-actions-avise > div:first-child {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  [data-store^="home-products-"] .yamuna-home-products .item-actions > .yamuna-avise-me-spacer {
+    display: none !important;
+  }
+
   [data-store^="home-products-"] .yamuna-home-products .item-actions .btn {
     min-height: 40px;
     margin: 0;
@@ -1790,9 +1813,9 @@ p{
 .item-product-reduced.item-product:hover {
   box-shadow: none;
 }
-/* 077/078 — prod-like image swap on hover.
+/* 077/078 - prod-like image swap on hover.
    Secondary stacks above featured inside .item-image.
-   Do NOT make the <a> position:relative — that becomes the containing
+   Do NOT make the <a> position:relative - that becomes the containing
    block for absolute imgs and collapses to 0 height (blank images). */
 @media (min-width: 768px) {
   .js-product-item-private-with-secondary-images,
@@ -2529,4 +2552,8 @@ p{
 
 @media (min-width:768px){body.template-home .yamuna-home-hero-overlay-button{font-family:'Roboto',sans-serif!important;font-size:18px!important;font-style:normal!important;font-weight:500!important;line-height:normal!important;text-align:center!important;text-transform:uppercase!important}}
 
+{# /* // Avise-me PLP/home CTA */ #}
+.yamuna-plp-avise-me,a.yamuna-plp-avise-me,.yamuna-home-spot-avise-me,.yamuna-pdp-spot-avise-me{display:flex!important;width:100%!important;min-height:40px!important;height:40px!important;padding:8px 18px!important;align-items:center!important;justify-content:center!important;border:0!important;border-radius:24px!important;background:#5fbbc6!important;color:#fff!important;font-family:Raleway,sans-serif!important;font-size:14px!important;font-weight:600!important;line-height:1.2!important;letter-spacing:.02em!important;text-decoration:none!important;text-transform:none!important;box-shadow:none!important;cursor:pointer!important;visibility:visible!important;opacity:1!important}.yamuna-plp-avise-me:hover,.yamuna-plp-avise-me:focus,a.yamuna-plp-avise-me:hover,a.yamuna-plp-avise-me:focus,.yamuna-home-spot-avise-me:hover,.yamuna-pdp-spot-avise-me:hover{background:#238482!important;color:#fff!important;text-decoration:none!important}.item-actions>div.yamuna-avise-me-wrap,.item-actions.yamuna-item-actions-avise>div:first-child{display:block!important;width:100%!important;max-width:none!important;padding:0!important;visibility:visible!important;opacity:1!important}.item-actions>.yamuna-avise-me-spacer{display:none!important}.item-actions.yamuna-item-actions-avise{display:flex!important;visibility:visible!important;opacity:1!important;position:static!important;transform:none!important}
+
 {% endraw %}
+

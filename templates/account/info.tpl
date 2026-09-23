@@ -1,27 +1,19 @@
-<section class="container mb-4 text-center">
-    <div class="row">
-        <div class="col-12">
-            {% include "snipplets/breadcrumbs.tpl" %}
-        </div>
-    </div>
-</section>
-
 {% embed "snipplets/page-header.tpl" %}
     {% block page_header_text %}{{ "Mis datos" | translate }}{% endblock page_header_text %}
 {% endembed %}
 
 {# Update account info form #}
 
-<section class="account-page">
+<section class="account-page yamuna-account-page">
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col-md-8">
-                {% embed "snipplets/forms/form.tpl" with{form_id: 'info-form', submit_custom_class: 'btn-block', submit_text: 'Guardar cambios' | translate } %}
+                {% embed "snipplets/forms/form.tpl" with{form_id: 'info-form', form_custom_class: 'yamuna-login-form yamuna-account-form', submit_custom_class: 'btn-block yamuna-login-submit', submit_text: 'Guardar cambios' | translate } %}
                     {% block form_body %}
 
                         {# Name input #}
                         
-                        {% embed "snipplets/forms/form-input.tpl" with{type_text: true, input_for: 'name', input_value: result.name | default(customer.name), input_name: 'name', input_id: 'name', input_label_text: 'Nombre' | translate } %}
+                        {% embed "snipplets/forms/form-input.tpl" with{type_text: true, input_for: 'name', input_value: result.name | default(customer.name), input_name: 'name', input_id: 'name', input_custom_class: 'yamuna-login-input', input_label_text: 'Nombre' | translate } %}
                             {% block input_form_alert %}
                                 {% if result.errors.name %}
                                     <div class="notification-danger notification-left">{{ 'Necesitamos saber tu nombre para actualizar tu información.' | translate }}</div>
@@ -31,7 +23,7 @@
 
                         {# Email input #}
 
-                        {% embed "snipplets/forms/form-input.tpl" with{type_email: true, input_for: 'email', input_value: result.email | default(customer.email), input_name: 'email', input_id: 'email', input_label_text: 'Email' | translate } %}
+                        {% embed "snipplets/forms/form-input.tpl" with{type_email: true, input_for: 'email', input_value: result.email | default(customer.email), input_name: 'email', input_id: 'email', input_custom_class: 'yamuna-login-input', input_label_text: 'Email' | translate } %}
                             {% block input_form_alert %}
                                 {% if result.errors.email == 'exists' %}
                                     <div class="notification-danger notification-left">{{ 'Encontramos otra cuenta que ya usa este email. Intentá usando otro.' | translate }}</div>
@@ -43,14 +35,14 @@
 
                         {# Phone input #}
 
-                        {% embed "snipplets/forms/form-input.tpl" with{type_tel: true, input_for: 'phone', input_value: result.phone | default(customer.phone), input_name: 'phone', input_id: 'phone', input_label_text: 'Teléfono (opcional)' | translate } %}
+                        {% embed "snipplets/forms/form-input.tpl" with{type_tel: true, input_for: 'phone', input_value: result.phone | default(customer.phone), input_name: 'phone', input_id: 'phone', input_custom_class: 'yamuna-login-input', input_label_text: 'Teléfono (opcional)' | translate } %}
                         {% endembed %}
                     {% endblock %}
                 {% endembed %}
 
             </div>
 
-            <p class="col-md-8 mt-3 text-center"> {{ "¿Querés cambiar tu contraseña?" | translate | a_tag(store.customer_reset_password_url, '', 'btn-link-primary') }}</p>
+            <p class="col-md-8 mt-3 text-center yamuna-account-link-wrap"> {{ "¿Querés cambiar tu contraseña?" | translate | a_tag(store.customer_reset_password_url, '', 'yamuna-login-forgot') }}</p>
 
         </div>
     </div>

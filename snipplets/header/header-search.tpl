@@ -1,6 +1,9 @@
 <form class="js-search-container js-search-form search-container" action="{{ store.search_url }}" method="get">
 	<div class="form-group m-0">
         <input class="js-search-input form-control search-input" autocomplete="off" type="search" name="q" placeholder="{{ '¿Qué estás buscando?' | translate }}" aria-label="{{ '¿Qué estás buscando?' | translate }}" />
+        <button type="button" class="yamuna-search-clear js-yamuna-search-clear" aria-label="Fechar busca">
+            <svg class="icon-inline icon-w-10" aria-hidden="true"><use xlink:href="#times"/></svg>
+        </button>
         <button type="submit" class="btn search-input-submit" value="{{ 'Buscar' | translate }}" aria-label="{{ 'Buscar' | translate }}">
             <svg class="icon-inline icon-2x"><use xlink:href="#search"/></svg>
         </button>

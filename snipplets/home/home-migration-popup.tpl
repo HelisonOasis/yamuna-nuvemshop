@@ -6,8 +6,8 @@
 		<p class="yamuna-migration-popup__eyebrow">Comunicado</p>
 		<h2 id="yamuna-migration-title" class="yamuna-migration-popup__title">A Yamuna segue evoluindo. Nosso site também.</h2>
 		<p class="yamuna-migration-popup__text">Você já está no nosso novo site: mais leve, ágil e pensado para tornar sua experiência por aqui ainda melhor.</p>
-		<p class="yamuna-migration-popup__text">Já era cliente Yamuna? Atualize seu cadastro e crie uma nova senha para acessar sua conta.</p>
-		<a class="yamuna-migration-popup__cta js-yamuna-migration-cta" href="{{ store.customer_login_url | default('/account/login/') }}">Atualizar meus dados</a>
+		<p class="yamuna-migration-popup__text">Já era cliente Yamuna? Seus dados já estão aqui — só falta criar uma nova senha para acessar sua conta.</p>
+		<a class="yamuna-migration-popup__cta js-yamuna-migration-cta" href="{{ store.customer_reset_password_url | default('/account/reset/') }}">Criar nova senha</a>
 	</div>
 </div>
 
@@ -98,7 +98,7 @@
 
 <script>
 (function () {
-	var KEY = 'yamuna_migration_popup_seen_v2';
+	var KEY = 'yamuna_migration_popup_seen_v3';
 	var root = document.getElementById('yamuna-migration-popup');
 	if (!root) return;
 	try {

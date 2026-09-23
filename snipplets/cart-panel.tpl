@@ -1,6 +1,46 @@
 {{ component('nubesdk-slot', { type: "before_line_items" }) }}
 
 <style>
+  /* Cenário 011 — top promo: bg 32px, fonte 16px */
+  body #modal-cart .yamuna-cart-top-promo,
+  body[class] #modal-cart .yamuna-cart-top-promo {
+    display: flex !important;
+    flex: 0 0 32px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    margin: 0 !important;
+    padding: 0 12px !important;
+    background: #a31460 !important;
+    color: #fff !important;
+    font-family: Dosis, Roboto, Arial, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    line-height: 16px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  body #modal-cart .yamuna-cart-top-promo span,
+  body[class] #modal-cart .yamuna-cart-top-promo span {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    line-height: 16px !important;
+    color: #fff !important;
+  }
+
+  body #modal-cart .yamuna-cart-top-promo img,
+  body[class] #modal-cart .yamuna-cart-top-promo img {
+    width: 18px !important;
+    height: 18px !important;
+    flex: 0 0 18px !important;
+  }
+
   #modal-cart .yamuna-cart-discount {
     font-family: 'Dosis', sans-serif !important;
   }
@@ -69,17 +109,22 @@
     }
 
     body #modal-cart .js-ajax-cart-list {
-      padding: 53px 20px 0 !important;
+      padding: 16px 20px 0 !important;
     }
 
     body #modal-cart .yamuna-cart-shipping-promo {
-      position: absolute !important;
-      top: calc(var(--yamuna-panel-overlap, 105px) + 72px) !important;
-      right: 20px !important;
-      left: 20px !important;
+      position: relative !important;
+      top: auto !important;
+      right: auto !important;
+      left: auto !important;
       box-sizing: border-box !important;
-      height: 24px !important;
-      padding: 2px 4px 0 !important;
+      width: calc(100% - 24px) !important;
+      height: 32px !important;
+      min-height: 32px !important;
+      max-height: 32px !important;
+      margin: 12px 12px 8px !important;
+      padding: 0 8px 4px !important;
+      overflow: hidden !important;
     }
 
     body #modal-cart .js-empty-ajax-cart {
@@ -125,6 +170,7 @@
     body #modal-cart:not(:has(.js-cart-item)) .js-ajax-cart-list,
     body #modal-cart:not(:has(.js-cart-item)) .yamuna-minicart-scroll,
     body #modal-cart:not(:has(.js-cart-item)) .yamuna-cart-shipping-promo,
+    body #modal-cart:not(:has(.js-cart-item)) .yamuna-cart-top-promo,
     body #modal-cart:not(:has(.js-cart-item)) .js-visible-on-cart-filled,
     body #modal-cart:not(:has(.js-cart-item)) .yamuna-cart-dropdown-footer,
     body #modal-cart:not(:has(.js-cart-item)) .cart-item-delete,
@@ -244,7 +290,8 @@
       box-sizing: border-box !important;
       width: calc(100% - 40px) !important;
       max-width: none !important;
-      height: 46px !important;
+      height: 40px !important;
+      min-height: 40px !important;
       margin: 16px 20px 8px !important;
       padding: 0 !important;
     }
@@ -258,7 +305,8 @@
 
     body #modal-cart:has(.js-cart-item) .yamuna-minicart-scroll,
     body #modal-cart:has(.js-cart-item) .yamuna-cart-dropdown-footer,
-    body #modal-cart:has(.js-cart-item) .yamuna-cart-shipping-promo {
+    body #modal-cart:has(.js-cart-item) .yamuna-cart-shipping-promo,
+    body #modal-cart:has(.js-cart-item) .yamuna-cart-top-promo {
       display: flex !important;
     }
 
@@ -448,11 +496,17 @@
       gap: 10px !important;
       box-sizing: border-box !important;
       width: calc(100% - 32px) !important;
-      height: 48px !important;
+      height: 40px !important;
+      min-height: 40px !important;
       margin: 16px 16px 0 !important;
       padding: 0 16px !important;
       border: 0 !important;
       border-radius: 999px !important;
+      font-family: Raleway, sans-serif !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.04em !important;
+      text-transform: uppercase !important;
     }
 
     body #modal-cart .yamuna-cart-item-promo {
@@ -479,6 +533,51 @@
       white-space: nowrap !important;
     }
 
+    /* Cenário 019: buy-3 unit price as De / Por (prod) */
+    body #modal-cart .yamuna-minicart-unit-promo {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-end !important;
+      gap: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      text-align: right !important;
+      white-space: nowrap !important;
+    }
+
+    body #modal-cart .yamuna-minicart-unit-promo.is-hidden,
+    body #modal-cart .js-cart-item-subtotal.is-hidden {
+      display: none !important;
+    }
+
+    body #modal-cart .yamuna-minicart-unit-de,
+    body #modal-cart .yamuna-minicart-unit-por {
+      margin: 0 !important;
+      padding: 0 !important;
+      font-family: 'Dosis', sans-serif !important;
+      font-weight: 800 !important;
+      line-height: 1.15 !important;
+    }
+
+    body #modal-cart .yamuna-minicart-unit-de {
+      color: #4a1d3a !important;
+      font-size: 14px !important;
+    }
+
+    body #modal-cart .yamuna-minicart-unit-de-value {
+      text-decoration: line-through !important;
+    }
+
+    body #modal-cart .yamuna-minicart-unit-por {
+      color: #238482 !important;
+      font-size: 18px !important;
+    }
+
+    body #modal-cart .yamuna-minicart-unit-por-label {
+      font-size: 14px !important;
+      font-weight: 800 !important;
+    }
+
     body #modal-cart .yamuna-minicart-item-controls {
       display: flex !important;
       flex-direction: row !important;
@@ -503,7 +602,7 @@
       display: flex !important;
       flex-wrap: nowrap !important;
       width: 96px !important;
-      height: 32px !important;
+      height: 34px !important;
       margin: 0 !important;
       padding: 0 !important;
       align-items: center !important;
@@ -519,8 +618,8 @@
     body #modal-cart .cart-item-quantity .form-quantity-icon,
     body #modal-cart .cart-item-quantity .form-control {
       box-sizing: border-box !important;
-      height: 30px !important;
-      min-height: 30px !important;
+      height: 34px !important;
+      min-height: 34px !important;
       margin: 0 !important;
       border: 0 !important;
       border-radius: 0 !important;
@@ -533,7 +632,7 @@
       padding: 0 !important;
       align-items: center !important;
       justify-content: center !important;
-      background: transparent !important;
+      background: #f4f4f4 !important;
       color: #4a1d3a !important;
       font-family: Dosis, Roboto, Arial, sans-serif !important;
       font-size: 16px !important;
@@ -560,21 +659,26 @@
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
-      width: 34px !important;
-      height: 30px !important;
-      min-height: 30px !important;
+      width: 32px !important;
+      height: 34px !important;
+      min-height: 34px !important;
       padding: 0 !important;
       margin: 0 !important;
       border: 0 !important;
       background: #fff !important;
-      color: #4a1d3a !important;
+      color: #111827 !important;
+      -webkit-text-fill-color: #111827 !important;
       font-family: Dosis, Roboto, Arial, sans-serif !important;
       font-size: 16px !important;
       font-weight: 700 !important;
-      line-height: 30px !important;
+      line-height: 34px !important;
       text-align: center !important;
       appearance: textfield !important;
       -moz-appearance: textfield !important;
+      transition: none !important;
+      animation: none !important;
+      opacity: 1 !important;
+      visibility: visible !important;
     }
 
     body #modal-cart .cart-item-quantity .js-cart-quantity-input::-webkit-outer-spin-button,
@@ -857,6 +961,50 @@
       white-space: nowrap !important;
     }
 
+    body #modal-cart .yamuna-minicart-unit-promo {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-end !important;
+      gap: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      text-align: right !important;
+      white-space: nowrap !important;
+    }
+
+    body #modal-cart .yamuna-minicart-unit-promo.is-hidden,
+    body #modal-cart .js-cart-item-subtotal.is-hidden {
+      display: none !important;
+    }
+
+    body #modal-cart .yamuna-minicart-unit-de,
+    body #modal-cart .yamuna-minicart-unit-por {
+      margin: 0 !important;
+      padding: 0 !important;
+      font-family: 'Dosis', sans-serif !important;
+      font-weight: 800 !important;
+      line-height: 1.15 !important;
+    }
+
+    body #modal-cart .yamuna-minicart-unit-de {
+      color: #4a1d3a !important;
+      font-size: 14px !important;
+    }
+
+    body #modal-cart .yamuna-minicart-unit-de-value {
+      text-decoration: line-through !important;
+    }
+
+    body #modal-cart .yamuna-minicart-unit-por {
+      color: #238482 !important;
+      font-size: 18px !important;
+    }
+
+    body #modal-cart .yamuna-minicart-unit-por-label {
+      font-size: 14px !important;
+      font-weight: 800 !important;
+    }
+
     body #modal-cart .yamuna-cart-item-promo {
       position: static !important;
       display: flex !important;
@@ -892,7 +1040,7 @@
       flex-wrap: nowrap !important;
       align-items: center !important;
       width: 96px !important;
-      height: 32px !important;
+      height: 34px !important;
       margin: 0 !important;
       padding: 0 !important;
     }
@@ -908,12 +1056,12 @@
       display: flex !important;
       flex: 0 0 30px !important;
       width: 30px !important;
-      height: 30px !important;
-      min-height: 30px !important;
+      height: 34px !important;
+      min-height: 34px !important;
       align-items: center !important;
       justify-content: center !important;
       border: 0 !important;
-      background: transparent !important;
+      background: #f4f4f4 !important;
       color: #4a1d3a !important;
       font-family: Dosis, Roboto, Arial, sans-serif !important;
       font-size: 16px !important;
@@ -923,9 +1071,9 @@
     body #modal-cart .cart-item-quantity .form-control-container,
     body #modal-cart .cart-item-quantity .form-quantity .col {
       display: flex !important;
-      flex: 0 0 34px !important;
-      width: 34px !important;
-      max-width: 34px !important;
+      flex: 0 0 32px !important;
+      width: 32px !important;
+      max-width: 32px !important;
       padding: 0 !important;
       align-items: center !important;
       justify-content: center !important;
@@ -935,22 +1083,54 @@
     body #modal-cart .cart-item-quantity .js-cart-quantity-input {
       display: block !important;
       box-sizing: border-box !important;
-      width: 34px !important;
-      height: 30px !important;
-      min-height: 30px !important;
+      width: 32px !important;
+      height: 34px !important;
+      min-height: 34px !important;
       margin: 0 !important;
       padding: 0 !important;
       border: 0 !important;
       background: #fff !important;
-      color: #4a1d3a !important;
+      color: #111827 !important;
+      -webkit-text-fill-color: #111827 !important;
       font-family: Dosis, Roboto, Arial, sans-serif !important;
       font-size: 16px !important;
       font-weight: 700 !important;
-      line-height: 30px !important;
+      line-height: 34px !important;
       text-align: center !important;
       vertical-align: middle !important;
       appearance: textfield !important;
       -moz-appearance: textfield !important;
+      transition: none !important;
+      animation: none !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+
+    /* Cenário 013: número não pisca no +/- (disabled/spinner da plataforma) */
+    body #modal-cart input.js-cart-quantity-input[disabled],
+    body #modal-cart input.js-cart-quantity-input[readonly],
+    body #modal-cart input.js-cart-quantity-input:disabled {
+      display: block !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      color: #111827 !important;
+      -webkit-text-fill-color: #111827 !important;
+      background: #fff !important;
+      background-color: #fff !important;
+    }
+    body #modal-cart .js-cart-input-spinner,
+    body #modal-cart .cart-item-spinner {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+    body #modal-cart .cart-item-quantity.opacity-40,
+    body #modal-cart .form-quantity.opacity-40,
+    body #modal-cart .form-control-container.opacity-40 {
+      opacity: 1 !important;
     }
 
     body #modal-cart .cart-item-delete {
@@ -1026,10 +1206,16 @@
       justify-content: center !important;
       gap: 10px !important;
       width: calc(100% - 24px) !important;
-      height: 48px !important;
+      height: 40px !important;
+      min-height: 40px !important;
       margin: 16px 12px 0 !important;
       border: 0 !important;
       border-radius: 999px !important;
+      font-family: Raleway, sans-serif !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.04em !important;
+      text-transform: uppercase !important;
     }
 
     /* Exact Figma geometry (node 286:12876). These rules stay in the cart template so the
@@ -1148,13 +1334,15 @@
       flex-direction: column !important;
       justify-content: center !important;
       width: calc(100% - 24px) !important;
-      height: 28px !important;
-      min-height: 28px !important;
-      margin: 16px 12px 14px 12px !important;
-      padding: 0 8px 4px 8px !important;
+      height: 32px !important;
+      min-height: 32px !important;
+      max-height: 32px !important;
+      margin: 12px 12px 8px !important;
+      padding: 0 8px 4px !important;
       background: #f7f5f6 !important;
       border-radius: 2px !important;
       overflow: hidden !important;
+      flex: 0 0 auto !important;
     }
 
     body #modal-cart .yamuna-cart-shipping-promo .yamuna-cart-promo-text,
@@ -1162,13 +1350,13 @@
       display: block !important;
       color: #a31460 !important;
       font-family: 'Raleway', sans-serif !important;
-      font-size: 11px !important;
+      font-size: 16px !important;
       font-weight: 700 !important;
       line-height: 16px !important;
       text-align: center !important;
       text-transform: uppercase !important;
       letter-spacing: 0.04em !important;
-      white-space: nowrap !important;
+      white-space: normal !important;
     }
 
     body #modal-cart .yamuna-cart-shipping-promo i,
@@ -1323,6 +1511,61 @@
     line-height: 1.4 !important;
   }
 
+  /* Cenário 010: CEP — 20px top/bottom; remove paddings/margins empilhados */
+  body #modal-cart .js-shipping-calculator-head,
+  body #modal-cart .shipping-calculator-head {
+    padding: 20px 32px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+  body #modal-cart .js-shipping-calculator-form,
+  body #modal-cart .shipping-calculator-form {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  body #modal-cart .yamuna-minicart-shipping-calc,
+  body #modal-cart .shipping-calculator-form .form-group,
+  body #modal-cart .shipping-calculator-form .form-group-inline,
+  body #modal-cart .shipping-calculator-form .mb-3,
+  body #modal-cart .js-shipping-calculator-spinner,
+  body #modal-cart .js-shipping-calculator-response {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+  body #modal-cart .js-shipping-calculator-response {
+    padding: 0 !important;
+  }
+
+  /* Cenário 012: CEP input + BUSCAR — 42px e fonte alinhada à prod */
+  body #modal-cart .shipping-calculator-form .js-shipping-input,
+  body #modal-cart .shipping-calculator-form input.js-shipping-input,
+  body #modal-cart .shipping-calculator-form input.form-control,
+  body #modal-cart .shipping-calculator-form input.form-control-inline,
+  body #modal-cart .shipping-calculator-form .js-calculate-shipping,
+  body #modal-cart .shipping-calculator-form button.js-calculate-shipping {
+    box-sizing: border-box !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
+    margin: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 42px !important;
+    font-family: Dosis, Roboto, Arial, sans-serif !important;
+    font-size: 16px !important;
+  }
+  body #modal-cart .shipping-calculator-form .js-shipping-input,
+  body #modal-cart .shipping-calculator-form input.form-control {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    font-weight: 400 !important;
+  }
+  body #modal-cart .shipping-calculator-form .js-calculate-shipping {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+    font-weight: 700 !important;
+  }
+
 </style>
 
 {# Production-like minicart body (yamuna.com.br): top 5% OFF bar, free-shipping
@@ -1332,15 +1575,52 @@
 {% set has_free_shipping = cart.free_shipping.cart_has_free_shipping or cart.free_shipping.min_price_free_shipping.min_price %}
 {% set show_cart_fulfillment = settings.shipping_calculator_cart_page and (store.has_shipping or store.branches) %}
 
-<div class="yamuna-cart-top-promo">
+{# Always show frete-grátis progress bar in minicart (QA 011). Prefer
+   platform free-shipping-bar when configured; fallback uses store claim
+   "Frete grátis acima de R$350" when Nuvem min_price is missing. #}
+{% set yamuna_fs_min_raw = cart.free_shipping.min_price_free_shipping.min_price_raw | default(0) %}
+{% set yamuna_fs_has = cart.free_shipping.cart_has_free_shipping %}
+{% set yamuna_fs_subtotal = cart.subtotal | default(0) %}
+{# Nuvem raw is often in cents; store marketing threshold is R$350. #}
+{% if not yamuna_fs_min_raw or yamuna_fs_min_raw == 0 %}
+  {% set yamuna_fs_min_raw = 35000 %}
+  {% set yamuna_fs_use_fallback_threshold = true %}
+{% else %}
+  {% set yamuna_fs_use_fallback_threshold = false %}
+{% endif %}
+{% set yamuna_fs_subtotal_cents = yamuna_fs_subtotal %}
+{% if yamuna_fs_use_fallback_threshold and yamuna_fs_subtotal < 1000 %}
+  {# subtotal already in reais (e.g. 827.40) → cents #}
+  {% set yamuna_fs_subtotal_cents = (yamuna_fs_subtotal * 100) | round %}
+{% endif %}
+{% set yamuna_fs_pct = ((yamuna_fs_subtotal_cents / yamuna_fs_min_raw) * 100) %}
+{% if yamuna_fs_pct > 100 %}{% set yamuna_fs_pct = 100 %}{% endif %}
+{% set yamuna_fs_rest_cents = yamuna_fs_min_raw - yamuna_fs_subtotal_cents %}
+{% if yamuna_fs_rest_cents < 0 %}{% set yamuna_fs_rest_cents = 0 %}{% endif %}
+{% set yamuna_fs_unlocked = yamuna_fs_has or yamuna_fs_rest_cents == 0 %}
+
+{# Top promo — full-width magenta bar directly under header (Figma / prod). #}
+<div class="yamuna-cart-top-promo js-visible-on-cart-filled" {% if cart.items_count == 0 %}style="display:none;"{% endif %}>
   <img src="{{ 'images/yamuna/cart-discount.svg' | static_url }}" alt="" aria-hidden="true">
   <span>5% OFF ACIMA DE 3 UNIDADES</span>
 </div>
 
-{% if has_free_shipping and cart.free_shipping.min_price_free_shipping.min_price_raw > 0 %}
-  <div class="yamuna-cart-free-shipping js-visible-on-cart-filled" {% if cart.items_count == 0 %}style="display:none;"{% endif %}>
-    {% include "snipplets/shipping/shipping-free-rest.tpl" %}
-  </div>
+{# Frete progress stays under the top promo (never after line items). #}
+<div class="yamuna-cart-free-shipping js-visible-on-cart-filled" {% if cart.items_count == 0 %}style="display:none;"{% endif %}>
+  {% include "snipplets/shipping/shipping-free-rest.tpl" %}
+</div>
+
+{% if cart.items_count > 0 %}
+<div class="yamuna-cart-shipping-promo js-visible-on-cart-filled js-yamuna-fs-fallback" data-fs-min="{{ yamuna_fs_min_raw }}" data-fs-subtotal="{{ yamuna_fs_subtotal_cents }}" {% if not yamuna_fs_use_fallback_threshold %}style="display:none;"{% endif %}>
+  <span class="yamuna-cart-promo-text js-yamuna-fs-text">
+    {% if yamuna_fs_unlocked %}
+      Frete grátis garantido!
+    {% else %}
+      Faltam {{ (yamuna_fs_rest_cents / 100) | money }} para garantir seu frete grátis
+    {% endif %}
+  </span>
+  <i class="yamuna-cart-promo-bar" aria-hidden="true"><span class="yamuna-cart-promo-progress js-yamuna-fs-fill" style="width: {{ yamuna_fs_pct }}%;"></span></i>
+</div>
 {% endif %}
 
 <div class="yamuna-minicart-scroll js-visible-on-cart-filled" {% if cart.items_count == 0 %}style="display:none;"{% endif %}>
@@ -1467,13 +1747,62 @@
       });
     }
 
-    shortenMinicartPromoLabels();
+    /* Cenário 019: show De/Por unit price when qty >= 3 (buy-3 promo). */
+    function formatYamunaMoneyFromCents(cents) {
+      var reais = (Number(cents) || 0) / 100;
+      if (window.LS && typeof LS.formatToCurrency === 'function') {
+        return LS.formatToCurrency(reais);
+      }
+      return 'R$\u00a0' + reais.toFixed(2).replace('.', ',');
+    }
+
+    function syncMinicartBuyThreeUnitPrices() {
+      var modal = document.getElementById('modal-cart');
+      if (!modal) return;
+      modal.querySelectorAll('.js-cart-item').forEach(function (itemEl) {
+        if (itemEl.getAttribute('data-gift') === 'true') return;
+        var wrap = itemEl.querySelector('.cart-item-subtotal');
+        if (!wrap) return;
+        var promoEl = wrap.querySelector('[data-yamuna-unit-promo]');
+        var subtotalEl = wrap.querySelector('.js-cart-item-subtotal');
+        if (!promoEl) return;
+
+        var qtyInput = itemEl.querySelector('.js-cart-quantity-input');
+        var qty = parseInt(qtyInput && qtyInput.value, 10) || 0;
+        var threshold = parseInt(wrap.getAttribute('data-yamuna-promo-threshold'), 10) || 3;
+        var unitCents = parseFloat(wrap.getAttribute('data-yamuna-unit-price'));
+        var rate = parseFloat(wrap.getAttribute('data-yamuna-promo-rate'));
+        if (isNaN(rate)) rate = 0.95;
+
+        if (qty >= threshold && !isNaN(unitCents)) {
+          var deEl = promoEl.querySelector('[data-yamuna-unit-de]');
+          var porEl = promoEl.querySelector('[data-yamuna-unit-por]');
+          var promoCents = Math.floor(unitCents * rate);
+          var deText = formatYamunaMoneyFromCents(unitCents);
+          var porText = formatYamunaMoneyFromCents(promoCents);
+          if (deEl && deEl.textContent !== deText) deEl.textContent = deText;
+          if (porEl && porEl.textContent !== porText) porEl.textContent = porText;
+          if (promoEl.classList.contains('is-hidden')) promoEl.classList.remove('is-hidden');
+          if (subtotalEl && !subtotalEl.classList.contains('is-hidden')) subtotalEl.classList.add('is-hidden');
+        } else {
+          if (!promoEl.classList.contains('is-hidden')) promoEl.classList.add('is-hidden');
+          if (subtotalEl && subtotalEl.classList.contains('is-hidden')) subtotalEl.classList.remove('is-hidden');
+        }
+      });
+    }
+
+    function refreshMinicartPromoUi() {
+      shortenMinicartPromoLabels();
+      syncMinicartBuyThreeUnitPrices();
+    }
+
+    refreshMinicartPromoUi();
     var promoObserverRoot = document.getElementById('modal-cart');
     if (promoObserverRoot && window.MutationObserver) {
       var promoTimer = null;
       new MutationObserver(function () {
         if (promoTimer) clearTimeout(promoTimer);
-        promoTimer = setTimeout(shortenMinicartPromoLabels, 50);
+        promoTimer = setTimeout(refreshMinicartPromoUi, 50);
       }).observe(promoObserverRoot, { childList: true, subtree: true, characterData: true });
     }
 
@@ -1538,6 +1867,51 @@
       document.querySelectorAll('#modal-cart .js-cart-input-spinner, #modal-cart .cart-item-spinner').forEach(hideEl);
     }
 
+    /* Cenário 013: evita "pisca" do número (LS esconde input / mostra spinner / disabled). */
+    var lockingMinicartQty = false;
+    function lockMinicartQtyVisibility(scope) {
+      if (lockingMinicartQty) return;
+      lockingMinicartQty = true;
+      try {
+        var root = scope || document.getElementById('modal-cart');
+        if (!root) return;
+        root.querySelectorAll('.js-cart-quantity-input').forEach(function (input) {
+          input.style.setProperty('display', 'block', 'important');
+          input.style.setProperty('opacity', '1', 'important');
+          input.style.setProperty('visibility', 'visible', 'important');
+          input.style.setProperty('color', '#111827', 'important');
+          input.style.setProperty('-webkit-text-fill-color', '#111827', 'important');
+          input.style.setProperty('background-color', '#fff', 'important');
+          input.style.setProperty('caret-color', '#111827', 'important');
+          input.classList.remove('opacity-40', 'opacity-50', 'opacity-60', 'hidden', 'd-none');
+        });
+        root.querySelectorAll('.cart-item-quantity, .form-quantity, .form-control-container').forEach(function (el) {
+          el.classList.remove('opacity-40', 'opacity-50', 'opacity-60');
+          el.style.setProperty('opacity', '1', 'important');
+        });
+        clearCartItemSpinners();
+        clearDisabledMinicartControls();
+      } finally {
+        lockingMinicartQty = false;
+      }
+    }
+
+    function optimisticMinicartQty(quantityBtn) {
+      if (!quantityBtn) return;
+      var row = quantityBtn.closest('.js-cart-item');
+      var input = row && row.querySelector('.js-cart-quantity-input');
+      if (!input) return;
+      var val = parseInt(input.value, 10) || 1;
+      var isMinus = quantityBtn.getAttribute('data-component') === 'quantity.minus' ||
+        (quantityBtn.classList && quantityBtn.classList.contains('yamuna-cart-minus'));
+      if (isMinus) {
+        if (val > 1) input.value = String(val - 1);
+      } else {
+        input.value = String(val + 1);
+      }
+      lockMinicartQtyVisibility(row || document.getElementById('modal-cart'));
+    }
+
     function clearMinicartLoading(opts) {
       opts = opts || {};
       clearCartItemSpinners();
@@ -1592,13 +1966,9 @@
     }
 
     function settleCartItemLoading() {
-      clearCartItemSpinners();
-      clearDisabledMinicartControls();
-      [80, 200, 500, 1200, 2500].forEach(function (ms) {
-        window.setTimeout(function () {
-          clearCartItemSpinners();
-          clearDisabledMinicartControls();
-        }, ms);
+      lockMinicartQtyVisibility();
+      [0, 16, 50, 100, 200, 500, 1200, 2500].forEach(function (ms) {
+        window.setTimeout(lockMinicartQtyVisibility, ms);
       });
     }
 
@@ -1676,6 +2046,9 @@
           (quantityAction.classList && quantityAction.classList.contains('yamuna-cart-minus')) ||
           (quantityAction.closest && quantityAction.closest('[data-component="quantity.minus"], .yamuna-cart-minus'))
         ));
+        if (quantityAction) {
+          optimisticMinicartQty(quantityAction);
+        }
         if (removeItem) {
           markEmptyingIfLastItem(cartModal, false);
         } else if (isMinus) {

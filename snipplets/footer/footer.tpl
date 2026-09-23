@@ -18,6 +18,51 @@
   footer.yamuna-footer h4 {
     font-family: 'Raleway', sans-serif !important;
   }
+
+  /* Contact: left-aligned from tablet up (icons as left edge). Center only on mobile. */
+  footer.yamuna-footer .yamuna-footer-contact .contact-info {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+  footer.yamuna-footer .yamuna-footer-contact .contact-item {
+    display: inline-flex !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 6px !important;
+    padding-left: 0 !important;
+    position: relative !important;
+    text-align: left !important;
+  }
+  footer.yamuna-footer .yamuna-footer-contact .contact-item-icon {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    flex: 0 0 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    margin-top: 0.15em !important;
+  }
+  footer.yamuna-footer .yamuna-footer-contact .contact-link {
+    text-align: left !important;
+  }
+
+  @media (max-width: 767px) {
+    footer.yamuna-footer .yamuna-footer-contact .contact-info {
+      align-items: center !important;
+      text-align: center !important;
+    }
+    footer.yamuna-footer .yamuna-footer-contact .contact-item {
+      justify-content: center !important;
+      width: auto !important;
+      max-width: min(100%, 280px) !important;
+    }
+  }
 </style>
 
 <footer class="js-hide-footer-while-scrolling display-when-content-ready yamuna-footer" data-store="footer">
@@ -109,7 +154,8 @@
 					<ul class="footer-menu">
 						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.customer_home_url }}">{{ 'Meus pedidos' | translate }}</a></li>
 						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.customer_home_url }}">{{ 'Minha conta' | translate }}</a></li>
-						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.customer_home_url }}">Editar Cadastro</a></li>
+						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.customer_info_url }}">Editar Cadastro</a></li>
+						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.customer_addresses_url }}">{{ 'Mis direcciones' | translate }}</a></li>
 					</ul>
 				</div>
 

@@ -187,4 +187,33 @@
     border-radius: 12px !important;
   }
 }
+
+/* VER TODOS OS RESULTADOS — 40px height (override theme .btn-primary padding:13px) */
+a.js-search-suggest-all-link.btn,
+a.js-search-suggest-all-link.btn.btn-primary,
+.search-suggest-list > a.js-search-suggest-all-link,
+.js-search-suggest a.js-search-suggest-all-link.btn {
+  display: flex !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  margin: 12px 0 8px !important;
+  padding: 0 16px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: #a31460 !important;
+  background-color: #a31460 !important;
+  color: #fff !important;
+  font-family: 'Raleway', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  letter-spacing: .02em !important;
+  text-transform: uppercase !important;
+}
 </style>

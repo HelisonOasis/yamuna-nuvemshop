@@ -14,10 +14,11 @@
 {% set columns = settings.grid_columns %}
 {% set is_pdp_related_spot = is_pdp_related_spot | default(false) %}
 {% set is_cart_reco_spot = is_cart_reco_spot | default(false) %}
-{% set is_home_product_spot = slide_item and section_name in ['primary', 'new', 'sale', 'empty-related'] %}
-{% set is_yamuna_spot_card = is_home_product_spot or is_pdp_related_spot %}
-{% set spot_ns = is_pdp_related_spot ? 'yamuna-pdp-spot' : 'yamuna-home-spot' %}
-{% set spot_qty_class = is_pdp_related_spot ? 'js-pdp-spot-add-quantity' : 'js-home-spot-add-quantity' %}
+{% set is_blog_related_spot = is_blog_related_spot | default(false) %}
+{% set is_home_product_spot = (template == 'home' and section_name in ['primary', 'new', 'sale', 'empty-related']) or (slide_item and section_name in ['primary', 'new', 'sale', 'empty-related']) %}
+{% set is_yamuna_spot_card = is_home_product_spot or is_pdp_related_spot or is_cart_reco_spot %}
+{% set spot_ns = is_pdp_related_spot ? 'yamuna-pdp-spot' : (is_cart_reco_spot ? 'yamuna-pdp-spot' : 'yamuna-home-spot') %}
+{% set spot_qty_class = is_pdp_related_spot or is_cart_reco_spot ? 'js-pdp-spot-add-quantity' : 'js-home-spot-add-quantity' %}
 
 {% if slide_item %}
     <div class="swiper-slide{% if settings.theme_rounded and not reduced_item %} p-3{% endif %}">
@@ -59,7 +60,7 @@
     <div class="js-item-product {% if highlighted_products_setting_name %}js-products-{{ highlighted_products_setting_name }}-product{% endif %} {% if not slide_item %}{{ grid_classes }}{% endif %} item item-product {{ reduced_item_class }}" data-product-type="list" data-product-id="{{ product.id }}" data-store="product-item-{{ product.id }}" data-component="product-list-item" data-component-value="{{ product.id }}" data-grid-classes="{{ grid_classes }}" data-yamuna-tags="{{ product.name | lower }}">
 {% endif %}
 
-        {% if (settings.quick_shop or settings.product_color_variants or template == 'category' or template == 'search') and not reduced_item %}
+        {% if not reduced_item %}
             <div id="quick{{ product.id }}{% if slide_item and section_name %}-{{ section_name }}{% endif %}" class="js-product-container js-quickshop-container position-relative {% if product.variations %}js-quickshop-has-variants{% endif %}" data-variants="{{ product.variants_object | json_encode }}">
         {% endif %}
 
@@ -180,7 +181,7 @@
                         {# Normal products: original price display #}
                         <div class="item-price-container mb-1" data-store="product-item-price-{{ product.id }}">
                             {% if not reduced_item %}
-                                <span class="js-compare-price-display price-compare" {% if not product.compare_at_price or not product.display_price %}style="display:none;"{% else %}style="display:inline-block;"{% endif %}>
+                                <span class="js-compare-price-display price-compare" {% if not product.compare_at_price or not product.display_price or product.compare_at_price <= product.price %}style="display:none;"{% else %}style="display:inline-block;"{% endif %}>
                                     {{ product.compare_at_price | money }}
                                 </span>
                             {% endif %}
@@ -251,7 +252,8 @@
             {% endif %}
         </div>
         {% if not reduced_item %}
-            {% if (template == 'category' or template == 'search') and not is_pdp_related_spot %}
+            {% set show_spot_card_actions = true %}
+            {% if ((template == 'category' or template == 'search') and not is_pdp_related_spot) or is_blog_related_spot %}
                 <div class="yamuna-plp-item-actions">
                     {% if product.available and product.display_price %}
                         {% if product.isSubscribable() or product.variations %}
@@ -273,12 +275,14 @@
                                 </button>
                             </form>
                         {% endif %}
+                    {% elseif not product.available %}
+                        <a href="{{ product.url }}" class="yamuna-plp-avise-me" title="{{ 'Avise-me' | translate }} — {{ product.name }}">{{ 'Avise-me' | translate }}</a>
                     {% else %}
                         <a href="{{ product.url }}" class="yamuna-plp-buy-one">{{ 'Consultar' | translate }}</a>
                     {% endif %}
                 </div>
-            {% elseif settings.quick_shop or is_pdp_related_spot %}
-                <div class="item-actions row justify-content-center{% if settings.theme_rounded %} m-0 mb-3{% endif %}">
+            {% elseif show_spot_card_actions %}
+                <div class="item-actions row justify-content-center{% if settings.theme_rounded %} m-0 mb-3{% endif %}{% if not product.available %} yamuna-item-actions-avise{% endif %}">
                     {% if product.available and product.display_price %}
                         <div class="col-8 col-md-6 pr-1">
 
@@ -322,15 +326,27 @@
                                 </form>
                             {% endif %}
                         </div>
+                        <div class="col-4 col-md-6 pl-1">
+                            <a href="{{ product.url }}" title="{{ product.name }}" aria-label="{{ product.name }}" class="d-block btn btn-secondary btn-small">
+                                <svg class="icon-inline svg-icon-primary icon-w-19"><use xlink:href="#eye"/></svg>
+                                <span class="d-none d-md-inline-block">{{ "Ver" | translate }}</span></a>
+                        </div>
+                    {% elseif not product.available %}
+                        {# First-child wrap so theme rules that hide :last-child (Ver) don't kill Avise-me #}
+                        <div class="col-12 yamuna-avise-me-wrap">
+                            <a href="{{ product.url }}" class="yamuna-plp-avise-me{% if is_yamuna_spot_card %} {{ spot_ns }}-avise-me{% endif %}" title="{{ 'Avise-me' | translate }} — {{ product.name }}">{{ 'Avise-me' | translate }}</a>
+                        </div>
+                        <div class="yamuna-avise-me-spacer" aria-hidden="true"></div>
+                    {% else %}
+                        <div class="col-12 col-md-6">
+                            <a href="{{ product.url }}" title="{{ product.name }}" aria-label="{{ product.name }}" class="d-block btn btn-secondary btn-small">
+                                <svg class="icon-inline svg-icon-primary icon-w-19"><use xlink:href="#eye"/></svg>
+                                <span>{{ "Ver" | translate }}</span></a>
+                        </div>
                     {% endif %}
-                    <div class="{% if product.available and product.display_price %}col-4 col-md-6 pl-1{% else %}col-12 col-md-6{% endif %}">
-                        <a href="{{ product.url }}" title="{{ product.name }}" aria-label="{{ product.name }}" class="d-block btn btn-secondary btn-small">
-                            <svg class="icon-inline svg-icon-primary icon-w-19"><use xlink:href="#eye"/></svg>
-                            <span class="{% if product.available and product.display_price %}d-none d-md-inline-block{% endif %}">{{ "Ver" | translate }}</span></a>
-                    </div>
                 </div>
             {% endif %}
-            {% if settings.quick_shop or settings.product_color_variants or template == 'category' or template == 'search' %}
+            {% if not reduced_item %}
                 </div>{# This closes the quickshop tag #}
             {% endif %}
         {% endif %}

@@ -1,6 +1,6 @@
 {% if store.allows_checkout_styling %}
 
-@import url("https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap");
 
 {#/*============================================================================
 checkout.scss.tpl
@@ -1386,6 +1386,100 @@ button.btn-primary {
     width: 96px !important;
     height: 72px !important;
   }
+}
+
+{# QA 868m30v22 — checkout scenarios 014–018 #}
+
+/* CTA buttons — Raleway 16px / medium 500, height matches product-card COMPRAR (40px) */
+.btn-primary,
+button.btn-primary,
+.continue-button,
+.submit-button,
+button[type="submit"].btn-primary,
+.btn-submit-step,
+.mobile-discount-coupon_btn,
+.box-discount-coupon button,
+button.mobile-discount-coupon_btn,
+.summary .mobile-discount-coupon_btn,
+.summary .box-discount-coupon button,
+a.mobile-discount-coupon_btn {
+  box-sizing: border-box !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em !important;
+  line-height: 40px !important;
+}
+
+/* 015 — product name Roboto 16px / 700 */
+.table-product-name,
+.table-product-name a,
+.summary-product-name,
+td.table-product-name {
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #000 !important;
+}
+
+/* 016 — summary labels Raleway 16px bold */
+.table .table-subtotal td,
+.table .table-shipping td,
+.table .table-discount td,
+.table .table-total td:first-child,
+.summary-detail .table td:first-child,
+.box-container .table td:first-child,
+.summary .table td:first-child,
+.summary table td:first-child,
+.summary table tbody td:first-child {
+  font-family: Raleway, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
+
+/* 017 — total value #238482 */
+.table-footer,
+.table-price,
+.table .table-total .table-price,
+.summary-total,
+.summary-total .table-price,
+span.summary-total,
+.total-price {
+  color: #238482 !important;
+  font-family: Raleway, sans-serif !important;
+  font-weight: 700 !important;
+}
+
+/* 018a — smaller secondary copy → Roboto */
+.form-control,
+.input-label,
+.has-float-label label,
+.form-options-content,
+.checkbox-label,
+.custom-checkbox label,
+.shipping-option,
+.shipping-option-price,
+.shipping-option-name,
+.address-summary,
+.help-block,
+.form-group small,
+.panel-body,
+.box-container p,
+label {
+  font-family: Roboto, Arial, sans-serif !important;
+}
+
+/* 018b — Carrinho step clickable (back to cart page) */
+.breadcrumb-timeline-item.disabled:first-child,
+.breadcrumb-timeline .breadcrumb-timeline-item:first-child {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+  color: #4a1d3a !important;
 }
 
 {% endif %}

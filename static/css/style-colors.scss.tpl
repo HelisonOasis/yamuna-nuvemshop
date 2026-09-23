@@ -437,6 +437,104 @@ h6,.h6{
   font-family: $heading-font;
 }
 
+{# Account: force wine text #4a1d3a over theme $main-foreground (#000) #}
+body[class*="template-account-"] > .mt-4,
+body[class*="template-account-"] > .mt-4 *:not(svg):not(path):not(use),
+body[class*="template-account-"] .page-header,
+body[class*="template-account-"] .page-header *:not(svg):not(path):not(use),
+body[class*="template-account-"] .yamuna-account-page,
+body[class*="template-account-"] .yamuna-account-page *:not(svg):not(path):not(use),
+body[class*="template-account-"] .account-page,
+body[class*="template-account-"] .account-page *:not(svg):not(path):not(use) {
+  color: #4a1d3a !important;
+}
+
+body[class*="template-account-"] .yamuna-account-page a:not(.btn):not(.btn-primary),
+body[class*="template-account-"] .btn-link,
+body[class*="template-account-"] .btn-link-primary,
+body[class*="template-account-"] a.btn-link-primary,
+body[class*="template-account-"] .yamuna-login-forgot,
+body[class*="template-account-"] .text-primary,
+body[class*="template-account-"] .pending,
+body[class*="template-account-"] .pending *,
+body[class*="template-account-"] .authorized,
+body[class*="template-account-"] .authorized *,
+body[class*="template-account-"] .yamuna-account-page [data-store="account-orders"] .col-7 .font-small strong,
+body[class*="template-account-"] .svg-icon-primary {
+  color: #a31460 !important;
+  fill: #a31460 !important;
+}
+
+body[class*="template-account-"] .btn.btn-primary,
+body[class*="template-account-"] a.btn.btn-primary,
+body[class*="template-account-"] .btn-primary,
+body[class*="template-account-"] .btn.btn-primary.btn-small,
+body[class*="template-account-"] a.btn.btn-primary.btn-small,
+body[class*="template-account-"] .yamuna-login-submit {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 0 24px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  color: #fff !important;
+  fill: #fff !important;
+  background: #a31460 !important;
+  background-color: #a31460 !important;
+  border-color: #a31460 !important;
+  font-family: "Raleway", sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+}
+
+body[class*="template-account-"] .btn.btn-primary.d-block,
+body[class*="template-account-"] a.btn.btn-primary.d-block,
+body[class*="template-account-"] .btn.btn-primary.w-100,
+body[class*="template-account-"] a.btn.btn-primary.w-100 {
+  display: flex !important;
+  width: 100% !important;
+}
+
+{# Account: force Raleway over theme Montserrat ($heading-font / $body-font) #}
+body[class*="template-account-"] h1,
+body[class*="template-account-"] .h1,
+body[class*="template-account-"] h2,
+body[class*="template-account-"] .h2,
+body[class*="template-account-"] h3,
+body[class*="template-account-"] .h3,
+body[class*="template-account-"] h4,
+body[class*="template-account-"] .h4,
+body[class*="template-account-"] h5,
+body[class*="template-account-"] .h5,
+body[class*="template-account-"] h6,
+body[class*="template-account-"] .h6,
+body[class*="template-account-"] p,
+body[class*="template-account-"] span,
+body[class*="template-account-"] a,
+body[class*="template-account-"] label,
+body[class*="template-account-"] strong,
+body[class*="template-account-"] small,
+body[class*="template-account-"] li,
+body[class*="template-account-"] button,
+body[class*="template-account-"] input,
+body[class*="template-account-"] select,
+body[class*="template-account-"] textarea,
+body[class*="template-account-"] .btn,
+body[class*="template-account-"] .form-label,
+body[class*="template-account-"] .form-control,
+body[class*="template-account-"] .breadcrumbs,
+body[class*="template-account-"] .yamuna-account-page,
+body[class*="template-account-"] .account-page,
+body[class*="template-account-"] .page-header {
+  font-family: "Raleway", sans-serif !important;
+}
+
 {# /* // Buttons */ #}
 
 .btn{
@@ -493,8 +591,12 @@ h6,.h6{
     letter-spacing: 2px;
     @extend %body-font;
     font-weight: bold;
-    &:hover{
+    &:hover,
+    &:focus,
+    &:active{
+      background-color: $primary-color;
       color: $main-background;
+      fill: $main-background;
     }
   }
   &-secondary{
@@ -1275,7 +1377,7 @@ input::-webkit-outer-spin-button{
   background: rgba($main-foreground, .1);
 }
 
-{# Yamuna home: benefits bar — Figma 156:3365 / cenário 083 #}
+{# Yamuna home: benefits bar - Figma 156:3365 / cenario 083 #}
 [data-store="banner-services"] .section-informative-banners {
   margin: 0;
   background: #FBF7F0;
@@ -1332,9 +1434,10 @@ input::-webkit-outer-spin-button{
 }
 
 .yamuna-home-products .item-actions .btn-primary {
-  border-color: #238482;
-  background: #238482;
-  color: #fff;
+  border-color: #238482 !important;
+  background: #238482 !important;
+  background-color: #238482 !important;
+  color: #fff !important;
 }
 
 .yamuna-home-products .item-actions .btn-secondary {
@@ -1386,9 +1489,9 @@ input::-webkit-outer-spin-button{
 }
 
 @media (min-width: 768px) {
-  {# Space above title + room for pagination below cards. #}
+  {# Cenario 144: 100px between pagination and next title (68 top + 32 bottom). #}
   body.template-home .section-featured-home {
-    padding: 80px 0 32px;
+    padding: 68px 0 32px;
   }
 }
 
@@ -1470,7 +1573,7 @@ input::-webkit-outer-spin-button{
   line-height: 15px;
 }
 
-{# Cenário 087: Figma slide marker — 20px below card CTAs, 8×8 dots, 8px gap.
+{# Cenario 087: Figma slide marker - 20px below card CTAs, 8x8 dots, 8px gap.
    Keep pagination outside the swiper overflow so it is never clipped. #}
 .section-featured-home .products-carousel-pagination {
   position: relative;
@@ -1558,7 +1661,7 @@ input::-webkit-outer-spin-button{
 }
 
 @media (max-width: 767px) {
-  {# Home product titles: 54px above / 24px below (promoções rhythm). #}
+  {# Home product titles: 54px above / 24px below (promocoes rhythm). #}
   .section-featured-home {
     padding: 54px 0 38px;
   }
@@ -1622,12 +1725,12 @@ input::-webkit-outer-spin-button{
   }
 }
 
-{# Yamuna product spot — Figma product v7 (flex, not absolute CTAs).
+{# Yamuna product spot - Figma product v7 (flex, not absolute CTAs).
    Image absorbs leftover height; price stays ~10px above COMPRAR;
    card padding-bottom is 10px desktop / 22px mobile so CTAs never clip. #}
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .swiper-slide {
   height: 539px !important;
-  /* Kill theme .p-3 on slides — it stole height and clipped the CTAs. */
+  /* Kill theme .p-3 on slides - it stole height and clipped the CTAs. */
   padding: 0 6.6667px !important;
   box-sizing: border-box;
 }
@@ -1661,7 +1764,7 @@ input::-webkit-outer-spin-button{
 }
 
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image {
-  /* Flex grow fills leftover space — no max-height or space pools under CTAs. */
+  /* Flex grow fills leftover space - no max-height or space pools under CTAs. */
   flex: 1 1 auto;
   min-height: 180px;
   height: auto !important;
@@ -1677,9 +1780,9 @@ input::-webkit-outer-spin-button{
   object-fit: contain;
 }
 
-/* 077/078/079 — secondary image hover swap on home product cards.
+/* 077/078/079 - secondary image hover swap on home product cards.
    Frame images inside the fixed .item-image box (already height:360px).
-   Absolute imgs must use .item-image as containing block — never the <a>. */
+   Absolute imgs must use .item-image as containing block - never the <a>. */
 @media (min-width: 768px) {
   [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-image {
     position: relative;
@@ -1766,7 +1869,7 @@ input::-webkit-outer-spin-button{
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-description {
   flex: 0 0 auto;
   min-height: 0;
-  /* Theme py-4 is !important — override; 10px gap before CTAs like Figma. */
+  /* Theme py-4 is !important - override; 10px gap before CTAs like Figma. */
   padding: 10px 0 !important;
   border-bottom: 0;
   color: #4a1d3a;
@@ -1862,7 +1965,7 @@ input::-webkit-outer-spin-button{
 }
 
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions {
-  /* Document flow — never absolute. Card padding-bottom owns the 10px inset. */
+  /* Document flow - never absolute. Card padding-bottom owns the 10px inset. */
   position: static !important;
   flex: 0 0 auto;
   top: auto !important;
@@ -1888,6 +1991,22 @@ input::-webkit-outer-spin-button{
 
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions > div:last-child {
   display: none;
+}
+
+/* Avise-me must stay visible even when it would be :last-child / :only-child */
+[data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions > div.yamuna-avise-me-wrap,
+[data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions.yamuna-item-actions-avise > div:first-child {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  padding: 0 !important;
+}
+
+[data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions > .yamuna-avise-me-spacer,
+.yamuna-pdp-related .item-actions > .yamuna-avise-me-spacer,
+body.template-cart .yamuna-cart-recommendations .item-actions > .yamuna-avise-me-spacer,
+body .item-actions > .yamuna-avise-me-spacer {
+  display: none !important;
 }
 
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-actions .btn {
@@ -1980,10 +2099,11 @@ input::-webkit-outer-spin-button{
 }
 
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .yamuna-home-spot-buy-one {
-  border: 1px solid #238482;
-  color: #fff;
-  background: #238482;
-  font-family: 'Raleway', sans-serif;
+  border: 1px solid #238482 !important;
+  color: #fff !important;
+  background: #238482 !important;
+  background-color: #238482 !important;
+  font-family: 'Raleway', sans-serif !important;
 }
 
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .yamuna-home-spot-buy-three {
@@ -2170,7 +2290,7 @@ input::-webkit-outer-spin-button{
   }
 }
 
-{# Cenário 090: Figma ~33px above handle / bottom air before next section. #}
+{# Cenario 090: Figma ~33px above handle / bottom air before next section. #}
 .section-home-content-placeholder.section-instagram-placeholder {
   padding: 33px 20px 40px;
 }
@@ -2598,7 +2718,7 @@ input::-webkit-outer-spin-button{
         position: absolute;
         top: -5px;
         left: 2px;
-        content: '✓';
+        content: '\2713';
         color: #fff;
         font-size: 14px;
       }
@@ -3615,4 +3735,92 @@ footer .footer-legal {
     }
   }
 
+}
+
+{# /* Account pages: Raleway + brand magenta, never theme purple (#46459B) */ #}
+body[class*="template-account-"]:not(.yamuna-account-auth),
+body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-account-page,
+body[class*="template-account-"]:not(.yamuna-account-auth) .account-page,
+body[class*="template-account-"]:not(.yamuna-account-auth) .page-header,
+body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-account-page *,
+body[class*="template-account-"]:not(.yamuna-account-auth) .account-page *,
+body[class*="template-account-"]:not(.yamuna-account-auth) .page-header * {
+  font-family: 'Raleway', sans-serif !important;
+}
+
+body[class*="template-account-"]:not(.yamuna-account-auth) .btn-primary,
+body[class*="template-account-"]:not(.yamuna-account-auth) .btn.btn-primary,
+body[class*="template-account-"]:not(.yamuna-account-auth) a.btn.btn-primary,
+body[class*="template-account-"]:not(.yamuna-account-auth) .btn.btn-primary.btn-small,
+body[class*="template-account-"]:not(.yamuna-account-auth) a.btn.btn-primary.btn-small {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 0 24px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background-color: #a31460 !important;
+  background: #a31460 !important;
+  border-color: #a31460 !important;
+  color: #fff !important;
+  fill: #fff !important;
+  font-family: 'Raleway', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+body[class*="template-account-"]:not(.yamuna-account-auth) .btn-primary:hover,
+body[class*="template-account-"]:not(.yamuna-account-auth) .btn-primary:focus,
+body[class*="template-account-"]:not(.yamuna-account-auth) .btn.btn-primary:hover,
+body[class*="template-account-"]:not(.yamuna-account-auth) .btn.btn-primary:focus {
+  background-color: #6b0a3f !important;
+  background: #6b0a3f !important;
+  border-color: #6b0a3f !important;
+  color: #fff !important;
+  opacity: 1 !important;
+}
+
+body[class*="template-account-"]:not(.yamuna-account-auth) .btn-link,
+body[class*="template-account-"]:not(.yamuna-account-auth) .btn-link-primary,
+body[class*="template-account-"]:not(.yamuna-account-auth) a.btn-link-primary,
+body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-login-forgot,
+body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-account-page a:not(.btn):not(.btn-primary),
+body[class*="template-account-"]:not(.yamuna-account-auth) .text-primary,
+body[class*="template-account-"]:not(.yamuna-account-auth) .pending,
+body[class*="template-account-"]:not(.yamuna-account-auth) .authorized {
+  color: #a31460 !important;
+  fill: #a31460 !important;
+}
+
+body[class*="template-account-"]:not(.yamuna-account-auth) .btn-link:hover,
+body[class*="template-account-"]:not(.yamuna-account-auth) .btn-link-primary:hover,
+body[class*="template-account-"]:not(.yamuna-account-auth) a.btn-link-primary:hover,
+body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-login-forgot:hover,
+body[class*="template-account-"]:not(.yamuna-account-auth) .yamuna-account-page a:not(.btn):not(.btn-primary):hover {
+  color: #8c1052 !important;
+  fill: #8c1052 !important;
+  opacity: 1 !important;
+}
+
+body[class*="template-account-"]:not(.yamuna-account-auth) .btn-secondary {
+  color: #a31460 !important;
+  border-color: #a31460 !important;
+}
+
+body[class*="template-account-"]:not(.yamuna-account-auth) .svg-icon-primary {
+  fill: #a31460 !important;
+}
+
+body[class*="template-account-"]:not(.yamuna-account-auth) .page-header h1,
+body[class*="template-account-"]:not(.yamuna-account-auth) .page-header .h1,
+body[class*="template-account-"]:not(.yamuna-account-auth) .page-header .h2,
+body[class*="template-account-"]:not(.yamuna-account-auth) .page-header .text-primary {
+  color: #4a1d3a !important;
 }

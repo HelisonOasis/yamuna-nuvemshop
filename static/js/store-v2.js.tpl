@@ -3037,13 +3037,16 @@ DOMContentLoaded.addEventOrExecute(() => {
 
             {% if store.useNativeJsLibraries() %}
 
-                Fancybox.bind('[data-fancybox="product-gallery"]', {
+                Fancybox.bind('[data-fancybox="product-gallery"], [data-fancybox="product-gallery-desktop"]', {
                     Toolbar: { display: ['counter', 'close'] },
                     Thumbs: { autoStart: false },
+                    dragToClose: true,
                     on: {
                         shouldClose: (fancybox, slide) => {
                             // Update position of the slider
-                            productSwiper.slideTo( fancybox.getSlide().index, 0 );
+                            if (productSwiper && fancybox.getSlide()) {
+                                productSwiper.slideTo( fancybox.getSlide().index, 0 );
+                            }
                             jQueryNuvem(".js-product-thumb").removeClass("selected");
 
                             var $product_thumbnail = jQueryNuvem(".js-product-thumb[data-thumb-loop='"+fancybox.getSlide().index+"']").addClass("selected");
@@ -3064,9 +3067,10 @@ DOMContentLoaded.addEventOrExecute(() => {
             {% else %}
 
                 $().fancybox({
-                    selector : '[data-fancybox="product-gallery"]',
-                    toolbar  : false,
-                    smallBtn : true,
+                    selector : '[data-fancybox="product-gallery"], [data-fancybox="product-gallery-desktop"]',
+                    toolbar  : true,
+                    buttons: ['close'],
+                    smallBtn : false,
                     beforeClose : function(instance) {
                         // Update position of the slider
                         productSwiper.slideTo( instance.currIndex, 0 );
@@ -3935,9 +3939,25 @@ DOMContentLoaded.addEventOrExecute(() => {
 	{# /* // Shipping provinces */ #}
 
 	{% if provinces_json %}
+        {# Match province select (LS.swapProvinces) to country form-select styling #}
+        function yamunaStyleProvinceSelect() {
+            var form = document.querySelector('#address-form, form.yamuna-account-form');
+            if (!form) return;
+            var province = form.querySelector('#province, select[name="province"]');
+            if (!province || province.tagName !== 'SELECT') return;
+            province.classList.add('form-select', 'yamuna-login-input');
+            var group = province.closest('.form-group');
+            if (group && !group.querySelector('.form-select-icon')) {
+                var icon = document.createElement('div');
+                icon.className = 'form-select-icon';
+                icon.innerHTML = '<svg class="icon-inline icon-w-14 icon-lg"><use xlink:href="#chevron-down"/></svg>';
+                province.insertAdjacentElement('afterend', icon);
+            }
+        }
         jQueryNuvem('select[name="country"]').on("change", function (e) {
 		    var provinces = {{ provinces_json | default('{}') | raw }};
 		    LS.swapProvinces(provinces[jQueryNuvem(e.currentTarget).val()]);
+            yamunaStyleProvinceSelect();
 		}).trigger('change');
 	{% endif %}
 

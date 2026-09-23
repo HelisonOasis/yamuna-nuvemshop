@@ -1,11 +1,30 @@
 {% set show_thumbs = product.media_count > 1 or product.video_url %}
-{% if product.media_count > 0 %}
+{% if product.media_count > 0 or product.video_url %}
+    {# Cenário 051: desktop gallery includes images + videos; own Fancybox group. #}
     <div class="yamuna-product-gallery-desktop">
-        {% for media in product.media if media.isImage %}
-            <a href="{{ media | product_image_url('original') }}" data-fancybox="product-gallery" class="yamuna-product-gallery-item">
-                <img src="{{ media | product_image_url('original') }}" alt="{{ media.alt }}" loading="{{ loop.first ? 'eager' : 'lazy' }}" {% if loop.first %}fetchpriority="high"{% endif %} />
-            </a>
+        {% for media in product.media %}
+            {% if media.isImage %}
+                <a href="{{ media | product_image_url('original') }}" data-fancybox="product-gallery-desktop" class="yamuna-product-gallery-item">
+                    <img src="{{ media | product_image_url('original') }}" alt="{{ media.alt }}" loading="{{ loop.first ? 'eager' : 'lazy' }}" {% if loop.first %}fetchpriority="high"{% endif %} />
+                </a>
+            {% elseif media.isVideo %}
+                <a href="#product-video-modal-{{ media.id }}" data-fancybox="product-gallery-desktop" class="yamuna-product-gallery-item yamuna-product-gallery-item--video" aria-label="{{ 'Video de' | translate }} {{ product.name }}">
+                    <img src="{{ media.thumbnail }}" alt="{{ 'Video de' | translate }} {{ product.name }}" loading="lazy" />
+                    <span class="yamuna-product-gallery-play" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 5.14v13.72L19 12 8 5.14z" fill="#fff"/></svg>
+                    </span>
+                </a>
+            {% endif %}
         {% endfor %}
+        {% if product.video_url %}
+            {% set yamuna_yt_id = product.video_url | split('v=') | last | split('&') | first | split('/') | last %}
+            <a href="#product-video-modal-" data-fancybox="product-gallery-desktop" class="yamuna-product-gallery-item yamuna-product-gallery-item--video" aria-label="{{ 'Video de' | translate }} {{ product.name }}">
+                <img src="https://img.youtube.com/vi/{{ yamuna_yt_id }}/maxresdefault.jpg" alt="{{ 'Video de' | translate }} {{ product.name }}" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/{{ yamuna_yt_id }}/hqdefault.jpg';" />
+                <span class="yamuna-product-gallery-play" aria-hidden="true">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 5.14v13.72L19 12 8 5.14z" fill="#fff"/></svg>
+                </span>
+            </a>
+        {% endif %}
     </div>
 {% endif %}
 <div class="yamuna-product-gallery-mobile d-lg-none{% if product.media_count <= 1 %} yamuna-gallery-single{% else %} yamuna-gallery-multi{% endif %}">

@@ -70,15 +70,30 @@
             }
         }
 
-        /* Desktop: exactly 3 equal cards filling the track (no 460px hole). */
+        /* Desktop: 3 cards; arrows sit centered in the gutters between cards. */
         @media (min-width: 1024px) {
             .section-testimonials-home .testimonials-slider {
                 width: 100% !important;
                 max-width: none !important;
                 margin: 0 !important;
                 overflow: hidden !important;
-                padding-left: 56px !important;
-                padding-right: 56px !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+
+            /* spaceBetween: 24 → gap centers at ~1/3 and ~2/3 of the track */
+            .section-testimonials-home .testimonials-nav {
+                transform: translate(-50%, -50%) !important;
+            }
+
+            .section-testimonials-home .testimonials-nav--prev {
+                left: calc((100% - 48px) / 3 + 12px) !important;
+                right: auto !important;
+            }
+
+            .section-testimonials-home .testimonials-nav--next {
+                left: calc(2 * ((100% - 48px) / 3) + 36px) !important;
+                right: auto !important;
             }
 
             .section-testimonials-home .testimonials-grid.swiper-wrapper {

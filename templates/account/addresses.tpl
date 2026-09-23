@@ -1,16 +1,8 @@
-<section class="container mb-4 text-center">
-    <div class="row">
-        <div class="col-12">
-            {% include "snipplets/breadcrumbs.tpl" %}
-        </div>
-    </div>
-</section>
-
 {% embed "snipplets/page-header.tpl" %}
     {% block page_header_text %}{{ "Mis direcciones" | translate }}{% endblock page_header_text %}
 {% endembed %}
 
-<section class="account-page mb-0">
+<section class="account-page yamuna-account-page mb-0">
     <div class="container">
         <div class="row justify-content-md-center">      
             {% for address in customer.addresses %}

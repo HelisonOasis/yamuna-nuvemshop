@@ -22,18 +22,26 @@
 					height: 0 !important;
 					overflow: hidden !important;
 				}
-				/* Clear fixed header — padding matches verified mobile offset */
+				/* Clearance via .yamuna-header-spacer + 16px breathing room on mobile */
 				body.template-blog > .yamuna-resale-wrap,
-				body.template-blog-post > .yamuna-resale-wrap {
-					padding-top: 81px !important;
+				body.template-blog-post > .yamuna-resale-wrap,
+				body.template-blog .yamuna-resale-wrap,
+				body.template-blog-post .yamuna-resale-wrap {
+					padding-top: 16px !important;
 					margin-top: 0 !important;
 					box-sizing: border-box !important;
 				}
 				body.template-blog .yamuna-blog-page {
 					padding-top: 0 !important;
+					background: #f6f6f6 !important;
 				}
 				body.template-blog .yamuna-blog-page > .container {
-					padding-top: 12px !important;
+					padding-top: 0 !important;
+				}
+				/* Mobile search stack: title→input 18px, input→Categorias 24px */
+				body.template-blog .yamuna-blog-search-row {
+					gap: 18px !important;
+					margin: 0 0 24px !important;
 				}
 			}
 			.yamuna-blog-page-title { color: #a31460 !important; }

@@ -83,14 +83,24 @@
       opacity: 0 !important;
     }
 
-    html:has(#nav-hamburger.modal-show) body.template-home .head-main::after {
+    html:has(#nav-hamburger.modal-show) body.template-home .head-main::after,
+    body.template-home .head-main:has(.yamuna-mobile-search.is-open)::after {
       display: none !important;
+      height: 0 !important;
+      content: none !important;
+      background: none !important;
+      opacity: 0 !important;
     }
 
     body.template-home .head-main .yamuna-header-mobile,
     body.template-home .head-main .yamuna-mobile-search {
       position: relative;
       z-index: 2;
+    }
+
+    /* Cenario 154: open search above header fade */
+    body.template-home .head-main .yamuna-mobile-search.is-open {
+      z-index: 20 !important;
     }
   }
 

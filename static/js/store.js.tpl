@@ -1413,96 +1413,51 @@ $(document).ready(function(){
         })();
     }
 
-    {# /* // Blog related products — clone PDP related slides (spot markup) from a topic seed product */ #}
+    {# /* // Blog related products — clone PDP related slides into a static grid (prod-like) */ #}
     (function yamunaBlogRelatedFromSeed() {
         var section = document.querySelector('.yamuna-blog-related[data-yamuna-seed]');
         if (!section) return;
 
         var seedUrl = section.getAttribute('data-yamuna-seed');
         var maxItems = parseInt(section.getAttribute('data-yamuna-max') || '8', 10) || 8;
-        var wrapper = section.querySelector('.swiper-wrapper');
-        var sliderEl = section.querySelector('.js-swiper-related');
-        if (!seedUrl || !wrapper || !sliderEl) return;
+        var grid = section.querySelector('.js-blog-related-grid');
+        if (!seedUrl || !grid) return;
+        if (section.getAttribute('data-yamuna-grid-boot') === '1') return;
+        section.setAttribute('data-yamuna-grid-boot', '1');
+        if (grid.children.length > 0) return;
 
         function fixBlogRelatedSpotImages() {
-            section.querySelectorAll('.item-image').forEach(function (wrap) {
-                wrap.style.setProperty('overflow', 'hidden', 'important');
-                wrap.style.setProperty('width', 'calc(100% - 24px)', 'important');
-                wrap.style.setProperty('max-width', 'calc(100% - 24px)', 'important');
-                wrap.style.setProperty('margin', '12px auto 0', 'important');
-                wrap.querySelectorAll('img').forEach(function (img) {
-                    img.style.setProperty('object-fit', 'contain', 'important');
-                    img.style.setProperty('object-position', 'center center', 'important');
-                    img.style.setProperty('transform', 'none', 'important');
-                    img.style.setProperty('-webkit-transform', 'none', 'important');
-                    if (img.getAttribute('data-src') && (!img.getAttribute('src') || img.classList.contains('lazyload'))) {
-                        img.setAttribute('src', img.getAttribute('data-src'));
-                    }
-                    if (img.getAttribute('data-srcset') && !img.getAttribute('srcset')) {
-                        img.setAttribute('srcset', img.getAttribute('data-srcset'));
-                    }
-                });
+            section.querySelectorAll('.item-image-secondary, .product-item-image-secondary, .js-product-item-secondary-image-private').forEach(function (img) {
+                img.style.setProperty('display', 'none', 'important');
             });
-            section.querySelectorAll('.item, .js-item-product, .js-product-container').forEach(function (card) {
-                card.style.setProperty('overflow', 'hidden', 'important');
-                card.style.setProperty('border-radius', '12px', 'important');
+            section.querySelectorAll('.item-image img, .js-item-image-container img').forEach(function (img) {
+                if (img.classList.contains('item-image-secondary') || img.classList.contains('product-item-image-secondary')) return;
+                img.classList.remove('img-absolute', 'img-absolute-centered', 'lazyload', 'lazyloading');
+                img.classList.add('lazyloaded');
+                img.removeAttribute('style');
+                var ds = img.getAttribute('data-srcset') || img.getAttribute('srcset') || '';
+                var best = null;
+                ds.split(',').forEach(function (part) {
+                    var m = part.trim().match(/^(\S+)\s+(\d+)w$/);
+                    if (!m) return;
+                    var w = parseInt(m[2], 10);
+                    if (!best || w > best.w) best = { url: m[1], w: w };
+                });
+                var url = null;
+                if (best && best.w >= 200) url = best.url;
+                else if (img.getAttribute('data-src')) url = img.getAttribute('data-src');
+                else if (best) url = best.url;
+                if (url) {
+                    if (url.indexOf('//') === 0) url = 'https:' + url;
+                    img.setAttribute('src', url);
+                    img.removeAttribute('srcset');
+                    img.removeAttribute('data-srcset');
+                    img.removeAttribute('sizes');
+                }
             });
             if (window.lazySizes && window.lazySizes.autoSizer) {
                 try { window.lazySizes.autoSizer.checkElems(); } catch (e) {}
             }
-        }
-
-        function initBlogRelatedSwiper() {
-            section.classList.add('yamuna-empty-related');
-            createSwiper('.yamuna-blog-related .js-swiper-related', {
-                lazy: true,
-                loop: wrapper.children.length > 3,
-                watchOverflow: true,
-                centerInsufficientSlides: false,
-                centeredSlides: false,
-                threshold: 5,
-                watchSlideProgress: true,
-                watchSlidesVisibility: true,
-                slideVisibleClass: 'js-swiper-slide-visible',
-                slidesPerView: 1,
-                spaceBetween: 0,
-                navigation: {
-                    nextEl: '.yamuna-blog-related .js-swiper-related-next',
-                    prevEl: '.yamuna-blog-related .js-swiper-related-prev',
-                },
-                pagination: {
-                    el: '.yamuna-blog-related .js-swiper-related-pagination',
-                    clickable: true,
-                },
-                breakpoints: {
-                    768: {
-                        slidesPerView: 2,
-                        slidesPerGroup: 1,
-                        spaceBetween: 0,
-                    },
-                    1200: {
-                        slidesPerView: 3,
-                        slidesPerGroup: 1,
-                        spaceBetween: 30,
-                    }
-                }
-            });
-
-            function forceOne() {
-                var sw = sliderEl.swiper;
-                if (!sw) return;
-                var w = window.innerWidth || document.documentElement.clientWidth || 0;
-                if (w >= 768) return;
-                sw.params.slidesPerView = 1;
-                sw.params.spaceBetween = 0;
-                if (typeof sw.update === 'function') sw.update();
-            }
-            forceOne();
-            setTimeout(forceOne, 100);
-            setTimeout(forceOne, 400);
-            fixBlogRelatedSpotImages();
-            setTimeout(fixBlogRelatedSpotImages, 100);
-            setTimeout(fixBlogRelatedSpotImages, 400);
         }
 
         fetch(seedUrl, { credentials: 'same-origin', cache: 'no-store' })
@@ -1523,17 +1478,22 @@ $(document).ready(function(){
                 sourceSlides.forEach(function (slide) {
                     if (count >= maxItems) return;
                     if (slide.classList.contains('swiper-slide-duplicate')) return;
-                    if (!slide.querySelector('.yamuna-pdp-spot-buy-one')) return;
 
                     var productEl = slide.querySelector('.js-item-product');
-                    var productId = productEl && productEl.getAttribute('data-product-id');
+                    if (!productEl) return;
+                    if (!slide.querySelector('.yamuna-pdp-spot-buy-one, .yamuna-plp-buy-one, .yamuna-plp-avise-me, .yamuna-pdp-spot-avise-me')) return;
+
+                    var productId = productEl.getAttribute('data-product-id');
                     if (productId && seenIds[productId]) return;
                     if (productId) seenIds[productId] = true;
 
-                    var clone = document.importNode(slide, true);
-                    clone.classList.remove('swiper-slide-duplicate', 'swiper-slide-active', 'swiper-slide-next', 'swiper-slide-prev', 'js-swiper-slide-visible');
-                    clone.removeAttribute('style');
-                    wrapper.appendChild(clone);
+                    var cell = document.createElement('div');
+                    cell.className = 'yamuna-blog-related-cell';
+                    var itemClone = document.importNode(productEl, true);
+                    itemClone.removeAttribute('style');
+                    itemClone.querySelectorAll('[style]').forEach(function (el) { el.removeAttribute('style'); });
+                    cell.appendChild(itemClone);
+                    grid.appendChild(cell);
                     count += 1;
                 });
 
@@ -1542,7 +1502,9 @@ $(document).ready(function(){
                     return;
                 }
                 section.setAttribute('data-yamuna-loaded', String(count));
-                initBlogRelatedSwiper();
+                section.classList.add('yamuna-blog-related--ready');
+                fixBlogRelatedSpotImages();
+                setTimeout(fixBlogRelatedSpotImages, 200);
             })
             .catch(function () {
                 section.style.display = 'none';
@@ -2580,9 +2542,10 @@ $(document).ready(function(){
             );
 
             $().fancybox({
-                selector : '[data-fancybox="product-gallery"]',
-                toolbar  : false,
-                smallBtn : true,
+                selector : '[data-fancybox="product-gallery"], [data-fancybox="product-gallery-desktop"]',
+                toolbar  : true,
+                buttons: ['close'],
+                smallBtn : false,
                 beforeClose : function(instance) {
                     // Update position of the slider
                     productSwiper.slideTo( instance.currIndex, 0 );
@@ -3260,9 +3223,25 @@ $(document).ready(function(){
 	{# /* // Shipping provinces */ #}
 
 	{% if provinces_json %}
+		{# Match province select (LS.swapProvinces) to country form-select styling #}
+		function yamunaStyleProvinceSelect() {
+			var form = document.querySelector('#address-form, form.yamuna-account-form');
+			if (!form) return;
+			var province = form.querySelector('#province, select[name="province"]');
+			if (!province || province.tagName !== 'SELECT') return;
+			province.classList.add('form-select', 'yamuna-login-input');
+			var group = province.closest('.form-group');
+			if (group && !group.querySelector('.form-select-icon')) {
+				var icon = document.createElement('div');
+				icon.className = 'form-select-icon';
+				icon.innerHTML = '<svg class="icon-inline icon-w-14 icon-lg"><use xlink:href="#chevron-down"/></svg>';
+				province.insertAdjacentElement('afterend', icon);
+			}
+		}
 		$('select[name="country"]').change(function () {
 		    var provinces = {{ provinces_json | default('{}') | raw }};
 		    LS.swapProvinces(provinces[$(this).val()]);
+			yamunaStyleProvinceSelect();
 		}).change();
 	{% endif %}
 
