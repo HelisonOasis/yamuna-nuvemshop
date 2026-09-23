@@ -223,6 +223,27 @@
             margin-top: 0 !important;
             padding-top: 0 !important;
           }
+
+          /* Cenário 162: 6px between title and first floating label — edit address
+             Label hangs ~9px above form-group; form needs padding-top ≥10px
+             so it doesn't pierce the title. Title keeps margin-bottom: 6px. */
+          body.template-account-address:not(.yamuna-account-auth) .page-header {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+          }
+          body.template-account-address:not(.yamuna-account-auth) .page-header .page-header-title {
+            margin-bottom: 6px !important;
+          }
+          body.template-account-address .yamuna-account-page .col-md-8 {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+          }
+          body.template-account-address .yamuna-account-form,
+          body.template-account-address form.yamuna-login-form.yamuna-account-form,
+          body.template-account-address #address-form {
+            margin-top: 0 !important;
+            padding-top: 10px !important;
+          }
         </style>
 
         {# Cenário 128 — Minha Conta: Raleway + brand magenta (never theme purple) #}
@@ -585,12 +606,12 @@
             html body .js-search-suggest a.js-search-suggest-all-link.btn.btn-primary,
             html body .search-suggest a.js-search-suggest-all-link.btn.btn-primary {
               display: flex !important;
-              width: 100% !important;
+              width: min(380px, 100%) !important;
               max-width: 100% !important;
               height: 40px !important;
               min-height: 40px !important;
               max-height: 40px !important;
-              margin: 12px 0 8px !important;
+              margin: 12px auto 8px !important;
               padding: 0 16px !important;
               align-items: center !important;
               justify-content: center !important;
@@ -606,6 +627,86 @@
               line-height: 1 !important;
               letter-spacing: .02em !important;
               text-transform: uppercase !important;
+            }
+          }
+        </style>
+
+        {# Cenário 159: VER TODOS OS RESULTADOS — 380px centralizado no DESK #}
+        <style id="yamuna-search-all-link-159">
+          body .search-suggest .search-suggest-list,
+          body .yamuna-mobile-search-suggest .search-suggest-list,
+          body .yamuna-mobile-menu-search-suggest .search-suggest-list {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+          }
+          html body .search-suggest a.js-search-suggest-all-link.btn,
+          html body .search-suggest a.js-search-suggest-all-link.btn.btn-primary,
+          html body .search-suggest-list > a.js-search-suggest-all-link,
+          html body .yamuna-mobile-search-suggest a.js-search-suggest-all-link.btn,
+          html body .yamuna-mobile-menu-search-suggest a.js-search-suggest-all-link.btn {
+            display: flex !important;
+            width: min(380px, 100%) !important;
+            max-width: 380px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            align-self: center !important;
+          }
+          @media (min-width: 1024px) {
+            html body .yamuna-header-desktop-search .search-suggest a.js-search-suggest-all-link.btn,
+            html body .yamuna-header-desktop-search .search-suggest a.js-search-suggest-all-link.btn.btn-primary,
+            html body .yamuna-header-desktop-search .search-suggest-list > a.js-search-suggest-all-link {
+              width: 380px !important;
+              max-width: min(380px, calc(100% - 32px)) !important;
+              margin-left: auto !important;
+              margin-right: auto !important;
+              align-self: center !important;
+            }
+          }
+        </style>
+
+        {# Cenário 160: X do drawer mobile fecha o menu (hit area + z-index) #}
+        <style id="yamuna-drawer-close-160">
+          @media (max-width: 1023px) {
+            body #nav-hamburger.modal-nav-hamburger,
+            body #nav-hamburger.modal.modal-nav-hamburger {
+              overflow: hidden !important;
+            }
+            body #nav-hamburger .modal-body {
+              position: relative !important;
+              z-index: 1 !important;
+              overflow-y: auto !important;
+              -webkit-overflow-scrolling: touch;
+            }
+            body #nav-hamburger .modal-close,
+            body #nav-hamburger button.js-modal-close.modal-close {
+              position: absolute !important;
+              top: 4px !important;
+              left: 0 !important;
+              z-index: 50 !important;
+              display: flex !important;
+              width: 44px !important;
+              height: 44px !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              align-items: center !important;
+              justify-content: center !important;
+              border: 0 !important;
+              border-radius: 0 !important;
+              background: url("{{ 'images/yamuna/menu-close.svg' | static_url }}") center / 19px 19px no-repeat !important;
+              cursor: pointer !important;
+              pointer-events: auto !important;
+              touch-action: manipulation;
+              -webkit-tap-highlight-color: transparent;
+            }
+            body #nav-hamburger .modal-close svg {
+              display: none !important;
+            }
+            html.has_store_bar_thin body #nav-hamburger.modal-nav-hamburger,
+            html.has_store_bar body #nav-hamburger.modal-nav-hamburger {
+              top: 52px !important;
+              height: calc(100dvh - 52px) !important;
+              min-height: 0 !important;
             }
           }
         </style>
@@ -1504,13 +1605,7 @@
             {% snipplet "whatsapp-chat.tpl" %}
         {% endif %}
 
-        {# Footer — cart page uses the simplified checkout footer from prod #}
-
-        {% if template == 'cart' or yamuna_account_auth %}
-            {% snipplet "footer/footer-cart.tpl" %}
-        {% else %}
-            {% snipplet "footer/footer.tpl" %}
-        {% endif %}
+        {% snipplet "footer/footer.tpl" %}
 
         {% if cart.free_shipping.cart_has_free_shipping or cart.free_shipping.min_price_free_shipping.min_price %}
 
@@ -1518,8 +1613,12 @@
 
             <span class="js-ship-free-min hidden" data-pricemin="{{ cart.free_shipping.min_price_free_shipping.min_price_raw }}"></span>
             <span class="js-free-shipping-config hidden" data-config="{{ cart.free_shipping.allFreeConfigurations }}"></span>
-            <span class="js-cart-subtotal hidden" data-priceraw="{{ cart.subtotal }}"></span>
+            <span class="js-cart-subtotal js-yamuna-fs-subtotal-source hidden" data-priceraw="{{ cart.subtotal }}"></span>
             <span class="js-cart-discount hidden" data-priceraw="{{ cart.promotional_discount_amount }}"></span>
+        {% else %}
+            {# Fallback helpers so minicart frete bar (QA 052) can sync without admin free-shipping config. #}
+            <span class="js-ship-free-min hidden" data-pricemin="35000"></span>
+            <span class="js-cart-subtotal js-yamuna-fs-subtotal-source hidden" data-priceraw="{{ cart.subtotal | default(0) }}"></span>
         {% endif %}
 
         {#/*============================================================================

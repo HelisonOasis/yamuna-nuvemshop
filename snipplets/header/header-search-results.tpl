@@ -189,17 +189,23 @@
 }
 
 /* VER TODOS OS RESULTADOS — 40px height (override theme .btn-primary padding:13px) */
+.search-suggest-list {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+}
 a.js-search-suggest-all-link.btn,
 a.js-search-suggest-all-link.btn.btn-primary,
 .search-suggest-list > a.js-search-suggest-all-link,
 .js-search-suggest a.js-search-suggest-all-link.btn {
   display: flex !important;
-  width: 100% !important;
-  max-width: 100% !important;
+  width: min(380px, 100%) !important;
+  max-width: 380px !important;
+  align-self: center !important;
   height: 40px !important;
   min-height: 40px !important;
   max-height: 40px !important;
-  margin: 12px 0 8px !important;
+  margin: 12px auto 8px !important;
   padding: 0 16px !important;
   align-items: center !important;
   justify-content: center !important;

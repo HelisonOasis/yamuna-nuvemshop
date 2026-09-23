@@ -276,7 +276,7 @@
 					}}
 	            </div>
 
-				<div class="col-md text-left text-md-right">
+				<div class="col-md text-left text-md-right yamuna-footer-partners">
 	                {#
 	                La leyenda que aparece debajo de esta linea de código debe mantenerse
 	                con las mismas palabras y con su apropiado link a Tienda Nube;
@@ -290,6 +290,9 @@
 	                manter visivél e com um link funcionando.
 	                #}
 	                {{ new_powered_by_link }}
+	                <a class="yamuna-footer-oasis" href="https://www.agenciaoasis.com.br/solucoes/commerce" target="_blank" rel="noopener noreferrer" title="Oásis Commerce" aria-label="Oásis Commerce">
+	                	<img class="yamuna-footer-oasis-logo" src="{{ 'images/yamuna/logo-oasis-commerce-white.svg' | static_url }}" alt="Oásis Commerce" width="80" height="28" loading="lazy" />
+	                </a>
 	            </div>
 	            
 	        </div>

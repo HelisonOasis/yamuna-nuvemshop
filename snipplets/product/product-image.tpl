@@ -17,7 +17,8 @@
             {% endif %}
         {% endfor %}
         {% if product.video_url %}
-            {% set yamuna_yt_id = product.video_url | split('v=') | last | split('&') | first | split('/') | last %}
+            {# Strip query/hash so Shorts URLs like .../shorts/ID?si=... still resolve a valid thumbnail ID. #}
+            {% set yamuna_yt_id = product.video_url | split('v=') | last | split('&') | first | split('/') | last | split('?') | first | split('#') | first %}
             <a href="#product-video-modal-" data-fancybox="product-gallery-desktop" class="yamuna-product-gallery-item yamuna-product-gallery-item--video" aria-label="{{ 'Video de' | translate }} {{ product.name }}">
                 <img src="https://img.youtube.com/vi/{{ yamuna_yt_id }}/maxresdefault.jpg" alt="{{ 'Video de' | translate }} {{ product.name }}" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/{{ yamuna_yt_id }}/hqdefault.jpg';" />
                 <span class="yamuna-product-gallery-play" aria-hidden="true">

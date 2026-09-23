@@ -1,4 +1,4 @@
-{% if store.allows_checkout_styling %}
+﻿{% if store.allows_checkout_styling %}
 
 @import url("https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap");
 
@@ -971,16 +971,88 @@ a {
 {# /* // Errors */ #}
 
 .alert-danger-bagged {
-  margin-top: -7px;
-  padding-top: 10px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  float: left;
+  margin-top: 4px;
+  padding: 2px 0 0;
+  border: 0;
+  border-radius: 0;
+  float: none;
+  width: 100%;
+  background: transparent;
+  color: #db3e3e;
+  text-align: left;
+  justify-content: flex-start;
 }
 
 .general-error {
-  background: $base-red;
-  border-color: lighten($base-red, 10%);
+  background: transparent;
+  border: 0;
+  color: #db3e3e;
+}
+
+{# /* 021 â€” validation alerts: red text only (no solid BG) */ #}
+.alert.alert-danger,
+.alert.m-top.alert-danger,
+.alert.m-top-half.alert-danger,
+.alert.full-width.alert-danger {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #db3e3e !important;
+  justify-content: flex-start !important;
+  text-align: left !important;
+  padding: 6px 0 !important;
+}
+
+.alert.alert-danger span,
+.alert.alert-danger *,
+.alert-danger-bagged,
+.alert-danger-bagged span,
+.alert-danger-bagged * {
+  color: #db3e3e !important;
+}
+
+{# /* 021 â€” restore full borders on address/CEP inputs (+ outline fallback) */ #}
+[name="shippingAddress.zipcode"],
+[name="shippingAddress.zipCode"],
+#shippingAddress\.zipCode,
+#shippingAddress\.zipcode,
+[name="shippingAddress.number"],
+[name="shippingAddress.floor"],
+#main-column [name="shippingAddress.zipcode"],
+#main-column [name="shippingAddress.zipCode"],
+#main-column [name="shippingAddress.number"],
+#main-column [name="shippingAddress.floor"] {
+  border: 1px solid rgba($foreground-color, .3) !important;
+  border-top: 1px solid rgba($foreground-color, .3) !important;
+  border-radius: $box-radius !important;
+  outline: 1px solid rgba($foreground-color, .3) !important;
+  outline-offset: -1px !important;
+}
+
+.form-group.form-group-error .form-control,
+.form-group-error .form-control,
+#main-column .form-group.form-group-error .form-control,
+#main-column .form-group-error .form-control {
+  border: 1px solid $base-red !important;
+  border-top: 1px solid $base-red !important;
+  border-radius: $box-radius !important;
+  outline: 1px solid $base-red !important;
+  outline-offset: -1px !important;
+}
+
+.has-float-label > label,
+.has-float-label > .input-label {
+  background: transparent !important;
+}
+
+.alert.alert-danger.yamuna-hide-cep-step-alert,
+.alert.full-width.alert-danger.yamuna-hide-cep-step-alert {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
 }
 
 {# /* // Badge */ #}
@@ -1243,11 +1315,12 @@ a {
   }
 
   .summary .panel {
-    border: 0;
+    border: 1px solid rgba($foreground-color, .1);
   }
 
   .panel.summary-details {
-    border: 0;
+    border: 1px solid rgba($foreground-color, .1);
+    box-shadow: 0 1px 3px -1px rgba($foreground-color, 0.04);
   }
 
   .panel-header {
@@ -1305,7 +1378,7 @@ button.btn-primary {
 .input-label,
 .has-float-label label,
 .form-options-content {
-  font-family: Dosis, sans-serif !important;
+  font-family: Roboto, Arial, sans-serif !important;
 }
 
 .headbar {
@@ -1350,7 +1423,7 @@ button.btn-primary {
   font-size: 12px;
   font-weight: 600;
   line-height: 1.3;
-  content: "Checkout seguro · +1.300 avaliações 5★ no Google";
+  content: "Checkout seguro Ã‚Â· +1.300 avaliaÃƒÂ§ÃƒÂµes 5Ã¢Ëœâ€¦ no Google";
 }
 .btn-primary {
   background: #a31460 !important;
@@ -1388,21 +1461,26 @@ button.btn-primary {
   }
 }
 
-{# QA 868m30v22 — checkout scenarios 014–018 #}
+{# QA 868m30v22 Ã¢â‚¬â€ checkout scenarios 014Ã¢â‚¬â€œ018 #}
 
-/* CTA buttons — Raleway 16px / medium 500, height matches product-card COMPRAR (40px) */
+/* CTA buttons â€” Raleway 16px / medium 500, height matches product-card COMPRAR (40px) */
 .btn-primary,
 button.btn-primary,
 .continue-button,
 .submit-button,
 button[type="submit"].btn-primary,
 .btn-submit-step,
+#btnFinishCheckout,
+#btnFinishCheckout span,
+#btnFinishCheckout .text-pre-line,
 .mobile-discount-coupon_btn,
 .box-discount-coupon button,
 button.mobile-discount-coupon_btn,
 .summary .mobile-discount-coupon_btn,
 .summary .box-discount-coupon button,
-a.mobile-discount-coupon_btn {
+a.mobile-discount-coupon_btn,
+.box-discount-coupon-apply,
+.box-discount-coupon-applied {
   box-sizing: border-box !important;
   height: 40px !important;
   min-height: 40px !important;
@@ -1415,7 +1493,43 @@ a.mobile-discount-coupon_btn {
   line-height: 40px !important;
 }
 
-/* 015 — product name Roboto 16px / 700 */
+/* Coupon link CTA (Adicionar cupom) â€” Raleway 16/500 only */
+.summary-coupon .btn,
+.summary-coupon .btn-link,
+.summary-coupon a.btn,
+.summary-coupon .btn .text-pre-line,
+.summary-coupon .btn-link .text-pre-line,
+.summary .summary-coupon a.btn.btn-link {
+  font-family: Raleway, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+}
+
+/* 015 â€” summary square prices (item/subtotal/frete): Roboto 16px / bold 700 */
+.table-price,
+td.table-price,
+td.table-price.text-right,
+.table-price span,
+td.table-price span,
+.table .table-price,
+.table .table-subtotal .table-price,
+.table .table-shipping .table-price,
+.table .table-shipping-cost .table-price,
+.table .table-discount .table-price,
+.table-subtotal-price,
+[data-testid="cart-details-desktop"] .table-price,
+[data-testid="cart-details-desktop"] .table-price span,
+[data-testid="total-container"] .table-price,
+[data-testid="total-container"] .table-price span,
+[data-testid="cart-subtotal-container"] .table-price,
+[data-testid="cart-subtotal-container"] .table-price span {
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+}
+
+/* 015b â€” product name in summary (Roboto bold; size tightened in 019b) */
 .table-product-name,
 .table-product-name a,
 .summary-product-name,
@@ -1426,60 +1540,877 @@ td.table-product-name {
   color: #000 !important;
 }
 
-/* 016 — summary labels Raleway 16px bold */
+/* 016 â€” summary labels + Total: Raleway 16px / bold 700 */
 .table .table-subtotal td,
 .table .table-shipping td,
+.table .table-shipping-cost td,
 .table .table-discount td,
+.table .table-total td,
 .table .table-total td:first-child,
+.table-footer,
+.table-footer td,
+.table-footer .table-price,
+.table-footer td.table-price,
+#cart-total,
+td#cart-total,
+.table-total-price,
+.summary-total,
+.summary-total .table-price,
+span.summary-total,
+.total-price,
+[data-testid="cart-total-price"],
 .summary-detail .table td:first-child,
 .box-container .table td:first-child,
 .summary .table td:first-child,
 .summary table td:first-child,
-.summary table tbody td:first-child {
+.summary table tbody td:first-child,
+.summary table tfoot td,
+.summary table .table-footer td {
   font-family: Raleway, sans-serif !important;
   font-size: 16px !important;
   font-weight: 700 !important;
+  line-height: 1.35 !important;
 }
 
-/* 017 — total value #238482 */
-.table-footer,
-.table-price,
+/* 017 â€” total value color #238482 (font set in 016) */
 .table .table-total .table-price,
+.table-footer .table-price,
+#cart-total,
 .summary-total,
 .summary-total .table-price,
 span.summary-total,
-.total-price {
+.total-price,
+[data-testid="cart-total-price"] {
   color: #238482 !important;
-  font-family: Raleway, sans-serif !important;
-  font-weight: 700 !important;
 }
 
-/* 018a — smaller secondary copy → Roboto */
+/* 015c — Subtotal / Frete / Total VALUES: all 16px Roboto */
+[data-testid="cart-subtotal"] td.text-right,
+[data-testid="cart-subtotal"] td:last-child,
+[data-testid="cart-subtotal"] span,
+[data-testid="cart-shipping-cost"] td.text-right,
+[data-testid="cart-shipping-cost"] td:last-child,
+[data-testid="cart-shipping-cost"] span,
+[data-testid="cart-shipping-cost"] .text-light,
+.table-subtotal td.text-right,
+.table-subtotal td:last-child,
+.table-subtotal span,
+.table-shipping-cost td.text-right,
+.table-shipping-cost td:last-child,
+.table-shipping-cost span,
+.table-shipping-cost .text-light,
+#cart-total-price,
+span#cart-total-price,
+[data-testid="cart-total-price"],
+#cart-total,
+#cart-total-container span,
+.table-footer td.text-right,
+.table-footer td:last-child,
+.table-footer .table-price,
+.table-footer span {
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+}
+
+/* 018a â€” smaller secondary copy â†’ Roboto */
 .form-control,
+.form-control::placeholder,
+input.form-control,
+input.form-control::placeholder,
+textarea.form-control,
+textarea.form-control::placeholder,
 .input-label,
 .has-float-label label,
+.has-float-label .form-control,
 .form-options-content,
 .checkbox-label,
 .custom-checkbox label,
+.form-group label,
+.form-group .form-options-content,
 .shipping-option,
+.shipping-option *,
 .shipping-option-price,
 .shipping-option-name,
+.shipping-option-desc,
+.shipping-method-item,
+.shipping-method-item-desc,
+.shipping-method-item-name,
+.shipping-method-item-price,
 .address-summary,
+.address-summary *,
+.review-block,
+.review-block *:not(.btn-primary),
+.review-block-detailed,
+.review-block-detailed-item,
+.review-block-detailed-item *:not(.btn-primary),
 .help-block,
 .form-group small,
 .panel-body,
+.panel-body p,
 .box-container p,
-label {
+label,
+.custom-control-label,
+#main-column .btn-link,
+#main-column .btn-link .text-pre-line,
+#main-column a.btn-link,
+#main-column button.btn-link,
+#main-column .btn-secondary,
+#main-column .btn-transparent,
+.more-options,
+[data-testid*="shipping"],
+[data-testid*="address"],
+[data-testid*="contact"] label {
   font-family: Roboto, Arial, sans-serif !important;
 }
 
-/* 018b — Carrinho step clickable (back to cart page) */
+/* 018b â€” Carrinho step clickable (back to /comprar/) */
+#breadcrumb ul.breadcrumb-timeline > li:first-child > .breadcrumb-timeline-item,
+#breadcrumb ul.breadcrumb-timeline > li:first-child > a.breadcrumb-timeline-item,
+#breadcrumb a.yamuna-breadcrumb-carrinho,
 .breadcrumb-timeline-item.disabled:first-child,
 .breadcrumb-timeline .breadcrumb-timeline-item:first-child {
   pointer-events: auto !important;
   cursor: pointer !important;
   opacity: 1 !important;
   color: #4a1d3a !important;
+  text-decoration: none !important;
+}
+
+#breadcrumb a.yamuna-breadcrumb-carrinho:hover,
+#breadcrumb ul.breadcrumb-timeline > li:first-child > a.breadcrumb-timeline-item:hover {
+  color: #a31460 !important;
+  opacity: 1 !important;
+}
+
+#breadcrumb a.yamuna-breadcrumb-carrinho .breadcrumb-timeline-item-icon,
+#breadcrumb a.yamuna-breadcrumb-carrinho .breadcrumb-timeline-item-icon svg,
+#breadcrumb a.yamuna-breadcrumb-carrinho .breadcrumb-timeline-item-icon svg path,
+#breadcrumb ul.breadcrumb-timeline > li:first-child > a .breadcrumb-timeline-item-icon svg path {
+  fill: currentColor !important;
+  color: inherit !important;
+}
+
+{# /*============================================================================
+  Yamuna checkout QA Ã¢â‚¬â€ payment summary + extras (019)
+==============================================================================*/ #}
+
+/* CDN fix sheet (cache-bust) â€” ensures rules apply even if dart-checkout lags */
+@import url("https://d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static/css/yamuna-checkout-fix.css?v=38");
+
+/* 019a Ã¢â‚¬â€ progressive discount label Ã¢â€ â€™ short "5% Off:" (no double colon) */
+.table-discount-promotion td:first-child > div {
+  font-size: 0 !important;
+  line-height: 0 !important;
+  color: transparent !important;
+  letter-spacing: 0 !important;
+}
+
+.table-discount-promotion td:first-child > div::before {
+  content: "5% Off:";
+  font-family: Raleway, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  letter-spacing: normal !important;
+  color: #d6336c !important;
+}
+
+.table-discount-promotion td:first-child > div::after {
+  content: none !important;
+}
+
+.table-discount-promotion td.text-right,
+.table-discount-promotion .text-pre {
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  color: #d6336c !important;
+}
+
+/* 019b Ã¢â‚¬â€ product row: image stays in its cell; name truncates beside it.
+   Root cause of "name under image": thumb was ~65px overflowing a 56px cell. */
+.table.table-scrollable,
+.summary .table.table-scrollable,
+.summary-container .table.table-scrollable,
+[data-testid="cart-details-desktop"] .table.table-scrollable,
+.summary table,
+.box-container .table {
+  table-layout: fixed !important;
+  width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.table.table-scrollable tbody tr td,
+.summary table tbody tr td,
+.summary-container table tbody tr td,
+[data-testid="cart-details-desktop"] table tbody tr td {
+  vertical-align: middle !important;
+}
+
+.summary-img-wrap,
+td.summary-img-wrap {
+  display: table-cell !important;
+  width: 56px !important;
+  max-width: 56px !important;
+  min-width: 56px !important;
+  overflow: hidden !important;
+  padding: 0 8px 0 0 !important;
+  box-sizing: border-box !important;
+}
+
+.summary-img-wrap .summary-img,
+.summary-img-wrap .summary-img-thumb,
+td.summary-img-wrap .summary-img,
+td.summary-img-wrap .summary-img-thumb {
+  width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.summary-img-wrap img,
+.summary-img-thumb img,
+.summary-img img,
+td.summary-img-wrap img {
+  display: block !important;
+  width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  object-fit: cover !important;
+  margin: 0 !important;
+}
+
+.table-price,
+td.table-price,
+td.table-price.text-right {
+  display: table-cell !important;
+  width: 88px !important;
+  max-width: 88px !important;
+  min-width: 72px !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+}
+
+.table-product-name,
+td.table-product-name,
+[data-testid="product-name-qty"],
+.summary .table-product-name,
+.summary-container .table-product-name,
+.summary-product-name {
+  display: table-cell !important;
+  position: static !important;
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  color: #000 !important;
+  /* Do NOT use max-width:0 â€” it collapses the cell to ~10px and hides the name */
+  width: auto !important;
+  max-width: none !important;
+  min-width: 80px !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+  max-height: calc(1.35em * 2) !important;
+  vertical-align: middle !important;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+  margin: 0 !important;
+  text-indent: 0 !important;
+}
+
+/* 2-line clamp via JS wrapper (keeps td as table-cell) */
+.yamuna-name-clamp {
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+  max-width: 100% !important;
+  line-height: 1.35 !important;
+}
+
+/* 019f â€” â‰¤1024px: single column, summary FIRST, same width as main cards */
+@media (max-width: 1024px) {
+  #main-row {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  #secondary-column {
+    order: -1 !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 auto !important;
+    float: none !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-bottom: 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  #main-column {
+    order: 1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 auto !important;
+    float: none !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    box-sizing: border-box !important;
+  }
+
+  #main-row #secondary-column .summary,
+  #main-row #secondary-column .summary.d-none,
+  #main-row #secondary-column .summary.d-none.d-md-block,
+  #main-row .summary.d-none.d-md-block {
+    display: block !important;
+    visibility: visible !important;
+    position: relative !important;
+    top: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto 12px !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+
+  #main-row #secondary-column .summary.sticky,
+  #main-row #secondary-column .summary.sticky-top,
+  #main-row .summary.d-none.d-md-block.sticky,
+  #main-row .summary-fixed {
+    position: relative !important;
+    top: auto !important;
+  }
+
+  #main-row .summary.d-block.d-md-none {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+  }
+
+  #main-row #secondary-column [data-testid="cart-details-desktop"],
+  #main-row #secondary-column .summary-details,
+  #main-row #secondary-column .summary-details.panel,
+  #main-row #secondary-column .summary-details.panel.p-none {
+    display: block !important;
+    visibility: visible !important;
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+
+  #main-row #secondary-column .summary-details > .container,
+  #main-row #secondary-column .summary-details .container.p-none {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+
+  #main-row #secondary-column .table-subtotal,
+  #main-row #secondary-column [data-testid="cart-total-container"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    box-sizing: border-box !important;
+  }
+
+  #main-row #secondary-column .summary-coupon {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* 019c Ã¢â‚¬â€ hide remove/close control beside product name (when present) */
+.summary [data-testid="remove-product"],
+.summary [data-testid="product-remove"],
+.summary button[aria-label*="emove" i],
+.summary a[aria-label*="emove" i],
+.summary button[aria-label*="excluir" i],
+.summary a[aria-label*="excluir" i],
+.summary .js-remove-product,
+.summary .product-remove,
+.summary .btn-remove-product,
+.table-product-name button,
+.table-product-name .btn-link,
+.table-product-name a[href*="remove"],
+.summary-img-wrap button,
+.summary-img-wrap .btn-link,
+tr[data-testid="product-table"] button:not([type="submit"]),
+.summary .icon-delete,
+.summary .fa-times,
+.summary .fa-close {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* 019d Ã¢â‚¬â€ hide blocked iframe (Iframe is unsupported in checkout) */
+iframe[src*="yamuna-checkout-cart-extras"],
+iframe.nube-iframe[src*="checkout-cart-extras"] {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* 019e — NubeSDK reviews: same width as form fields / #main-row */
+#nube-sdk-slot-after_main_content {
+  box-sizing: border-box !important;
+  width: auto !important;
+  max-width: none !important;
+  margin-left: -15px !important;
+  margin-right: -15px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+#nube-sdk-slot-after_main_content > .nube-box:not(:last-child),
+#nube-sdk-slot-after_main_content > .nube-box:only-child,
+#nube-sdk-slot-after_main_content #yamuna-cart-reviews {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* Fixed review card (NubeSDK) — one review + nav */
+#nube-sdk-slot-after_main_content #yamuna-cart-reviews {
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 16px !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+}
+
+#nube-sdk-slot-after_main_content #yamuna-cart-reviews .yamuna-nube-review-body {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+#nube-sdk-slot-after_main_content #yamuna-cart-reviews .yamuna-nube-review-nav {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  margin-top: 12px !important;
+  flex-shrink: 0 !important;
+}
+
+@media (max-width: 767px) {
+  #nube-sdk-slot-after_main_content #yamuna-cart-reviews {
+    height: 360px !important;
+    min-height: 360px !important;
+    max-height: 360px !important;
+    margin: 16px 0 32px !important;
+  }
+}
+
+/* legacy wrapper (if DOM inject is used) — match form column width */
+.yamuna-checkout-extras {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 24px 0 0 !important;
+  padding: 0 0 32px !important;
+}
+
+.yamuna-checkout-extras .yamuna-cart-depositions {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 0 32px !important;
+  padding: 16px !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+}
+
+.yamuna-checkout-extras .yamuna-cart-depositions-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin-bottom: 20px !important;
+  padding: 0 0 12px !important;
+  border-bottom: 1px solid #ede8ed !important;
+}
+
+.yamuna-checkout-extras .yamuna-cart-depositions-icon-wrapper {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 50% !important;
+  background: #5fbbc6 !important;
+  flex-shrink: 0 !important;
+}
+
+.yamuna-checkout-extras .yamuna-cart-depositions-title {
+  margin: 0 !important;
+  color: #a31460 !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+}
+
+.yamuna-checkout-extras .yamuna-cart-depositions-grid,
+.yamuna-checkout-extras .yamuna-cart-depositions-carousel,
+.yamuna-checkout-extras .yamuna-cart-depositions .js-swiper-cart-dep {
+  display: block !important;
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+.yamuna-checkout-extras .yamuna-cart-deposition-card {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+}
+
+.yamuna-checkout-extras .yamuna-cart-deposition-stars {
+  display: flex !important;
+  gap: 2px !important;
+}
+
+.yamuna-checkout-extras .yamuna-cart-deposition-content p {
+  margin: 0 0 10px !important;
+  color: #393747 !important;
+  font-family: Poppins, Roboto, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 1.45 !important;
+  text-align: left !important;
+}
+
+.yamuna-checkout-extras .yamuna-cart-deposition-author {
+  display: block !important;
+  color: #393747 !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+/* Footer Ã¢â‚¬â€ same classes as /comprar (.yamuna-cart-checkout-footer) */
+.yamuna-checkout-extras-footer-root,
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer {
+  width: 100vw !important;
+  margin-left: calc(50% - 50vw) !important;
+  margin-right: calc(50% - 50vw) !important;
+  margin-top: 0 !important;
+  background: #501735 !important;
+  color: #fff !important;
+  font-family: Dosis, Raleway, sans-serif !important;
+}
+
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-inner {
+  box-sizing: border-box !important;
+  width: min(100%, 1360px) !important;
+  margin: 0 auto !important;
+  padding: 44px 24px 20px !important;
+}
+
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-content {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: space-between !important;
+  gap: 32px !important;
+  align-items: flex-start !important;
+}
+
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-brand {
+  display: inline-flex !important;
+  width: 220px !important;
+}
+
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-brand img {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-section h2 {
+  margin: 0 0 14px !important;
+  color: #fff !important;
+  font-size: 16px !important;
+  font-family: Raleway, sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+}
+
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-section ul {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-section li,
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-section a {
+  color: #fff !important;
+  font-size: 17px !important;
+  font-weight: 300 !important;
+  text-decoration: none !important;
+  line-height: 1.7 !important;
+}
+
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-payments-logos {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  align-items: center !important;
+}
+
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-payments-logos img,
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-payments-logos svg {
+  max-height: 28px !important;
+  width: auto !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  padding: 2px 4px !important;
+}
+
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-security {
+  text-align: right !important;
+}
+
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-security-logos {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  align-items: center !important;
+}
+
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-security-logos img {
+  max-height: 40px !important;
+  width: auto !important;
+}
+
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-bottom {
+  margin-top: 28px !important;
+  padding-top: 16px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+
+.yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-bottom p {
+  margin: 0 !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-size: 13px !important;
+  font-weight: 300 !important;
+  line-height: 1.5 !important;
+}
+
+@media (max-width: 991px) {
+  .yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-content {
+    flex-direction: column !important;
+  }
+
+  .yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-security {
+    text-align: left !important;
+  }
+
+  .yamuna-checkout-extras-footer-root .yamuna-cart-checkout-footer-security-logos {
+    justify-content: flex-start !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .yamuna-checkout-extras .yamuna-cart-depositions {
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: 360px !important;
+    min-height: 360px !important;
+    max-height: 360px !important;
+    margin: 16px 0 32px !important;
+    padding: 16px !important;
+  }
+
+  .yamuna-checkout-extras .yamuna-cart-depositions-header {
+    flex-shrink: 0 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .yamuna-checkout-extras .yamuna-cart-depositions-body {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+  }
+
+  .yamuna-checkout-extras .yamuna-cart-depositions-carousel,
+  .yamuna-checkout-extras .yamuna-cart-depositions .js-swiper-cart-dep {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .yamuna-checkout-extras .yamuna-cart-deposition-card {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  .yamuna-checkout-extras .yamuna-cart-deposition-content {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .yamuna-checkout-extras .yamuna-cart-deposition-content p {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 12 !important;
+    line-clamp: 12 !important;
+  }
+
+  .yamuna-checkout-extras .yamuna-cart-depositions-nav {
+    display: flex !important;
+    flex-shrink: 0 !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    margin-top: 12px !important;
+    padding-top: 0 !important;
+  }
+
+  .yamuna-checkout-extras .yamuna-cart-dep-prev,
+  .yamuna-checkout-extras .yamuna-cart-dep-next {
+    width: 32px !important;
+    height: 32px !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    background: #238482 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 18 9 12 15 6'/%3E%3C/svg%3E") center / 14px 14px no-repeat !important;
+    cursor: pointer !important;
+  }
+
+  .yamuna-checkout-extras .yamuna-cart-dep-next {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E") !important;
+  }
+}
+
+{# /*============================================================================
+  # CenÃƒÂ¡rio 051 Ã¢â‚¬â€ frase pÃƒÂ³s-pedido (announcement) igual prod
+==============================================================================*/ #}
+.announcement,
+.announcement.m-bottom {
+  background: #fff !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  justify-content: center !important;
+}
+
+.announcement-bg {
+  background: #fff !important;
+  opacity: 1 !important;
+}
+
+.announcement-close,
+.announcement .js-close-announcement {
+  display: none !important;
+}
+
+.announcement-message {
+  background: #fff !important;
+  color: #a31460 !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 30px !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  text-align: center !important;
+  letter-spacing: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .announcement-message {
+    font-size: 20px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .announcement-message {
+    font-size: 16px !important;
+  }
+}
+
+{# /*============================================================================
+  # PIX copy button Ã¢â‚¬â€ COPIAR label font-size
+  Mobile Ã¢â€°Â¤425px: 12px / above: 16px (override checkout .btn-primary 14px)
+==============================================================================*/ #}
+.btn-primary.copy-button,
+button.btn-primary.copy-button,
+.copy-button .copy-button-label,
+span.copy-button-label {
+  font-size: 16px !important;
+  line-height: 1.2 !important;
+}
+
+@media (max-width: 425px) {
+  .btn-primary.copy-button,
+  button.btn-primary.copy-button,
+  .copy-button .copy-button-label,
+  span.copy-button-label {
+    font-size: 12px !important;
+  }
 }
 
 {% endif %}

@@ -2737,7 +2737,7 @@ DOMContentLoaded.addEventOrExecute(() => {
 	        button.removeAttr('disabled');
 	        $product_shipping_calculator.hide();
 	    } else {
-	        button.val('{{ "Agregar al carrito" | translate }}');
+	        button.val({% if template == 'product' %}'Adicionar à sacola'{% else %}'{{ "Agregar al carrito" | translate }}'{% endif %});
 	        button.addClass('cart');
 	        button.removeAttr('disabled');
 	        $product_shipping_calculator.show();
@@ -2853,6 +2853,25 @@ DOMContentLoaded.addEventOrExecute(() => {
 	    }else{
 	        $installment_text.show();
 	    }
+	});
+
+	{# Tipo pills (Moído / Grão) keep the native select in sync. #}
+	jQueryNuvem(document).on("click", ".js-yamuna-tipo-option", function (e) {
+		e.preventDefault();
+		var $btn = jQueryNuvem(this);
+		var optionId = String($btn.attr("data-option"));
+		var optionName = $btn.attr("data-name");
+		var $group = $btn.closest(".js-product-variants-group");
+		$group.find(".js-yamuna-tipo-option").removeClass("is-selected").attr("aria-pressed", "false");
+		$btn.addClass("is-selected").attr("aria-pressed", "true");
+		$group.find(".js-insta-variation-label").text(optionName);
+		var $option = $group.find(".js-variation-option option").filter(function (el) {
+			return String(el.value) === optionId;
+		});
+		if ($option.length) {
+			$option.prop("selected", true);
+			$option.closest("select").trigger("change");
+		}
 	});
 
 	{# /* // Submit to contact */ #}
@@ -3320,7 +3339,7 @@ DOMContentLoaded.addEventOrExecute(() => {
             var quantity = $productContainer.find('.js-quantity-input').val();
             var name = $productContainer.find('.js-product-name').text();
             var price = $productContainer.find('.js-price-display').text();
-            var addedToCartCopy = "{{ 'Agregar al carrito' | translate }}";
+            var addedToCartCopy = {% if template == 'product' %}"Adicionar à sacola"{% else %}"{{ 'Agregar al carrito' | translate }}"{% endif %};
         } else {
             var imageSrc = getQuickShopImgSrc(this);
             var quantity = requestedQuantity;

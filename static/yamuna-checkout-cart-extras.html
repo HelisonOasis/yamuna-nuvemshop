@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Yamuna checkout extras</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;700&family=Poppins:wght@400&family=Dosis:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#f6f6f6}
+body{font-family:Raleway,Montserrat,sans-serif;color:#393747}
+.wrap{max-width:1152px;margin:0 auto;padding:24px 16px 0}
+.yamuna-cart-depositions{box-sizing:border-box;width:100%;padding:16px;border:1px solid #d9d9d9;border-radius:16px;background:#fff;margin:0 0 32px}
+.yamuna-cart-depositions-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding:0 0 12px;border-bottom:1px solid #ede8ed}
+.yamuna-cart-depositions-icon-wrapper{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#5fbbc6;flex-shrink:0}
+.yamuna-cart-depositions-title{margin:0;color:#a31460;font-family:Raleway,sans-serif;font-size:16px;font-weight:700;line-height:1.2}
+.yamuna-cart-depositions-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;padding:0}
+.yamuna-cart-deposition-card{display:flex;flex-direction:column;gap:10px;min-width:0}
+.yamuna-cart-deposition-stars{display:flex;gap:2px}
+.yamuna-cart-deposition-content p{margin:0 0 10px;color:#393747;font-family:Poppins,Roboto,sans-serif;font-size:12px;font-weight:400;line-height:1.45;text-align:left}
+.yamuna-cart-deposition-author{display:block;color:#393747;font-family:Raleway,sans-serif;font-size:13px;font-weight:700}
+.yamuna-cart-depositions-nav{display:none!important}
+.yamuna-cart-checkout-footer{width:100%;background:#501735;color:#fff;font-family:Dosis,Raleway,sans-serif}
+.yamuna-cart-checkout-footer-inner{box-sizing:border-box;width:min(100%,1360px);margin:0 auto;padding:44px 24px 20px}
+.yamuna-cart-checkout-footer-content{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;column-gap:clamp(40px,4vw,72px);row-gap:32px;width:min(100%,1152px);margin:0 auto;padding-bottom:34px;border-bottom:1px solid #a31460}
+.yamuna-cart-checkout-footer-brand{display:inline-flex;width:220px}
+.yamuna-cart-checkout-footer-brand img{display:block;width:100%;height:auto}
+.yamuna-cart-checkout-footer-section h2{margin:0 0 14px;color:#fff;font-size:16px;font-weight:700;line-height:1;text-transform:uppercase;font-family:Raleway,sans-serif}
+.yamuna-cart-checkout-footer-section ul{margin:0;padding:0;list-style:none}
+.yamuna-cart-checkout-footer-section li,.yamuna-cart-checkout-footer-section a{color:#fff;font-size:17px;font-weight:300;line-height:1.45;text-decoration:none}
+.yamuna-cart-checkout-footer-payments-logos{display:flex;flex-wrap:wrap;gap:8px;max-width:240px;align-items:center}
+.yamuna-cart-checkout-footer-payments-logos img,.yamuna-cart-checkout-footer-payments-logos svg{max-height:28px;width:auto;background:#fff;border-radius:3px;padding:2px}
+.yamuna-cart-checkout-footer-security{text-align:right}
+.yamuna-cart-checkout-footer-security-logos{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:14px 18px;max-width:280px;align-items:center}
+.yamuna-cart-checkout-footer-security-logos img{max-width:136px;max-height:52px}
+.yamuna-cart-checkout-footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:24px;width:min(100%,1152px);margin:18px auto 0}
+.yamuna-cart-checkout-footer-bottom p{margin:0;color:rgba(255,255,255,.85);font-size:13px;font-weight:300;line-height:1.5}
+@media (max-width:991px){.yamuna-cart-depositions-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.yamuna-cart-checkout-footer-content,.yamuna-cart-checkout-footer-bottom{flex-direction:column;align-items:flex-start}.yamuna-cart-checkout-footer-security{text-align:left}.yamuna-cart-checkout-footer-security-logos{justify-content:flex-start}}
+@media (max-width:575px){.yamuna-cart-depositions-grid{grid-template-columns:1fr}.yamuna-cart-depositions{padding:14px 12px 16px}.yamuna-cart-checkout-footer-inner{padding:32px 16px 18px}.yamuna-cart-checkout-footer-brand{width:120px}.yamuna-cart-checkout-footer-section h2{font-size:13px;margin-bottom:8px}.yamuna-cart-checkout-footer-section li,.yamuna-cart-checkout-footer-section a{font-size:12px}.yamuna-cart-checkout-footer-bottom{width:100%;margin-top:8px;padding-top:14px;border-top:1px solid #a31460}.yamuna-cart-checkout-footer-bottom p{font-size:10px}.yamuna-cart-checkout-footer-content{border-bottom:0;padding-bottom:16px}}
+</style>
+</head>
+<body>
+<div class="wrap"><section class="yamuna-cart-depositions" data-store="cart-depositions">
+  <div class="yamuna-cart-depositions-header">
+    <div class="yamuna-cart-depositions-icon-wrapper" aria-hidden="true">
+      <svg class="yamuna-cart-depositions-icon" viewBox="0 0 24 24" fill="#fff" width="14" height="14" aria-hidden="true">
+        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path>
+      </svg>
+    </div>
+    <h2 class="yamuna-cart-depositions-title">O que estão dizendo sobre a Yamuna</h2>
+  </div>
+  <div class="yamuna-cart-depositions-body">
+    <div class="yamuna-cart-depositions-grid">
+      <article class="yamuna-cart-deposition-card">
+        <div class="yamuna-cart-deposition-stars" aria-label="5 de 5 estrelas">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                  </div>
+        <div class="yamuna-cart-deposition-content">
+          <p>Produtos de excelente qualidade! Vale muito a pena o investimento. Meu queridinho é o Golden Milk e também a Ghee. E que dizer desses cafés? Gente do céu... surreal de maravilhoso. Gosto de tudo e estou sempre comprando os meus queridos e experimentando novas opções. Obrigada, Yamuna, pelo carinho e amor de vocês em forma de nutrição com excelência.</p>
+          <span class="yamuna-cart-deposition-author">Raquel Cassiano</span>
+        </div>
+      </article>
+      <article class="yamuna-cart-deposition-card">
+        <div class="yamuna-cart-deposition-stars" aria-label="5 de 5 estrelas">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                  </div>
+        <div class="yamuna-cart-deposition-content">
+          <p>Todos os produtos são de altíssima qualidade e deliciosos, nenhuma outra marca chega perto, especialmente o Ghee, ideal de coco e melhor de tamarindo. Se não bastasse isso, ainda prestam o melhor atendimento ao consumidor que já vi no Brasil! Tive um problema com o melhor de tamarindo, entrei em contato e me enviaram um novo pote sem custo, mesmo o problema ocorrendo vários meses após a compra. O cuidado e carinho com os clientes é sensacional!</p>
+          <span class="yamuna-cart-deposition-author">Thiago P</span>
+        </div>
+      </article>
+      <article class="yamuna-cart-deposition-card">
+        <div class="yamuna-cart-deposition-stars" aria-label="5 de 5 estrelas">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                  </div>
+        <div class="yamuna-cart-deposition-content">
+          <p>Apaixonada pelos produtos da Yamuna! Tudo muito bem feito, com produtos de qualidade, as embalagens são lindas e quando eu abro a caixa eu sinto o carinho que eles colocaram em cada detalhe. Além de tudo isso, eles contribuem com a minha saúde com esses produtos tão especiais que a gente não encontra em qualquer lugar! Obrigada por existirem!</p>
+          <span class="yamuna-cart-deposition-author">Kelly Cristina Amaral</span>
+        </div>
+      </article>
+      <article class="yamuna-cart-deposition-card">
+        <div class="yamuna-cart-deposition-stars" aria-label="5 de 5 estrelas">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#F4C744" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                  </div>
+        <div class="yamuna-cart-deposition-content">
+          <p>Destaque para o cuidado na embalagem dos produtos, e agora é só saborear tudo perfeitamente preparado e oferecido com carinho, a energia e grande luz da Deusa Yamuna!</p>
+          <span class="yamuna-cart-deposition-author">Bernadete Pinho</span>
+        </div>
+      </article>
+    </div>
+    <div class="yamuna-cart-depositions-nav d-md-none">
+      <button type="button" class="yamuna-cart-dep-prev js-cart-dep-prev" aria-label="Depoimento anterior"></button>
+      <button type="button" class="yamuna-cart-dep-next js-cart-dep-next" aria-label="Próximo depoimento"></button>
+    </div>
+  </div>
+</section></div>
+<footer class="yamuna-cart-checkout-footer" data-store="cart-checkout-footer">
+  <div class="yamuna-cart-checkout-footer-inner">
+    <div class="yamuna-cart-checkout-footer-content">
+      <a class="yamuna-cart-checkout-footer-brand" href="https://yamuna3.lojavirtualnuvem.com.br" aria-label="Yamuna">
+        <img src="//d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static/images/yamuna/logo-yamuna-branco.png" alt="Yamuna" loading="lazy" />
+      </a>
+
+      <nav class="yamuna-cart-checkout-footer-section" aria-label="Vendas">
+        <h2>VENDAS</h2>
+        <ul>
+                      <li><a href="https://wa.me/554884591522" target="_blank" rel="noopener">Atendimento ao Cliente</a></li>
+                    <li><a href="https://yamuna3.lojavirtualnuvem.com.br/revenda">Revenda e Lojistas</a></li>
+                      <li><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=contato@yamuna.com.br" target="_blank" rel="noopener">Contato via E-mail</a></li>
+                                <li><a href="https://wa.me/554884591522" target="_blank" rel="noopener">Comprar com Whatsapp</a></li>
+                    <li><a href="https://yamuna3.lojavirtualnuvem.com.br/account" target="_blank">Meus Pedidos</a></li>
+        </ul>
+      </nav>
+
+              <section class="yamuna-cart-checkout-footer-section yamuna-cart-checkout-footer-payments" aria-labelledby="cart-footer-payments">
+          <h2 id="cart-footer-payments">FORMAS DE PAGAMENTO</h2>
+          <div class="yamuna-cart-checkout-footer-payments-logos">
+            			<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/visa@2x.png" class="icon-logo" alt="visa" width="40" height="25">
+    		<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/mastercard@2x.png" class="icon-logo" alt="mastercard" width="40" height="25">
+    		<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/amex@2x.png" class="icon-logo" alt="amex" width="40" height="25">
+    		<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/diners@2x.png" class="icon-logo" alt="diners" width="40" height="25">
+    		<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/br/aura@2x.png" class="icon-logo" alt="br_aura" width="40" height="25">
+    		<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/br/bradesco@2x.png" class="icon-logo" alt="br_bradesco" width="40" height="25">
+    		<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/br/elo@2x.png" class="icon-logo" alt="br_elo" width="40" height="25">
+    		<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/br/hipercard@2x.png" class="icon-logo" alt="br_hipercard" width="40" height="25">
+    		<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/br/discover@2x.png" class="icon-logo" alt="br_discover" width="40" height="25">
+    		<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/santander@2x.png" class="icon-logo" alt="santander" width="40" height="25">
+    		<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/payment-method-types/pix@2x.png" class="icon-logo" alt="payment-method-types_pix" width="40" height="25">
+              </div>
+        </section>
+      
+      <section class="yamuna-cart-checkout-footer-section yamuna-cart-checkout-footer-security" aria-labelledby="cart-footer-security">
+        <h2 id="cart-footer-security">SEGURANÇA</h2>
+        <div class="yamuna-cart-checkout-footer-security-logos">
+          <img class="yamuna-security-google" src="//d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static/images/yamuna/security-google.svg" alt="Google Safe Browsing" loading="lazy" />
+          <img class="yamuna-security-site" src="//d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static/images/yamuna/security-site.svg" alt="Site seguro" loading="lazy" />
+          <img class="yamuna-security-ssl" src="//d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static/images/yamuna/security-ssl.svg" alt="SSL seguro" loading="lazy" />
+                                                </div>
+      </section>
+    </div>
+
+    <div class="yamuna-cart-checkout-footer-bottom">
+      <p>
+        Yamuna Fábrica e Comercio de Produtos Naturais         © C.N.P.J 21555703000156         Estrada Rozália Paulina Ferreira 1897      </p>
+    </div>
+  </div>
+</footer>
+<script>
+(function(){
+  function sendH(){
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    try { parent.postMessage({ type: 'yamuna-extras-height', height: h }, '*'); } catch(e) {}
+  }
+  sendH();
+  window.addEventListener('load', sendH);
+  if (window.ResizeObserver) new ResizeObserver(sendH).observe(document.body);
+  setTimeout(sendH, 300);
+  setTimeout(sendH, 1000);
+})();
+</script>
+</body>
+</html>

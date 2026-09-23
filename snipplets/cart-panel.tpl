@@ -1479,25 +1479,27 @@
 
   }
 
-  /* Platform progressive-discount label → short "5% Off:" in minicart totals.
-     AJAX redraw uses .cart-promotion-detail; SSR may use .cart-promotion-label
-     or the first cell of .js-total-promotions-detail-row. */
+  /* Platform progressive-discount label → short "5% Off:" (label only).
+     Never target .cart-promotion-number — that cell must keep the money value. */
   body #modal-cart .cart-promotion-detail,
-  body #modal-cart .cart-promotion-label,
-  body #modal-cart .js-total-promotions-detail-row > :first-child {
+  body #modal-cart .cart-promotion-label {
     font-size: 0 !important;
     line-height: 0 !important;
   }
 
-  body #modal-cart .cart-promotion-detail > *,
-  body #modal-cart .cart-promotion-label > *,
-  body #modal-cart .js-total-promotions-detail-row > :first-child > * {
+  body #modal-cart .js-total-promotions-detail-row > :first-child:not(.cart-promotion-number):not(.text-right) {
+    font-size: 0 !important;
+    line-height: 0 !important;
+  }
+
+  body #modal-cart .cart-promotion-detail > *:not(.cart-promotion-number),
+  body #modal-cart .cart-promotion-label > *:not(.cart-promotion-number) {
     display: none !important;
   }
 
   body #modal-cart .cart-promotion-detail::before,
   body #modal-cart .cart-promotion-label::before,
-  body #modal-cart .js-total-promotions-detail-row > :first-child::before {
+  body #modal-cart .js-total-promotions-detail-row > :first-child:not(.cart-promotion-number):not(.text-right)::before {
     content: "5% Off:";
     font-family: Dosis, Roboto, Arial, sans-serif !important;
     font-size: 16px !important;
@@ -1506,9 +1508,20 @@
     color: #000 !important;
   }
 
-  body #modal-cart .cart-promotion-number {
+  /* Discount value: real money, brand pink — beats :first-child font-size:0 */
+  body #modal-cart .cart-promotion-number,
+  body #modal-cart .js-total-promotions-detail-row > .cart-promotion-number,
+  body #modal-cart .js-total-promotions-detail-row > :first-child.cart-promotion-number {
     font-size: 16px !important;
     line-height: 1.4 !important;
+    color: #a31460 !important;
+  }
+
+  body #modal-cart .cart-promotion-number::before,
+  body #modal-cart .cart-promotion-number::after,
+  body #modal-cart .js-total-promotions-detail-row > .cart-promotion-number::before,
+  body #modal-cart .js-total-promotions-detail-row > :first-child.cart-promotion-number::before {
+    content: none !important;
   }
 
   /* Cenário 010: CEP — 20px top/bottom; remove paddings/margins empilhados */
@@ -1610,18 +1623,18 @@
   {% include "snipplets/shipping/shipping-free-rest.tpl" %}
 </div>
 
-{% if cart.items_count > 0 %}
-<div class="yamuna-cart-shipping-promo js-visible-on-cart-filled js-yamuna-fs-fallback" data-fs-min="{{ yamuna_fs_min_raw }}" data-fs-subtotal="{{ yamuna_fs_subtotal_cents }}" {% if not yamuna_fs_use_fallback_threshold %}style="display:none;"{% endif %}>
-  <span class="yamuna-cart-promo-text js-yamuna-fs-text">
-    {% if yamuna_fs_unlocked %}
-      Frete grátis garantido!
-    {% else %}
-      Faltam {{ (yamuna_fs_rest_cents / 100) | money }} para garantir seu frete grátis
-    {% endif %}
-  </span>
+{# Always in DOM so AJAX qty/add can sync (QA 052). Visibility is owned by
+   syncYamunaFreeShippingBar() — show when platform bar is idle. #}
+{% if yamuna_fs_unlocked %}
+  {% set yamuna_fs_label = 'Frete grátis garantido!' %}
+{% else %}
+  {% set yamuna_fs_label = 'Faltam ' ~ ((yamuna_fs_rest_cents / 100) | money) ~ ' para garantir seu frete grátis' %}
+{% endif %}
+<div class="yamuna-cart-shipping-promo js-visible-on-cart-filled js-yamuna-fs-fallback{% if yamuna_fs_unlocked %} is-unlocked{% endif %}{% if cart.items_count > 0 and yamuna_fs_use_fallback_threshold %} is-active{% endif %}" data-fs-min="{{ yamuna_fs_min_raw }}" data-fs-subtotal="{{ yamuna_fs_subtotal_cents }}" style="--yamuna-fs-pct: {{ yamuna_fs_pct }}%;{% if cart.items_count == 0 %}display:none;{% endif %}">
+  <span class="yamuna-cart-promo-text js-yamuna-fs-text">{{ yamuna_fs_label }}</span>
+  <span class="yamuna-cart-promo-text yamuna-cart-promo-text-onfill js-yamuna-fs-text" aria-hidden="true">{{ yamuna_fs_label }}</span>
   <i class="yamuna-cart-promo-bar" aria-hidden="true"><span class="yamuna-cart-promo-progress js-yamuna-fs-fill" style="width: {{ yamuna_fs_pct }}%;"></span></i>
 </div>
-{% endif %}
 
 <div class="yamuna-minicart-scroll js-visible-on-cart-filled" {% if cart.items_count == 0 %}style="display:none;"{% endif %}>
   <div class="js-ajax-cart-list cart-row" style="position:relative; z-index:1;">
@@ -1730,7 +1743,7 @@
       window.location.href = link.href;
     }, true);
 
-    /* Shorten platform progressive-discount copy in minicart totals. */
+    /* Shorten platform progressive-discount copy in minicart totals (label only). */
     function shortenMinicartPromoLabels() {
       var modal = document.getElementById('modal-cart');
       if (!modal) return;
@@ -1739,8 +1752,10 @@
       );
       nodes.forEach(function (el) {
         if (el.classList.contains('cart-promotion-number') || el.classList.contains('text-right')) return;
+        if (el.querySelector && el.querySelector('.cart-promotion-number')) return;
         var text = (el.textContent || '').replace(/\s+/g, ' ').trim();
         if (!text || /^5%\s*Off:?$/i.test(text)) return;
+        if (/R\$\s*[\d.,]+/.test(text)) return;
         if (/%\s*OFF|OFF em|comprando/i.test(text)) {
           el.textContent = '5% Off:';
         }
@@ -1754,6 +1769,69 @@
         return LS.formatToCurrency(reais);
       }
       return 'R$\u00a0' + reais.toFixed(2).replace('.', ',');
+    }
+
+    /* Cenário 052 / 047: keep frete-grátis bar in sync with live cart subtotal. */
+    function getYamunaCartSubtotalCents() {
+      var el = document.querySelector('#modal-cart [data-component="cart.subtotal"][data-priceraw]')
+        || document.querySelector('#modal-cart .js-ajax-cart-total[data-priceraw]')
+        || document.querySelector('.js-yamuna-fs-subtotal-source[data-priceraw]')
+        || document.querySelector('.js-cart-subtotal.hidden[data-priceraw]')
+        || document.querySelector('.js-cart-subtotal[data-priceraw]');
+      if (!el) return 0;
+      var rawAttr = String(el.getAttribute('data-priceraw') || '').trim().replace(/\s/g, '').replace(',', '.');
+      var raw = parseFloat(rawAttr);
+      if (isNaN(raw) || raw < 0) return 0;
+      /* Decimal string => reais. Integer => Nuvem cents (e.g. 1300 = R$13,00). */
+      if (rawAttr.indexOf('.') !== -1) {
+        return Math.round(raw * 100);
+      }
+      return Math.round(raw);
+    }
+
+    function syncYamunaFreeShippingBar() {
+      if (window.LS && typeof LS.freeShippingProgress === 'function') {
+        try { LS.freeShippingProgress(true); } catch (err) { /* ignore */ }
+      }
+
+      var fallback = document.querySelector('#modal-cart .js-yamuna-fs-fallback');
+      if (!fallback) return;
+
+      var cartHasItems = !!document.querySelector('#modal-cart .js-cart-item');
+      /* Minicart always uses the Yamuna-synced bar (QA 052/047). Platform
+         free-shipping-bar often sticks on an incomplete "condition" state. */
+      var platformWrap = document.querySelector('#modal-cart .yamuna-cart-free-shipping');
+      if (platformWrap) {
+        platformWrap.style.setProperty('display', 'none', 'important');
+      }
+      fallback.classList.toggle('is-active', cartHasItems);
+      if (!cartHasItems) {
+        fallback.style.setProperty('display', 'none', 'important');
+        return;
+      }
+      fallback.style.removeProperty('display');
+
+      var min = parseFloat(fallback.getAttribute('data-fs-min') || '35000');
+      if (isNaN(min) || min <= 0) min = 35000;
+      var subtotal = getYamunaCartSubtotalCents();
+      var rest = Math.max(0, min - subtotal);
+      var pct = min > 0 ? Math.min(100, Math.max(0, (subtotal / min) * 100)) : 0;
+      var unlocked = rest <= 0;
+
+      fallback.setAttribute('data-fs-subtotal', String(subtotal));
+      fallback.style.setProperty('--yamuna-fs-pct', pct.toFixed(2) + '%');
+      fallback.classList.toggle('is-unlocked', unlocked);
+
+      var label = unlocked
+        ? 'Frete grátis garantido!'
+        : ('Faltam ' + formatYamunaMoneyFromCents(rest) + ' para garantir seu frete grátis');
+      fallback.querySelectorAll('.js-yamuna-fs-text').forEach(function (textEl) {
+        if (textEl.textContent !== label) textEl.textContent = label;
+      });
+      var fillEl = fallback.querySelector('.js-yamuna-fs-fill');
+      if (fillEl) {
+        fillEl.style.width = pct.toFixed(2) + '%';
+      }
     }
 
     function syncMinicartBuyThreeUnitPrices() {
@@ -1794,6 +1872,7 @@
     function refreshMinicartPromoUi() {
       shortenMinicartPromoLabels();
       syncMinicartBuyThreeUnitPrices();
+      syncYamunaFreeShippingBar();
     }
 
     refreshMinicartPromoUi();
@@ -1803,7 +1882,7 @@
       new MutationObserver(function () {
         if (promoTimer) clearTimeout(promoTimer);
         promoTimer = setTimeout(refreshMinicartPromoUi, 50);
-      }).observe(promoObserverRoot, { childList: true, subtree: true, characterData: true });
+      }).observe(promoObserverRoot, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['data-priceraw', 'class', 'style'] });
     }
 
     /* Minicart CEP: always start as input+Buscar (prod), never "already searched". */
@@ -1897,18 +1976,11 @@
     }
 
     function optimisticMinicartQty(quantityBtn) {
+      /* Do NOT mutate the input value here. LS.plusQuantity / LS.minusQuantity
+         read the current input and +/- 1; pre-incrementing caused +2/-2 (QA qty bug).
+         Only keep the qty visible while the platform toggles spinner/disabled. */
       if (!quantityBtn) return;
       var row = quantityBtn.closest('.js-cart-item');
-      var input = row && row.querySelector('.js-cart-quantity-input');
-      if (!input) return;
-      var val = parseInt(input.value, 10) || 1;
-      var isMinus = quantityBtn.getAttribute('data-component') === 'quantity.minus' ||
-        (quantityBtn.classList && quantityBtn.classList.contains('yamuna-cart-minus'));
-      if (isMinus) {
-        if (val > 1) input.value = String(val - 1);
-      } else {
-        input.value = String(val + 1);
-      }
       lockMinicartQtyVisibility(row || document.getElementById('modal-cart'));
     }
 
@@ -2061,6 +2133,9 @@
         settleCartItemLoading();
         window.clearTimeout(window.yamunaMinicartControlsFallback);
         window.yamunaMinicartControlsFallback = window.setTimeout(clearDisabledMinicartControls, 8000);
+        [0, 100, 300, 700, 1500].forEach(function (ms) {
+          window.setTimeout(syncYamunaFreeShippingBar, ms);
+        });
         return;
       }
       var openCart = e.target && e.target.closest && e.target.closest('[data-toggle="#modal-cart"], [data-modal="#modal-cart"], .js-modal-open[data-toggle="#modal-cart"], a[href="#modal-cart"]');

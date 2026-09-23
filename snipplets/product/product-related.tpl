@@ -70,10 +70,10 @@
     {% set related_products = related_products | merge(related_products_for_refill) %}
 {% endif %}
 
-{% set complementary_products = complementary_product_list | length > 0 %}
+{# Cenário 056: complementary ("Para comprar com esse produto") intentionally not rendered. #}
 
-{# Show alternative products when there are default category alternatives with no complementaries or manually selected alternatives #}
-{% set alternative_products = related_products | length > 0 and not (complementary_products and source_alternative == 'default') %}
+{# Show alternative products when there are category alternatives or manually selected alternatives #}
+{% set alternative_products = related_products | length > 0 %}
 
 {# Set related products classes #}
 
@@ -128,39 +128,4 @@
         })
     }}
     {{ component('nubesdk-slot', { type: 'after_product_detail_related_products' }) }}
-{% endif %}
-
-{# Complementary products #}
-
-{% set complementary_section_id = 'complementary-products' %}
-
-{% if complementary_products %}
-    {{ component('nubesdk-slot', { type: 'before_product_detail_complementary_products' }) }}
-    {{ component(
-        'products-section',{
-            title: settings.products_complementary_title,
-            id: complementary_section_id,
-            data_component: complementary_section_id,
-            products_amount: complementary_product_list | length,
-            products_array: complementary_product_list,
-            product_template_path: 'snipplets/grid/item.tpl',
-            product_template_params: {'slide_item': true},
-            slider_controls_position: 'bottom',
-            section_classes: {
-                section: 'js-complementary-products ' ~ section_class,
-                container: container_class,
-                title_container: title_container_class,
-                title: title_class,
-                slider_container: 'js-swiper-complementary ' ~ slider_container_class,
-                slider_wrapper: swiper_wrapper_class,
-                slider_control: slider_control_class,
-                slider_control_prev_container: 'js-swiper-complementary-prev ' ~ slider_control_prev_class,
-                slider_control_prev: 'icon-flip-horizontal',
-                slider_control_next_container: 'js-swiper-complementary-next ' ~ slider_control_next_class,
-            },
-            control_next_svg_id: control_next_svg_id,
-            control_prev_svg_id: control_prev_svg_id,
-        })
-    }}
-    {{ component('nubesdk-slot', { type: 'after_product_detail_complementary_products' }) }}
 {% endif %}

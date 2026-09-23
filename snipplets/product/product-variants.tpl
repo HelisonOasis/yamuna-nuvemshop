@@ -17,9 +17,15 @@
 			{% endif %}
 		{% endif %}
 
-		{% set is_button_variant = not quickshop and (settings.bullet_variants or (settings.image_color_variants and variation.name in ['Color', 'Cor'])) %}
+		{% set is_tipo_variant = not quickshop and variation.name | trim | lower == 'tipo' %}
+		{% if is_tipo_variant %}
+			{% set hidden_variant_select = ' d-none yamuna-tipo-native' %}
+		{% elseif not settings.bullet_variants and not (settings.image_color_variants and variation.name in ['Color', 'Cor']) %}
+			{% set hidden_variant_select = '' %}
+		{% endif %}
+		{% set is_button_variant = not is_tipo_variant and not quickshop and (settings.bullet_variants or (settings.image_color_variants and variation.name in ['Color', 'Cor'])) %}
 
-		<div class="js-product-variants-group {% if variation.name in ['Color', 'Cor'] %}js-color-variants-container{% endif %} {% if quickshop or settings.bullet_variants or settings.image_color_variants %}col-12 {% if is_button_variant %}mb-2{% endif %}{% else %} {% if loop.length == 3 %} col-md-4 {% else %} col-md-6{% endif %}{% endif %}" data-variation-id="{{ variation.id }}">
+		<div class="js-product-variants-group {% if is_tipo_variant %}yamuna-tipo-group {% endif %}{% if variation.name in ['Color', 'Cor'] %}js-color-variants-container{% endif %} {% if is_tipo_variant or quickshop or settings.bullet_variants or settings.image_color_variants %}col-12 {% if is_button_variant or is_tipo_variant %}mb-2{% endif %}{% else %} {% if loop.length == 3 %} col-md-4 {% else %} col-md-6{% endif %}{% endif %}" data-variation-id="{{ variation.id }}">
 			{% if quickshop %}
 				{% embed "snipplets/forms/form-select.tpl" with{select_label: true, select_label_name: '' ~ variation.name ~ '', select_for: 'variation_' ~ loop.index , select_id: 'variation_' ~ loop.index, select_name: 'variation' ~ '[' ~ variation.id ~ ']', select_group_custom_class: 'form-group-small mb-2', select_custom_class: 'js-variation-option js-refresh-installment-data form-control-small', select_label_custom_class:'mb-1'} %}
 					{% block select_options %}
@@ -29,13 +35,26 @@
 					{% endblock select_options%}
 				{% endembed %}
 			{% else %}
-				{% embed "snipplets/forms/form-select.tpl" with{select_label: true, select_label_name: '' ~ variation.name ~ '', select_for: 'variation_' ~ loop.index , select_id: 'variation_' ~ loop.index, select_name: 'variation' ~ '[' ~ variation.id ~ ']', select_group_custom_class: hidden_variant_select, select_custom_class: 'js-variation-option js-refresh-installment-data'} %}
+				{% embed "snipplets/forms/form-select.tpl" with{select_label: not is_tipo_variant, select_label_name: '' ~ variation.name ~ '', select_for: 'variation_' ~ loop.index , select_id: 'variation_' ~ loop.index, select_name: 'variation' ~ '[' ~ variation.id ~ ']', select_group_custom_class: hidden_variant_select, select_custom_class: 'js-variation-option js-refresh-installment-data'} %}
 					{% block select_options %}
 						{% for option in variation.options %}
 							<option value="{{ option.id }}" {% if product.default_options[variation.id] is same as(option.id) %}selected="selected"{% endif %}>{{ option.name }}</option>
 						{% endfor %}
 					{% endblock select_options%}
 				{% endembed %}
+			{% endif %}
+			{% if is_tipo_variant %}
+				<div class="yamuna-tipo">
+					<p class="form-label yamuna-tipo-label">{{ variation.name }}: <strong class="js-insta-variation-label">{% for option in variation.options %}{% if product.default_options[variation.id] is same as(option.id) %}{{ option.name }}{% endif %}{% endfor %}</strong></p>
+					<div class="yamuna-tipo-options" role="radiogroup" aria-label="{{ variation.name }}">
+						{% for option in variation.options %}
+							<button type="button" class="yamuna-tipo-option js-yamuna-tipo-option{% if product.default_options[variation.id] is same as(option.id) %} is-selected{% endif %}" data-option="{{ option.id }}" data-name="{{ option.name }}" aria-pressed="{% if product.default_options[variation.id] is same as(option.id) %}true{% else %}false{% endif %}">
+								<svg class="yamuna-tipo-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.2 8.3 6.3 11.4 12.8 4.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+								<span>{{ option.name }}</span>
+							</button>
+						{% endfor %}
+					</div>
+				</div>
 			{% endif %}
 			{% if is_button_variant %}
 				<label class="form-label d-block mb-2">{{ variation.name }}: <strong class="js-insta-variation-label">{{ product.default_options[variation.id] }}</strong></label>

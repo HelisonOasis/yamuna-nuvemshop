@@ -1,4 +1,4 @@
-{# "VOCÊ PODE GOSTAR" — Home/PDP card model, exactly 3 visible cards, more items to scroll #}
+{# "VOCÊ PODE GOSTAR" — Home/PDP card model; 1 card mobile, 2 tablet, 3 desktop #}
 {% set cart_reco_products = [] %}
 {% if sections.primary.products %}
   {% set cart_reco_products = cart_reco_products | merge(sections.primary.products) %}
@@ -56,29 +56,140 @@
     if (el.swiper) {
       try { el.swiper.destroy(true, true); } catch (e) {}
     }
-    /* Exactly 3 cards on desktop — fill full track width, no 4th empty slot */
-    new Swiper(el, {
+
+    /* Cenario 027: 1 card / step on mobile; never skip groups; keep gutters */
+    var sw = new Swiper(el, {
       lazy: true,
       watchOverflow: true,
+      observer: true,
+      observeParents: true,
       centerInsufficientSlides: false,
       centeredSlides: false,
       threshold: 5,
       slidesPerView: 1,
+      slidesPerGroup: 1,
       spaceBetween: 16,
       navigation: {
         nextEl: root.querySelector('.js-swiper-cart-reco-next'),
         prevEl: root.querySelector('.js-swiper-cart-reco-prev'),
       },
       breakpoints: {
-        768: { slidesPerView: 2, spaceBetween: 16 },
-        992: { slidesPerView: 3, spaceBetween: 24 },
+        768: { slidesPerView: 2, slidesPerGroup: 1, spaceBetween: 16 },
+        992: { slidesPerView: 3, slidesPerGroup: 1, spaceBetween: 24 },
       },
       on: {
         init: function () {
-          this.update();
+          applyCartRecoSlideMetrics(this);
+        },
+        resize: function () {
+          applyCartRecoSlideMetrics(this);
+        },
+        breakpoint: function () {
+          applyCartRecoSlideMetrics(this);
         },
       },
     });
+
+    function applyCartRecoSlideMetrics(instance) {
+      if (!instance) return;
+      var space = instance.params.spaceBetween || 0;
+      var spv = instance.params.slidesPerView || 1;
+      var cw = instance.width || (el.clientWidth || 0);
+      if (!cw) return;
+      var slideW = (cw - space * (Math.ceil(spv) - 1)) / spv;
+      var slides = instance.slides || [];
+      for (var i = 0; i < slides.length; i++) {
+        var slide = slides[i];
+        if (!slide || !slide.style) continue;
+        slide.style.setProperty('width', slideW + 'px', 'important');
+        slide.style.setProperty('max-width', 'none', 'important');
+        slide.style.setProperty('flex', '0 0 ' + slideW + 'px', 'important');
+        slide.style.setProperty('margin', '0px', 'important');
+        slide.style.setProperty('margin-right', space + 'px', 'important');
+        slide.style.setProperty('padding', '0px', 'important');
+      }
+      if (typeof instance.updateSize === 'function') instance.updateSize();
+      if (typeof instance.updateSlides === 'function') instance.updateSlides();
+    }
+
+    function forceCartRecoSlides() {
+      if (!sw) return;
+      var w = window.innerWidth || document.documentElement.clientWidth || 0;
+      sw.params.slidesPerGroup = 1;
+      sw.params.centeredSlides = false;
+      sw.params.centerInsufficientSlides = false;
+      if (w < 768) {
+        sw.params.slidesPerView = 1;
+        sw.params.spaceBetween = 16;
+      } else if (w < 992) {
+        sw.params.slidesPerView = 2;
+        sw.params.spaceBetween = 16;
+      } else {
+        sw.params.slidesPerView = 3;
+        sw.params.spaceBetween = 24;
+      }
+      if (typeof sw.update === 'function') sw.update();
+      applyCartRecoSlideMetrics(sw);
+    }
+
+    forceCartRecoSlides();
+    setTimeout(forceCartRecoSlides, 100);
+    setTimeout(forceCartRecoSlides, 400);
+    window.addEventListener('resize', forceCartRecoSlides);
   });
+
+  {# AJAX add from this carousel injects incomplete cart-row HTML → broken mobile layout.
+     Reload cart page right after a successful add so Liquid re-renders the row. #}
+  (function () {
+    if (!document.body || !document.body.classList.contains('template-cart')) return;
+    var reco = document.querySelector('.yamuna-cart-recommendations');
+    if (!reco) return;
+
+    var pendingReload = false;
+
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest(
+        '.yamuna-pdp-spot-buy-one, .yamuna-pdp-spot-buy-three, .js-add-to-cart, .js-addtocart'
+      );
+      if (!btn || !reco.contains(btn)) return;
+      pendingReload = true;
+    }, true);
+
+    function reloadIfPending() {
+      if (!pendingReload) return;
+      pendingReload = false;
+      window.location.reload();
+    }
+
+    document.addEventListener('cart.updated', reloadIfPending);
+    document.addEventListener('cart:updated', reloadIfPending);
+    if (window.jQueryNuvem) {
+      jQueryNuvem(document).on('cart.updated cart:updated', reloadIfPending);
+    }
+
+    var tries = 0;
+    function wrapAddToCart() {
+      if (!window.LS || typeof LS.addToCartEnhanced !== 'function') {
+        if (tries++ < 50) setTimeout(wrapAddToCart, 100);
+        return;
+      }
+      if (LS.addToCartEnhanced.__yamunaCartRecoWrapped) return;
+      var orig = LS.addToCartEnhanced;
+      LS.addToCartEnhanced = function () {
+        var args = Array.prototype.slice.call(arguments);
+        var successCb = args[5];
+        args[5] = function () {
+          try {
+            if (typeof successCb === 'function') successCb.apply(this, arguments);
+          } finally {
+            reloadIfPending();
+          }
+        };
+        return orig.apply(this, args);
+      };
+      LS.addToCartEnhanced.__yamunaCartRecoWrapped = true;
+    }
+    wrapAddToCart();
+  })();
 </script>
 {% endif %}

@@ -572,6 +572,26 @@
         window.scrollTo(0, lockedScrollY);
       }
 
+      function closeHamburgerDrawer() {
+        if (!menu.classList.contains('modal-show')) return;
+        menu.classList.remove('modal-show');
+        menu.style.removeProperty('display');
+        var overlay = document.querySelector('.js-modal-overlay[data-modal-id="#nav-hamburger"]');
+        if (overlay) {
+          overlay.style.display = 'none';
+        }
+        unlockScroll();
+      }
+
+      {# Cenario 160: dedicated close handler (capture) so the X always closes the drawer. #}
+      document.addEventListener('click', function(e) {
+        var closeBtn = e.target && e.target.closest && e.target.closest('#nav-hamburger .js-modal-close');
+        if (!closeBtn) return;
+        e.preventDefault();
+        e.stopPropagation();
+        closeHamburgerDrawer();
+      }, true);
+
       new MutationObserver(function() {
         if (menu.classList.contains('modal-show')) {
           lockScroll();

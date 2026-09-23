@@ -256,14 +256,27 @@
             {% if ((template == 'category' or template == 'search') and not is_pdp_related_spot) or is_blog_related_spot %}
                 <div class="yamuna-plp-item-actions">
                     {% if product.available and product.display_price %}
-                        {% if product.isSubscribable() or product.variations %}
+                        {% if product.isSubscribable() %}
                             <a href="{{ product_url_with_selected_variant }}" class="yamuna-plp-buy-one" title="{{ 'Comprar' | translate }} {{ product.name }}">
                                 {{ 'Comprar' | translate }}
                             </a>
                         {% else %}
+                            {# Always show Comprar + Compre 3. Products with variations use the default option so add-to-cart works from the spot. #}
                             {% set three_unit_price = (product.price * 0.95) | money %}
                             <form class="js-product-form" method="post" action="{{ store.cart_url }}">
                                 <input type="hidden" name="add_to_cart" value="{{product.id}}" />
+                                {% if product.variations %}
+                                    {% set plp_default_variant = product.selected_or_first_available_variant %}
+                                    {% for variation in product.variations %}
+                                        {% if loop.index == 1 %}
+                                            <input type="hidden" name="variation[{{ variation.id }}]" value="{{ plp_default_variant.option1 }}" />
+                                        {% elseif loop.index == 2 %}
+                                            <input type="hidden" name="variation[{{ variation.id }}]" value="{{ plp_default_variant.option2 }}" />
+                                        {% elseif loop.index == 3 %}
+                                            <input type="hidden" name="variation[{{ variation.id }}]" value="{{ plp_default_variant.option3 }}" />
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
                                 <input class="js-home-spot-add-quantity" type="hidden" name="quantity" value="1" />
                                 <button type="submit" class="js-addtocart js-prod-submit-form yamuna-plp-buy-one" data-quantity="1" data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}">
                                     <img src="{{ 'images/yamuna/home-spot-bag-white.svg' | static_url }}" alt="" aria-hidden="true" />
@@ -290,13 +303,25 @@
                             {% set quickshop_button_js_classes = not product.isSubscribable() ? 'js-item-buy-open' %}
                             {% set quickshop_href = product.isSubscribable() ? product_url_with_selected_variant : '#' %}
 
-                            {% if product.isSubscribable() or product.variations %}
+                            {% if product.isSubscribable() %}
                                 {% set button_text = is_subscription_only ? ('our_components.subscriptions.subscribe' | tt) : ('Comprar' | translate) %}
                                 {% set button_title = is_subscription_only ? ('our_components.subscriptions.subscribe' | tt) ~ ' ' ~ product.name : ('Compra rápida de' | translate) ~ ' ' ~ product.name %}
                                 <a href="{{ quickshop_href }}" class="{{ quickshop_button_js_classes }} {{ quickshop_button_primary_classes }} d-block item-buy-open" title="{{ button_title }}" aria-label="{{ button_title }}" {% if not product.isSubscribable() %}data-component="product-list-item.add-to-cart" data-component-value="{{ product.id }}"{% endif %}>{{ button_text }}</a>
                             {% else %}
                                 <form class="js-product-form" method="post" action="{{ store.cart_url }}">
                                     <input type="hidden" name="add_to_cart" value="{{product.id}}" />
+                                    {% if product.variations %}
+                                        {% set spot_default_variant = product.selected_or_first_available_variant %}
+                                        {% for variation in product.variations %}
+                                            {% if loop.index == 1 %}
+                                                <input type="hidden" name="variation[{{ variation.id }}]" value="{{ spot_default_variant.option1 }}" />
+                                            {% elseif loop.index == 2 %}
+                                                <input type="hidden" name="variation[{{ variation.id }}]" value="{{ spot_default_variant.option2 }}" />
+                                            {% elseif loop.index == 3 %}
+                                                <input type="hidden" name="variation[{{ variation.id }}]" value="{{ spot_default_variant.option3 }}" />
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
                                     {% set state = store.is_catalog ? 'catalog' : (product.available ? product.display_price ? 'cart' : 'contact' : 'nostock') %}
                                     {% set texts = {'cart': "Comprar", 'contact': "Consultar precio", 'nostock': "Sin stock", 'catalog': "Consultar"} %}
 

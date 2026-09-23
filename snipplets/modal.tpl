@@ -54,9 +54,15 @@
                         {% endif %}
                     </div>
                 {% else %}
+                    {% if modal_id == 'nav-hamburger' %}
+                    <button type="button" class="js-modal-close modal-close no-header {{ modal_close_class }}" aria-label="{{ 'Cerrar' | translate }}">
+                        <svg class="icon-inline icon-lg modal-close-icon icon-w-10" aria-hidden="true"><use xlink:href="#times"/></svg>
+                    </button>
+                    {% else %}
                     <span class="js-modal-close modal-close no-header {{ modal_close_class }}">
                         <svg class="icon-inline icon-lg modal-close-icon icon-w-10"><use xlink:href="#times"/></svg>
                     </span>
+                    {% endif %}
                 {% endif %}
          
                 <div class="modal-body">

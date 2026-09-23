@@ -11,6 +11,8 @@
       <span class="yamuna-cart-nav-spacer" aria-hidden="true"></span>
     </div>
 
+    {% include "snipplets/cart/checkout-steps.tpl" with { step: 'cart' } %}
+
     {# Platform quirk: any POST to cart_url WITHOUT name=go_to_checkout returns
        HTTP 200 with an empty body (blank white page, ~0 B resources in Network).
        Only Finalizar compra may submit; qty uses LS AJAX. #}
@@ -38,6 +40,16 @@
             {% for item in cart.items %}
               {% include "snipplets/cart-item-ajax.tpl" with {'cart_page': true} %}
             {% endfor %}
+          </div>
+
+          {# Mobile option A: Total row inside card when 2+ products #}
+          <div
+            class="yamuna-cart-mobile-total js-yamuna-cart-mobile-total"
+            {% if cart.items_count < 2 %}hidden{% endif %}
+            data-store="cart-total"
+          >
+            <span class="yamuna-cart-mobile-total-label">Total</span>
+            <strong class="yamuna-cart-mobile-total-value js-cart-total" data-priceraw="{{ cart.total }}">{{ cart.total | money }}</strong>
           </div>
 
           {{ component('nubesdk-slot', { type: "after_line_items" }) }}
@@ -86,9 +98,9 @@
         {% endif %}
       {% endif %}
 
-      <div id="error-ajax-stock" style="display: none;">
-        <div class="alert alert-warning">
-          {{ "¡Uy! No tenemos más stock de este producto para agregarlo al carrito. Si querés podés" | translate }}<a href="{{ store.products_url }}" class="btn-link ml-1">{{ "ver otros acá" | translate }}</a>
+      <div id="error-ajax-stock" class="yamuna-cart-stock-alert" style="display: none;" role="alert">
+        <div class="alert alert-warning yamuna-cart-stock-alert-inner">
+          Limite de estoque atingido
         </div>
       </div>
     </form>
@@ -107,6 +119,53 @@
             e.preventDefault();
           }
         });
+      })();
+
+      /* Mobile Total row: visible only with 2+ line items */
+      (function () {
+        function syncMobileCartTotal() {
+          var list = document.querySelector('.js-ajax-cart-list');
+          var row = document.querySelector('.js-yamuna-cart-mobile-total');
+          if (!list || !row) return;
+          var count = list.querySelectorAll('.js-cart-item, .yamuna-cart-row[data-component="cart.line-item"], .yamuna-cart-row').length;
+          if (!count) {
+            count = list.querySelectorAll('[data-component="cart.line-item"], .js-cart-item').length;
+          }
+          if (count > 1) row.removeAttribute('hidden');
+          else row.setAttribute('hidden', '');
+        }
+        syncMobileCartTotal();
+        var listEl = document.querySelector('.js-ajax-cart-list');
+        if (listEl && typeof MutationObserver !== 'undefined') {
+          new MutationObserver(function () { syncMobileCartTotal(); })
+            .observe(listEl, { childList: true, subtree: false });
+        }
+        document.addEventListener('cart:updated', syncMobileCartTotal);
+        document.addEventListener('cart.updated', syncMobileCartTotal);
+      })();
+
+      /* Keep stock alert copy + force pink card styling if LS rewrites the HTML */
+      (function () {
+        var MSG = 'Limite de estoque atingido';
+        function fixStockAlert(root) {
+          var el = root || document.getElementById('error-ajax-stock');
+          if (!el) return;
+          el.classList.add('yamuna-cart-stock-alert');
+          var inner = el.querySelector('.alert') || el;
+          inner.classList.add('yamuna-cart-stock-alert-inner');
+          var text = (inner.textContent || '').trim();
+          if (text !== MSG) {
+            inner.textContent = MSG;
+          }
+        }
+        fixStockAlert();
+        var stockEl = document.getElementById('error-ajax-stock');
+        if (stockEl && window.MutationObserver) {
+          var mo = new MutationObserver(function () { fixStockAlert(stockEl); });
+          mo.observe(stockEl, { childList: true, subtree: true, characterData: true });
+        }
+        document.addEventListener('cart.updated', function () { fixStockAlert(); });
+        document.addEventListener('cart:updated', function () { fixStockAlert(); });
       })();
     </script>
 
@@ -140,21 +199,14 @@
     padding: 0 !important;
     margin-top: 0 !important;
   }
-  /* Header labels: black (not white) */
+  /* Header labels: brand magenta on white (Cenario 022 — match checkout) */
   body.template-cart .yamuna-cart-table-head,
   body.template-cart .yamuna-cart-table-head .yamuna-cart-col-desc,
   body.template-cart .yamuna-cart-table-head .yamuna-cart-col-qty,
   body.template-cart .yamuna-cart-table-head .yamuna-cart-col-unit,
   body.template-cart .yamuna-cart-table-head .yamuna-cart-col-total {
-    color: #000 !important;
-  }
-  body.template-cart .yamuna-cart-table-head {
-    background: #c388a2 !important;
-    display: grid !important;
-    grid-template-columns: 32px 85px minmax(160px, 286px) 120px 150px minmax(140px, 1fr) !important;
-    gap: 12px !important;
-    padding: 0 20px !important;
-    border-radius: 16px 16px 0 0 !important;
+    color: #a31460 !important;
+    font-size: 14px !important;
   }
   body.template-cart .yamuna-cart-table {
     overflow: hidden !important;
@@ -163,49 +215,399 @@
   body.template-cart .yamuna-cart-table-body {
     border-radius: 0 0 16px 16px !important;
   }
-  /* DESCRIÇÃO left edge = trash icon left (btn centered in 32px col + SVG glyph inset) */
-  body.template-cart .yamuna-cart-col-desc {
-    grid-column: 1 / 4 !important;
-    justify-self: start !important;
-    text-align: left !important;
-    padding: 0 0 0 8px !important;
-    margin: 0 !important;
+  /* Mobile Total (option A) — hidden on desktop; shown ≤1023 with 2+ items */
+  body.template-cart .yamuna-cart-mobile-total {
+    display: none !important;
   }
-  body.template-cart .yamuna-cart-col-qty { grid-column: 4 !important; }
-  body.template-cart .yamuna-cart-col-unit { grid-column: 5 !important; }
-  body.template-cart .yamuna-cart-col-total { grid-column: 6 !important; }
-  body.template-cart .yamuna-cart-row {
-    display: grid !important;
-    grid-template-columns: 32px 85px minmax(160px, 286px) 120px 150px minmax(140px, 1fr) !important;
-    gap: 12px !important;
-    padding: 16px 20px !important;
+  @media (max-width: 1023px) {
+    body.template-cart .yamuna-cart-table-body {
+      border-radius: 0 !important;
+    }
+    body.template-cart .yamuna-cart-table:has(.yamuna-cart-mobile-total[hidden]) .yamuna-cart-table-body {
+      border-radius: 0 0 16px 16px !important;
+    }
+    body.template-cart .yamuna-cart-mobile-total:not([hidden]) {
+      display: flex !important;
+      align-items: baseline !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      box-sizing: border-box !important;
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 12px 16px 16px !important;
+      border-top: 1px solid #e6e2e6 !important;
+      border-radius: 0 0 16px 16px !important;
+      background: #fff !important;
+      color: #4a1d3a !important;
+    }
+    body.template-cart .yamuna-cart-mobile-total-label {
+      font-family: Raleway, Arial, sans-serif !important;
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      line-height: 1.3 !important;
+    }
+    body.template-cart .yamuna-cart-mobile-total-value {
+      font-family: Roboto, Arial, sans-serif !important;
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      line-height: 1.3 !important;
+      color: #4a1d3a !important;
+    }
   }
-  /* Carousel: exactly 3 equal cards, fill track, no hole */
+  /* Stock limit alert — brand pink, ~80% width, centered */
+  body.template-cart #error-ajax-stock,
+  body.template-cart .yamuna-cart-stock-alert {
+    display: none;
+    box-sizing: border-box !important;
+    width: 80% !important;
+    max-width: 80% !important;
+    margin: 8px auto 12px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+  body.template-cart #error-ajax-stock[style*="display: block"],
+  body.template-cart #error-ajax-stock[style*="display:block"],
+  body.template-cart #error-ajax-stock:not([style*="display: none"]):not([style*="display:none"]) {
+    display: block !important;
+  }
+  body.template-cart #error-ajax-stock .alert,
+  body.template-cart #error-ajax-stock .alert-warning,
+  body.template-cart .yamuna-cart-stock-alert-inner,
+  body.template-cart .yamuna-cart-table-body > .alert.alert-warning,
+  body.template-cart .js-ajax-cart-list + .alert.alert-warning,
+  body.template-cart .yamuna-cart-row + .alert.alert-warning {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 10px 14px !important;
+    border: 1px solid #a31460 !important;
+    border-radius: 12px !important;
+    background: #fdf2f7 !important;
+    color: #a31460 !important;
+    text-align: center !important;
+    font-family: Raleway, Roboto, Arial, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    line-height: 1.35 !important;
+  }
+  body.template-cart #error-ajax-stock .alert::before,
+  body.template-cart #error-ajax-stock .alert-warning::before,
+  body.template-cart .yamuna-cart-stock-alert-inner::before {
+    filter: none !important;
+    color: #a31460 !important;
+  }
+  body.template-cart #error-ajax-stock a,
+  body.template-cart .yamuna-cart-stock-alert a {
+    display: none !important;
+  }
+  /* Desktop table — only from 1024px (tablet uses mobile card layout) */
+  @media (min-width: 1024px) {
+    body.template-cart .yamuna-cart-table-head {
+      background: #fff !important;
+      display: grid !important;
+      grid-template-columns: 32px 85px minmax(160px, 286px) 120px 150px minmax(140px, 1fr) !important;
+      gap: 12px !important;
+      padding: 0 20px !important;
+      border-radius: 16px 16px 0 0 !important;
+    }
+    /* DESCRIÇÃO left edge = trash icon left (btn centered in 32px col + SVG glyph inset) */
+    body.template-cart .yamuna-cart-col-desc {
+      grid-column: 1 / 4 !important;
+      justify-self: start !important;
+      text-align: left !important;
+      padding: 0 0 0 8px !important;
+      margin: 0 !important;
+    }
+    body.template-cart .yamuna-cart-col-qty { grid-column: 4 !important; display: block !important; }
+    body.template-cart .yamuna-cart-col-unit { grid-column: 5 !important; display: block !important; }
+    body.template-cart .yamuna-cart-col-total { grid-column: 6 !important; display: block !important; }
+    body.template-cart .yamuna-cart-row {
+      display: grid !important;
+      grid-template-columns: 32px 85px minmax(160px, 286px) 120px 150px minmax(140px, 1fr) !important;
+      grid-template-areas: none !important;
+      gap: 12px !important;
+      padding: 16px 20px !important;
+    }
+    body.template-cart .yamuna-cart-row-delete,
+    body.template-cart .yamuna-cart-row-image,
+    body.template-cart .yamuna-cart-row-desc,
+    body.template-cart .yamuna-cart-row-qty,
+    body.template-cart .yamuna-cart-row-unit,
+    body.template-cart .yamuna-cart-row-total {
+      grid-area: auto !important;
+    }
+    body.template-cart .yamuna-cart-row-unit {
+      display: block !important;
+    }
+    body.template-cart .yamuna-cart-row-total .yamuna-cart-row-price::before,
+    body.template-cart .yamuna-cart-row-total .js-cart-item-subtotal::before {
+      content: none !important;
+    }
+  }
+  /* Mobile + tablet (≤1023): breathable card
+     [img] title            [🗑]
+           Total R$…
+           em Nx…
+           [- 1 +]
+     Unit price only when qty > 1 (avoids R$145 twice). */
+  @media (max-width: 1023px) {
+    body.template-cart .yamuna-cart-page {
+      padding: 16px 12px 0 !important;
+    }
+    body.template-cart .yamuna-cart-table-head {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      grid-template-columns: none !important;
+      padding: 10px 12px !important;
+    }
+    body.template-cart .yamuna-cart-col-qty,
+    body.template-cart .yamuna-cart-col-unit,
+    body.template-cart .yamuna-cart-col-total {
+      display: none !important;
+    }
+    body.template-cart .yamuna-cart-col-desc {
+      grid-column: auto !important;
+      padding-left: 0 !important;
+      margin-left: 0 !important;
+      text-align: center !important;
+      width: 100% !important;
+    }
+    body.template-cart .yamuna-cart-row {
+      display: grid !important;
+      grid-template-columns: 72px minmax(0, 1fr) 28px !important;
+      grid-template-areas:
+        "image desc delete"
+        "image prices prices"
+        "image qty qty" !important;
+      column-gap: 12px !important;
+      row-gap: 8px !important;
+      align-items: start !important;
+      min-height: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      padding: 16px 12px !important;
+      overflow: hidden !important;
+    }
+    body.template-cart .yamuna-cart-row-image {
+      grid-area: image !important;
+      width: 72px !important;
+      height: 72px !important;
+      max-width: 72px !important;
+      justify-self: start !important;
+      border-radius: 8px !important;
+      overflow: hidden !important;
+    }
+    body.template-cart .yamuna-cart-row-desc {
+      grid-area: desc !important;
+      min-width: 0 !important;
+      overflow-wrap: anywhere !important;
+      word-break: break-word !important;
+      font-size: 14px !important;
+      line-height: 1.35 !important;
+      align-self: start !important;
+      padding-right: 4px !important;
+    }
+    body.template-cart .yamuna-cart-row-delete,
+    body.template-cart .yamuna-cart-row .cart-item-delete {
+      grid-area: delete !important;
+      align-self: start !important;
+      justify-self: end !important;
+      width: 24px !important;
+      height: 24px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    /* Mobile: only line total (hide unit price entirely) */
+    body.template-cart .yamuna-cart-row-unit {
+      display: none !important;
+    }
+    /* Line total + installments (primary price) */
+    body.template-cart .yamuna-cart-row-total {
+      grid-area: prices !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 2px !important;
+      min-width: 0 !important;
+      text-align: left !important;
+      padding: 0 !important;
+    }
+    body.template-cart .yamuna-cart-row-total .yamuna-cart-row-price,
+    body.template-cart .yamuna-cart-row-total .js-cart-item-subtotal {
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      line-height: 1.25 !important;
+    }
+    body.template-cart .yamuna-cart-row-total .yamuna-cart-row-price::before,
+    body.template-cart .yamuna-cart-row-total .js-cart-item-subtotal::before {
+      content: none !important;
+    }
+    body.template-cart .yamuna-cart-row-total .yamuna-cart-row-installments {
+      margin-top: 0 !important;
+      font-size: 12px !important;
+      line-height: 1.35 !important;
+      overflow-wrap: anywhere !important;
+    }
+    body.template-cart .yamuna-cart-row-qty {
+      grid-area: qty !important;
+      justify-content: flex-start !important;
+      justify-self: start !important;
+      margin: 4px 0 0 !important;
+    }
+    body.template-cart .yamuna-cart-page-qty.form-quantity,
+    body.template-cart .yamuna-cart-page-qty.form-group {
+      width: 96px !important;
+      max-width: 96px !important;
+      min-width: 88px !important;
+    }
+  }
+  body.template-cart .yamuna-cart-page-actions {
+    margin: 28px 0 !important;
+  }
+  /* CTAs: 352×40 from 768px up */
+  @media (min-width: 768px) {
+    body.template-cart .yamuna-cart-page-actions {
+      justify-content: center !important;
+      align-items: center !important;
+      flex-wrap: wrap !important;
+      gap: 16px !important;
+      margin: 48px 0 !important;
+    }
+    body.template-cart .yamuna-cart-page-continue,
+    body.template-cart .yamuna-cart-page-checkout {
+      flex: 0 0 352px !important;
+      width: 352px !important;
+      max-width: 352px !important;
+      min-width: 352px !important;
+      height: 40px !important;
+      min-height: 40px !important;
+      max-height: 40px !important;
+    }
+  }
+  @media (max-width: 374px) {
+    body.template-cart .yamuna-cart-page {
+      padding: 12px 12px 0 !important;
+    }
+    body.template-cart .yamuna-cart-table-head {
+      padding: 10px 12px !important;
+    }
+    body.template-cart .yamuna-cart-row {
+      grid-template-columns: 64px minmax(0, 1fr) 24px !important;
+      column-gap: 10px !important;
+      row-gap: 6px !important;
+      padding: 14px 12px !important;
+    }
+    body.template-cart .yamuna-cart-row-image {
+      width: 64px !important;
+      height: 64px !important;
+      max-width: 64px !important;
+    }
+    body.template-cart .yamuna-cart-row-desc {
+      font-size: 13px !important;
+    }
+    body.template-cart .yamuna-cart-row-total .yamuna-cart-row-price,
+    body.template-cart .yamuna-cart-row-total .js-cart-item-subtotal {
+      font-size: 15px !important;
+    }
+    body.template-cart .yamuna-cart-row-delete .yamuna-cart-trash-icon {
+      width: 20px !important;
+      height: 22px !important;
+    }
+    body.template-cart .yamuna-cart-page-qty.form-quantity,
+    body.template-cart .yamuna-cart-page-qty.form-group {
+      width: 88px !important;
+      max-width: 88px !important;
+      min-width: 80px !important;
+      height: 32px !important;
+    }
+  }
+  /* Cenario 027 — reco carousel: align to checkout; Swiper owns slide widths */
+  body.template-cart .yamuna-cart-recommendations.yamuna-pdp-related {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    background: transparent !important;
+  }
   body.template-cart .yamuna-cart-recommendations .products-section-container {
     position: relative !important;
     width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
   }
-  body.template-cart .yamuna-cart-recommendations .js-swiper-cart-reco {
+  body.template-cart .yamuna-cart-recommendations .js-swiper-cart-reco,
+  body.template-cart .yamuna-cart-recommendations .yamuna-cart-recommendations-carousel {
     width: 100% !important;
+    max-width: 100% !important;
     overflow: hidden !important;
+    box-sizing: border-box !important;
   }
-  @media (min-width: 992px) {
-    body.template-cart .yamuna-cart-recommendations .swiper-slide {
-      width: calc((100% - 48px) / 3) !important;
-      max-width: calc((100% - 48px) / 3) !important;
-      height: auto !important;
-      min-height: 520px !important;
-      box-sizing: border-box !important;
-    }
+  body.template-cart .yamuna-cart-recommendations .swiper-slide {
+    height: auto !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+    /* width/margin set by Swiper JS with !important — do not override here */
+    max-width: none !important;
+    min-width: 0 !important;
+    padding: 0 !important;
   }
   body.template-cart .yamuna-cart-recommendations .item.item-product,
   body.template-cart .yamuna-cart-recommendations .item {
+    display: flex !important;
+    flex-direction: column !important;
     width: 100% !important;
     max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
     margin: 0 !important;
+    /* Home card inset */
+    padding: 0 24px 22px !important;
     border-radius: 12px !important;
+    background: #fff !important;
+    box-shadow: 0 2px 12px rgba(57, 55, 71, 0.1) !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    text-align: left !important;
   }
-  /* Arrows centered on the full card (vertical middle of track) */
+  body.template-cart .yamuna-cart-recommendations .item-image {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 240px !important;
+    min-height: 240px !important;
+    max-height: 240px !important;
+    margin: 12px auto 0 !important;
+  }
+  body.template-cart .yamuna-cart-recommendations .item-description {
+    padding: 10px 0 0 !important;
+  }
+  body.template-cart .yamuna-cart-recommendations .item-actions {
+    padding: 8px 0 0 !important;
+  }
+  /* Cenario 029: COMPRE 3 — min 12px; 14px from 475px */
+  body.template-cart .yamuna-cart-recommendations .yamuna-pdp-spot-buy-three,
+  body.template-cart .yamuna-cart-recommendations .item-actions .btn-secondary,
+  body.template-cart .yamuna-cart-recommendations .yamuna-pdp-spot-buy-three-label,
+  body.template-cart .yamuna-cart-recommendations .yamuna-pdp-spot-buy-three span {
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+  }
+  @media (min-width: 475px) {
+    body.template-cart .yamuna-cart-recommendations .yamuna-pdp-spot-buy-three,
+    body.template-cart .yamuna-cart-recommendations .item-actions .btn-secondary,
+    body.template-cart .yamuna-cart-recommendations .yamuna-pdp-spot-buy-three-label,
+    body.template-cart .yamuna-cart-recommendations .yamuna-pdp-spot-buy-three span {
+      font-size: 14px !important;
+    }
+  }
+  /* Home glass arrows over product image */
   body.template-cart .yamuna-cart-recommendations .yamuna-cart-reco-prev,
   body.template-cart .yamuna-cart-recommendations .yamuna-cart-reco-next,
   body.template-cart .yamuna-cart-recommendations .swiper-button-prev,
@@ -217,26 +619,87 @@
     margin-top: 0 !important;
     width: 48px !important;
     height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
     z-index: 8 !important;
     display: flex !important;
-    background: #fff !important;
-    border: 1px solid rgba(35, 132, 130, 0.18) !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.42) !important;
+    background-color: rgba(255, 255, 255, 0.42) !important;
+    border: 1px solid rgba(255, 255, 255, 0.55) !important;
     border-radius: 50% !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #238482 !important;
   }
   body.template-cart .yamuna-cart-recommendations .yamuna-cart-reco-prev,
   body.template-cart .yamuna-cart-recommendations .swiper-button-prev {
-    left: 0 !important;
+    left: 8px !important;
     right: auto !important;
   }
   body.template-cart .yamuna-cart-recommendations .yamuna-cart-reco-next,
   body.template-cart .yamuna-cart-recommendations .swiper-button-next {
-    right: 0 !important;
+    right: 8px !important;
     left: auto !important;
   }
-  body.template-cart .yamuna-cart-depositions {
-    width: 100% !important;
-    max-width: 100% !important;
+  body.template-cart .yamuna-cart-recommendations .yamuna-cart-reco-prev img,
+  body.template-cart .yamuna-cart-recommendations .yamuna-cart-reco-next img,
+  body.template-cart .yamuna-cart-recommendations .swiper-button-prev .icon-inline,
+  body.template-cart .yamuna-cart-recommendations .swiper-button-next .icon-inline,
+  body.template-cart .yamuna-cart-recommendations .swiper-button-prev svg,
+  body.template-cart .yamuna-cart-recommendations .swiper-button-next svg {
+    display: none !important;
+  }
+  body.template-cart .yamuna-cart-recommendations .yamuna-cart-reco-prev::before,
+  body.template-cart .yamuna-cart-recommendations .yamuna-cart-reco-next::before,
+  body.template-cart .yamuna-cart-recommendations .swiper-button-prev::before,
+  body.template-cart .yamuna-cart-recommendations .swiper-button-next::before {
+    display: block !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin: 0 !important;
+    border-top: 4px solid #238482 !important;
+    border-right: 4px solid #238482 !important;
+    background: none !important;
+    content: '' !important;
+  }
+  body.template-cart .yamuna-cart-recommendations .yamuna-cart-reco-prev::before,
+  body.template-cart .yamuna-cart-recommendations .swiper-button-prev::before {
+    margin-left: 3px !important;
+    transform: rotate(-135deg) !important;
+  }
+  body.template-cart .yamuna-cart-recommendations .yamuna-cart-reco-next::before,
+  body.template-cart .yamuna-cart-recommendations .swiper-button-next::before {
+    margin-right: 3px !important;
+    transform: rotate(45deg) !important;
+  }
+  body.template-cart .yamuna-cart-recommendations .yamuna-cart-reco-prev::after,
+  body.template-cart .yamuna-cart-recommendations .yamuna-cart-reco-next::after,
+  body.template-cart .yamuna-cart-recommendations .swiper-button-prev::after,
+  body.template-cart .yamuna-cart-recommendations .swiper-button-next::after {
+    display: none !important;
+    content: none !important;
+  }
+  @media (max-width: 767px) {
+    body.template-cart .yamuna-cart-depositions {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      height: 360px !important;
+      min-height: 360px !important;
+      max-height: 360px !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      padding: 16px !important;
+      box-sizing: border-box !important;
+    }
+    body.template-cart .yamuna-cart-depositions-nav {
+      display: flex !important;
+    }
   }
 
   /* Buy-3 unit price: De / Por (same as minicart) */

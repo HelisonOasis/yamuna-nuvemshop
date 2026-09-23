@@ -24,7 +24,7 @@
 					{{ component('nubesdk-slot', { type: "before_product_detail_name" }) }}
 
 				{% endif %}
-			<div class="{% if template == 'product' %}yamuna-pdp-title-row{% endif %}">
+			<div class="{% if template == 'product' %}yamuna-pdp-title-row{% else %}page-header-title{% endif %}">
 				<h1 class="{% if template == 'product' %}js-product-name{% else %}text-center{% endif %} h2 h1-md {% if template == 'contact' %} text-md-left{% endif %}{% if settings.theme_rounded and template != 'product' %} text-primary{% endif %}" {% if template == "product" %}data-store="product-name-{{ product.id }}"{% endif %}>{% block page_header_text %}{% endblock %}</h1>
 				{% if template == 'product' %}
 					{% set yamuna_wishlist_image = product.featured_image | product_image_url('large') %}
