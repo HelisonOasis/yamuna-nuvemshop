@@ -1,0 +1,16 @@
+---
+description: Bloqueia FTP/prod durante trabalho de performance na branch perf/*
+alwaysApply: true
+---
+
+# Sem deploy em produção (perf)
+
+Durante trabalho nesta conversa / branch `perf/opt-pack-v1` (e branches `perf/*`):
+
+- **NUNCA** fazer upload FTP (`FtpWebRequest`, `_tmp_ftp_*.ps1`, `nuvemshop theme ftp push`, `theme ftp watch`, `nuvemshop-ftp-publish-pending.ps1`).
+- **NUNCA** publicar tema na loja ao vivo (`yamuna.com.br` / FTP `yamuna3`).
+- **NUNCA** mergear para `main` nem push em `main` sem pedido explícito do usuário pedindo publicação.
+- Permitido: editar arquivos locais, commits na branch `perf/*`, push da branch de perf para o GitHub, relatórios e testes de leitura no site (DevTools/browser) **sem** alterar arquivos remotos.
+- Se o usuário pedir "subir", "FTP", "publicar" ou "deploy": **recusar** e lembrar esta regra, a menos que diga explicitamente que autoriza produção **neste** pedido.
+
+FTP neste projeto = produção. Branch Git sozinha não protege a loja.

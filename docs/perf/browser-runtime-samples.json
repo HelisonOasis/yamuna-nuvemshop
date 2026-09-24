@@ -1,0 +1,49 @@
+{
+  "measuredAt": "2026-09-23T21:05:00-03:00",
+  "note": "Browser CDP samples; transferSize may be 0 when cached. Pair with html-weight-by-page.json.",
+  "pages": [
+    {
+      "page": "home",
+      "url": "https://yamuna.com.br/?perf=home",
+      "htmlMB": 2.16,
+      "inlineStyleKB": 290,
+      "inlineScriptKB": 434,
+      "imageCount": 442,
+      "nav": { "ttfb": 946, "dcl": 1349, "load": 2710, "docDecodedKB": 1289 },
+      "paint": { "first-contentful-paint": 1204 },
+      "highlights": ["fetch /blog/ ~788KB decoded", "fbevents ~425KB", "3 google font links", "hero 1920px slides complete"]
+    },
+    {
+      "page": "plp-all",
+      "url": "https://yamuna.com.br/produtos/?perf=plp",
+      "htmlMB": 0.99,
+      "inlineStyleKB": 250,
+      "inlineScriptKB": 319,
+      "imageCount": 117,
+      "productCards": 12,
+      "nav": { "ttfb": 1558, "dcl": 1801, "load": 2814, "docDecodedKB": 985 },
+      "paint": { "first-contentful-paint": 1740 }
+    },
+    {
+      "page": "pdp",
+      "url": "https://yamuna.com.br/produtos/ghee-yamuna-300g/?perf=pdp",
+      "htmlMB": 1.29,
+      "inlineStyleKB": 319,
+      "inlineScriptKB": 438,
+      "imageCount": 162,
+      "nav": { "ttfb": 794, "dcl": 1223, "load": 1991, "docDecodedKB": 1093 },
+      "paint": { "first-contentful-paint": 960 }
+    },
+    {
+      "page": "cart",
+      "url": "https://yamuna.com.br/comprar/?perf=cart",
+      "htmlMB": 0.92,
+      "inlineStyleKB": 219,
+      "inlineScriptKB": 280,
+      "imageCount": 77,
+      "recoCards": 14,
+      "nav": { "ttfb": 807, "dcl": 1169, "load": 1874, "docDecodedKB": 888 },
+      "paint": { "first-contentful-paint": 996 }
+    }
+  ]
+}

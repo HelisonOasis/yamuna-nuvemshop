@@ -1,0 +1,94 @@
+﻿{
+    "measuredAt":  "2026-09-23T21:01:45.1337493-03:00",
+    "assets":  [
+                   {
+                       "path":  "static\\css\\style-async.scss.tpl",
+                       "kb":  1169,
+                       "bytes":  1197096
+                   },
+                   {
+                       "path":  "static\\css\\style-critical.tpl",
+                       "kb":  111.2,
+                       "bytes":  113864
+                   },
+                   {
+                       "path":  "static\\css\\style-colors.scss.tpl",
+                       "kb":  92.2,
+                       "bytes":  94393
+                   },
+                   {
+                       "path":  "static\\js\\store-v2.js.tpl",
+                       "kb":  192.4,
+                       "bytes":  197059
+                   },
+                   {
+                       "path":  "static\\js\\store.js.tpl",
+                       "kb":  151.7,
+                       "bytes":  155311
+                   },
+                   {
+                       "path":  "static\\js\\external.js.tpl",
+                       "kb":  192.5,
+                       "bytes":  197125
+                   },
+                   {
+                       "path":  "layouts\\layout.tpl",
+                       "kb":  137.1,
+                       "bytes":  140378
+                   },
+                   {
+                       "path":  "templates\\cart.tpl",
+                       "kb":  34.4,
+                       "bytes":  35220
+                   },
+                   {
+                       "path":  "snipplets\\cart-panel.tpl",
+                       "kb":  81.9,
+                       "bytes":  83822
+                   },
+                   {
+                       "path":  "static\\checkout.scss.tpl",
+                       "kb":  63.3,
+                       "bytes":  64791
+                   }
+               ],
+    "importantCountAsync":  10730,
+    "hero":  {
+                 "files":  24,
+                 "totalMB":  8.53,
+                 "top":  [
+                             {
+                                 "kb":  1838.2,
+                                 "name":  "mobile\\11-golden-milk-blend-mobile.png"
+                             },
+                             {
+                                 "kb":  1310.5,
+                                 "name":  "mobile\\12-creme-de-castanhas-mobile.png"
+                             },
+                             {
+                                 "kb":  634.1,
+                                 "name":  "desktop\\05-casa-sustentavel-desktop.png"
+                             },
+                             {
+                                 "kb":  496.4,
+                                 "name":  "desktop\\04-temperos-e-massalas-desktop.jpg"
+                             },
+                             {
+                                 "kb":  430.8,
+                                 "name":  "desktop\\11-golden-milk-blend-desktop.jpg"
+                             },
+                             {
+                                 "kb":  350.1,
+                                 "name":  "mobile\\03-tahines-mobile.jpg"
+                             },
+                             {
+                                 "kb":  341.7,
+                                 "name":  "desktop\\12-creme-de-castanhas-desktop.jpg"
+                             },
+                             {
+                                 "kb":  325.7,
+                                 "name":  "mobile\\04-temperos-e-massalas-mobile.jpg"
+                             }
+                         ]
+             }
+}
