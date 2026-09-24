@@ -15,8 +15,8 @@
     <div class="yamuna-header-desktop d-none">
         <div class="yamuna-header-desktop-logo">
             <a class="yamuna-header-logo-link" href="{{ store.url }}" aria-label="{{ store.name }}">
-                <img class="yamuna-header-logo-image yamuna-header-logo-default" src="{{ 'images/yamuna/logo-yamuna-reference.png' | static_url }}" alt="{{ store.name }}" />
-                <img class="yamuna-header-logo-image yamuna-header-logo-scrolled" src="{{ 'images/yamuna/logo-yamuna-branco-reference.png' | static_url }}" alt="" aria-hidden="true" />
+                <img class="yamuna-header-logo-image yamuna-header-logo-default" src="{{ 'images/yamuna/logo-yamuna.webp' | static_url }}" width="180" height="146" decoding="async" alt="{{ store.name }}" />
+                <img class="yamuna-header-logo-image yamuna-header-logo-scrolled" src="{{ 'images/yamuna/logo-yamuna-branco.webp' | static_url }}" width="180" height="146" decoding="async" alt="" aria-hidden="true" />
             </a>
         </div>
 
@@ -115,7 +115,7 @@
     <div class="yamuna-header-mobile d-md-none">
         <div class="yamuna-header-mobile-logo">
             <a class="yamuna-header-logo-link" href="{{ store.url }}" aria-label="{{ store.name }}">
-                <img class="yamuna-header-logo-image" src="{{ 'images/yamuna/logo-yamuna-reference.png' | static_url }}" alt="{{ store.name }}" />
+                <img class="yamuna-header-logo-image" src="{{ 'images/yamuna/logo-yamuna.webp' | static_url }}" width="140" height="114" decoding="async" alt="{{ store.name }}" />
             </a>
         </div>
 

@@ -60,8 +60,8 @@
 									<div class="slider-slide{% if has_auto_height_slider %} position-relative h-auto{% endif %}">
 
 									{% if use_yamuna_prod_hero %}
-										{# First + last slides stay eager so loop clones never stick on the GIF placeholder. #}
-										{% set apply_lazy_load = not loop.first and not loop.last %}
+										{# Perf F1-B: only first slide eager (LCP). Swiper lazy loads the rest. #}
+										{% set apply_lazy_load = not loop.first %}
 									{% else %}
 										{% set apply_lazy_load = settings.home_order_position_0 != 'slider' or not loop.first %}
 									{% endif %}
@@ -73,11 +73,12 @@
 												{% set slide_image = slide.desktop | static_url %}
 											{% endif %}
 											<img
-												{% if not apply_lazy_load %}fetchpriority="high"{% endif %}
+												{% if not apply_lazy_load %}fetchpriority="high"{% else %}loading="lazy" decoding="async"{% endif %}
 												src="{% if apply_lazy_load %}data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=={% else %}{{ slide_image }}{% endif %}"
 												{% if apply_lazy_load %}data-src="{{ slide_image }}"{% endif %}
 												class="slider-image {% if apply_lazy_load %}swiper-lazy fade-in{% endif %}{% if has_auto_height_slider %} d-block{% endif %}"
 												alt="{{ slide.title|default('Carrusel'|translate) }} {{ loop.index }}"
+												{% if mobile %}width="750" height="1000"{% else %}width="1920" height="800"{% endif %}
 											/>
 										{% else %}
 											{% set slide_image = slide.image | static_url %}

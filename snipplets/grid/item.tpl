@@ -45,8 +45,8 @@
     {% set control_prev_svg_id = 'chevron' %}    
 {% endif %}
 
-{# Secondary images — enable hover swap like production (077/078/079). #}
-{% set show_secondary_image = true %}
+{# Secondary images — hover swap on PLP/search only (Perf F1-D: skip home/related/slides). #}
+{% set show_secondary_image = (template == 'category' or template == 'search') and not slide_item and not reduced_item and not is_yamuna_spot_card %}
 {% if is_cart_reco_spot %}
     {% set show_secondary_image = false %}
     {% set image_priority_high = true %}

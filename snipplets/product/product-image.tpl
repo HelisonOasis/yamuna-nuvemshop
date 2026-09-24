@@ -5,7 +5,8 @@
         {% for media in product.media %}
             {% if media.isImage %}
                 <a href="{{ media | product_image_url('original') }}" data-fancybox="product-gallery-desktop" class="yamuna-product-gallery-item">
-                    <img src="{{ media | product_image_url('original') }}" alt="{{ media.alt }}" loading="{{ loop.first ? 'eager' : 'lazy' }}" {% if loop.first %}fetchpriority="high"{% endif %} />
+                    {# Perf F1-E: show resized variant; lightbox still opens original. #}
+                    <img src="{{ media | product_image_url('huge') }}" srcset="{{ media | product_image_url('large') }} 480w, {{ media | product_image_url('huge') }} 640w, {{ media | product_image_url('original') }} 1024w" sizes="(min-width: 992px) 480px, 100vw" alt="{{ media.alt }}" loading="{{ loop.first ? 'eager' : 'lazy' }}" decoding="async" {% if loop.first %}fetchpriority="high"{% endif %} />
                 </a>
             {% elseif media.isVideo %}
                 <a href="#product-video-modal-{{ media.id }}" data-fancybox="product-gallery-desktop" class="yamuna-product-gallery-item yamuna-product-gallery-item--video" aria-label="{{ 'Video de' | translate }} {{ product.name }}">

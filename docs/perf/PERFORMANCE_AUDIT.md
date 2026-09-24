@@ -295,8 +295,8 @@ Use estes IDs ao pedir implementação futura.
 
 ---
 
-## 10. Próximo pedido esperado do usuário
+## 11. Status da implementação (branch)
 
-Quando pedir para **solucionar**, começar pelo pacote acordado (recomendação: **B Hero** ou **A Fontes** se houver staging; se só branch local, preparar DIFF completo + plano de medição).
+Ver `docs/perf/OPTIMIZATION_PLAN.md`.
 
-Referência rápida: este arquivo + JSONs em `docs/perf/`.
+**Fase 1 aplicada em código (sem FTP):** fontes, hero lazy/preload, blog fetch defer, PLP secondary, PDP gallery/preload, logos WebP.

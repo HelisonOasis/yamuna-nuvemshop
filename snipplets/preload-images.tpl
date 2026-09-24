@@ -2,6 +2,12 @@
 
     {# Preload home LCP image of first section #}
 
+    {# Perf F1-B: Yamuna production hero (static files) — preload first desktop + mobile candidates. #}
+    {% set yamuna_hero_lcp_desktop = 'images/yamuna/hero/desktop/01-kit-degustacao-desktop.jpg' | static_url %}
+    {% set yamuna_hero_lcp_mobile = 'images/yamuna/hero/mobile/01-kit-degustacao-mobile.jpg' | static_url %}
+    <link rel="preload" fetchpriority="high" as="image" href="{{ yamuna_hero_lcp_desktop }}" media="(min-width: 768px)">
+    <link rel="preload" fetchpriority="high" as="image" href="{{ yamuna_hero_lcp_mobile }}" media="(max-width: 767px)">
+
     {% set has_main_slider = settings.slider and settings.slider is not empty %}
     {% set has_mobile_slider = settings.toggle_slider_mobile and settings.slider_mobile and settings.slider_mobile is not empty %}
     {% set has_auto_height_slider = not settings.slider_viewport_height %}
@@ -68,7 +74,8 @@
 
     {% for image in product.images %}
         {% if loop.first %}
-            <link rel="preload" fetchpriority="high" as="image" href="{{ image | product_image_url('large') }}" imagesrcset="{{ image | product_image_url('large') }} 480w, {{ image | product_image_url('huge') }} 640w, {{ image | product_image_url('original') }} 1024w, {{ image | product_image_url('1080p') }} 1920w, {{ image | product_image_url('1440p') }} 2560w, {{ image | product_image_url('4k') }} 3840w">
+            {# Perf F1-E: stop advertising 1440p/4k LCP candidates (mobile bandwidth). #}
+            <link rel="preload" fetchpriority="high" as="image" href="{{ image | product_image_url('large') }}" imagesrcset="{{ image | product_image_url('large') }} 480w, {{ image | product_image_url('huge') }} 640w, {{ image | product_image_url('original') }} 1024w, {{ image | product_image_url('1080p') }} 1920w">
         {% endif %}
     {% endfor %}
 

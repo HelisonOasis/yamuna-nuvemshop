@@ -3,10 +3,11 @@
   <a class="yamuna-cart-checkout-logo-link" href="{{ store.url }}" aria-label="{{ store.name }}">
     <img
       class="yamuna-cart-checkout-logo"
-      src="{{ 'images/yamuna/logo-yamuna-reference.png' | static_url }}"
+      src="{{ 'images/yamuna/logo-yamuna.webp' | static_url }}"
       alt="{{ store.name }}"
       width="138"
       height="112"
+      decoding="async"
     />
   </a>
 </div>

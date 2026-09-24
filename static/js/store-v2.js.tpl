@@ -1332,8 +1332,10 @@ DOMContentLoaded.addEventOrExecute(() => {
         }
 
         var homeBlogTrack = document.querySelector('.js-yamuna-home-blog-track');
-        if (homeBlogTrack && !homeBlogTrack.children.length) {
-            fetch('/blog/').then(function(res) { return res.text(); }).then(function(html) {
+        function loadYamunaHomeBlogFromListing() {
+            if (!homeBlogTrack || homeBlogTrack.children.length || homeBlogTrack.getAttribute('data-yamuna-blog-loading')) return;
+            homeBlogTrack.setAttribute('data-yamuna-blog-loading', '1');
+            fetch('/blog/', { credentials: 'same-origin' }).then(function(res) { return res.text(); }).then(function(html) {
                 var doc = new DOMParser().parseFromString(html, 'text/html');
                 var cards = doc.querySelectorAll('.yamuna-blog-grid .js-yamuna-blog-card');
                 cards.forEach(function(card, index) {
@@ -1344,6 +1346,22 @@ DOMContentLoaded.addEventOrExecute(() => {
             }).catch(function() {
                 initYamunaHomeBlogSwiper();
             });
+        }
+        if (homeBlogTrack && !homeBlogTrack.children.length) {
+            {# Perf F1-C: defer full /blog/ HTML fetch until section nears viewport (or idle). #}
+            var homeBlogSection = document.querySelector('.yamuna-home-blog') || homeBlogTrack;
+            if ('IntersectionObserver' in window) {
+                var blogIo = new IntersectionObserver(function(entries) {
+                    if (!entries.some(function(e) { return e.isIntersecting; })) return;
+                    blogIo.disconnect();
+                    loadYamunaHomeBlogFromListing();
+                }, { rootMargin: '200px 0px' });
+                blogIo.observe(homeBlogSection);
+            } else if (window.requestIdleCallback) {
+                requestIdleCallback(loadYamunaHomeBlogFromListing, { timeout: 4000 });
+            } else {
+                setTimeout(loadYamunaHomeBlogFromListing, 2500);
+            }
         } else if (homeBlogTrack) {
             homeBlogTrack.querySelectorAll('.js-yamuna-blog-card').forEach(function(card) {
                 card.classList.remove('yamuna-blog-card--grid');
