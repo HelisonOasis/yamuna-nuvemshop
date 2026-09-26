@@ -1,6 +1,7 @@
 ﻿{% if store.allows_checkout_styling %}
 
-@import url("https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap");
+@import url("https://d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static/css/yamuna-checkout-fix.css?v=82");
 
 {#/*============================================================================
 checkout.scss.tpl
@@ -277,7 +278,7 @@ a {
 {# /* // Form */ #}
 
 .form-control {
-  background: $background-color;
+  background: #fff;
   border-color: $box-border-color;
   color: $foreground-color;
   font-family: $body-font;
@@ -551,7 +552,7 @@ a {
         }
       }
       .label {
-        font-weight: 700;
+        font-weight: 400;
       }
       .description {
         width: calc(100% - 35px);
@@ -591,7 +592,7 @@ a {
 }
 
 .radio-content {
-  background: $background-color;
+  background: #fff;
   border: 0;
   box-shadow: none;
 }
@@ -600,7 +601,7 @@ a {
   position: relative;
   margin-bottom: -1px;
   padding-left: 55px;
-  background: $background-color;
+  background: #fff;
   border-radius: 0;
   border-color: rgba($foreground-color, .15);
 
@@ -616,10 +617,13 @@ a {
   &.active {
     margin-bottom: 0;
     border: 2px solid $accent-brand-color;
-    border-left-width: 0;
+    border-radius: 10px;
+    overflow: hidden;
 
     .selector {
-      background: $accent-brand-color;
+      background: #fff;
+      background-color: #fff;
+      border-radius: 10px 0 0 10px;
     }
   }
 
@@ -647,9 +651,9 @@ a {
 .panel {
   padding: 0;
   color: $foreground-color;
-  background-color: $background-color;
+  background-color: transparent;
   border-radius: $box-radius;
-  box-shadow: $box-shadow;
+  box-shadow: none;
   border: 0;
   &.panel-with-header {
     padding-top: 0;
@@ -708,7 +712,7 @@ a {
   padding: 0 5px;
 }
 .panel-header-sticky {
-  background-color: $background-color;
+  background-color: transparent;
 }
 .panel-header-button {
   position: absolute;
@@ -1001,7 +1005,7 @@ a {
   color: #db3e3e !important;
   justify-content: flex-start !important;
   text-align: left !important;
-  padding: 6px 0 !important;
+  padding: 8px 16px !important;
 }
 
 .alert.alert-danger span,
@@ -1010,6 +1014,64 @@ a {
 .alert-danger-bagged span,
 .alert-danger-bagged * {
   color: #db3e3e !important;
+}
+
+{# /* Payment required alert — Raleway + inset padding (not glued to edge) */ #}
+#main-column .alert.alert-danger.m-bottom.full-width,
+#main-column .alert.m-bottom.full-width.alert-danger,
+#checkout-payment-options > .alert.alert-danger,
+#checkout-payment-options .alert.alert-danger.full-width,
+#checkout-payment-options .alert.m-bottom.alert-danger,
+.payment-option-group > .alert.alert-danger,
+.radio-group-accordion > .alert.alert-danger,
+.yamuna-payment-option-alert {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  margin: 8px 0 16px !important;
+  padding: 8px 20px 10px !important;
+  float: none !important;
+  font-family: "Raleway", Raleway, sans-serif !important;
+  font-size: 13px !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0.01em !important;
+  text-align: left !important;
+  color: #db3e3e !important;
+}
+#main-column .alert.alert-danger.m-bottom.full-width span,
+#main-column .alert.alert-danger.m-bottom.full-width *,
+#checkout-payment-options .alert.alert-danger span,
+#checkout-payment-options .alert.alert-danger *,
+.yamuna-payment-option-alert span,
+.yamuna-payment-option-alert * {
+  font-family: "Raleway", Raleway, sans-serif !important;
+  font-size: 13px !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  color: #db3e3e !important;
+}
+
+#checkout-payment-options {
+  display: flex !important;
+  flex-direction: column !important;
+}
+#checkout-payment-options > .alert.alert-danger,
+#checkout-payment-options > .alert.m-bottom.alert-danger {
+  order: 99 !important;
+  margin: 14px 0 8px !important;
+  padding: 10px 20px !important;
+}
+
+.yamuna-payment-option-alert {
+  margin: 10px 0 12px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 10px 20px !important;
 }
 
 {# /* 021 â€” restore full borders on address/CEP inputs (+ outline fallback) */ #}
@@ -1064,19 +1126,19 @@ a {
 {# /* // Payment */ #}
 
 .payment-item-discount {
-  color: $accent-brand-color;
+  display: none !important;
 }
 
 .payment-option {
   border-radius: $box-radius;
   color: $foreground-color;
-  background-color: $background-color;
+  background-color: #fff;
   border-color: rgba($foreground-color, .15);
   box-shadow: 0 1px 3px -1px rgba($foreground-color, 0.05);
 }
 
 .radio-content.payment-option-content {
-  background: darken($background-color, 2%);
+  background: #fff;
   border: 1px solid rgba($foreground-color, .15);
   border-top: 0;
   border-bottom-right-radius: $box-radius;
@@ -1242,7 +1304,7 @@ a {
 .review-block-detailed {
   border: 1px solid rgba($foreground-color, .15);
   border-radius: 10px;
-  background-color: $background-color;
+  background-color: #fff;
 }
 
 {# /* // Tooltip */ #}
@@ -1366,6 +1428,14 @@ body {
   color: #000 !important;
 }
 
+{# Payment / validation alerts must not inherit body Dosis #}
+body .alert.alert-danger,
+body .alert.alert-danger span,
+body .alert.m-bottom.full-width.alert-danger,
+body .alert.m-bottom.full-width.alert-danger span {
+  font-family: Raleway, sans-serif !important;
+}
+
 h1, h2, h3, h4,
 .panel-header,
 .title,
@@ -1479,8 +1549,7 @@ button.mobile-discount-coupon_btn,
 .summary .mobile-discount-coupon_btn,
 .summary .box-discount-coupon button,
 a.mobile-discount-coupon_btn,
-.box-discount-coupon-apply,
-.box-discount-coupon-applied {
+.box-discount-coupon-apply {
   box-sizing: border-box !important;
   height: 40px !important;
   min-height: 40px !important;
@@ -1529,12 +1598,12 @@ td.table-price span,
   line-height: 1.35 !important;
 }
 
-/* 015b â€” product name in summary (Roboto bold; size tightened in 019b) */
+/* 015b â€” product name in summary (Raleway bold; size tightened in 019b) */
 .table-product-name,
 .table-product-name a,
 .summary-product-name,
 td.table-product-name {
-  font-family: Roboto, Arial, sans-serif !important;
+  font-family: Raleway, sans-serif !important;
   font-size: 16px !important;
   font-weight: 700 !important;
   color: #000 !important;
@@ -1665,6 +1734,40 @@ label,
   font-family: Roboto, Arial, sans-serif !important;
 }
 
+/* 022 — review + payment labels: normal weight (titles excluded — see 035) */
+#main-column .review-block-detailed,
+#main-column .review-block-detailed *:not(.btn-primary):not(.btn):not(button),
+#main-column .review-block,
+#main-column .review-block *:not(.btn-primary):not(.btn):not(button),
+#main-column .accordion-section-header-label,
+#main-column .accordion-section-header,
+#main-column .radio .label,
+#main-column .radio .label *,
+#main-column .payment-option .label,
+#main-column .payment-item-discount,
+#main-column .shipping-method-item-name,
+#main-column .shipping-method-item-desc,
+#main-column .address-summary,
+#main-column .address-summary *,
+#main-column .radio-group-accordion .radio .label {
+  font-weight: 400 !important;
+}
+
+/* Cenário 035 — títulos do checkout: style normal, peso 700 (PROD) */
+#main-column .panel-header,
+#main-column h3.panel-header,
+#main-column h3.panel-header.panel-header-sticky,
+#main-column .h3,
+#main-column h3 {
+  font-style: normal !important;
+  font-weight: 700 !important;
+}
+
+/* Hide reviews heading */
+#yamuna-cart-reviews > .nube-box:first-child {
+  display: none !important;
+}
+
 /* 018b â€” Carrinho step clickable (back to /comprar/) */
 #breadcrumb ul.breadcrumb-timeline > li:first-child > .breadcrumb-timeline-item,
 #breadcrumb ul.breadcrumb-timeline > li:first-child > a.breadcrumb-timeline-item,
@@ -1696,8 +1799,57 @@ label,
   Yamuna checkout QA Ã¢â‚¬â€ payment summary + extras (019)
 ==============================================================================*/ #}
 
-/* CDN fix sheet (cache-bust) â€” ensures rules apply even if dart-checkout lags */
-@import url("https://d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static/css/yamuna-checkout-fix.css?v=38");
+/* CDN fix sheet moved to top @import (v=54) — mid-file @import is ignored by browsers */
+
+#btnFinishCheckout,
+#btnFinishCheckout::after {
+  font-family: Raleway, sans-serif !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+}
+
+/* Force finish CTA label to match cart step 1 — hide any inner text, show ::after */
+#btnFinishCheckout {
+  font-size: 0 !important;
+}
+#btnFinishCheckout > *,
+#btnFinishCheckout span,
+#btnFinishCheckout #btn-text,
+#btnFinishCheckout .btn-text,
+#btnFinishCheckout .text-pre-line {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  font-size: 0 !important;
+  color: transparent !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  pointer-events: none !important;
+}
+#btnFinishCheckout::after {
+  content: "Finalizar compra" !important;
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: static !important;
+  font-size: 14px !important;
+  line-height: 40px !important;
+  font-family: Raleway, sans-serif !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  text-transform: uppercase !important;
+  width: auto !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+@media (min-width: 992px) {
+  #btnFinishCheckout::after {
+    font-size: 16px !important;
+  }
+}
 
 /* 019a Ã¢â‚¬â€ progressive discount label Ã¢â€ â€™ short "5% Off:" (no double colon) */
 .table-discount-promotion td:first-child > div {
@@ -1709,7 +1861,7 @@ label,
 
 .table-discount-promotion td:first-child > div::before {
   content: "5% Off:";
-  font-family: Raleway, sans-serif !important;
+  font-family: Roboto, Arial, sans-serif !important;
   font-size: 14px !important;
   font-weight: 700 !important;
   line-height: 1.4 !important;
@@ -1758,6 +1910,8 @@ td.summary-img-wrap {
   overflow: hidden !important;
   padding: 0 8px 0 0 !important;
   box-sizing: border-box !important;
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 .summary-img-wrap .summary-img,
@@ -1770,6 +1924,10 @@ td.summary-img-wrap .summary-img-thumb {
   overflow: hidden !important;
   margin: 0 !important;
   padding: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
 }
 
 .summary-img-wrap img,
@@ -1782,6 +1940,10 @@ td.summary-img-wrap img {
   height: 48px !important;
   object-fit: cover !important;
   margin: 0 !important;
+  /* 039 — white JPG pixels disappear against light summary card */
+  background: transparent !important;
+  background-color: transparent !important;
+  mix-blend-mode: darken !important;
 }
 
 .table-price,
@@ -1803,7 +1965,7 @@ td.table-product-name,
 .summary-product-name {
   display: table-cell !important;
   position: static !important;
-  font-family: Roboto, Arial, sans-serif !important;
+  font-family: Raleway, sans-serif !important;
   font-size: 13px !important;
   font-weight: 700 !important;
   line-height: 1.35 !important;
@@ -1909,17 +2071,23 @@ td.table-product-name,
   #main-row #secondary-column .summary-details,
   #main-row #secondary-column .summary-details.panel,
   #main-row #secondary-column .summary-details.panel.p-none {
-    display: block !important;
+    display: flex !important;
+    flex-direction: column !important;
     visibility: visible !important;
     position: relative !important;
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 auto !important;
+    padding: 0 !important;
     height: auto !important;
     max-height: none !important;
     overflow: visible !important;
     transform: none !important;
     box-sizing: border-box !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    gap: 0 !important;
   }
 
   #main-row #secondary-column .summary-details > .container,
@@ -1947,12 +2115,24 @@ td.table-product-name,
     box-sizing: border-box !important;
   }
 
-  #main-row #secondary-column .summary-coupon {
+  /* Cupom mobile: card com padding lateral (não colado nas bordas) */
+  html body #main-row #secondary-column .summary-coupon,
+  html body #main-row #secondary-column .summary-details .summary-coupon,
+  html body #main-row #secondary-column .summary-details.panel.p-none .summary-coupon {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    order: -1 !important;
     width: 100% !important;
     max-width: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
+    margin: 0 0 12px !important;
+    padding: 16px !important;
     box-sizing: border-box !important;
+    background: #fff !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.04) !important;
   }
 }
 
@@ -2411,6 +2591,1072 @@ span.copy-button-label {
   span.copy-button-label {
     font-size: 12px !important;
   }
+}
+
+{# /*============================================================================
+  # Cenário 032 — rail do checkbox branco; círculo #5fbbc6
+  Borda esquerda do card ativo permanece (não cortar com border-left:0).
+==============================================================================*/ #}
+.shipping-option.active,
+.radio.shipping-option.active,
+.radio-option.shipping-option.active {
+  border: 2px solid #a31460 !important;
+  border-left-width: 2px !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+}
+
+.shipping-option.active .selector,
+.radio.shipping-option.active .selector,
+.radio-option.active .selector,
+.shipping-option.active > .selector,
+.radio.shipping-option.active > label > .selector,
+.shipping-option.active label .selector {
+  background: #fff !important;
+  background-color: #fff !important;
+  background-image: none !important;
+  border-color: transparent !important;
+  border-radius: 10px 0 0 10px !important;
+}
+
+.shipping-option .selector,
+.radio.shipping-option .selector {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.shipping-option .selector:before,
+.radio.shipping-option .selector:before {
+  display: block !important;
+  flex: 0 0 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  box-sizing: border-box !important;
+}
+
+.shipping-option input:checked + .selector:before,
+.shipping-option.active input:checked + .selector:before,
+.radio.shipping-option input:checked + .selector:before {
+  background: #5fbbc6 !important;
+  border-color: #5fbbc6 !important;
+}
+
+.shipping-option input:checked + .selector:after,
+.shipping-option.active input:checked + .selector:after,
+.radio.shipping-option input:checked + .selector:after {
+  content: "" !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  width: 12px !important;
+  height: 12px !important;
+  margin: 0 !important;
+  transform: translate(-50%, -50%) !important;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23ffffff' d='M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z'/%3E%3C/svg%3E") center / 12px 12px no-repeat !important;
+}
+
+{# /*============================================================================
+  LAST (inside allows_checkout_styling) — payment alert beats platform padding:0 / body Dosis
+==============================================================================*/ #}
+html body .alert.alert-danger,
+html body .alert.full-width.alert-danger,
+html body .alert.m-bottom.alert-danger,
+html body .alert.m-bottom.full-width.alert-danger,
+html body #main-column .alert.alert-danger,
+html body #main-column .alert.alert-danger.m-bottom,
+html body #main-column .alert.alert-danger.m-bottom.full-width,
+html body #main-column .alert.m-bottom.full-width.alert-danger,
+html body #checkout-payment-options .alert.alert-danger,
+html body #checkout-payment-options > .alert.alert-danger,
+html body .yamuna-payment-option-alert {
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 8px 0 16px !important;
+  padding: 10px 20px !important;
+  float: none !important;
+  clear: both !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 0 none transparent !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-left: 0 none transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 13px !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0.01em !important;
+  text-align: left !important;
+  color: #db3e3e !important;
+}
+
+html body .alert.alert-danger > span,
+html body .alert.alert-danger span,
+html body .alert.full-width.alert-danger span,
+html body .alert.m-bottom.alert-danger span,
+html body .alert.m-bottom.full-width.alert-danger span,
+html body #main-column .alert.alert-danger span,
+html body #main-column .alert.alert-danger.m-bottom.full-width span,
+html body #checkout-payment-options .alert.alert-danger span,
+html body .yamuna-payment-option-alert span {
+  font-family: Raleway, sans-serif !important;
+  font-size: 13px !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  color: #db3e3e !important;
+}
+
+html body #checkout-payment-options {
+  display: flex !important;
+  flex-direction: column !important;
+}
+html body #checkout-payment-options > .alert.alert-danger,
+html body #checkout-payment-options > .alert.m-bottom.alert-danger {
+  order: 99 !important;
+  margin-top: 14px !important;
+  margin-bottom: 8px !important;
+  padding: 10px 20px !important;
+}
+
+{# /* White ONLY on inputs + cards — panels/headers stay transparent (page #f6f6f6) */ #}
+html body .form-control,
+html body input.form-control,
+html body textarea.form-control,
+html body select.form-control,
+html body .has-float-label .form-control,
+html body .form-group .form-control,
+html body #main-column .form-control,
+html body #main-column input.form-control,
+html body #main-column textarea.form-control,
+html body #main-column select.form-control,
+html body #main-column .form-group input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+html body #main-column .has-float-label input,
+html body #main-column input[name*="document"],
+html body #main-column input[name*="Document"],
+html body #main-column input[name*="idNumber"],
+html body #main-column input[name*="id_number"],
+html body #main-column input[data-testid*="document"],
+html body #main-column input[data-testid*="idNumber"],
+html body #main-column input[id*="document"],
+html body #main-column input[id*="idNumber"] {
+  background: #fff !important;
+  background-color: #fff !important;
+}
+
+html body .panel,
+html body #main-column .panel,
+html body .panel.panel-with-header,
+html body #main-column .panel.panel-with-header,
+html body .panel-header,
+html body .panel-header-sticky,
+html body #main-column .panel-header,
+html body #main-column h3.panel-header,
+html body #main-column h3.panel-header.panel-header-sticky,
+html body #main-column .panel.panel-with-header > .panel-header,
+html body #main-column .panel.panel-with-header > h3.panel-header,
+html body .panel-body,
+html body #main-column .panel-body,
+html body .box-container,
+html body #main-column .box-container,
+html body .accordion,
+html body .accordion-section,
+html body .form-options-content,
+html body .radio-content:not(.payment-option-content),
+html body #yamuna-cart-reviews,
+html body #nube-sdk-slot-after_main_content #yamuna-cart-reviews {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+html body .table-discount-promotion td:first-child > div::before,
+html body .table-discount-promotion td:first-child::before {
+  font-family: Roboto, Arial, sans-serif !important;
+}
+
+/* Cards that keep #fff — ONLY the card itself, never wrappers (.summary / .box-container) */
+html body .shipping-option,
+html body .radio.shipping-option,
+html body .shipping-option.active,
+html body .radio.shipping-option.active,
+html body .address-summary,
+html body .payment-option,
+html body .radio.payment-option,
+html body .radio-option.payment-option,
+html body .radio-content.payment-option-content,
+html body .review-block-detailed-item,
+html body #main-column .review-block-detailed .review-block-detailed-item,
+html body .panel.summary-details,
+html body .summary-details,
+html body .summary-details.panel,
+html body #secondary-column .summary-details,
+html body #secondary-column [data-testid="cart-details-desktop"],
+html body [data-testid="cart-details-desktop"],
+html body #main-column .panel.panel-with-header:has(iframe),
+html body #shipping-review,
+html body #shipping-review.panel,
+html body .panel.panel-address-list,
+html body .shipping-review-block,
+html body .panel-saved-address-box-review-block,
+html body .panel.panel-saved-address-box-review-block,
+html body #main-column .panel-saved-address-box-review-block {
+  background: #fff !important;
+  background-color: #fff !important;
+}
+
+/* Wrappers transparent — margin of the card shows page bg */
+html body #secondary-column .summary,
+html body #secondary-column .summary.sticky,
+html body #secondary-column .box-container,
+html body #secondary-column,
+html body #main-column .panel.panel-with-header,
+html body #main-column .panel.m-bottom-half {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+html body .panel.summary-details,
+html body .summary-details,
+html body #secondary-column .summary-details,
+html body [data-testid="cart-details-desktop"] {
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.04) !important;
+  background-clip: padding-box !important;
+}
+
+html body .shipping-option,
+html body .radio.shipping-option {
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  margin-bottom: 12px !important;
+}
+
+html body .shipping-option.active,
+html body .radio.shipping-option.active {
+  border: 2px solid #a31460 !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+}
+
+/* 12px gap between delivery / form inputs */
+html body #main-column .form-group,
+html body #main-column .has-float-label,
+html body #main-column .form-group.has-float-label {
+  margin-bottom: 12px !important;
+}
+
+html body #main-column .form-group:last-child,
+html body #main-column .has-float-label:last-child {
+  margin-bottom: 0 !important;
+}
+
+html body #main-column .row > [class*="col-"] .form-group,
+html body #main-column .row > [class*="col-"] .has-float-label {
+  margin-bottom: 12px !important;
+}
+
+html body #main-column .form-group + .form-group,
+html body #main-column .has-float-label + .has-float-label,
+html body #main-column .form-group + .checkbox,
+html body #main-column .has-float-label + .checkbox,
+html body #main-column .form-group + .form-options-content,
+html body #main-column .checkbox {
+  margin-top: 0 !important;
+}
+
+html body #main-column .checkbox,
+html body #main-column .form-group .checkbox,
+html body #main-column label.checkbox {
+  display: block !important;
+  margin-top: 12px !important;
+  margin-bottom: 0 !important;
+}
+
+/* Dual CTA: Continuar comprando + primary */
+html body .yamuna-checkout-cta-row,
+html body #main-column .yamuna-checkout-cta-row {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 16px 0 8px !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  background: transparent !important;
+}
+
+html body a.yamuna-continue-shopping,
+html body #yamuna-continue-shopping {
+  display: flex !important;
+  flex: 1 1 0 !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+  padding: 0 16px !important;
+  border: 1px solid #a31460 !important;
+  border-radius: 40px !important;
+  background: #fff !important;
+  background-color: #fff !important;
+  color: #a31460 !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  text-transform: uppercase !important;
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+html body .yamuna-checkout-cta-row > .btn-primary,
+html body .yamuna-checkout-cta-row > .btn-submit-step,
+html body .yamuna-checkout-cta-row #btnFinishCheckout,
+html body #main-column .yamuna-checkout-cta-row > .btn-primary,
+html body #main-column .yamuna-checkout-cta-row #btnFinishCheckout {
+  flex: 1 1 0 !important;
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+html body .yamuna-checkout-cta-row--finish #btnFinishCheckout,
+html body .yamuna-checkout-cta-row #btnFinishCheckout {
+  background: #238482 !important;
+  background-color: #238482 !important;
+  border: 0 !important;
+  border-radius: 40px !important;
+  color: #fff !important;
+}
+
+@media (min-width: 768px) {
+  html body a.yamuna-continue-shopping,
+  html body #yamuna-continue-shopping {
+    font-size: 16px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  html body .yamuna-checkout-cta-row,
+  html body #main-column .yamuna-checkout-cta-row {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  html body a.yamuna-continue-shopping,
+  html body #yamuna-continue-shopping,
+  html body .yamuna-checkout-cta-row > .btn-primary,
+  html body .yamuna-checkout-cta-row #btnFinishCheckout {
+    width: 100% !important;
+    flex: 0 0 auto !important;
+  }
+}
+
+/* ==========================================================================
+   082 — Cupom de desconto (card polido, padrão checkout Yamuna)
+   ========================================================================== */
+html body #secondary-column .summary-details.panel,
+html body #secondary-column .summary-details.panel.p-none,
+html body #secondary-column [data-testid="cart-details-desktop"],
+html body #main-row #secondary-column .summary-details {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+html body #secondary-column .summary-details > .table.table-scrollable,
+html body #main-row #secondary-column .summary-details > .table.table-scrollable {
+  order: 1 !important;
+  margin: 0 !important;
+  padding: 16px !important;
+  background: #fff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-bottom: 0 !important;
+  border-radius: 10px 10px 0 0 !important;
+  box-sizing: border-box !important;
+}
+
+html body #secondary-column .summary-details > .table-subtotal,
+html body #main-row #secondary-column .summary-details > .table-subtotal,
+html body #secondary-column [data-testid="cart-total-container"] {
+  order: 2 !important;
+  margin: 0 !important;
+  padding: 8px 16px 16px !important;
+  background: #fff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-top: 0 !important;
+  border-radius: 0 0 10px 10px !important;
+  box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.04) !important;
+  box-sizing: border-box !important;
+}
+
+html body .summary-details .summary-coupon,
+html body #secondary-column .summary-coupon,
+html body #secondary-column .summary-details .summary-coupon,
+html body #main-row #secondary-column .summary-coupon,
+html body #main-row #secondary-column .summary-details .summary-coupon,
+html body #main-row #secondary-column .summary-details.panel .summary-coupon,
+html body #main-row #secondary-column [data-testid="cart-details-desktop"] .summary-coupon {
+  order: -1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  visibility: visible !important;
+  height: auto !important;
+  max-height: none !important;
+  min-height: 0 !important;
+  margin: 0 0 12px !important;
+  padding: 16px !important;
+  overflow: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  background: #fff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.04) !important;
+  float: none !important;
+  position: relative !important;
+  font-family: Raleway, sans-serif !important;
+}
+
+html body #secondary-column .summary-coupon.d-md-none {
+  display: none !important;
+}
+
+/* Título */
+html body #secondary-column .summary-coupon::before {
+  content: "Cupom de desconto" !important;
+  display: block !important;
+  margin: 0 0 12px !important;
+  padding: 0 0 0 24px !important;
+  color: #222 !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  letter-spacing: 0 !important;
+  pointer-events: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23a31460' d='M21.41 11.58l-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9a2 2 0 0 0 2.82 0l7-7a2 2 0 0 0 0-2.84zM5.5 7A1.5 1.5 0 1 1 7 5.5 1.5 1.5 0 0 1 5.5 7z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: left center !important;
+  background-size: 16px 16px !important;
+}
+
+/* Reset pill nativo do tema */
+html body #secondary-column .summary-coupon .box-discount-coupon-applied,
+html body #secondary-column .summary-coupon .box-discount-coupon {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  float: none !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: inherit !important;
+  line-height: normal !important;
+}
+
+html body #secondary-column .summary-coupon .row,
+html body #secondary-column .summary-coupon [class*="col-"] {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  float: none !important;
+}
+
+/* —— Estado fechado: já mostra campo + APLICAR (abre form nativo no clique) —— */
+html body #main-row #secondary-column .summary-coupon:not(:has(form)):not(:has(#removeCoupon)) .box-discount-coupon-applied,
+html body #main-row #secondary-column .summary-coupon:has(.text-pre-line) > .box-discount-coupon-applied,
+html body #secondary-column .summary-coupon:has(.text-pre-line) > .box-discount-coupon-applied,
+html body #secondary-column .summary-coupon:not(:has(form)):not(:has(#removeCoupon)) .box-discount-coupon-applied {
+  display: block !important;
+  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 44px !important;
+  overflow: visible !important;
+  clip: auto !important;
+  clip-path: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  float: none !important;
+}
+
+html body #secondary-column .summary-coupon:not(:has(form)):not(:has(#removeCoupon)) .box-discount-coupon-applied .row,
+html body #secondary-column .summary-coupon:not(:has(form)):not(:has(#removeCoupon)) .box-discount-coupon-applied [class*="col-"] {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+}
+
+html body #secondary-column .summary-coupon:not(:has(form)):not(:has(#removeCoupon)) .box-discount-coupon-applied .btn-link,
+html body #secondary-column .summary-coupon:not(:has(form)):not(:has(#removeCoupon)) .box-discount-coupon-applied [role="button"] {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  width: 100% !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #8a8a8a !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 0 !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  text-align: left !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+  overflow: visible !important;
+  white-space: nowrap !important;
+}
+
+/* Fake input */
+html body #secondary-column .summary-coupon:not(:has(form)):not(:has(#removeCoupon)) .box-discount-coupon-applied .btn-link::before,
+html body #secondary-column .summary-coupon:not(:has(form)):not(:has(#removeCoupon)) .box-discount-coupon-applied [role="button"]::before {
+  content: "Adicionar cupom" !important;
+  display: flex !important;
+  align-items: center !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 14px !important;
+  border: 1px solid #d9d4dc !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  color: #8a8a8a !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Fake APLICAR — visível desde o início */
+html body #secondary-column .summary-coupon:not(:has(form)):not(:has(#removeCoupon)) .box-discount-coupon-applied .btn-link::after,
+html body #secondary-column .summary-coupon:not(:has(form)):not(:has(#removeCoupon)) .box-discount-coupon-applied [role="button"]::after {
+  content: "APLICAR" !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  min-width: 112px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 18px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: #a31460 !important;
+  color: #fff !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+}
+
+html body #secondary-column .summary-coupon:not(:has(form)):not(:has(#removeCoupon)) .coupon-icon,
+html body #secondary-column .summary-coupon:not(:has(form)):not(:has(#removeCoupon)) .text-pre-line,
+html body #secondary-column .summary-coupon:not(:has(form)):not(:has(#removeCoupon)) .box-discount-coupon-applied span,
+html body #secondary-column .summary-coupon:not(:has(form)):not(:has(#removeCoupon)) .box-discount-coupon-applied svg {
+  display: none !important;
+}
+
+/* Remove hint "Experimente..." (legado do fix.css) */
+html body #secondary-column .summary-coupon::after,
+html body #main-row #secondary-column .summary-coupon::after,
+html body #secondary-column .summary-coupon:has(form)::after {
+  content: none !important;
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 0 !important;
+  font-size: 0 !important;
+}
+
+/* —— Estado formulário: input + APLICAR (2 IDs para vencer hide legado) —— */
+html body #main-row #secondary-column .summary-coupon form {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  visibility: visible !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+html body #main-row #secondary-column .summary-coupon .box-discount-coupon,
+html body #main-row #secondary-column .summary-coupon .box-discount-coupon.anin-flip-active,
+html body #main-row #secondary-column .summary-coupon .box-discount-coupon.anin-flip-inactive,
+html body #main-row #secondary-column .summary-coupon form > .box-discount-coupon {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  grid-template-rows: auto auto !important;
+  align-items: center !important;
+  column-gap: 8px !important;
+  row-gap: 8px !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 44px !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  overflow: visible !important;
+  position: relative !important;
+  float: none !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  flex-wrap: unset !important;
+  flex-direction: unset !important;
+}
+
+/* form-group some no grid pai: input e botão na 1ª linha, erro na 2ª */
+html body #main-row #secondary-column .summary-coupon .box-discount-coupon .form-group {
+  display: contents !important;
+}
+
+html body #main-row #secondary-column .summary-coupon .has-float-label {
+  display: flex !important;
+  align-items: center !important;
+  visibility: visible !important;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  position: relative !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  flex: unset !important;
+  order: unset !important;
+}
+
+/* Label nativo some; overlay "Adicionar cupom" quando vazio e sem foco */
+html body #main-row #secondary-column .summary-coupon .has-float-label .input-label,
+html body #main-row #secondary-column .summary-coupon label.input-label {
+  display: flex !important;
+  align-items: center !important;
+  position: absolute !important;
+  left: 14px !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  right: 14px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #8a8a8a !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 0 !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  transform: none !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+html body #main-row #secondary-column .summary-coupon .has-float-label .input-label::after,
+html body #main-row #secondary-column .summary-coupon label.input-label::after {
+  content: "Adicionar cupom" !important;
+  font-size: 14px !important;
+  color: #8a8a8a !important;
+  font-family: Raleway, sans-serif !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+}
+
+/* Esconde overlay ao focar OU quando há texto digitado (:placeholder-shown exige placeholder não-vazio — JS garante " ") */
+html body #main-row #secondary-column .summary-coupon .has-float-label:focus-within .input-label,
+html body #main-row #secondary-column .summary-coupon .has-float-label:has(input:not(:placeholder-shown)) .input-label {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Placeholder nativo invisível; o texto vem do label::after */
+html body #main-row #secondary-column .summary-coupon input#coupon::placeholder,
+html body #main-row #secondary-column .summary-coupon input[name="coupon"]::placeholder {
+  color: transparent !important;
+  opacity: 0 !important;
+}
+
+html body #main-row #secondary-column .summary-coupon input#coupon,
+html body #main-row #secondary-column .summary-coupon input[name="coupon"],
+html body #main-row #secondary-column .summary-coupon input[data-testid="coupon"] {
+  display: block !important;
+  visibility: visible !important;
+  width: 100% !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 12px !important;
+  border: 1px solid #d9d4dc !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  color: #222 !important;
+  font-family: Raleway, sans-serif !important;
+  /* 16px evita zoom iOS no focus (que quebrava o layout) */
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  line-height: 42px !important;
+  box-sizing: border-box !important;
+  outline: none !important;
+  box-shadow: none !important;
+  position: relative !important;
+  z-index: 1 !important;
+  opacity: 1 !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  transform: none !important;
+}
+
+html body #main-row #secondary-column .summary-coupon input#coupon:focus,
+html body #main-row #secondary-column .summary-coupon input[name="coupon"]:focus {
+  border-color: #a31460 !important;
+  border-width: 1px !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+html body #main-row #secondary-column .summary-coupon button[test-id="apply-coupon-btn"],
+html body #main-row #secondary-column .summary-coupon .box-discount-coupon button {
+  display: inline-flex !important;
+  visibility: visible !important;
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  align-items: center !important;
+  justify-content: center !important;
+  align-self: center !important;
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  flex: unset !important;
+  order: unset !important;
+  min-width: 96px !important;
+  width: auto !important;
+  max-width: none !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 14px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: #a31460 !important;
+  background-color: #a31460 !important;
+  color: #fff !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 0 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+  float: none !important;
+}
+
+html body #main-row #secondary-column .summary-coupon button[test-id="apply-coupon-btn"] svg,
+html body #main-row #secondary-column .summary-coupon .box-discount-coupon button svg {
+  display: none !important;
+}
+
+html body #main-row #secondary-column .summary-coupon button[test-id="apply-coupon-btn"]::after,
+html body #main-row #secondary-column .summary-coupon .box-discount-coupon button::after {
+  content: "APLICAR" !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  color: #fff !important;
+  text-transform: uppercase !important;
+}
+
+html body #main-row #secondary-column .summary-coupon button[test-id="apply-coupon-btn"]:hover,
+html body #main-row #secondary-column .summary-coupon .box-discount-coupon button:hover {
+  background: #8c1052 !important;
+  background-color: #8c1052 !important;
+}
+
+/* Erro abaixo da linha input + APLICAR */
+html body #main-row #secondary-column .summary-coupon .box-discount-coupon .error,
+html body #main-row #secondary-column .summary-coupon .form-group .error,
+html body #main-row #secondary-column .summary-coupon .error:not(:empty) {
+  display: block !important;
+  grid-column: 1 / -1 !important;
+  grid-row: 2 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #c62828 !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  box-sizing: border-box !important;
+  flex: unset !important;
+  order: unset !important;
+}
+
+html body #main-row #secondary-column .summary-coupon .error:empty {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* —— Estado aplicado: input+APLICAR (visual) em cima; sucesso embaixo —— */
+html body #main-row #secondary-column .summary-coupon:has(#removeCoupon) {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+html body #main-row #secondary-column .summary-coupon:has(#removeCoupon) > .box-discount-coupon-applied {
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  grid-template-rows: auto auto !important;
+  align-items: center !important;
+  column-gap: 10px !important;
+  row-gap: 10px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-sizing: border-box !important;
+  visibility: visible !important;
+  color: #1b5e20 !important;
+}
+
+/* Fake input acima do status aplicado */
+html body #main-row #secondary-column .summary-coupon:has(#removeCoupon) > .box-discount-coupon-applied::before {
+  content: "Adicionar cupom" !important;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 0 14px !important;
+  border: 1px solid #d9d4dc !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  color: #8a8a8a !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+}
+
+/* Fake APLICAR acima do status aplicado */
+html body #main-row #secondary-column .summary-coupon:has(#removeCoupon) > .box-discount-coupon-applied::after {
+  content: "APLICAR" !important;
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 96px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 0 14px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: #a31460 !important;
+  color: #fff !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+}
+
+/* Barra verde de sucesso abaixo */
+html body #main-row #secondary-column .summary-coupon:has(#removeCoupon) .row {
+  grid-column: 1 / -1 !important;
+  grid-row: 2 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 10px 14px !important;
+  border: 1px solid #c8e6c9 !important;
+  border-radius: 8px !important;
+  background: #eef7ef !important;
+  box-sizing: border-box !important;
+  float: none !important;
+}
+
+html body #main-row #secondary-column .summary-coupon:has(#removeCoupon) [class*="col-"] {
+  display: contents !important;
+  float: none !important;
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #main-row #secondary-column .summary-coupon:has(#removeCoupon) [data-testid="coupon-code"] {
+  font-family: Raleway, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #1b5e20 !important;
+  line-height: 1.35 !important;
+}
+
+html body #main-row #secondary-column .summary-coupon:has(#removeCoupon) .coupon-icon {
+  display: none !important;
+}
+
+html body #main-row #secondary-column .summary-coupon #removeCoupon,
+html body #main-row #secondary-column .summary-coupon:has(#removeCoupon) a.btn-link,
+html body #main-row #secondary-column .summary-coupon:has(#removeCoupon) .btn-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 0 0 auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #1b5e20 !important;
+  font-size: 0 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  float: none !important;
+  visibility: visible !important;
+}
+
+html body #main-row #secondary-column .summary-coupon #removeCoupon svg,
+html body #main-row #secondary-column .summary-coupon:has(#removeCoupon) .btn-link svg {
+  display: none !important;
+}
+
+html body #main-row #secondary-column .summary-coupon #removeCoupon::after {
+  content: "Remover" !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #1b5e20 !important;
+  text-decoration: underline !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+/* Se form e aplicado coexistirem: form em cima, status embaixo */
+html body #main-row #secondary-column .summary-coupon:has(form):has(#removeCoupon) form {
+  order: 1 !important;
+}
+html body #main-row #secondary-column .summary-coupon:has(form):has(#removeCoupon) > .box-discount-coupon-applied {
+  order: 2 !important;
+}
+html body #main-row #secondary-column .summary-coupon:has(form):has(#removeCoupon) > .box-discount-coupon-applied::before,
+html body #main-row #secondary-column .summary-coupon:has(form):has(#removeCoupon) > .box-discount-coupon-applied::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Neutraliza hide legado (se ainda existir em cache/CSS antigo) */
+html body #main-row #secondary-column .summary-coupon .box-discount-coupon {
+  display: flex !important;
+  visibility: visible !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  opacity: 1 !important;
 }
 
 {% endif %}

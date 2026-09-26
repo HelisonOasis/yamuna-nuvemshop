@@ -6,7 +6,7 @@
 
 {% set free_shipping_messages_visible = (product_detail and has_free_shipping) or (not product_detail and has_free_shipping and cart.free_shipping.min_price_free_shipping.min_price_raw == 0) %}
 
-{% if product_detail %}
+{% if product_detail or minicart_shipping %}
 	{% set cart_zipcode = false %}
 {% else %}
 	{% set cart_zipcode = cart.shipping_zipcode %}

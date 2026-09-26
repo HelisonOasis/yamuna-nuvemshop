@@ -44,8 +44,16 @@
         {% endfor %}
       </div>
     </div>
-    <div class="yamuna-cart-reco-prev js-swiper-cart-reco-prev swiper-button-prev svg-circle svg-circle-big svg-icon-text" aria-label="Produto anterior" role="button" tabindex="0"></div>
-    <div class="yamuna-cart-reco-next js-swiper-cart-reco-next swiper-button-next svg-circle svg-circle-big svg-icon-text" aria-label="Próximo produto" role="button" tabindex="0"></div>
+    <div class="yamuna-cart-reco-prev js-swiper-cart-reco-prev swiper-button-prev svg-circle svg-circle-big svg-icon-text" aria-label="Produto anterior" role="button" tabindex="0">
+      <svg class="yamuna-product-arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <polyline points="15 6 9 12 15 18" fill="none" stroke="currentColor" stroke-width="3.25" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="yamuna-cart-reco-next js-swiper-cart-reco-next swiper-button-next svg-circle svg-circle-big svg-icon-text" aria-label="Próximo produto" role="button" tabindex="0">
+      <svg class="yamuna-product-arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <polyline points="9 6 15 12 9 18" fill="none" stroke="currentColor" stroke-width="3.25" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
   </div>
 </section>
 <script>

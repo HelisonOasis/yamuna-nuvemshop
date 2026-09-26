@@ -3593,19 +3593,15 @@ DOMContentLoaded.addEventOrExecute(() => {
                         LS.fillCrossSelling(crossSellingContainer);
                     }
 
-                    {# Update shipping input zipcode on add to cart #}
-
-                    {# Use zipcode from input if user is in product page, or use zipcode cookie if is not #}
-
-                    if (jQueryNuvem("#product-shipping-container .js-shipping-input").val()) {
-                        zipcode_on_addtocart = jQueryNuvem("#product-shipping-container .js-shipping-input").val();
-                        jQueryNuvem("#cart-shipping-container .js-shipping-input").val(zipcode_on_addtocart);
-                        jQueryNuvem(".js-shipping-calculator-current-zip").text(zipcode_on_addtocart);
-                    } else if (cookieService.get('calculator_zipcode')){
-                        var zipcode_from_cookie = cookieService.get('calculator_zipcode');
-                        jQueryNuvem('.js-shipping-input').val(zipcode_from_cookie);
-                        jQueryNuvem(".js-shipping-calculator-current-zip").text(zipcode_from_cookie);
-                    }
+                    {# Yamuna: never copy/save CEP into the minicart on add-to-cart.
+                       User must type CEP + Buscar every time (no cookie / no auto-calc). #}
+                    try { cookieService.remove('calculator_zipcode'); } catch (err) {}
+                    jQueryNuvem("#modal-cart #cart-shipping-container .js-shipping-input").val('');
+                    jQueryNuvem("#modal-cart .js-shipping-calculator-current-zip").text('');
+                    jQueryNuvem("#modal-cart .js-shipping-calculator-response").empty().hide();
+                    jQueryNuvem("#modal-cart .js-shipping-calculator-spinner").hide();
+                    jQueryNuvem("#modal-cart .js-shipping-calculator-head").addClass("with-form").removeClass("with-zip");
+                    jQueryNuvem("#modal-cart").removeClass("yamuna-shipping-searched");
 
                     {# Update free shipping wording #}
 
@@ -3742,44 +3738,23 @@ DOMContentLoaded.addEventOrExecute(() => {
         window.setTimeout(resetProductShippingCalculator, 150);
         window.setTimeout(resetProductShippingCalculator, 500);
         window.setTimeout(resetProductShippingCalculator, 1200);
-    {% elseif cookieService.get('calculator_zipcode') %}
-
-        {# If there is a cookie saved based on previous calcualtion, add it to the shipping input to triggert automatic calculation #}
-
-        var zipcode_from_cookie = cookieService.get('calculator_zipcode');
-
-        {% if settings.ajax_cart %}
-
-            {# If ajax cart is active, target only product input to avoid extra calulation on empty cart #}
-
-            jQueryNuvem('#product-shipping-container .js-shipping-input').val(zipcode_from_cookie);
-
-        {% else %}
-
-            {# If ajax cart is inactive, target the only input present on screen #}
-
-            jQueryNuvem('.js-shipping-input').val(zipcode_from_cookie);
-
-        {% endif %}
-
-        jQueryNuvem(".js-shipping-calculator-current-zip").text(zipcode_from_cookie);
-
-        {# Hide the shipping calculator and show spinner — PDP only (minicart stays input+Buscar) #}
-
-        jQueryNuvem("#product-shipping-container .js-shipping-calculator-head").addClass("with-zip").removeClass("with-form");
-        jQueryNuvem("#product-shipping-container .js-shipping-calculator-with-zipcode").addClass("transition-up-active");
-        jQueryNuvem("#product-shipping-container .js-shipping-calculator-spinner").show();
-        jQueryNuvem("#modal-cart .js-shipping-calculator-head").addClass("with-form").removeClass("with-zip");
-        jQueryNuvem("#modal-cart .js-shipping-calculator-with-zipcode").removeClass("transition-up-active");
-        jQueryNuvem("#modal-cart .js-shipping-calculator-form").addClass("transition-up-active");
-        jQueryNuvem("#modal-cart .js-shipping-calculator-spinner").hide();
-        jQueryNuvem("#modal-cart .js-shipping-calculator-response").empty().hide();
-    {% else %}
-
-        {# If there is no cookie saved, show calcualtor #}
-
-        jQueryNuvem(".js-shipping-calculator-form").addClass("transition-up-active");
     {% endif %}
+
+    {# Minicart: never restore CEP from cookie — always empty input + Buscar. #}
+    (function resetMinicartCepFromCookie() {
+        try { cookieService.remove('calculator_zipcode'); } catch (err) {}
+        jQueryNuvem('#modal-cart #cart-shipping-container .js-shipping-input').val('');
+        jQueryNuvem('#modal-cart .js-shipping-calculator-current-zip').text('');
+        jQueryNuvem('#modal-cart .js-shipping-calculator-response').empty().hide();
+        jQueryNuvem('#modal-cart .js-shipping-calculator-spinner').hide();
+        jQueryNuvem('#modal-cart .js-shipping-calculator-head').addClass('with-form').removeClass('with-zip');
+        jQueryNuvem('#modal-cart .js-shipping-calculator-with-zipcode').removeClass('transition-up-active');
+        jQueryNuvem('#modal-cart .js-shipping-calculator-form').addClass('transition-up-active');
+        jQueryNuvem('#modal-cart').removeClass('yamuna-shipping-searched');
+    })();
+
+    {# Keep form visible (no auto-search). PDP product input may still show empty form. #}
+    jQueryNuvem("#product-shipping-container .js-shipping-calculator-form, #modal-cart .js-shipping-calculator-form").addClass("transition-up-active");
 
     {# Remove shipping suboptions from DOM to avoid duplicated modals #}
 
@@ -3895,24 +3870,23 @@ DOMContentLoaded.addEventOrExecute(() => {
     {# Only shipping input has value, cart has saved shipping and there is no branch selected #}
 
     calculateCartShippingOnLoad = function() {
-        {# Yamuna minicart: keep CEP as input+Buscar (prod). Do not auto-search on load. #}
+        {# Yamuna minicart: never auto-search CEP. Always empty input + Buscar. #}
+        try { cookieService.remove('calculator_zipcode'); } catch (err) {}
         var $minicartShip = jQueryNuvem("#modal-cart #cart-shipping-container");
         if ($minicartShip.length) {
+            jQueryNuvem("#modal-cart #cart-shipping-container .js-shipping-input").val('');
+            jQueryNuvem("#modal-cart .js-shipping-calculator-current-zip").text('');
             jQueryNuvem("#modal-cart .js-shipping-calculator-response").empty().hide();
             jQueryNuvem("#modal-cart .js-shipping-calculator-spinner").hide();
             jQueryNuvem("#modal-cart .js-shipping-calculator-head").addClass("with-form").removeClass("with-zip");
             jQueryNuvem("#modal-cart .js-shipping-calculator-with-zipcode").removeClass("transition-up-active");
             jQueryNuvem("#modal-cart .js-shipping-calculator-form").addClass("transition-up-active");
-        } else if (jQueryNuvem("#cart-shipping-container .js-shipping-input").val()) {
-            // If user already had calculated shipping: recalculate shipping
-            setTimeout(function() {
-                LS.calculateShippingAjax(
-                    jQueryNuvem('#cart-shipping-container').find(".js-shipping-input").val(),
-                    '{{store.shipping_calculator_url | escape('js')}}',
-                    jQueryNuvem("#cart-shipping-container").closest(".js-shipping-calculator-container") );
-                    removeShippingSuboptions();
-            }, 100);
+            jQueryNuvem("#modal-cart").removeClass("yamuna-shipping-searched");
+            jQueryNuvem("#modal-cart #shipping-cost").hide().text('');
+            jQueryNuvem("#modal-cart .js-calculating-shipping-cost").hide();
+            jQueryNuvem("#modal-cart .js-shipping-cost-empty").show();
         }
+        {# Do NOT call LS.calculateShippingAjax for cart/minicart on load. #}
 
         if (jQueryNuvem(".js-branch-method").hasClass('js-selected-shipping-method')) {
             {% if store.branches|length > 1 %}

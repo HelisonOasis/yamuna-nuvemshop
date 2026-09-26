@@ -13,8 +13,16 @@
 					{% endif %}
 				</div>
 			</div>
-			<div class="js-swiper-blog-prev yamuna-home-blog-arrow yamuna-home-blog-arrow-prev" aria-label="Anterior"></div>
-			<div class="js-swiper-blog-next yamuna-home-blog-arrow yamuna-home-blog-arrow-next" aria-label="Próximo"></div>
+			<div class="js-swiper-blog-prev yamuna-home-blog-arrow yamuna-home-blog-arrow-prev" aria-label="Anterior">
+				<svg class="yamuna-product-arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+					<polyline points="15 6 9 12 15 18" fill="none" stroke="currentColor" stroke-width="3.25" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+			</div>
+			<div class="js-swiper-blog-next yamuna-home-blog-arrow yamuna-home-blog-arrow-next" aria-label="Próximo">
+				<svg class="yamuna-product-arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+					<polyline points="9 6 15 12 9 18" fill="none" stroke="currentColor" stroke-width="3.25" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+			</div>
 		</div>
 		<div class="js-swiper-blog-pagination yamuna-home-blog-pagination swiper-pagination"></div>
 		<p class="yamuna-home-blog-all">

@@ -1429,7 +1429,7 @@ input::-webkit-outer-spin-button{
 }
 
 .yamuna-home-products .item-price {
-  font-family: 'Dosis', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 600;
 }
 
@@ -1619,12 +1619,12 @@ input::-webkit-outer-spin-button{
 }
 
 .section-featured-home .yamuna-home-products .swiper-button-prev {
-  /* Over the first card (inside the section, not in page gutters). */
-  left: 20px;
+  /* Fallback; breakpoints in style-async center on end cards. */
+  left: 16px;
 }
 
 .section-featured-home .yamuna-home-products .swiper-button-next {
-  right: 20px;
+  right: 16px;
 }
 
 .section-featured-home .yamuna-home-products .swiper-button-prev .icon-inline,
@@ -1691,11 +1691,11 @@ input::-webkit-outer-spin-button{
   }
 
   .section-featured-home .yamuna-home-products .swiper-button-prev {
-    left: 20px;
+    left: 16px;
   }
 
   .section-featured-home .yamuna-home-products .swiper-button-next {
-    right: 20px;
+    right: 16px;
   }
 
   .section-featured-home .yamuna-home-products .swiper-button-prev .icon-inline,
@@ -1905,7 +1905,7 @@ input::-webkit-outer-spin-button{
 
 [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-price {
   color: #4a1d3a;
-  font-family: 'Dosis', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 24px !important;
   font-weight: 600;
   line-height: 30px;

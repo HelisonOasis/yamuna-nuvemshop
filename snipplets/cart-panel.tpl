@@ -311,10 +311,11 @@
     }
 
     body #modal-cart:has(.js-cart-item) .yamuna-minicart-scroll {
-      flex: 1 1 auto !important;
+      flex: 1 1 0% !important;
       flex-direction: column !important;
       width: 100% !important;
-      min-height: 240px !important;
+      /* 0 — not 240px: with browser zoom the scroll area must shrink so COMPRAR stays visible */
+      min-height: 0 !important;
       max-height: none !important;
       overflow-x: hidden !important;
       overflow-y: auto !important;
@@ -322,6 +323,7 @@
 
     body #modal-cart:has(.js-cart-item) .yamuna-cart-dropdown-footer {
       flex: 0 0 auto !important;
+      flex-shrink: 0 !important;
       flex-direction: column !important;
       max-height: none !important;
       overflow: visible !important;
@@ -469,8 +471,9 @@
       display: flex !important;
       flex-direction: column !important;
       align-items: stretch !important;
+      flex-shrink: 0 !important;
       height: auto !important;
-      min-height: 160px !important;
+      min-height: 0 !important;
       padding: 0 0 28px !important;
     }
 
@@ -1349,7 +1352,7 @@
     body #modal-cart .yamuna-cart-shipping-promo > span {
       display: block !important;
       color: #a31460 !important;
-      font-family: 'Raleway', sans-serif !important;
+      font-family: Roboto, Arial, sans-serif !important;
       font-size: 16px !important;
       font-weight: 700 !important;
       line-height: 16px !important;
@@ -1389,9 +1392,9 @@
       padding: 0 !important;
       box-sizing: border-box !important;
       display: flex !important;
-      flex: 1 1 auto !important;
+      flex: 1 1 0% !important;
       flex-direction: column !important;
-      min-height: 200px !important;
+      min-height: 0 !important;
       max-height: none !important;
       overflow-x: hidden !important;
       overflow-y: auto !important;
@@ -1440,6 +1443,7 @@
     body #modal-cart:has(.js-cart-item) .yamuna-cart-dropdown-footer {
       display: flex !important;
       flex: 0 0 auto !important;
+      flex-shrink: 0 !important;
       flex-direction: column !important;
       max-height: none !important;
       overflow: visible !important;
@@ -1524,29 +1528,57 @@
     content: none !important;
   }
 
-  /* Cenário 010: CEP — 20px top/bottom; remove paddings/margins empilhados */
+  /* Cenário 010: CEP — 25px do produto; laterais alinhadas à linha (32px) */
   body #modal-cart .js-shipping-calculator-head,
   body #modal-cart .shipping-calculator-head {
-    padding: 20px 32px !important;
+    padding: 25px 32px 0 !important;
     margin: 0 !important;
     box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
   body #modal-cart .js-shipping-calculator-form,
   body #modal-cart .shipping-calculator-form {
     padding: 0 !important;
     margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
   body #modal-cart .yamuna-minicart-shipping-calc,
   body #modal-cart .shipping-calculator-form .form-group,
   body #modal-cart .shipping-calculator-form .form-group-inline,
   body #modal-cart .shipping-calculator-form .mb-3,
-  body #modal-cart .js-shipping-calculator-spinner,
-  body #modal-cart .js-shipping-calculator-response {
+  body #modal-cart .js-shipping-calculator-spinner {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
   }
-  body #modal-cart .js-shipping-calculator-response {
+  body #modal-cart .shipping-calculator-form .form-group-inline,
+  body #modal-cart .shipping-calculator-form .form-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
     padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+  body #modal-cart .shipping-calculator-form .form-group-inline > [class*="col-"],
+  body #modal-cart .shipping-calculator-form .form-row > [class*="col-"] {
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+  /* 25px entre CEP/BUSCAR e a 1ª opção de frete */
+  body #modal-cart .js-shipping-calculator-response,
+  body[class] #modal-cart .js-shipping-calculator-response {
+    margin-top: 25px !important;
+    margin-bottom: 8px !important;
+    padding: 0 32px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   /* Cenário 012: CEP input + BUSCAR — 42px e fonte alinhada à prod */
@@ -1579,6 +1611,284 @@
     font-weight: 700 !important;
   }
 
+  /* Zoom / short viewport: lista encolhe; totais + COMPRAR ficam sempre visíveis */
+  body #modal-cart .yamuna-minicart-scroll,
+  body #modal-cart:has(.js-cart-item) .yamuna-minicart-scroll,
+  body[class] #modal-cart .yamuna-minicart-scroll {
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+  }
+
+  body #modal-cart .yamuna-cart-dropdown-footer,
+  body #modal-cart:has(.js-cart-item) .yamuna-cart-dropdown-footer,
+  body[class] #modal-cart:has(.js-cart-item) .yamuna-cart-dropdown-footer {
+    flex: 0 0 auto !important;
+    flex-shrink: 0 !important;
+    min-height: 0 !important;
+  }
+
+  body #modal-cart .yamuna-cart-checkout,
+  body #modal-cart .yamuna-cart-dropdown-footer .yamuna-cart-checkout {
+    flex-shrink: 0 !important;
+  }
+
+  /* Kill platform "FRETE GRÁTIS A PARTIR DE" if AJAX re-injects it. */
+  body #modal-cart .yamuna-cart-free-shipping,
+  body #modal-cart .js-ship-free-rest,
+  body[class] #modal-cart .yamuna-cart-free-shipping,
+  body[class] #modal-cart .js-ship-free-rest {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    visibility: hidden !important;
+  }
+
+  /* Stable frete row — avoid layout jump when toggling cost / empty / calculating. */
+  body #modal-cart .js-shipping-cost-table,
+  body[class] #modal-cart .js-shipping-cost-table {
+    min-height: 22px !important;
+  }
+
+  /* Cupom — identical to CEP row (same input + button language). */
+  body #modal-cart .yamuna-minicart-coupon,
+  body[class] #modal-cart .yamuna-minicart-coupon {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    /* Extra top gap so it is not glued to CEP / shipping quotes. */
+    padding: 24px 32px 20px !important;
+    box-sizing: border-box !important;
+    border-top: 0 !important;
+  }
+
+  body #modal-cart .yamuna-minicart-coupon-toggle,
+  body #modal-cart .yamuna-minicart-coupon .js-coupon-toggle,
+  body #modal-cart .yamuna-minicart-coupon [data-component="coupon.toggle"],
+  body #modal-cart .yamuna-minicart-coupon svg {
+    display: none !important;
+  }
+
+  body #modal-cart .yamuna-minicart-coupon-content,
+  body #modal-cart .yamuna-minicart-coupon .js-coupon-content,
+  body #modal-cart .yamuna-minicart-coupon-form,
+  body #modal-cart .yamuna-minicart-coupon .form-group {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  body #modal-cart .yamuna-minicart-coupon-form.is-hidden,
+  body #modal-cart .yamuna-minicart-coupon .js-coupon-form.is-hidden {
+    display: none !important;
+  }
+
+  body #modal-cart .yamuna-minicart-coupon-label-text,
+  body #modal-cart .yamuna-minicart-coupon .form-label,
+  body #modal-cart .yamuna-minicart-coupon-toggle-label {
+    display: none !important;
+  }
+
+  body #modal-cart .yamuna-minicart-coupon-heading {
+    display: block !important;
+    margin: 0 0 10px !important;
+    padding: 0 !important;
+    color: #000 !important;
+    font-family: Raleway, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+  }
+
+  body #modal-cart .yamuna-pdp-shipping-label,
+  body #modal-cart .shipping-calculator-form .form-label,
+  body #modal-cart .shipping-calculator-form .yamuna-pdp-shipping-label,
+  body #modal-cart .shipping-calculator-form .yamuna-pdp-shipping-label span {
+    font-family: Raleway, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+  }
+
+  body #modal-cart .yamuna-minicart-coupon-row,
+  body #modal-cart .yamuna-minicart-coupon .form-group-inline,
+  body #modal-cart .yamuna-minicart-coupon .d-flex.form-group-inline {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* Match CEP input exactly. */
+  body #modal-cart .yamuna-minicart-coupon-input,
+  body #modal-cart .yamuna-minicart-coupon input[type="text"],
+  body #modal-cart .yamuna-minicart-coupon input.form-control {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
+    margin: 0 !important;
+    padding: 0 16px !important;
+    border: 1px solid #c0bbc3 !important;
+    border-radius: 999px !important;
+    background: #fff !important;
+    color: #4a1d3a !important;
+    font-family: Dosis, Roboto, Arial, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    line-height: 42px !important;
+    text-align: center !important;
+    box-shadow: none !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+  }
+
+  body #modal-cart .yamuna-minicart-coupon-input::placeholder,
+  body #modal-cart .yamuna-minicart-coupon input::placeholder {
+    color: #c0bbc3 !important;
+    text-transform: none !important;
+    opacity: 1 !important;
+  }
+
+  /* Match BUSCAR button exactly. */
+  body #modal-cart .yamuna-minicart-coupon-apply,
+  body #modal-cart .yamuna-minicart-coupon button.js-coupon-apply,
+  body #modal-cart .yamuna-minicart-coupon button.js-apply-coupon,
+  body #modal-cart .yamuna-minicart-coupon button[type="submit"] {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 110px !important;
+    width: 110px !important;
+    min-width: 110px !important;
+    max-width: 110px !important;
+    box-sizing: border-box !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
+    margin: 0 !important;
+    padding: 0 12px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: #f2d6e4 !important;
+    color: #4a1d3a !important;
+    font-family: Dosis, Roboto, Arial, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+    box-shadow: none !important;
+  }
+
+  body #modal-cart .yamuna-minicart-coupon-error,
+  body #modal-cart .yamuna-minicart-coupon .js-coupon-error {
+    display: none;
+    margin: 8px 0 0 !important;
+    padding: 0 !important;
+    color: #b00020 !important;
+    font-family: Dosis, Roboto, Arial, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 1.3 !important;
+  }
+
+  body #modal-cart .yamuna-minicart-coupon-applied,
+  body #modal-cart .yamuna-minicart-coupon .js-coupon-applied {
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    margin: 12px 0 0 !important;
+    padding: 10px 14px !important;
+    border: 1px solid #e5e1e4 !important;
+    border-radius: 12px !important;
+    background: #f8f6f7 !important;
+  }
+  body #modal-cart .yamuna-minicart-coupon-applied.is-visible,
+  body #modal-cart .yamuna-minicart-coupon .js-coupon-applied.is-visible {
+    display: flex !important;
+  }
+
+  body #modal-cart .yamuna-minicart-coupon-code,
+  body #modal-cart .yamuna-minicart-coupon .js-coupon-applied-code-text {
+    color: #4a1d3a !important;
+    font-family: Dosis, Roboto, Arial, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
+  }
+
+  body #modal-cart .yamuna-minicart-coupon-remove,
+  body #modal-cart .yamuna-minicart-coupon .js-remove-coupon {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #a31460 !important;
+    font-family: Dosis, Roboto, Arial, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-decoration: underline !important;
+    cursor: pointer !important;
+  }
+
+  /* Totals + frete bar numbers: Roboto only (override any Raleway stack). */
+  body #modal-cart .yamuna-minicart-totals,
+  body #modal-cart .yamuna-minicart-totals *,
+  body #modal-cart .yamuna-cart-dropdown-footer .js-cart-subtotal,
+  body #modal-cart .yamuna-cart-dropdown-footer .js-cart-total,
+  body #modal-cart .yamuna-cart-dropdown-footer .cart-subtotal-price,
+  body #modal-cart .yamuna-cart-dropdown-footer .cart-total-price,
+  body #modal-cart .yamuna-cart-dropdown-footer .js-coupon-discount-amount,
+  body #modal-cart .yamuna-cart-dropdown-footer .cart-coupon-discount-label,
+  body #modal-cart .yamuna-cart-dropdown-footer .js-shipping-cost,
+  body #modal-cart .yamuna-cart-dropdown-footer .js-shipping-cost-empty,
+  body #modal-cart .yamuna-cart-shipping-promo,
+  body #modal-cart .yamuna-cart-shipping-promo .yamuna-cart-promo-text,
+  body #modal-cart .yamuna-cart-shipping-promo .js-yamuna-fs-text,
+  body #modal-cart .yamuna-cart-shipping-promo > span,
+  body[class] #modal-cart .yamuna-minicart-totals,
+  body[class] #modal-cart .yamuna-minicart-totals *,
+  body[class] #modal-cart .yamuna-cart-shipping-promo .yamuna-cart-promo-text,
+  body[class] #modal-cart .yamuna-cart-shipping-promo .js-yamuna-fs-text {
+    font-family: Roboto, Arial, sans-serif !important;
+  }
+
+  /* Totals: platform row → "Cupom:" when a coupon is active */
+  body #modal-cart .cart-coupon-discount-label {
+    font-family: Roboto, Arial, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    color: #000 !important;
+  }
+  body #modal-cart .js-coupon-discount-amount,
+  body #modal-cart .cart-coupon-discount-price {
+    color: #a31460 !important;
+    font-family: Roboto, Arial, sans-serif !important;
+    font-size: 16px !important;
+  }
+
+  /* CALCULANDO… — shrink so it fits the 110px pill. */
+  body #modal-cart .js-calculate-shipping .js-calculating-shipping-wording,
+  body #modal-cart .shipping-calculator-form .js-calculating-shipping-wording {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  body #modal-cart .js-calculate-shipping .loading,
+  body #modal-cart .js-calculate-shipping .loading svg {
+    display: none !important;
+  }
+
 </style>
 
 {# Production-like minicart body (yamuna.com.br): top 5% OFF bar, free-shipping
@@ -1588,29 +1898,29 @@
 {% set has_free_shipping = cart.free_shipping.cart_has_free_shipping or cart.free_shipping.min_price_free_shipping.min_price %}
 {% set show_cart_fulfillment = settings.shipping_calculator_cart_page and (store.has_shipping or store.branches) %}
 
-{# Always show frete-grátis progress bar in minicart (QA 011). Prefer
-   platform free-shipping-bar when configured; fallback uses store claim
-   "Frete grátis acima de R$350" when Nuvem min_price is missing. #}
-{% set yamuna_fs_min_raw = cart.free_shipping.min_price_free_shipping.min_price_raw | default(0) %}
-{% set yamuna_fs_has = cart.free_shipping.cart_has_free_shipping %}
+{# Always show frete-grátis progress bar in minicart (QA 011).
+   HARDCODE R$350 (35000 cents). Platform min_price_raw is misconfigured as
+   350 (= R$3,50), which unlocked the bar for any small cart (e.g. Bulletproof
+   R$66,90). Ignore cart_has_free_shipping — product "Frete grátis" flags still
+   charge shipping below the marketing threshold. #}
+{% set yamuna_fs_min_raw = 35000 %}
 {% set yamuna_fs_subtotal = cart.subtotal | default(0) %}
-{# Nuvem raw is often in cents; store marketing threshold is R$350. #}
-{% if not yamuna_fs_min_raw or yamuna_fs_min_raw == 0 %}
-  {% set yamuna_fs_min_raw = 35000 %}
-  {% set yamuna_fs_use_fallback_threshold = true %}
-{% else %}
-  {% set yamuna_fs_use_fallback_threshold = false %}
-{% endif %}
+{% set yamuna_fs_use_fallback_threshold = true %}
 {% set yamuna_fs_subtotal_cents = yamuna_fs_subtotal %}
-{% if yamuna_fs_use_fallback_threshold and yamuna_fs_subtotal < 1000 %}
-  {# subtotal already in reais (e.g. 827.40) → cents #}
+{# cart.subtotal is normally integer cents. Decimal reais (e.g. 66.90) → cents. #}
+{% set yamuna_fs_subtotal_rounded = yamuna_fs_subtotal | round %}
+{% if yamuna_fs_subtotal > 0 and yamuna_fs_subtotal < 1000 and yamuna_fs_subtotal != yamuna_fs_subtotal_rounded %}
   {% set yamuna_fs_subtotal_cents = (yamuna_fs_subtotal * 100) | round %}
 {% endif %}
-{% set yamuna_fs_pct = ((yamuna_fs_subtotal_cents / yamuna_fs_min_raw) * 100) %}
+{% set yamuna_fs_pct = 0 %}
+{% if yamuna_fs_min_raw > 0 %}
+  {% set yamuna_fs_pct = ((yamuna_fs_subtotal_cents * 100) / yamuna_fs_min_raw) %}
+{% endif %}
 {% if yamuna_fs_pct > 100 %}{% set yamuna_fs_pct = 100 %}{% endif %}
+{% if yamuna_fs_pct < 0 %}{% set yamuna_fs_pct = 0 %}{% endif %}
 {% set yamuna_fs_rest_cents = yamuna_fs_min_raw - yamuna_fs_subtotal_cents %}
 {% if yamuna_fs_rest_cents < 0 %}{% set yamuna_fs_rest_cents = 0 %}{% endif %}
-{% set yamuna_fs_unlocked = yamuna_fs_has or yamuna_fs_rest_cents == 0 %}
+{% set yamuna_fs_unlocked = yamuna_fs_rest_cents == 0 and yamuna_fs_subtotal_cents > 0 %}
 
 {# Top promo — full-width magenta bar directly under header (Figma / prod). #}
 <div class="yamuna-cart-top-promo js-visible-on-cart-filled" {% if cart.items_count == 0 %}style="display:none;"{% endif %}>
@@ -1618,19 +1928,14 @@
   <span>5% OFF ACIMA DE 3 UNIDADES</span>
 </div>
 
-{# Frete progress stays under the top promo (never after line items). #}
-<div class="yamuna-cart-free-shipping js-visible-on-cart-filled" {% if cart.items_count == 0 %}style="display:none;"{% endif %}>
-  {% include "snipplets/shipping/shipping-free-rest.tpl" %}
-</div>
-
 {# Always in DOM so AJAX qty/add can sync (QA 052). Visibility is owned by
-   syncYamunaFreeShippingBar() — show when platform bar is idle. #}
+   syncYamunaFreeShippingBar() — our custom "Faltam R$…" bar only. #}
 {% if yamuna_fs_unlocked %}
   {% set yamuna_fs_label = 'Frete grátis garantido!' %}
 {% else %}
   {% set yamuna_fs_label = 'Faltam ' ~ ((yamuna_fs_rest_cents / 100) | money) ~ ' para garantir seu frete grátis' %}
 {% endif %}
-<div class="yamuna-cart-shipping-promo js-visible-on-cart-filled js-yamuna-fs-fallback{% if yamuna_fs_unlocked %} is-unlocked{% endif %}{% if cart.items_count > 0 and yamuna_fs_use_fallback_threshold %} is-active{% endif %}" data-fs-min="{{ yamuna_fs_min_raw }}" data-fs-subtotal="{{ yamuna_fs_subtotal_cents }}" style="--yamuna-fs-pct: {{ yamuna_fs_pct }}%;{% if cart.items_count == 0 %}display:none;{% endif %}">
+<div class="yamuna-cart-shipping-promo js-visible-on-cart-filled js-yamuna-fs-fallback{% if yamuna_fs_unlocked %} is-unlocked{% endif %}{% if cart.items_count > 0 %} is-active{% endif %}" data-fs-min="{{ yamuna_fs_min_raw }}" data-fs-subtotal="{{ yamuna_fs_subtotal_cents }}" style="--yamuna-fs-pct: {{ yamuna_fs_pct }}%;{% if cart.items_count == 0 %}display:none;{% endif %}">
   <span class="yamuna-cart-promo-text js-yamuna-fs-text">{{ yamuna_fs_label }}</span>
   <span class="yamuna-cart-promo-text yamuna-cart-promo-text-onfill js-yamuna-fs-text" aria-hidden="true">{{ yamuna_fs_label }}</span>
   <i class="yamuna-cart-promo-bar" aria-hidden="true"><span class="yamuna-cart-promo-progress js-yamuna-fs-fill" style="width: {{ yamuna_fs_pct }}%;"></span></i>
@@ -1661,6 +1966,56 @@
           {% endif %}
           {% if store.branches %}
             {% include "snipplets/shipping/branches.tpl" with {'product_detail': false} %}
+          {% endif %}
+        </div>
+
+        {# Cupom — always visible. Prefer official coupon-input (AJAX /cart_coupon/).
+           Fallback form also hits /cart_coupon/ so we never redirect to /comprar. #}
+        <div class="yamuna-minicart-coupon js-visible-on-cart-filled" {% if cart.items_count == 0 %}style="display:none;"{% endif %}>
+          <p class="yamuna-minicart-coupon-heading">Tem um cupom de desconto?</p>
+          {% if settings.cart_coupon %}
+            {{ component('coupon-input', {
+              label_svg_id: 'tag',
+              toggle_inactive_svg_id: 'chevron-down',
+              toggle_active_svg_id: 'chevron-down',
+              spinner_svg_id: 'circle-notch',
+              container_classes: {
+                container: 'yamuna-minicart-coupon-inner',
+                content: 'yamuna-minicart-coupon-content',
+                toggle: 'yamuna-minicart-coupon-toggle',
+                toggle_icon: 'icon-inline',
+                toggle_active: 'icon-flip-vertical',
+                toggle_label: 'yamuna-minicart-coupon-toggle-label',
+                label_icon: 'icon-inline',
+                label: 'yamuna-minicart-coupon-label-text',
+                actions: 'yamuna-minicart-coupon-actions',
+                applied_row: 'yamuna-minicart-coupon-applied js-coupon-applied',
+                applied_code: 'yamuna-minicart-coupon-code js-coupon-applied-code-text',
+                remove_button: 'yamuna-minicart-coupon-remove js-remove-coupon',
+                spinner: 'yamuna-minicart-coupon-spinner',
+                spinner_icon: 'icon-inline icon-spin',
+                form: 'yamuna-minicart-coupon-form js-coupon-form',
+                input_wrapper: 'yamuna-minicart-coupon-row',
+                input: 'yamuna-minicart-coupon-input js-coupon-input',
+                apply_button: 'yamuna-minicart-coupon-apply js-coupon-apply js-apply-coupon',
+                error: 'yamuna-minicart-coupon-error js-coupon-error',
+              }
+            }) }}
+          {% else %}
+            <div class="yamuna-minicart-coupon-inner" data-store="coupon-input" data-error-text="Não foi possível aplicar o cupom">
+              <form class="yamuna-minicart-coupon-form js-yamuna-minicart-coupon-form js-coupon-form{% if cart.coupon %} is-hidden{% endif %}" action="/cart_coupon/" method="post" novalidate {% if cart.coupon %}style="display:none;"{% endif %}>
+                <div class="yamuna-minicart-coupon-row">
+                  <input class="yamuna-minicart-coupon-input js-coupon-input" type="text" name="coupon_code" value="" placeholder="Digite seu cupom" autocomplete="off" aria-label="Cupom de desconto">
+                  <button class="yamuna-minicart-coupon-apply js-apply-coupon" type="submit">APLICAR</button>
+                </div>
+                <div class="yamuna-minicart-coupon-error js-coupon-error" style="display:none;" role="alert"></div>
+              </form>
+              <div class="yamuna-minicart-coupon-applied js-coupon-applied{% if cart.coupon %} is-visible{% endif %}" {% if not cart.coupon %}style="display:none;"{% endif %}>
+                <span class="yamuna-minicart-coupon-code js-coupon-applied-code-text">{{ cart.coupon }}</span>
+                <span class="js-coupon-applied-percentage" style="display:none;"></span>
+                <button class="yamuna-minicart-coupon-remove js-remove-coupon" type="button">Remover</button>
+              </div>
+            </div>
           {% endif %}
         </div>
       </div>
@@ -1771,56 +2126,198 @@
       return 'R$\u00a0' + reais.toFixed(2).replace('.', ',');
     }
 
-    /* Cenário 052 / 047: keep frete-grátis bar in sync with live cart subtotal. */
-    function getYamunaCartSubtotalCents() {
-      var el = document.querySelector('#modal-cart [data-component="cart.subtotal"][data-priceraw]')
-        || document.querySelector('#modal-cart .js-ajax-cart-total[data-priceraw]')
-        || document.querySelector('.js-yamuna-fs-subtotal-source[data-priceraw]')
-        || document.querySelector('.js-cart-subtotal.hidden[data-priceraw]')
-        || document.querySelector('.js-cart-subtotal[data-priceraw]');
-      if (!el) return 0;
-      var rawAttr = String(el.getAttribute('data-priceraw') || '').trim().replace(/\s/g, '').replace(',', '.');
-      var raw = parseFloat(rawAttr);
+    function parseYamunaPriceRawCents(rawAttr) {
+      var normalized = String(rawAttr || '').trim().replace(/\s/g, '').replace(',', '.');
+      var raw = parseFloat(normalized);
       if (isNaN(raw) || raw < 0) return 0;
-      /* Decimal string => reais. Integer => Nuvem cents (e.g. 1300 = R$13,00). */
-      if (rawAttr.indexOf('.') !== -1) {
+      /* Near-integer (incl. "6690.000000000001" float noise) → Nuvem cents.
+         True reais decimals like "66.90" / "240.80" → * 100. */
+      if (Math.abs(raw - Math.round(raw)) < 0.001) {
+        return Math.round(raw);
+      }
+      if (normalized.indexOf('.') !== -1) {
         return Math.round(raw * 100);
       }
       return Math.round(raw);
     }
 
-    function syncYamunaFreeShippingBar() {
-      if (window.LS && typeof LS.freeShippingProgress === 'function') {
-        try { LS.freeShippingProgress(true); } catch (err) { /* ignore */ }
+    function getYamunaPlatformDiscountCents() {
+      var el = document.querySelector('.js-cart-discount[data-priceraw]');
+      if (!el) return 0;
+      return parseYamunaPriceRawCents(el.getAttribute('data-priceraw'));
+    }
+
+    /* Buy-3 theme discount (5% when qty >= 3), in cents. */
+    function getYamunaBuyThreeDiscountCents(root) {
+      if (!root) return 0;
+      var discount = 0;
+      root.querySelectorAll('.js-cart-item').forEach(function (itemEl) {
+        if (itemEl.getAttribute('data-gift') === 'true') return;
+        var wrap = itemEl.querySelector('.cart-item-subtotal') || itemEl;
+        var qtyInput = itemEl.querySelector('.js-cart-quantity-input');
+        var qty = parseInt(qtyInput && qtyInput.value, 10) || 0;
+        var threshold = parseInt(
+          wrap.getAttribute('data-yamuna-promo-threshold') || itemEl.getAttribute('data-yamuna-promo-threshold'),
+          10
+        ) || 3;
+        var unitCents = parseFloat(
+          wrap.getAttribute('data-yamuna-unit-price') || itemEl.getAttribute('data-yamuna-unit-price')
+        );
+        var rate = parseFloat(
+          wrap.getAttribute('data-yamuna-promo-rate') || itemEl.getAttribute('data-yamuna-promo-rate')
+        );
+        if (isNaN(rate)) rate = 0.95;
+        if (qty < threshold || isNaN(unitCents) || unitCents <= 0) return;
+        var fullLine = Math.round(unitCents * qty);
+        var promoLine = Math.floor(unitCents * rate) * qty;
+        discount += Math.max(0, fullLine - promoLine);
+      });
+      return discount;
+    }
+
+    /* Extra theme discount not already applied by platform progressive promo. */
+    function getYamunaBuyThreeDisplayDeltaCents(root) {
+      return Math.max(0, getYamunaBuyThreeDiscountCents(root) - getYamunaPlatformDiscountCents());
+    }
+
+    function parseYamunaMoneyTextToCents(text) {
+      var cleaned = String(text || '').replace(/[^\d,.-]/g, '').trim();
+      if (!cleaned) return 0;
+      /* BR: 1.234,56 or 240,80 — last separator is decimal. */
+      if (cleaned.indexOf(',') !== -1) {
+        cleaned = cleaned.replace(/\./g, '').replace(',', '.');
       }
+      var n = parseFloat(cleaned);
+      return isNaN(n) ? 0 : Math.round(n * 100);
+    }
+
+    function writeYamunaPriceEl(el, baseCents, deltaCents) {
+      if (!el || isNaN(baseCents)) return;
+      if (deltaCents <= 0) {
+        if (el.getAttribute('data-yamuna-total-adjusted') === '1') {
+          el.textContent = formatYamunaMoneyFromCents(baseCents);
+          el.removeAttribute('data-yamuna-total-adjusted');
+          el.removeAttribute('data-yamuna-applied-delta');
+        }
+        return;
+      }
+      var next = formatYamunaMoneyFromCents(Math.max(0, baseCents - deltaCents));
+      var current = (el.textContent || '').replace(/\s+/g, ' ').trim();
+      if (current !== next.replace(/\s+/g, ' ').trim()) {
+        el.textContent = next;
+      }
+      el.setAttribute('data-yamuna-total-adjusted', '1');
+      el.setAttribute('data-yamuna-applied-delta', String(deltaCents));
+    }
+
+    /* Keep Subtotal/Total in sync with De/Por when buy-3 applies and platform
+       progressive discount is not already covering the same amount. */
+    function syncMinicartBuyThreeTotals() {
+      var modal = document.getElementById('modal-cart');
+      if (!modal) return;
+      var delta = getYamunaBuyThreeDisplayDeltaCents(modal);
+
+      var subEl = modal.querySelector(
+        '[data-store="cart-subtotal"] .js-cart-subtotal, ' +
+        '[data-store="cart-subtotal"] .cart-subtotal-price, ' +
+        '.cart-subtotal .js-cart-subtotal, ' +
+        '.cart-subtotal .cart-subtotal-price, ' +
+        'span.js-cart-subtotal[data-component="cart.subtotal"]'
+      );
+      var totEl = modal.querySelector(
+        '[data-store="cart-total"] .js-cart-total, ' +
+        '.cart-total .js-cart-total, ' +
+        'span.js-cart-total.cart-total-price, ' +
+        '[data-component="total.value"]'
+      );
+
+      var subBase = 0;
+      if (subEl && subEl.getAttribute('data-priceraw') != null && subEl.getAttribute('data-priceraw') !== '') {
+        subBase = parseYamunaPriceRawCents(subEl.getAttribute('data-priceraw'));
+      } else {
+        var hiddenSub = modal.querySelector('.js-subtotal-price[data-priceraw], .js-yamuna-fs-subtotal-source[data-priceraw]');
+        if (hiddenSub) subBase = parseYamunaPriceRawCents(hiddenSub.getAttribute('data-priceraw'));
+      }
+
+      var totBase = 0;
+      if (totEl && totEl.getAttribute('data-priceraw') != null && totEl.getAttribute('data-priceraw') !== '') {
+        totBase = parseYamunaPriceRawCents(totEl.getAttribute('data-priceraw'));
+      } else if (window.LS && LS.data && LS.data.cart && LS.data.cart.total != null) {
+        totBase = Number(LS.data.cart.total) || 0;
+      } else if (totEl) {
+        var prevDelta = parseInt(totEl.getAttribute('data-yamuna-applied-delta') || '0', 10);
+        totBase = parseYamunaMoneyTextToCents(totEl.textContent) + (isNaN(prevDelta) ? 0 : prevDelta);
+      }
+
+      writeYamunaPriceEl(subEl, subBase, delta);
+      writeYamunaPriceEl(totEl, totBase, delta);
+    }
+
+    /* Cenário 052 / 047: keep frete-grátis bar in sync with live cart subtotal.
+       Unlock ONLY when subtotal (cents) >= R$350 threshold — never via platform
+       cart_has_free_shipping flags that still leave frete charged. */
+    function getYamunaCartSubtotalCents() {
+      var modal = document.getElementById('modal-cart');
+      var el = null;
+      if (modal) {
+        el = modal.querySelector('[data-component="cart.subtotal"][data-priceraw]')
+          || modal.querySelector('.js-cart-subtotal[data-priceraw]')
+          || modal.querySelector('.js-subtotal-price[data-priceraw]')
+          || modal.querySelector('.js-ajax-cart-total[data-priceraw]');
+      }
+      /* Do not fall back to layout .js-yamuna-fs-subtotal-source — it stays
+         stale after AJAX qty/add and can unlock the bar incorrectly. */
+      if (!el) return 0;
+      var platform = parseYamunaPriceRawCents(el.getAttribute('data-priceraw'));
+      return Math.max(0, platform - getYamunaBuyThreeDisplayDeltaCents(modal));
+    }
+
+    function getYamunaFreeShippingMinCents(fallback) {
+      /* Always R$350. Platform min_price_raw is 350 (= R$3,50) and must be ignored. */
+      var HARD_MIN_CENTS = 35000;
+      if (fallback) fallback.setAttribute('data-fs-min', String(HARD_MIN_CENTS));
+      return HARD_MIN_CENTS;
+    }
+
+    function syncYamunaFreeShippingBar() {
+      /* Do not call LS.freeShippingProgress here — it syncs the platform bar to the
+         misconfigured R$3,50 threshold and fights our R$350 marketing bar. */
 
       var fallback = document.querySelector('#modal-cart .js-yamuna-fs-fallback');
       if (!fallback) return;
 
       var cartHasItems = !!document.querySelector('#modal-cart .js-cart-item');
-      /* Minicart always uses the Yamuna-synced bar (QA 052/047). Platform
-         free-shipping-bar often sticks on an incomplete "condition" state. */
-      var platformWrap = document.querySelector('#modal-cart .yamuna-cart-free-shipping');
+      /* Platform "FRETE GRÁTIS A PARTIR DE" bar removed from markup — keep hide
+         as a safety net if AJAX re-injects shipping-free-rest. */
+      var platformWrap = document.querySelector('#modal-cart .yamuna-cart-free-shipping, #modal-cart .js-ship-free-rest');
       if (platformWrap) {
-        platformWrap.style.setProperty('display', 'none', 'important');
+        var wrap = platformWrap.closest('.yamuna-cart-free-shipping') || platformWrap;
+        wrap.style.setProperty('display', 'none', 'important');
       }
       fallback.classList.toggle('is-active', cartHasItems);
       if (!cartHasItems) {
+        fallback.classList.remove('is-unlocked');
+        fallback.style.setProperty('--yamuna-fs-pct', '0%');
         fallback.style.setProperty('display', 'none', 'important');
+        var emptyFill = fallback.querySelector('.js-yamuna-fs-fill');
+        if (emptyFill) emptyFill.style.width = '0%';
         return;
       }
       fallback.style.removeProperty('display');
 
-      var min = parseFloat(fallback.getAttribute('data-fs-min') || '35000');
-      if (isNaN(min) || min <= 0) min = 35000;
+      var min = getYamunaFreeShippingMinCents(fallback);
       var subtotal = getYamunaCartSubtotalCents();
       var rest = Math.max(0, min - subtotal);
       var pct = min > 0 ? Math.min(100, Math.max(0, (subtotal / min) * 100)) : 0;
-      var unlocked = rest <= 0;
+      var unlocked = subtotal > 0 && rest <= 0;
 
       fallback.setAttribute('data-fs-subtotal', String(subtotal));
       fallback.style.setProperty('--yamuna-fs-pct', pct.toFixed(2) + '%');
-      fallback.classList.toggle('is-unlocked', unlocked);
+      if (unlocked) {
+        fallback.classList.add('is-unlocked');
+      } else {
+        fallback.classList.remove('is-unlocked');
+      }
 
       var label = unlocked
         ? 'Frete grátis garantido!'
@@ -1872,7 +2369,9 @@
     function refreshMinicartPromoUi() {
       shortenMinicartPromoLabels();
       syncMinicartBuyThreeUnitPrices();
+      syncMinicartBuyThreeTotals();
       syncYamunaFreeShippingBar();
+      ensureMinicartCepVisible();
     }
 
     refreshMinicartPromoUi();
@@ -1906,6 +2405,32 @@
       root.querySelectorAll('.js-ship-calculator-error').forEach(hideEl);
     }
 
+    function clearYamunaZipCookie() {
+      try {
+        document.cookie = 'calculator_zipcode=; Max-Age=0; path=/';
+        document.cookie = 'calculator_zipcode=; Max-Age=0; path=/; domain=' + location.hostname;
+        if (window.cookieService && typeof cookieService.remove === 'function') {
+          cookieService.remove('calculator_zipcode');
+        }
+      } catch (err) {}
+    }
+
+    function resetMinicartShippingCostRow() {
+      var modal = document.getElementById('modal-cart');
+      if (!modal) return;
+      var cost = modal.querySelector('#shipping-cost');
+      var calculating = modal.querySelector('.js-calculating-shipping-cost');
+      var empty = modal.querySelector('.js-shipping-cost-empty');
+      if (cost) {
+        cost.textContent = '';
+        hideEl(cost);
+      }
+      hideEl(calculating);
+      if (empty) {
+        empty.style.setProperty('display', 'inline', 'important');
+      }
+    }
+
     function resetMinicartShippingUi(force) {
       if (!force && !allowMinicartShippingReset) return;
       var modal = document.querySelector('#modal-cart');
@@ -1913,17 +2438,33 @@
       if (!root) return;
       if (modal) modal.classList.remove('yamuna-shipping-searched');
       shippingCalcPending = false;
+      clearYamunaZipCookie();
+
       var head = root.querySelector('.js-shipping-calculator-head');
       var form = root.querySelector('.js-shipping-calculator-form');
       var zipUi = root.querySelector('.js-shipping-calculator-with-zipcode');
       var resp = root.querySelector('.js-shipping-calculator-response');
       var spinner = root.querySelector('.js-shipping-calculator-spinner');
+      var zipInput = root.querySelector('.js-shipping-input');
       if (head) {
         head.classList.add('with-form');
         head.classList.remove('with-zip');
+        head.classList.remove('with-error');
       }
-      if (form) form.classList.add('transition-up-active');
+      if (form) {
+        form.classList.add('transition-up-active');
+        form.style.removeProperty('display');
+        form.style.removeProperty('visibility');
+        form.style.removeProperty('opacity');
+      }
       if (zipUi) zipUi.classList.remove('transition-up-active');
+      if (zipInput) {
+        zipInput.value = '';
+        zipInput.removeAttribute('value');
+      }
+      root.querySelectorAll('.js-shipping-calculator-current-zip').forEach(function (el) {
+        el.textContent = '';
+      });
       if (resp) {
         resp.innerHTML = '';
         hideEl(resp);
@@ -1931,6 +2472,89 @@
       hideEl(spinner);
       hideShippingErrors(modal);
       clearShippingButtonLoading(root);
+      resetMinicartShippingCostRow();
+    }
+
+    /* After remove→re-add with minicart open, platform/emptying CSS can leave the
+       CEP block hidden. Force it back whenever there are line items. */
+    function clearInlineDisplayNone(el) {
+      if (!el) return;
+      el.style.removeProperty('display');
+      el.style.removeProperty('visibility');
+      el.style.removeProperty('height');
+      el.style.removeProperty('overflow');
+      el.style.removeProperty('opacity');
+      var attr = el.getAttribute('style') || '';
+      if (/display\s*:\s*none/i.test(attr)) {
+        attr = attr.replace(/display\s*:\s*none\s*!important\s*;?/gi, '').replace(/display\s*:\s*none\s*;?/gi, '').trim();
+        if (attr) el.setAttribute('style', attr);
+        else el.removeAttribute('style');
+      }
+    }
+
+    function ensureMinicartCepVisible() {
+      var modal = document.getElementById('modal-cart');
+      if (!modal) return;
+      var hasItems = !!modal.querySelector('.js-cart-item');
+      if (!hasItems) return;
+
+      modal.classList.remove('yamuna-cart-is-emptying');
+      document.body.classList.remove('yamuna-cart-is-emptying');
+
+      var fulfill = modal.querySelector('.js-fulfillment-info, .yamuna-minicart-fulfillment');
+      var ship = modal.querySelector('#cart-shipping-container');
+      var calc = modal.querySelector('.js-shipping-calculator-container');
+      [fulfill, ship, calc].forEach(function (el) {
+        if (!el) return;
+        clearInlineDisplayNone(el);
+        el.style.setProperty('display', 'block', 'important');
+        el.style.setProperty('visibility', 'visible', 'important');
+        el.style.setProperty('opacity', '1', 'important');
+      });
+
+      var head = modal.querySelector('#cart-shipping-container .js-shipping-calculator-head');
+      var form = modal.querySelector('#cart-shipping-container .js-shipping-calculator-form');
+      var zipUi = modal.querySelector('#cart-shipping-container .js-shipping-calculator-with-zipcode');
+      if (head) {
+        head.classList.add('with-form');
+        head.classList.remove('with-zip');
+        head.classList.remove('with-error');
+      }
+      if (zipUi) zipUi.classList.remove('transition-up-active');
+      if (form) {
+        form.classList.add('transition-up-active');
+        clearInlineDisplayNone(form);
+        form.style.setProperty('display', 'block', 'important');
+        form.style.setProperty('visibility', 'visible', 'important');
+        form.style.setProperty('opacity', '1', 'important');
+      }
+
+      /* Reveal only shipping-related parents that may keep display:none from empty.
+         Do NOT touch promo/free-shipping wrappers (that re-showed FRETE GRÁTIS A PARTIR DE). */
+      [fulfill, ship, calc].forEach(function (el) {
+        if (!el) return;
+        el.querySelectorAll('.js-visible-on-cart-filled').forEach(function (child) {
+          var styleAttr = child.getAttribute('style') || '';
+          if (child.style.display === 'none' || /display\s*:\s*none/i.test(styleAttr)) {
+            clearInlineDisplayNone(child);
+          }
+        });
+      });
+      var scroll = modal.querySelector('.yamuna-minicart-scroll');
+      var footer = modal.querySelector('.yamuna-cart-dropdown-footer');
+      [scroll, footer].forEach(function (el) {
+        if (!el) return;
+        var styleAttr = el.getAttribute('style') || '';
+        if (el.style.display === 'none' || /display\s*:\s*none/i.test(styleAttr)) {
+          clearInlineDisplayNone(el);
+        }
+      });
+    }
+
+    function scheduleEnsureMinicartCepVisible() {
+      [0, 50, 150, 350, 700, 1200, 2200].forEach(function (ms) {
+        window.setTimeout(ensureMinicartCepVisible, ms);
+      });
     }
 
     function clearShippingButtonLoading(root) {
@@ -2020,10 +2644,14 @@
 
     function resetEmptyMinicartShippingState() {
       var modal = document.getElementById('modal-cart');
-      if (!modal || modal.querySelector('.js-cart-item')) {
-        if (modal && modal.querySelector('.js-cart-item')) {
-          modal.classList.remove('yamuna-cart-is-emptying');
-          document.body.classList.remove('yamuna-cart-is-emptying');
+      if (!modal) return;
+      if (modal.querySelector('.js-cart-item')) {
+        modal.classList.remove('yamuna-cart-is-emptying');
+        document.body.classList.remove('yamuna-cart-is-emptying');
+        ensureMinicartCepVisible();
+        /* Only wipe CEP when cart just changed (not mid-Buscar result paint). */
+        if (allowMinicartShippingReset) {
+          resetMinicartShippingUi(true);
         }
         return;
       }
@@ -2065,7 +2693,7 @@
     }
 
     /* A plataforma substitui o conteúdo do minicart via AJAX. Ao concluir a
-       atualização, qualquer indicador de carregamento residual é removido. */
+       atualização, limpa CEP/quotes (sem recalcular) e estabiliza o layout. */
     var minicartModal = document.getElementById('modal-cart');
     if (minicartModal && window.MutationObserver && !window.yamunaMinicartLoadingObserver) {
       window.yamunaMinicartLoadingObserver = new MutationObserver(function () {
@@ -2075,6 +2703,18 @@
           clearDisabledMinicartControls();
           onShippingCalcSettled();
           resetEmptyMinicartShippingState();
+          /* Cart mutations must never keep a saved CEP / auto-quote — wipe UI. */
+          if (allowMinicartShippingReset) {
+            resetMinicartShippingUi(true);
+          } else {
+            /* Still hide auto-injected quotes until user clicked BUSCAR. */
+            var modal = document.getElementById('modal-cart');
+            if (modal && !modal.classList.contains('yamuna-shipping-searched')) {
+              resetMinicartShippingUi(true);
+            }
+          }
+          scheduleEnsureMinicartCepVisible();
+          syncYamunaFreeShippingBar();
         }, 120);
       });
       window.yamunaMinicartLoadingObserver.observe(minicartModal, {
@@ -2085,10 +2725,271 @@
       });
     }
 
-    resetMinicartShippingUi();
+    clearYamunaZipCookie();
+    resetMinicartShippingUi(true);
     [0, 150, 400, 900, 1600].forEach(function (ms) {
-      window.setTimeout(resetMinicartShippingUi, ms);
+      window.setTimeout(function () { resetMinicartShippingUi(true); }, ms);
     });
+
+    /* Block platform auto-shipping recalc on cart changes (layout jump + saved CEP). */
+    (function blockMinicartAutoShipping() {
+      function noop() { return; }
+      function patch() {
+        if (!window.LS) return;
+        ['calculateShippingOnCart', 'updateShippingOnAddToCart', 'updateShippingOnShippableCart', 'updateShippingOnCartTotals'].forEach(function (name) {
+          if (typeof LS[name] === 'function' && !LS[name]._yamunaNoop) {
+            var wrapped = function () {
+              /* Keep PDP / cart page behavior if those containers are the target. */
+              try {
+                if (arguments.length && arguments[0] && arguments[0].jquery) {
+                  var el = arguments[0][0];
+                  if (el && el.closest && el.closest('#product-shipping-container')) {
+                    return LS[name]._yamunaOrig.apply(this, arguments);
+                  }
+                }
+              } catch (err) {}
+              /* Always wipe minicart quotes instead of recalculating. */
+              allowMinicartShippingReset = true;
+              resetMinicartShippingUi(true);
+              return;
+            };
+            wrapped._yamunaNoop = true;
+            wrapped._yamunaOrig = LS[name];
+            LS[name] = wrapped;
+          }
+        });
+      }
+      patch();
+      [100, 500, 1500].forEach(function (ms) { window.setTimeout(patch, ms); });
+    })();
+
+    /* Custom coupon form → official /cart_coupon/ AJAX (never redirect to /comprar). */
+    (function () {
+      function couponRoot(el) {
+        return el && el.closest && el.closest('#modal-cart [data-store="coupon-input"], #modal-cart .yamuna-minicart-coupon-inner, #modal-cart .yamuna-minicart-coupon');
+      }
+      function showCouponError(root, msg) {
+        if (!root) return;
+        var err = root.querySelector('.js-coupon-error, .yamuna-minicart-coupon-error');
+        if (!err) return;
+        err.textContent = msg || (root.getAttribute('data-error-text') || 'Não foi possível aplicar o cupom');
+        err.style.display = 'block';
+      }
+      function clearCouponError(root) {
+        if (!root) return;
+        var err = root.querySelector('.js-coupon-error, .yamuna-minicart-coupon-error');
+        if (err) {
+          err.style.display = 'none';
+          err.textContent = '';
+        }
+      }
+      function setCouponLoading(root, on) {
+        if (!root) return;
+        var btn = root.querySelector('.yamuna-minicart-coupon-apply, .js-apply-coupon');
+        var remove = root.querySelector('.js-remove-coupon, .yamuna-minicart-coupon-remove');
+        if (btn) btn.disabled = !!on;
+        if (remove) remove.disabled = !!on;
+      }
+      function showAppliedCoupon(root, coupon) {
+        if (!root) return;
+        var form = root.querySelector('.js-coupon-form, .yamuna-minicart-coupon-form');
+        var applied = root.querySelector('.js-coupon-applied, .yamuna-minicart-coupon-applied');
+        var codeEl = root.querySelector('.js-coupon-applied-code-text, .yamuna-minicart-coupon-code');
+        var pctEl = root.querySelector('.js-coupon-applied-percentage');
+        var code = (coupon && coupon.code) || '';
+        if (codeEl) codeEl.textContent = code;
+        if (pctEl) {
+          if (coupon && coupon.type === 'percentage' && coupon.value != null) {
+            pctEl.textContent = ': -' + Math.round(parseFloat(coupon.value)) + '%';
+            pctEl.style.display = '';
+          } else {
+            pctEl.textContent = '';
+            pctEl.style.display = 'none';
+          }
+        }
+        if (applied) {
+          if (coupon && coupon.type) applied.setAttribute('data-coupon-type', coupon.type);
+          if (coupon && coupon.value != null) applied.setAttribute('data-coupon-value', coupon.value);
+          applied.classList.add('is-visible');
+          applied.style.display = '';
+        }
+        if (form) {
+          form.classList.add('is-hidden');
+          form.style.display = 'none';
+        }
+      }
+      function showCouponForm(root) {
+        if (!root) return;
+        var form = root.querySelector('.js-coupon-form, .yamuna-minicart-coupon-form');
+        var applied = root.querySelector('.js-coupon-applied, .yamuna-minicart-coupon-applied');
+        var input = root.querySelector('.js-coupon-input, .yamuna-minicart-coupon-input');
+        if (applied) {
+          applied.classList.remove('is-visible');
+          applied.style.display = 'none';
+          applied.removeAttribute('data-coupon-type');
+          applied.removeAttribute('data-coupon-value');
+        }
+        if (form) {
+          form.classList.remove('is-hidden');
+          form.style.display = '';
+        }
+        if (form) form.style.display = '';
+        if (input) {
+          input.value = '';
+          input.readOnly = false;
+        }
+      }
+      function renameCouponLabel() {
+        var modal = document.getElementById('modal-cart');
+        if (!modal) return;
+        modal.querySelectorAll('.cart-coupon-discount-label').forEach(function (el) {
+          el.textContent = 'Cupom:';
+        });
+      }
+      function refreshCouponTotals(payload) {
+        try {
+          if (window.LS && typeof LS.refreshTotals === 'function') LS.refreshTotals(payload);
+        } catch (err) {}
+        try {
+          if (window.LS && payload && payload.free_shipping && typeof LS.freeShippingLabelUpdate === 'function') {
+            LS.freeShippingLabelUpdate(payload.free_shipping);
+          }
+        } catch (err2) {}
+        try {
+          var cart = payload && payload.cart;
+          if (cart) {
+            var totalEl = document.querySelector('#modal-cart .js-cart-total, #modal-cart .yamuna-minicart-totals-total-price, #modal-cart .cart-total-price');
+            var subtotalEl = document.querySelector('#modal-cart .js-cart-subtotal, #modal-cart .cart-subtotal-price');
+            if (totalEl && (cart.total_short || cart.total_long)) {
+              totalEl.textContent = cart.total_short || cart.total_long;
+            }
+            if (subtotalEl && (cart.subtotal_short || cart.subtotal_long)) {
+              subtotalEl.textContent = cart.subtotal_short || cart.subtotal_long;
+            }
+            if (window.LS && LS.CartTotalUpdated && typeof LS.CartTotalUpdated.trigger === 'function') {
+              LS.CartTotalUpdated.trigger(cart);
+            }
+          }
+        } catch (err3) {}
+        renameCouponLabel();
+        window.setTimeout(renameCouponLabel, 50);
+        window.setTimeout(renameCouponLabel, 300);
+        if (typeof syncYamunaFreeShippingBar === 'function') {
+          window.setTimeout(syncYamunaFreeShippingBar, 50);
+          window.setTimeout(syncYamunaFreeShippingBar, 300);
+        }
+      }
+      function applyCouponAjax(root) {
+        if (!root || root.getAttribute('data-yamuna-coupon-busy') === '1') return;
+        var input = root.querySelector('.js-coupon-input, .yamuna-minicart-coupon-input');
+        var code = (input && input.value || '').trim();
+        if (!code) {
+          showCouponError(root, 'Digite um cupom');
+          return;
+        }
+        clearCouponError(root);
+        root.setAttribute('data-yamuna-coupon-busy', '1');
+        setCouponLoading(root, true);
+        var body = new URLSearchParams({
+          coupon_code: code,
+          coupon_origin: 'storefront',
+          auto_apply: 'false'
+        });
+        fetch('/cart_coupon/', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          body: body
+        }).then(function (res) {
+          return res.json().then(function (json) {
+            return { ok: res.ok, json: json };
+          });
+        }).then(function (result) {
+          var json = result.json || {};
+          if (!result.ok || !json.success) {
+            showCouponError(root, json.error_code === 'coupon_not_found'
+              ? 'Cupom não encontrado'
+              : (json.error_code === 'coupon_not_applicable'
+                ? 'Cupom não aplicável a este carrinho'
+                : null));
+            return;
+          }
+          var coupon = json.coupon || { code: code };
+          showAppliedCoupon(root, coupon);
+          refreshCouponTotals(json);
+        }).catch(function () {
+          showCouponError(root);
+        }).finally(function () {
+          root.removeAttribute('data-yamuna-coupon-busy');
+          setCouponLoading(root, false);
+        });
+      }
+      function removeCouponAjax(root) {
+        if (!root || root.getAttribute('data-yamuna-coupon-busy') === '1') return;
+        clearCouponError(root);
+        root.setAttribute('data-yamuna-coupon-busy', '1');
+        setCouponLoading(root, true);
+        fetch('/cart_coupon_remove/', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        }).then(function (res) {
+          return res.json().then(function (json) {
+            return { ok: res.ok, json: json };
+          });
+        }).then(function (result) {
+          var json = result.json || {};
+          if (!result.ok || !json.success) {
+            showCouponError(root);
+            return;
+          }
+          showCouponForm(root);
+          refreshCouponTotals(json);
+        }).catch(function () {
+          showCouponError(root);
+        }).finally(function () {
+          root.removeAttribute('data-yamuna-coupon-busy');
+          setCouponLoading(root, false);
+        });
+      }
+
+      document.addEventListener('submit', function (e) {
+        var form = e.target && e.target.closest && e.target.closest('#modal-cart .js-yamuna-minicart-coupon-form, #modal-cart .js-coupon-form');
+        if (!form) return;
+        /* Only handle our custom fallback (official coupon-input has its own handlers). */
+        if (!form.classList.contains('js-yamuna-minicart-coupon-form')) return;
+        e.preventDefault();
+        e.stopPropagation();
+        applyCouponAjax(couponRoot(form));
+      }, true);
+
+      document.addEventListener('click', function (e) {
+        var removeBtn = e.target && e.target.closest && e.target.closest('#modal-cart .js-yamuna-minicart-coupon-form ~ .js-remove-coupon, #modal-cart .yamuna-minicart-coupon-inner > .js-remove-coupon, #modal-cart .yamuna-minicart-coupon .js-remove-coupon');
+        if (!removeBtn) return;
+        var root = couponRoot(removeBtn);
+        /* Official coupon-input uses the same class — skip if platform owns it. */
+        if (root && root.querySelector && root.querySelector('.js-yamuna-minicart-coupon-form')) {
+          e.preventDefault();
+          e.stopPropagation();
+          removeCouponAjax(root);
+        }
+      }, true);
+
+      renameCouponLabel();
+      [100, 500, 1500].forEach(function (ms) {
+        window.setTimeout(renameCouponLabel, ms);
+      });
+      if (window.MutationObserver && !window.yamunaCouponLabelObserver) {
+        var modal = document.getElementById('modal-cart');
+        if (modal) {
+          window.yamunaCouponLabelObserver = new MutationObserver(function () {
+            window.clearTimeout(window.yamunaCouponLabelTimer);
+            window.yamunaCouponLabelTimer = window.setTimeout(renameCouponLabel, 40);
+          });
+          window.yamunaCouponLabelObserver.observe(modal, { childList: true, subtree: true });
+        }
+      }
+    })();
 
     document.addEventListener('click', function (e) {
       if (e.target && e.target.closest && e.target.closest('#modal-cart .js-calculate-shipping')) {
@@ -2102,10 +3003,15 @@
         allowMinicartShippingReset = false;
         shippingCalcPending = true;
         if (modal) modal.classList.add('yamuna-shipping-searched');
+        /* Never persist CEP cookie after Buscar — user must re-type next time. */
+        window.setTimeout(clearYamunaZipCookie, 0);
+        window.setTimeout(clearYamunaZipCookie, 400);
+        window.setTimeout(clearYamunaZipCookie, 1200);
         window.clearTimeout(window.yamunaMinicartShippingFallback);
         window.yamunaMinicartShippingFallback = window.setTimeout(function () {
           clearMinicartLoading();
           shippingCalcPending = false;
+          clearYamunaZipCookie();
         }, 4000);
         return;
       }
@@ -2126,9 +3032,13 @@
         } else if (isMinus) {
           markEmptyingIfLastItem(cartModal, true);
         }
-        /* Do not wipe shipping quotes on qty/remove — that triggers a platform
-           CEP recalculation that fails and shows "Erro no cálculo". */
+        /* Qty/remove: wipe CEP + quotes so platform cannot auto-recalc (layout jump). */
+        allowMinicartShippingReset = true;
         shippingCalcPending = false;
+        resetMinicartShippingUi(true);
+        [50, 200, 500, 1000].forEach(function (ms) {
+          window.setTimeout(function () { resetMinicartShippingUi(true); }, ms);
+        });
         hideShippingErrors(cartModal);
         settleCartItemLoading();
         window.clearTimeout(window.yamunaMinicartControlsFallback);
@@ -2142,11 +3052,60 @@
       if (openCart) {
         allowMinicartShippingReset = true;
         shippingCalcPending = false;
-        window.setTimeout(resetMinicartShippingUi, 0);
-        window.setTimeout(resetMinicartShippingUi, 200);
-        window.setTimeout(resetMinicartShippingUi, 600);
+        window.setTimeout(function () { resetMinicartShippingUi(true); }, 0);
+        window.setTimeout(function () { resetMinicartShippingUi(true); }, 200);
+        window.setTimeout(function () { resetMinicartShippingUi(true); }, 600);
+        scheduleEnsureMinicartCepVisible();
+        return;
+      }
+      /* Re-add while drawer stays open: clear CEP and keep field visible. */
+      var addToCart = e.target && e.target.closest && e.target.closest(
+        '.js-addtocart, .js-prod-submit-form, [data-component="add-to-cart"], form[action*="cart"] button[type="submit"], .item-actions .btn, .yamuna-add-to-cart'
+      );
+      if (addToCart) {
+        allowMinicartShippingReset = true;
+        [100, 400, 900, 1600].forEach(function (ms) {
+          window.setTimeout(function () { resetMinicartShippingUi(true); }, ms);
+        });
+        scheduleEnsureMinicartCepVisible();
       }
     }, true);
+
+    /* Force coupon label copy to match mockup. */
+    function syncMinicartCouponLabel() {
+      var coupon = document.querySelector('#modal-cart .yamuna-minicart-coupon');
+      if (!coupon) return;
+      var label = coupon.querySelector('.yamuna-minicart-coupon-label-text, .js-coupon-toggle-label, [data-component="coupon.toggle"] span, .yamuna-minicart-coupon-toggle-label span');
+      if (label && label.childElementCount === 0) {
+        label.textContent = 'Tem um cupom de desconto?';
+      }
+      var input = coupon.querySelector('input[type="text"], input.js-coupon-input, .yamuna-minicart-coupon-input');
+      if (input) {
+        input.setAttribute('placeholder', 'Digite seu cupom');
+      }
+      var btn = coupon.querySelector('.yamuna-minicart-coupon-apply, .js-coupon-apply, button[type="submit"]');
+      if (btn) {
+        var wording = btn.querySelector('span') || btn;
+        if (wording && wording.childElementCount === 0) {
+          wording.textContent = 'APLICAR';
+        }
+      }
+      /* Always expand coupon form (no toggle). */
+      coupon.classList.add('is-open');
+      var content = coupon.querySelector('.yamuna-minicart-coupon-content, .js-coupon-content');
+      if (content) content.style.setProperty('display', 'block', 'important');
+    }
+    syncMinicartCouponLabel();
+    [200, 600, 1200].forEach(function (ms) {
+      window.setTimeout(syncMinicartCouponLabel, ms);
+    });
+    if (minicartModal && window.MutationObserver && !window.yamunaCouponLabelObserver) {
+      window.yamunaCouponLabelObserver = new MutationObserver(function () {
+        window.clearTimeout(window.yamunaCouponLabelTimer);
+        window.yamunaCouponLabelTimer = window.setTimeout(syncMinicartCouponLabel, 80);
+      });
+      window.yamunaCouponLabelObserver.observe(minicartModal, { childList: true, subtree: true });
+    }
   })();
 </script>
 

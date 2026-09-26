@@ -115,6 +115,11 @@ if ($cliOk) { exit 0 }
 
 Write-Host "CLI bulk sync unstable - publishing key changed files one-by-one..."
 $changed = @(
+  'static/checkout.scss.tpl',
+  'static/css/yamuna-checkout-fix.css',
+  'static/js/yamuna-checkout-fix.js',
+  'static/js/yamuna-checkout-fix-loader.js',
+  'static/js/yamuna-checkout-extras.nube.jsx',
   'snipplets/newsletter.tpl',
   'snipplets/home/home-featured-grid.tpl',
   'snipplets/home/home-slider.tpl',
@@ -131,7 +136,6 @@ $changed = @(
   'config/defaults.txt',
   'layouts/layout.tpl',
   'templates/home.tpl',
-  'snipplets/banner-services/banner-services.tpl',
   'templates/product.tpl'
 )
 

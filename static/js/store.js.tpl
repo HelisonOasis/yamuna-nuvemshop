@@ -2881,19 +2881,14 @@ $(document).ready(function(){
                     }
 
 
-                    {# Update shipping input zipcode on add to cart #}
-
-                    {# Use zipcode from input if user is in product page, or use zipcode cookie if is not #}
-
-                    if ($("#product-shipping-container .js-shipping-input").val()) {
-                        zipcode_on_addtocart = $("#product-shipping-container .js-shipping-input").val();
-                        $("#cart-shipping-container .js-shipping-input").val(zipcode_on_addtocart);
-                        $(".js-shipping-calculator-current-zip").text(zipcode_on_addtocart);
-                    } else if (cookieService.get('calculator_zipcode')){
-                        var zipcode_from_cookie = cookieService.get('calculator_zipcode');
-                        $('.js-shipping-input').val(zipcode_from_cookie);
-                        $(".js-shipping-calculator-current-zip").text(zipcode_from_cookie);
-                    }
+                    {# Yamuna: never copy/save CEP into the minicart on add-to-cart. #}
+                    try { cookieService.remove('calculator_zipcode'); } catch (err) {}
+                    $("#modal-cart #cart-shipping-container .js-shipping-input").val('');
+                    $("#modal-cart .js-shipping-calculator-current-zip").text('');
+                    $("#modal-cart .js-shipping-calculator-response").empty().hide();
+                    $("#modal-cart .js-shipping-calculator-spinner").hide();
+                    $("#modal-cart .js-shipping-calculator-head").addClass("with-form").removeClass("with-zip");
+                    $("#modal-cart").removeClass("yamuna-shipping-searched");
 
 
                     {# Update free shipping wording #}
@@ -3038,44 +3033,22 @@ $(document).ready(function(){
         window.setTimeout(resetProductShippingCalculator, 150);
         window.setTimeout(resetProductShippingCalculator, 500);
         window.setTimeout(resetProductShippingCalculator, 1200);
-    {% elseif cookieService.get('calculator_zipcode') %}
-
-        {# If there is a cookie saved based on previous calcualtion, add it to the shipping input to triggert automatic calculation #}
-
-        var zipcode_from_cookie = cookieService.get('calculator_zipcode');
-
-        {% if settings.ajax_cart %}
-
-            {# If ajax cart is active, target only product input to avoid extra calulation on empty cart #}
-
-            $('#product-shipping-container .js-shipping-input').val(zipcode_from_cookie);
-
-        {% else %}
-
-            {# If ajax cart is inactive, target the only input present on screen #}
-
-            $('.js-shipping-input').val(zipcode_from_cookie);
-
-        {% endif %}
-
-        $(".js-shipping-calculator-current-zip").text(zipcode_from_cookie);
-
-        {# Hide the shipping calculator and show spinner — PDP only (minicart stays input+Buscar) #}
-
-        $("#product-shipping-container .js-shipping-calculator-head").addClass("with-zip").removeClass("with-form");
-        $("#product-shipping-container .js-shipping-calculator-with-zipcode").addClass("transition-up-active");
-        $("#product-shipping-container .js-shipping-calculator-spinner").show();
-        $("#modal-cart .js-shipping-calculator-head").addClass("with-form").removeClass("with-zip");
-        $("#modal-cart .js-shipping-calculator-with-zipcode").removeClass("transition-up-active");
-        $("#modal-cart .js-shipping-calculator-form").addClass("transition-up-active");
-        $("#modal-cart .js-shipping-calculator-spinner").hide();
-        $("#modal-cart .js-shipping-calculator-response").empty().hide();
-    {% else %}
-
-        {# If there is no cookie saved, show calcualtor #}
-
-        $(".js-shipping-calculator-form").addClass("transition-up-active");
     {% endif %}
+
+    {# Minicart: never restore CEP from cookie — always empty input + Buscar. #}
+    (function resetMinicartCepFromCookie() {
+        try { cookieService.remove('calculator_zipcode'); } catch (err) {}
+        $('#modal-cart #cart-shipping-container .js-shipping-input').val('');
+        $('#modal-cart .js-shipping-calculator-current-zip').text('');
+        $('#modal-cart .js-shipping-calculator-response').empty().hide();
+        $('#modal-cart .js-shipping-calculator-spinner').hide();
+        $('#modal-cart .js-shipping-calculator-head').addClass('with-form').removeClass('with-zip');
+        $('#modal-cart .js-shipping-calculator-with-zipcode').removeClass('transition-up-active');
+        $('#modal-cart .js-shipping-calculator-form').addClass('transition-up-active');
+        $('#modal-cart').removeClass('yamuna-shipping-searched');
+    })();
+
+    $("#product-shipping-container .js-shipping-calculator-form, #modal-cart .js-shipping-calculator-form").addClass("transition-up-active");
 
     {# Remove shipping suboptions from DOM to avoid duplicated modals #}
 

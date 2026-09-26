@@ -46,9 +46,152 @@
 
         {{ 'css/style-colors.scss.tpl' | static_url | static_inline }}
 
-        {# Load async styling not mandatory for first meaningfull paint #}
+        {# Load async styling not mandatory for first meaningfull paint.
+           Category/search: load sync — grid/cards/CTAs are above-the-fold and
+           FOUC badly with media=print. Other templates keep async + critical FOUC cover. #}
 
+        <link rel="preload" href="{{ 'css/style-async.scss.tpl' | static_url }}" as="style">
+        {% if template == 'category' or template == 'search' %}
+        <link rel="stylesheet" href="{{ 'css/style-async.scss.tpl' | static_url }}">
+        {% else %}
         <link rel="stylesheet" href="{{ 'css/style-async.scss.tpl' | static_url }}" media="print" onload="this.media='all'">
+        <noscript><link rel="stylesheet" href="{{ 'css/style-async.scss.tpl' | static_url }}"></noscript>
+        {% endif %}
+
+        {# Ctrl+F5 FOUC shield: paint Yamuna PLP cards/CTAs before async CSS arrives #}
+        <style id="yamuna-plp-fouc-165">
+          body.template-category .js-product-table .item-product,
+          body.template-search .js-product-table .item-product {
+            display: flex !important;
+            flex-direction: column !important;
+            border-radius: 12px !important;
+            background: #fff !important;
+            overflow: visible !important;
+            text-align: left !important;
+          }
+          body.template-category .js-product-table .item-name,
+          body.template-search .js-product-table .item-name {
+            color: #4a1d3a !important;
+            font-family: 'Dosis', sans-serif !important;
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            line-height: 1.2 !important;
+          }
+          body.template-category .js-product-table .item-price,
+          body.template-search .js-product-table .item-price {
+            color: #4a1d3a !important;
+            font-family: 'Roboto', sans-serif !important;
+            font-size: 24px !important;
+            font-weight: 600 !important;
+          }
+          body.template-category .yamuna-plp-buy-one,
+          body.template-category .yamuna-plp-buy-three,
+          body.template-search .yamuna-plp-buy-one,
+          body.template-search .yamuna-plp-buy-three,
+          body.template-category .yamuna-plp-body .yamuna-plp-buy-one,
+          body.template-category .yamuna-plp-body .yamuna-plp-buy-three,
+          body.template-search .yamuna-plp-body .yamuna-plp-buy-one,
+          body.template-search .yamuna-plp-body .yamuna-plp-buy-three {
+            display: flex !important;
+            width: 100% !important;
+            min-height: 40px !important;
+            padding: 8px 18px !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border: 1px solid #238482 !important;
+            border-radius: 24px !important;
+            background: #238482 !important;
+            background-color: #238482 !important;
+            color: #fff !important;
+            font-family: 'Raleway', sans-serif !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            line-height: 1.1 !important;
+            text-align: center !important;
+            text-decoration: none !important;
+            text-transform: uppercase !important;
+            cursor: pointer !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            box-sizing: border-box !important;
+            box-shadow: none !important;
+          }
+          body.template-category .yamuna-plp-buy-three,
+          body.template-search .yamuna-plp-buy-three,
+          body.template-category .yamuna-plp-body .yamuna-plp-buy-three,
+          body.template-search .yamuna-plp-body .yamuna-plp-buy-three {
+            background: #fff !important;
+            background-color: #fff !important;
+            color: #238482 !important;
+          }
+          body.template-category .yamuna-plp-buy-one img,
+          body.template-category .yamuna-plp-buy-three img,
+          body.template-search .yamuna-plp-buy-one img,
+          body.template-search .yamuna-plp-buy-three img {
+            width: 14px !important;
+            height: 14px !important;
+            margin-right: 8px !important;
+          }
+          body.template-category .yamuna-plp-body .labels,
+          body.template-search .yamuna-plp-body .labels {
+            top: 0 !important;
+            left: 50% !important;
+            right: auto !important;
+            transform: translateX(-50%) !important;
+            display: flex !important;
+            width: calc(100% - 24px) !important;
+            max-width: 300px !important;
+            justify-content: center !important;
+            z-index: 12 !important;
+            pointer-events: none !important;
+          }
+          body.template-category .yamuna-plp-body .js-offer-label,
+          body.template-search .yamuna-plp-body .js-offer-label,
+          body.template-category .yamuna-plp-body .label-accent.js-offer-label,
+          body.template-search .yamuna-plp-body .label-accent.js-offer-label {
+            display: flex !important;
+            width: 100% !important;
+            max-width: 300px !important;
+            height: 40px !important;
+            margin: 0 auto !important;
+            padding: 0 24px !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border-radius: 0 !important;
+            background-color: #e5c3da !important;
+            background-image: url('{{ "images/yamuna/offer-ribbon.svg" | static_url }}') !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+            background-size: 100% 100% !important;
+            color: #a31460 !important;
+            font-family: 'Dosis', sans-serif !important;
+            font-size: 18px !important;
+            font-weight: 700 !important;
+            line-height: 1 !important;
+            text-transform: uppercase !important;
+          }
+          body.template-category .yamuna-plp-body .label-circle,
+          body.template-search .yamuna-plp-body .label-circle {
+            width: 100% !important;
+            height: 40px !important;
+            border-radius: 0 !important;
+          }
+        </style>
+
+        {# Card prices: Roboto (override stale CDN async that forced Raleway) #}
+        <style id="yamuna-card-price-roboto-166">
+          .yamuna-home-products .item-price,
+          .yamuna-home-products .js-price-display.item-price,
+          [data-store^="home-products-"] .yamuna-home-products .item-price,
+          body.template-home .yamuna-home-products .item-price,
+          body.template-home [data-store^="home-products-"].section-featured-home .yamuna-home-products .item-price,
+          body.template-category .js-product-table .item-price,
+          body.template-search .js-product-table .item-price,
+          .yamuna-pdp-related .item-price,
+          .yamuna-favoritos-card .item-price {
+            font-family: 'Roboto', sans-serif !important;
+          }
+        </style>
 
         <style>
             @media (min-width: 768px) {
@@ -1375,46 +1518,33 @@
             padding: 24px 0 48px !important;
           }
 
-          /* Setas VOCÊ PODE GOSTAR: mesma espessura da home */
-          body.template-404 .yamuna-empty-related .swiper-button-prev .icon-inline,
-          body.template-404 .yamuna-empty-related .swiper-button-next .icon-inline,
+          /* Setas VOCÊ PODE GOSTAR: SVG stroke (sem rotate no ::before) */
           body.template-404 .yamuna-empty-related .swiper-button-prev svg,
           body.template-404 .yamuna-empty-related .swiper-button-next svg,
           body.template-404 .yamuna-empty-related .js-swiper-related-prev svg,
-          body.template-404 .yamuna-empty-related .js-swiper-related-next svg {
-            display: none !important;
+          body.template-404 .yamuna-empty-related .js-swiper-related-next svg,
+          body.template-404 .yamuna-empty-related .yamuna-product-arrow-icon {
+            display: block !important;
+            width: 26px !important;
+            height: 26px !important;
+            margin: 0 !important;
+            color: #238482 !important;
+            fill: none !important;
+            stroke: #238482 !important;
+            stroke-width: 3.25 !important;
+            transform: none !important;
           }
 
           body.template-404 .yamuna-empty-related .swiper-button-prev::before,
           body.template-404 .yamuna-empty-related .swiper-button-next::before,
           body.template-404 .yamuna-empty-related .js-swiper-related-prev::before,
-          body.template-404 .yamuna-empty-related .js-swiper-related-next::before {
-            display: block !important;
-            width: 18px !important;
-            height: 18px !important;
-            margin: 0 !important;
-            border-top: 4.5px solid #238482 !important;
-            border-right: 4.5px solid #238482 !important;
-            background: none !important;
-            content: '' !important;
-          }
-
-          body.template-404 .yamuna-empty-related .swiper-button-prev::before,
-          body.template-404 .yamuna-empty-related .js-swiper-related-prev::before {
-            margin-left: 3px !important;
-            transform: rotate(-135deg) !important;
-          }
-
-          body.template-404 .yamuna-empty-related .swiper-button-next::before,
-          body.template-404 .yamuna-empty-related .js-swiper-related-next::before {
-            margin-right: 3px !important;
-            transform: rotate(45deg) !important;
-          }
-
+          body.template-404 .yamuna-empty-related .js-swiper-related-next::before,
           body.template-404 .yamuna-empty-related .swiper-button-prev:after,
           body.template-404 .yamuna-empty-related .swiper-button-next:after {
             display: none !important;
             content: none !important;
+            border: 0 !important;
+            transform: none !important;
           }
 
           @media (min-width: 768px) {
@@ -1619,6 +1749,7 @@
             {# Fallback helpers so minicart frete bar (QA 052) can sync without admin free-shipping config. #}
             <span class="js-ship-free-min hidden" data-pricemin="35000"></span>
             <span class="js-cart-subtotal js-yamuna-fs-subtotal-source hidden" data-priceraw="{{ cart.subtotal | default(0) }}"></span>
+            <span class="js-cart-discount hidden" data-priceraw="{{ cart.promotional_discount_amount | default(0) }}"></span>
         {% endif %}
 
         {#/*============================================================================
@@ -2209,10 +2340,6 @@
         {# Store external codes added from admin #}
 
         {{ component('assorted-js', {}) }}
-
-        {% if template == 'home' %}
-            {% include 'snipplets/home/home-migration-popup.tpl' %}
-        {% endif %}
 
         {# Never show progressive quantity seals ("5% OFF comprando 3 ou mais"). #}
         <script>

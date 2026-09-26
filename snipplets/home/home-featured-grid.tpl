@@ -95,10 +95,14 @@
 
         {% if use_slider %}
             <button type="button" class="js-swiper-{{ highlighted_products_setting_name }}-prev swiper-button-prev svg-circle svg-circle-big svg-icon-text{% if settings.icons_solid %} svg-solid{% endif %}" aria-label="Produto anterior">
-                <svg class="icon-inline icon-2x mr-1 icon-flip-horizontal"><use xlink:href="#chevron"/></svg>
+                <svg class="yamuna-product-arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <polyline points="15 6 9 12 15 18" fill="none" stroke="currentColor" stroke-width="3.25" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
             </button>
             <button type="button" class="js-swiper-{{ highlighted_products_setting_name }}-next swiper-button-next svg-circle svg-circle-big svg-icon-text{% if settings.icons_solid %} svg-solid{% endif %}" aria-label="Próximo produto">
-                <svg class="icon-inline icon-2x ml-1"><use xlink:href="#chevron"/></svg>
+                <svg class="yamuna-product-arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <polyline points="9 6 15 12 9 18" fill="none" stroke="currentColor" stroke-width="3.25" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
             </button>
         {% endif %}
     </div>

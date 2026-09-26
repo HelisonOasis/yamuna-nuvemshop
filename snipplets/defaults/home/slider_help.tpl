@@ -27,10 +27,10 @@
             </div>
         </div>
 		<div class="js-swiper-empty-home-prev swiper-button-prev d-none d-md-block svg-circle svg-circle-big svg-icon-text{% if settings.icons_solid %} svg-solid{% endif %}">
-			<svg class="icon-inline icon-2x mr-1 icon-flip-horizontal"><use xlink:href="#chevron"/></svg>
+			<svg class="icon-inline icon-2x icon-flip-horizontal"><use xlink:href="#chevron"/></svg>
 		</div>
 	    <div class="js-swiper-empty-home-next swiper-button-next d-none d-md-block svg-circle svg-circle-big svg-icon-text{% if settings.icons_solid %} svg-solid{% endif %}">
-	    	<svg class="icon-inline icon-2x ml-1"><use xlink:href="#chevron"/></svg>
+	    	<svg class="icon-inline icon-2x"><use xlink:href="#chevron"/></svg>
 	    </div>
 	</div>
 	{% snipplet 'placeholders/home-slider-placeholder.tpl' %}

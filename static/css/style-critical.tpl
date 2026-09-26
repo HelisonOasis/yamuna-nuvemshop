@@ -1236,6 +1236,221 @@ p{
   line-height: 20px;
 }
 
+{# /* Cenário 165: hide Base shell + Yamuna header first-paint layout (before async) */ #}
+.head-main .section-topbar,
+.head-main > .container-fluid,
+.head-main .desktop-nav-categories-container,
+.head-main .js-desktop-nav-categories {
+  display: none !important;
+}
+.yamuna-mobile-search:not(.is-open) {
+  display: none !important;
+}
+
+{# Hide suggest chips + account panel until async — no !important so open/hover still works #}
+.head-main .js-search-suggest:not(.yamuna-search-open),
+.head-main .search-suggest:not(.yamuna-search-open) {
+  display: none !important;
+}
+.head-main .yamuna-account-dropdown-panel {
+  position: absolute;
+  display: none;
+}
+.head-main .utility-name {
+  display: none !important;
+}
+
+@media (max-width: 1023px) {
+  .yamuna-header-desktop {
+    display: none !important;
+  }
+  .yamuna-header-mobile {
+    display: flex !important;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .yamuna-header-mobile {
+    display: none !important;
+  }
+
+  .head-main {
+    min-height: 0;
+    padding: 0;
+    background: transparent !important;
+  }
+
+  .yamuna-header-desktop {
+    position: relative !important;
+    z-index: 1;
+    display: flex !important;
+    width: min(1312px, calc(100% - 128px)) !important;
+    height: 59px !important;
+    min-height: 59px !important;
+    margin: 25px auto 0 !important;
+    padding: 0 !important;
+    align-items: center;
+    isolation: isolate;
+    box-sizing: border-box;
+  }
+
+  .yamuna-header-desktop::before {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 230px;
+    display: block;
+    border-radius: 0 0 24px 24px;
+    background: #a31460;
+    box-shadow: 4px 4px 4px -2px rgba(0, 0, 0, .25);
+    content: '';
+  }
+
+  .yamuna-header-desktop-logo {
+    display: flex !important;
+    width: 174px !important;
+    height: 62px !important;
+    flex: 0 0 174px !important;
+    padding-left: 0 !important;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .yamuna-header-logo-link,
+  .yamuna-header-logo-image {
+    display: block !important;
+    width: 174px !important;
+    height: 62px !important;
+    max-width: 174px !important;
+    max-height: 62px !important;
+    object-fit: contain !important;
+  }
+
+  .yamuna-header-logo-scrolled {
+    display: none !important;
+  }
+  .yamuna-header-logo-default {
+    display: block !important;
+  }
+
+  .yamuna-header-desktop-nav {
+    display: flex !important;
+    margin-left: 108px !important;
+    gap: 24px;
+    align-items: center;
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
+
+  .yamuna-header-desktop-nav .nav-main-item,
+  .yamuna-header-desktop-nav .nav-item-container {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  .yamuna-header-desktop-nav .nav-list-link {
+    display: block;
+    padding: 0;
+    color: #fff !important;
+    font-family: Roboto, Arial, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    line-height: 59px !important;
+    letter-spacing: 0 !important;
+    text-decoration: none !important;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .yamuna-header-desktop-search {
+    width: 392px !important;
+    flex: 0 0 392px !important;
+    margin: 0 8px 0 auto !important;
+    min-width: 0;
+  }
+
+  .yamuna-header-desktop-search .search-container,
+  .yamuna-header-desktop-search .form-group {
+    position: relative;
+    width: 100%;
+    margin: 0;
+  }
+
+  .yamuna-header-desktop-search .search-input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 35px;
+    border: 1px solid #fff;
+    border-radius: 32px;
+    color: #fff;
+    background: transparent;
+  }
+
+  .yamuna-header-desktop-search .search-input::placeholder {
+    color: rgba(255, 255, 255, .84);
+  }
+
+  .yamuna-header-desktop-search .search-input-submit {
+    color: #fff;
+  }
+
+  .yamuna-header-desktop-utilities {
+    display: flex !important;
+    width: auto !important;
+    margin-right: 24px !important;
+    gap: 16px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .yamuna-header-action {
+    position: relative;
+    display: flex !important;
+    width: 32px !important;
+    height: 32px !important;
+    flex: 0 0 32px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .yamuna-header-action img {
+    display: block;
+    width: 20px !important;
+    height: 20px !important;
+    max-width: 20px;
+    object-fit: contain;
+  }
+
+  {# Internal pages: compact capsule (same resting state as async) #}
+  body:not(.template-home) .yamuna-header-desktop {
+    width: min(1312px, calc(100% - 48px)) !important;
+  }
+  body:not(.template-home) .yamuna-header-desktop::before {
+    left: 17.424242% !important;
+  }
+  body:not(.template-home) .yamuna-header-desktop-logo {
+    flex-basis: 148px !important;
+    width: 148px !important;
+    padding-left: 24px !important;
+  }
+  body:not(.template-home) .yamuna-header-logo-link,
+  body:not(.template-home) .yamuna-header-logo-image {
+    width: 86px !important;
+    height: 62px !important;
+    max-width: 86px !important;
+  }
+  body:not(.template-home) .yamuna-header-desktop-nav {
+    margin-left: 12px !important;
+  }
+}
+
 {# /* // Nav */ #}
 
 .nav-row {
@@ -2556,4 +2771,276 @@ p{
 .yamuna-plp-avise-me,a.yamuna-plp-avise-me,.yamuna-home-spot-avise-me,.yamuna-pdp-spot-avise-me{display:flex!important;width:100%!important;min-height:40px!important;height:40px!important;padding:8px 18px!important;align-items:center!important;justify-content:center!important;border:0!important;border-radius:24px!important;background:#5fbbc6!important;color:#fff!important;font-family:Raleway,sans-serif!important;font-size:14px!important;font-weight:600!important;line-height:1.2!important;letter-spacing:.02em!important;text-decoration:none!important;text-transform:none!important;box-shadow:none!important;cursor:pointer!important;visibility:visible!important;opacity:1!important}.yamuna-plp-avise-me:hover,.yamuna-plp-avise-me:focus,a.yamuna-plp-avise-me:hover,a.yamuna-plp-avise-me:focus,.yamuna-home-spot-avise-me:hover,.yamuna-pdp-spot-avise-me:hover{background:#238482!important;color:#fff!important;text-decoration:none!important}.item-actions>div.yamuna-avise-me-wrap,.item-actions.yamuna-item-actions-avise>div:first-child{display:block!important;width:100%!important;max-width:none!important;padding:0!important;visibility:visible!important;opacity:1!important}.item-actions>.yamuna-avise-me-spacer{display:none!important}.item-actions.yamuna-item-actions-avise{display:flex!important;visibility:visible!important;opacity:1!important;position:static!important;transform:none!important}
 
 {% endraw %}
+
+{# /* FOUC: PLP/search cards + buy CTAs paint before style-async loads */ #}
+body.template-category .js-product-table,
+body.template-search .js-product-table {
+  margin-right: -16px;
+  margin-left: -16px;
+}
+body.template-category .js-product-table > .js-item-product,
+body.template-search .js-product-table > .js-item-product {
+  display: flex;
+  flex: 0 0 33.333333%;
+  width: 33.333333%;
+  max-width: 33.333333%;
+  padding: 0 16px 32px;
+}
+body.template-category .js-product-table .item-product,
+body.template-search .js-product-table .item-product {
+  display: flex;
+  width: 100%;
+  min-height: 580px;
+  margin: 0;
+  padding: 0;
+  flex-direction: column;
+  overflow: visible;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: none;
+  text-align: left;
+}
+body.template-category .js-product-table .item-image,
+body.template-search .js-product-table .item-image {
+  width: calc(100% - 56px);
+  height: 360px;
+  max-height: 360px;
+  margin: 24px 28px 0;
+  overflow: hidden;
+  border-radius: 8px;
+}
+body.template-category .js-product-table .item-image img,
+body.template-search .js-product-table .item-image img {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: contain;
+}
+body.template-category .js-product-table .item-description,
+body.template-search .js-product-table .item-description {
+  padding: 5px 28px 0 !important;
+}
+body.template-category .js-product-table .item-name,
+body.template-search .js-product-table .item-name {
+  margin: 0 0 6px !important;
+  color: #4a1d3a;
+  font-family: 'Dosis', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+body.template-category .js-product-table .yamuna-plp-price-row,
+body.template-search .js-product-table .yamuna-plp-price-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+}
+body.template-category .js-product-table .item-price-container,
+body.template-search .js-product-table .item-price-container {
+  display: inline-flex;
+  margin: 0 !important;
+  align-items: center;
+  gap: 8px;
+}
+body.template-category .js-product-table .item-price,
+body.template-search .js-product-table .item-price {
+  color: #4a1d3a;
+  font-family: 'Roboto', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+body.template-category .js-product-table .item-installments,
+body.template-search .js-product-table .item-installments {
+  display: inline;
+  margin: 0;
+  color: #9e9e9e;
+  font-family: 'Dosis', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: normal;
+  white-space: nowrap;
+}
+body.template-category .yamuna-plp-item-actions,
+body.template-search .yamuna-plp-item-actions {
+  margin-top: auto;
+  padding: 18px 28px 24px;
+}
+body.template-category .yamuna-plp-item-actions form,
+body.template-search .yamuna-plp-item-actions form {
+  display: grid;
+  gap: 10px;
+}
+body.template-category .yamuna-plp-buy-one,
+body.template-category .yamuna-plp-buy-three,
+body.template-search .yamuna-plp-buy-one,
+body.template-search .yamuna-plp-buy-three {
+  display: flex;
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 18px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #238482;
+  border-radius: 24px;
+  background: #238482;
+  color: #fff;
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+}
+body.template-category .yamuna-plp-buy-three,
+body.template-search .yamuna-plp-buy-three {
+  background: #fff;
+  color: #238482;
+}
+body.template-category .yamuna-plp-buy-three span,
+body.template-category .yamuna-plp-buy-three-prefix,
+body.template-category .yamuna-plp-buy-three-price,
+body.template-search .yamuna-plp-buy-three span,
+body.template-search .yamuna-plp-buy-three-prefix,
+body.template-search .yamuna-plp-buy-three-price {
+  margin-left: 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+body.template-category .yamuna-plp-buy-one img,
+body.template-category .yamuna-plp-buy-three img,
+body.template-search .yamuna-plp-buy-one img,
+body.template-search .yamuna-plp-buy-three img {
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+}
+body.template-category .yamuna-plp-body .labels,
+body.template-search .yamuna-plp-body .labels {
+  top: 0 !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  display: flex !important;
+  width: calc(100% - 24px);
+  max-width: 300px;
+  margin: 0 !important;
+  align-items: flex-start;
+  justify-content: center !important;
+  z-index: 12 !important;
+  text-align: center !important;
+  pointer-events: none;
+}
+body.template-category .yamuna-plp-body .js-offer-label,
+body.template-category .yamuna-plp-body .label-accent.js-offer-label,
+body.template-search .yamuna-plp-body .js-offer-label,
+body.template-search .yamuna-plp-body .label-accent.js-offer-label {
+  position: relative;
+  display: flex !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 300px !important;
+  height: 40px !important;
+  margin: 0 auto !important;
+  padding: 0 24px !important;
+  align-items: center;
+  justify-content: center !important;
+  overflow: visible;
+  border-radius: 0 !important;
+  background-color: #e5c3da !important;
+  background-image: url('{{ "images/yamuna/offer-ribbon.svg" | static_url }}') !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-size: 100% 100% !important;
+  color: #a31460 !important;
+  font-family: 'Dosis', sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.02em;
+  text-align: center !important;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+body.template-category .yamuna-plp-body .label-circle,
+body.template-search .yamuna-plp-body .label-circle {
+  width: 100% !important;
+  height: 40px !important;
+  border-radius: 0 !important;
+  line-height: 1 !important;
+}
+body.template-category .yamuna-plp-body .yamuna-hide-offer .js-offer-label,
+body.template-search .yamuna-plp-body .yamuna-hide-offer .js-offer-label,
+body.template-category .yamuna-plp-body .js-offer-label.yamuna-offer-zero,
+body.template-category .yamuna-plp-body .js-offer-label.d-none,
+body.template-search .yamuna-plp-body .js-offer-label.yamuna-offer-zero,
+body.template-search .yamuna-plp-body .js-offer-label.d-none {
+  display: none !important;
+  visibility: hidden !important;
+}
+body .item-product .labels .label-accent:has(.font-smallest) {
+  display: none !important;
+  visibility: hidden !important;
+}
+@media (max-width: 1023px) {
+  body.template-category .js-product-table > .js-item-product,
+  body.template-search .js-product-table > .js-item-product {
+    flex-basis: 50%;
+    width: 50%;
+    max-width: 50%;
+    padding: 0 8px 16px;
+  }
+  body.template-category .js-product-table,
+  body.template-search .js-product-table {
+    margin-right: -8px;
+    margin-left: -8px;
+  }
+  body.template-category .js-product-table .item-product,
+  body.template-search .js-product-table .item-product {
+    min-height: 430px;
+  }
+  body.template-category .js-product-table .item-image,
+  body.template-search .js-product-table .item-image {
+    width: calc(100% - 24px);
+    height: 190px;
+    margin: 12px 12px 0;
+  }
+  body.template-category .js-product-table .item-description,
+  body.template-search .js-product-table .item-description {
+    padding: 8px 12px 0 !important;
+  }
+  body.template-category .js-product-table .item-name,
+  body.template-search .js-product-table .item-name {
+    font-size: 16px;
+  }
+  body.template-category .js-product-table .item-price,
+  body.template-search .js-product-table .item-price {
+    font-size: 20px;
+  }
+  body.template-category .yamuna-plp-item-actions,
+  body.template-search .yamuna-plp-item-actions {
+    padding: 14px 16px 16px;
+  }
+  body.template-category .yamuna-plp-body .labels,
+  body.template-search .yamuna-plp-body .labels {
+    width: calc(100% - 16px);
+    max-width: 260px;
+  }
+  body.template-category .yamuna-plp-body .js-offer-label,
+  body.template-search .yamuna-plp-body .js-offer-label {
+    height: 36px !important;
+    font-size: 16px !important;
+  }
+}
 
