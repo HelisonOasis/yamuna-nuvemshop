@@ -553,3 +553,5 @@
 	{% include 'snipplets/home/home-popup.tpl' %}
 {% endif %}
 
+{% include 'snipplets/home/home-migration-popup.tpl' %}
+
