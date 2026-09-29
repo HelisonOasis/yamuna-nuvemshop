@@ -97,7 +97,7 @@
 											{% if slide.desktop == 'images/yamuna/hero/desktop/05-casa-sustentavel-desktop.png' %}{% set slide_image = 'images/yamuna/hero/desktop/05-casa-sustentavel-desktop.webp' | static_url %}{% endif %}
 											{% endif %}
 											<img
-												{% if not apply_lazy_load %}fetchpriority="high"{% endif %}
+														{% if not apply_lazy_load and loop.first %}fetchpriority="high"{% endif %}
 												src="{% if apply_lazy_load %}data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=={% else %}{{ slide_image }}{% endif %}"
 												{% if apply_lazy_load %}data-src="{{ slide_image }}"{% endif %}
 												class="slider-image {% if apply_lazy_load %}swiper-lazy fade-in{% endif %}{% if has_auto_height_slider %} d-block{% endif %}"
@@ -111,7 +111,7 @@
 												{% set slide_src = slide_image | settings_image_url('large') %}
 											{% endif %}
 											<img
-												{% if not apply_lazy_load %}fetchpriority="high"{% endif %}
+														{% if not apply_lazy_load and loop.first %}fetchpriority="high"{% endif %}
 												{% if slide.width and slide.height %} width="{{ slide.width }}" height="{{ slide.height }}" {% endif %}
 												{% if apply_lazy_load %}data-{% endif %}src="{{ slide_src }}"
 												{% if apply_lazy_load %}data-{% endif %}srcset="{% if use_smaller_thumbs %}{{ slide_image | settings_image_url('large') }} 480w, {{ slide_image | settings_image_url('huge') }} 640w, {% endif %}{{ slide_image | settings_image_url('original') }} 1024w, {{ slide_image | settings_image_url('1080p') }} 1920w"
