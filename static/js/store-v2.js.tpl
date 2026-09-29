@@ -898,7 +898,7 @@ DOMContentLoaded.addEventOrExecute(() => {
          */
         function createHomeSwiperWhenVisible(selector, swiperParams, callback, rootMargin) {
             var initialized = false;
-            var margin = rootMargin || '500px 0px';
+            var margin = rootMargin || '800px 0px';
 
             function init() {
                 if (initialized) return;
