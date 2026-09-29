@@ -24,6 +24,37 @@
     background-color: #fff !important;
   }
 
+  /* Keep the first product rail stable while Swiper is being initialized. */
+  @media (max-width: 767px) {
+    body.template-home [data-store^="home-products-"].section-featured-home .js-swiper-featured:not(.swiper-container-initialized) .swiper-slide {
+      width: 100% !important;
+      flex: 0 0 100% !important;
+    }
+    body.template-home [data-store^="home-products-"].section-featured-home .js-swiper-featured:not(.swiper-container-initialized) {
+      overflow: hidden !important;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1199px) {
+    body.template-home [data-store^="home-products-"].section-featured-home .js-swiper-featured:not(.swiper-container-initialized) .swiper-slide {
+      width: 50% !important;
+      flex: 0 0 50% !important;
+    }
+    body.template-home [data-store^="home-products-"].section-featured-home .js-swiper-featured:not(.swiper-container-initialized) {
+      overflow: hidden !important;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    body.template-home [data-store^="home-products-"].section-featured-home .js-swiper-featured:not(.swiper-container-initialized) .swiper-slide {
+      width: 33.333333% !important;
+      flex: 0 0 33.333333% !important;
+    }
+    body.template-home [data-store^="home-products-"].section-featured-home .js-swiper-featured:not(.swiper-container-initialized) {
+      overflow: hidden !important;
+    }
+  }
+
 {# Mobile only — mirror desktop: cream band + benefits wash. #}
 @media (max-width: 767px) {
   body.template-home .js-home-sections-container,

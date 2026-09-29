@@ -6,6 +6,7 @@
 		'blog/blog-post-item', {
 			image_lazy: true,
 			image_lazy_js: true,
+			image_data_expand: '600',
 			post_item_classes: {
 				item: 'yamuna-blog-card-inner',
 				image_container: 'yamuna-blog-card-image',

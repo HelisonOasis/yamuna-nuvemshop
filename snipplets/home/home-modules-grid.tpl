@@ -37,10 +37,7 @@
 							<div class="row no-gutters align-items-center">
 								<div class="js-textbanner-image-container textbanner-image position-relative {{ banner_size_classes }} col-md-6 overflow-none {% if settings.theme_rounded %}box-rounded{% endif %}">
 									
-									{% set apply_lazy_load = 
-										settings.home_order_position_0 != 'modules' 
-										or not loop.first
-									%}
+									{% set apply_lazy_load = false %}
 
 									{% if apply_lazy_load %}
 										{% set slide_src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' %}

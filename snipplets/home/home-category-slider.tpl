@@ -5,47 +5,47 @@
     <div class="yamuna-category-slider-desktop-list">
       <div class="yamuna-category-slider-desktop-track">
       <a class="yamuna-category-slider-desktop-item" href="{{ '/leites-vegetais' | setting_url }}">
-        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-leites-vegetais.png' | static_url }}" alt="Leites vegetais" loading="lazy"></span>
+        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-leites-vegetais.webp' | static_url }}" alt="Leites vegetais"></span>
         <span>Leites vegetais</span>
       </a>
       <a class="yamuna-category-slider-desktop-item" href="{{ '/kits-presentes' | setting_url }}">
-        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-kits-presentes.png' | static_url }}" alt="Kits e presentes" loading="lazy"></span>
+        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-kits-presentes.webp' | static_url }}" alt="Kits e presentes"></span>
         <span>Kits e presentes</span>
       </a>
       <a class="yamuna-category-slider-desktop-item" href="{{ '/manteiga-ghee' | setting_url }}">
-        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-manteiga-ghee.png' | static_url }}" alt="Manteiga ghee" loading="lazy"></span>
+        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-manteiga-ghee.webp' | static_url }}" alt="Manteiga ghee"></span>
         <span>Manteiga ghee</span>
       </a>
       <a class="yamuna-category-slider-desktop-item" href="{{ '/cremes-de-castanhas' | setting_url }}">
-        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-cremes-de-castanhas.png' | static_url }}" alt="Cremes de castanhas" loading="lazy"></span>
+        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-cremes-de-castanhas.webp' | static_url }}" alt="Cremes de castanhas"></span>
         <span>Cremes de castanhas</span>
       </a>
       <a class="yamuna-category-slider-desktop-item" href="{{ '/alimentos-de-coco' | setting_url }}">
-        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-alimentos-de-coco.png' | static_url }}" alt="Alimentos de coco" loading="lazy"></span>
+        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-alimentos-de-coco.webp' | static_url }}" alt="Alimentos de coco"></span>
         <span>Alimentos de coco</span>
       </a>
       <a class="yamuna-category-slider-desktop-item" href="{{ '/shampoos-e-condicionadores-naturais' | setting_url }}">
-        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-shampoo-condicionador.png' | static_url }}" alt="Shampoo e condicionador em barra" loading="lazy"></span>
+        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-shampoo-condicionador.webp' | static_url }}" alt="Shampoo e condicionador em barra"></span>
         <span>Shampoo e condicionador em barra</span>
       </a>
       <a class="yamuna-category-slider-desktop-item" href="{{ '/chocolates-e-cacau' | setting_url }}">
-        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-chocolates-cacau.png' | static_url }}" alt="Chocolates e cacau" loading="lazy"></span>
+        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-chocolates-cacau.webp' | static_url }}" alt="Chocolates e cacau"></span>
         <span>Chocolates e cacau</span>
       </a>
       <a class="yamuna-category-slider-desktop-item" href="{{ '/sabonetes-naturais' | setting_url }}">
-        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-sabonetes-naturais.png' | static_url }}" alt="Sabonetes naturais" loading="lazy"></span>
+        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-sabonetes-naturais.webp' | static_url }}" alt="Sabonetes naturais"></span>
         <span>Sabonetes naturais</span>
       </a>
       <a class="yamuna-category-slider-desktop-item" href="{{ '/temperos-e-massalas' | setting_url }}">
-        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-temperos-massalas.png' | static_url }}" alt="Temperos e massalas" loading="lazy"></span>
+        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-temperos-massalas.webp' | static_url }}" alt="Temperos e massalas"></span>
         <span>Temperos e massalas</span>
       </a>
       <a class="yamuna-category-slider-desktop-item" href="{{ '/oleos-corporais' | setting_url }}">
-        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-oleos-corporais.png' | static_url }}" alt="Óleos corporais" loading="lazy"></span>
+        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-oleos-corporais.webp' | static_url }}" alt="Óleos corporais"></span>
         <span>Óleos corporais</span>
       </a>
       <a class="yamuna-category-slider-desktop-item" href="{{ '/nutraceuticos-capsulas' | setting_url }}">
-        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-nutraceuticos.png' | static_url }}" alt="Nutracêuticos" loading="lazy"></span>
+        <span class="yamuna-category-slider-desktop-image"><img src="{{ 'images/yamuna/category-slider/prod-nutraceuticos.webp' | static_url }}" alt="Nutracêuticos"></span>
         <span>Nutracêuticos</span>
       </a>
       </div>
@@ -61,47 +61,47 @@
     <div class="yamuna-category-slider-list swiper-container" id="home-category-slider">
       <div class="yamuna-category-slider-track swiper-wrapper">
       <a class="yamuna-category-slider-item swiper-slide" href="{{ '/leites-vegetais' | setting_url }}">
-        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-leites-vegetais.png' | static_url }}" alt="Leites vegetais" loading="lazy"></span>
+        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-leites-vegetais.webp' | static_url }}" alt="Leites vegetais"></span>
         <span>Leites vegetais</span>
       </a>
       <a class="yamuna-category-slider-item swiper-slide" href="{{ '/kits-presentes' | setting_url }}">
-        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-kits-presentes.png' | static_url }}" alt="Kits e presentes" loading="lazy"></span>
+        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-kits-presentes.webp' | static_url }}" alt="Kits e presentes"></span>
         <span>Kits e presentes</span>
       </a>
       <a class="yamuna-category-slider-item swiper-slide" href="{{ '/manteiga-ghee' | setting_url }}">
-        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-manteiga-ghee.png' | static_url }}" alt="Manteiga ghee" loading="lazy"></span>
+        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-manteiga-ghee.webp' | static_url }}" alt="Manteiga ghee"></span>
         <span>Manteiga ghee</span>
       </a>
       <a class="yamuna-category-slider-item swiper-slide" href="{{ '/cremes-de-castanhas' | setting_url }}">
-        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-cremes-de-castanhas.png' | static_url }}" alt="Cremes de castanhas" loading="lazy"></span>
+        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-cremes-de-castanhas.webp' | static_url }}" alt="Cremes de castanhas"></span>
         <span>Cremes de castanhas</span>
       </a>
       <a class="yamuna-category-slider-item swiper-slide" href="{{ '/alimentos-de-coco' | setting_url }}">
-        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-alimentos-de-coco.png' | static_url }}" alt="Alimentos de coco" loading="lazy"></span>
+        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-alimentos-de-coco.webp' | static_url }}" alt="Alimentos de coco"></span>
         <span>Alimentos de coco</span>
       </a>
       <a class="yamuna-category-slider-item swiper-slide" href="{{ '/shampoos-e-condicionadores-naturais' | setting_url }}">
-        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-shampoo-condicionador.png' | static_url }}" alt="Shampoo e condicionador em barra" loading="lazy"></span>
+        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-shampoo-condicionador.webp' | static_url }}" alt="Shampoo e condicionador em barra"></span>
         <span>Shampoo e condicionador em barra</span>
       </a>
       <a class="yamuna-category-slider-item swiper-slide" href="{{ '/chocolates-e-cacau' | setting_url }}">
-        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-chocolates-cacau.png' | static_url }}" alt="Chocolates e cacau" loading="lazy"></span>
+        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-chocolates-cacau.webp' | static_url }}" alt="Chocolates e cacau"></span>
         <span>Chocolates e cacau</span>
       </a>
       <a class="yamuna-category-slider-item swiper-slide" href="{{ '/sabonetes-naturais' | setting_url }}">
-        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-sabonetes-naturais.png' | static_url }}" alt="Sabonetes naturais" loading="lazy"></span>
+        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-sabonetes-naturais.webp' | static_url }}" alt="Sabonetes naturais"></span>
         <span>Sabonetes naturais</span>
       </a>
       <a class="yamuna-category-slider-item swiper-slide" href="{{ '/temperos-e-massalas' | setting_url }}">
-        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-temperos-massalas.png' | static_url }}" alt="Temperos e massalas" loading="lazy"></span>
+        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-temperos-massalas.webp' | static_url }}" alt="Temperos e massalas"></span>
         <span>Temperos e massalas</span>
       </a>
       <a class="yamuna-category-slider-item swiper-slide" href="{{ '/oleos-corporais' | setting_url }}">
-        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-oleos-corporais.png' | static_url }}" alt="Óleos corporais" loading="lazy"></span>
+        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-oleos-corporais.webp' | static_url }}" alt="Óleos corporais"></span>
         <span>Óleos corporais</span>
       </a>
       <a class="yamuna-category-slider-item swiper-slide" href="{{ '/nutraceuticos-capsulas' | setting_url }}">
-        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-nutraceuticos.png' | static_url }}" alt="Nutracêuticos" loading="lazy"></span>
+        <span class="yamuna-category-slider-image"><img src="{{ 'images/yamuna/category-slider/prod-nutraceuticos.webp' | static_url }}" alt="Nutracêuticos"></span>
         <span>Nutracêuticos</span>
       </a>
       </div>

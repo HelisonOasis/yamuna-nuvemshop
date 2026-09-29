@@ -31,10 +31,7 @@
                 {% set priority_assigned = true %}
             {% endif %}
 
-            {% set apply_lazy_load = 
-                not section_first 
-                or not has_priority
-            %}
+            {% set apply_lazy_load = false %}
 
             {% if apply_lazy_load %}
                 {% set banner_src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' %}

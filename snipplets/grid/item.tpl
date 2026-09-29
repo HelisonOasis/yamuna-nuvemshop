@@ -16,6 +16,7 @@
 {% set is_cart_reco_spot = is_cart_reco_spot | default(false) %}
 {% set is_blog_related_spot = is_blog_related_spot | default(false) %}
 {% set is_home_product_spot = (template == 'home' and section_name in ['primary', 'new', 'sale', 'empty-related']) or (slide_item and section_name in ['primary', 'new', 'sale', 'empty-related']) %}
+{% set is_home_featured_priority = is_home_product_spot and section_name == 'primary' %}
 {% set is_yamuna_spot_card = is_home_product_spot or is_pdp_related_spot or is_cart_reco_spot %}
 {% set spot_ns = is_pdp_related_spot ? 'yamuna-pdp-spot' : (is_cart_reco_spot ? 'yamuna-pdp-spot' : 'yamuna-home-spot') %}
 {% set spot_qty_class = is_pdp_related_spot or is_cart_reco_spot ? 'js-pdp-spot-add-quantity' : 'js-home-spot-add-quantity' %}
@@ -68,12 +69,12 @@
 
         {# Cart reco: skip img-absolute-centered — theme translateX(-50%) clips/shifts jars when left:0 is forced #}
         {% if is_cart_reco_spot %}
-            {% set image_classes = 'js-item-image lazyautosizes ' ~ (not image_priority_high ? 'lazyload') ~ ' fade-in img-absolute' %}
+            {% set image_classes = 'js-item-image lazyautosizes ' ~ (not image_priority_high and not is_home_featured_priority ? 'lazyload') ~ ' fade-in img-absolute' %}
         {% else %}
-            {% set image_classes = 'js-item-image lazyautosizes ' ~ (not image_priority_high ? 'lazyload') ~ ' fade-in img-absolute img-absolute-centered' %}
+            {% set image_classes = 'js-item-image lazyautosizes ' ~ (not image_priority_high and not is_home_featured_priority ? 'lazyload') ~ ' fade-in img-absolute img-absolute-centered' %}
         {% endif %}
             
-        {% set data_expand = show_image_slider ? '50' : '-10' %}
+{% set data_expand = is_home_product_spot ? '600' : (show_image_slider ? '50' : '-10') %}
             
         {% set floating_elements %}
 
@@ -115,8 +116,8 @@
 
         {{ component(
             'product-item-image', {
-                image_lazy: not is_cart_reco_spot,
-                image_lazy_js: not is_cart_reco_spot,
+                image_lazy: not is_cart_reco_spot and not is_home_featured_priority,
+                image_lazy_js: not is_cart_reco_spot and not is_home_featured_priority,
                 image_data_expand: data_expand,
                 image_secondary_data_sizes: 'auto',
                 secondary_image: show_secondary_image,
@@ -218,6 +219,9 @@
                             <span class="{{ spot_ns }}-payment-suffix">sem juros</span>
                         </div>
                     {% endif %}
+                {% elseif is_pdp_related_spot and product.display_price %}
+                    {# Keeps card height equal to siblings that show installments #}
+                    <div class="{{ spot_ns }}-payment {{ spot_ns }}-payment-placeholder" aria-hidden="true" style="visibility:hidden;">&nbsp;</div>
                 {% endif %}
 
                 {% if is_yamuna_spot_card and product.display_price %}

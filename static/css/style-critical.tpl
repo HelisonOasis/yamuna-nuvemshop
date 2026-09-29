@@ -1320,7 +1320,15 @@ p{
     overflow: hidden;
   }
 
-  .yamuna-header-logo-link,
+  .yamuna-header-logo-link {
+    display: flex !important;
+    width: 174px !important;
+    height: 62px !important;
+    max-width: 174px !important;
+    max-height: 62px !important;
+    align-items: center !important;
+  }
+
   .yamuna-header-logo-image {
     display: block !important;
     width: 174px !important;

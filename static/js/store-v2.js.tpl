@@ -580,6 +580,7 @@ DOMContentLoaded.addEventOrExecute(() => {
             window.location.hash = modal_url_hash;
         }
     };
+    window.modalOpen = modalOpen;
 
     jQueryNuvem(document).on("click", ".js-modal-open", function(e) {
         e.preventDefault();
@@ -889,6 +890,45 @@ DOMContentLoaded.addEventOrExecute(() => {
 	  #Sliders
 	==============================================================================*/ #}
 
+        /*
+         * Home performance: defer below-the-fold Swipers until they are near
+         * the viewport. The Hero remains eager because it is part of the
+         * first paint. The helper is idempotent so MutationObserver/resize
+         * activity cannot create duplicate instances.
+         */
+        function createHomeSwiperWhenVisible(selector, swiperParams, callback, rootMargin) {
+            var initialized = false;
+            var margin = rootMargin || '500px 0px';
+
+            function init() {
+                if (initialized) return;
+                var element = document.querySelector(selector);
+                if (!element || typeof Swiper === 'undefined') return;
+                initialized = true;
+                createSwiper(selector, swiperParams, callback);
+            }
+
+            var element = document.querySelector(selector);
+            if (!element) return;
+
+            if (!('IntersectionObserver' in window)) {
+                init();
+                return;
+            }
+
+            var observer = new IntersectionObserver(function(entries) {
+                for (var i = 0; i < entries.length; i++) {
+                    if (entries[i].isIntersecting || entries[i].intersectionRatio > 0) {
+                        observer.disconnect();
+                        init();
+                        break;
+                    }
+                }
+            }, { rootMargin: margin, threshold: 0 });
+
+            observer.observe(element);
+        }
+
 	{# Hide arrow controls when swiper is not swipable #}
 
 	hideSwiperControls = function(elemPrev, elemNext) {
@@ -914,19 +954,9 @@ DOMContentLoaded.addEventOrExecute(() => {
         var loopValue = true;
         var paginationClickableValue = true;
 
-        {# Yamuna hero uses custom banners (not settings.slider). Always loop when
-           there is more than one slide, and preload neighbors so the last slide
-           + loop clones do not stick on the lazy placeholder. #}
-        var homeHeroLazy = {
-            loadPrevNext: true,
-            loadPrevNextAmount: 2,
-            loadOnTransitionStart: true,
-        };
-
         createSwiper(
             '.js-home-slider', {
                 preloadImages: preloadImagesValue,
-                lazy: homeHeroLazy,
                 watchSlidesVisibility: true,
                 loop: document.querySelectorAll('.js-home-slider > .swiper-wrapper > .swiper-slide').length > 1,
                 loopAdditionalSlides: 2,
@@ -944,14 +974,6 @@ DOMContentLoaded.addEventOrExecute(() => {
                     init: function () {
                         this.updateSize();
                         this.updateSlides();
-                        if (this.lazy && typeof this.lazy.load === 'function') {
-                            try { this.lazy.load(); } catch (e) {}
-                        }
-                    },
-                    slideChangeTransitionStart: function () {
-                        if (this.lazy && typeof this.lazy.load === 'function') {
-                            try { this.lazy.load(); } catch (e) {}
-                        }
                     },
                     resize: function () {
                         this.updateSize();
@@ -967,7 +989,6 @@ DOMContentLoaded.addEventOrExecute(() => {
         createSwiper(
             '.js-home-slider-mobile', {
                 preloadImages: preloadImagesValue,
-                lazy: homeHeroLazy,
                 watchSlidesVisibility: true,
                 loop: document.querySelectorAll('.js-home-slider-mobile > .swiper-wrapper > .swiper-slide').length > 1,
                 loopAdditionalSlides: 2,
@@ -980,18 +1001,6 @@ DOMContentLoaded.addEventOrExecute(() => {
                 navigation: {
                     nextEl: '.js-swiper-home-next-mobile',
                     prevEl: '.js-swiper-home-prev-mobile',
-                },
-                on: {
-                    init: function () {
-                        if (this.lazy && typeof this.lazy.load === 'function') {
-                            try { this.lazy.load(); } catch (e) {}
-                        }
-                    },
-                    slideChangeTransitionStart: function () {
-                        if (this.lazy && typeof this.lazy.load === 'function') {
-                            try { this.lazy.load(); } catch (e) {}
-                        }
-                    }
                 }
             },
             function(swiperInstance) {
@@ -1007,7 +1016,7 @@ DOMContentLoaded.addEventOrExecute(() => {
 
         {% if settings.module and settings.module is not empty %}
 
-            createSwiper('.js-swiper-modules', {
+            createHomeSwiperWhenVisible('.js-swiper-modules', {
                 lazy: true,
                 watchOverflow: true,
                 threshold: 5,
@@ -1059,7 +1068,6 @@ DOMContentLoaded.addEventOrExecute(() => {
 
         {% if has_featured_products_slider or has_new_products_slider or has_sale_products_slider %}
 
-            var lazyVal = true;
             var watchOverflowVal = true;
             var centerInsufficientSlidesVal = true;
             var slidesPerViewDesktopVal = 3;
@@ -1068,8 +1076,9 @@ DOMContentLoaded.addEventOrExecute(() => {
 
             {% if has_featured_products_slider %}
 
+                /* Keep the first product rail eager so its desktop 3-card
+                   layout is established before the user sees the section. */
                 createSwiper('.js-swiper-featured', {
-                    lazy: lazyVal,
                     watchOverflow: watchOverflowVal,
                     centerInsufficientSlides: centerInsufficientSlidesVal,
                     threshold: 5,
@@ -1105,8 +1114,7 @@ DOMContentLoaded.addEventOrExecute(() => {
 
             {% if has_new_products_slider %}
 
-                createSwiper('.js-swiper-new', {
-                    lazy: lazyVal,
+                createHomeSwiperWhenVisible('.js-swiper-new', {
                     watchOverflow: watchOverflowVal,
                     centerInsufficientSlides: centerInsufficientSlidesVal,
                     threshold: 5,
@@ -1142,8 +1150,7 @@ DOMContentLoaded.addEventOrExecute(() => {
 
             {% if has_sale_products_slider %}
 
-                createSwiper('.js-swiper-sale', {
-                    lazy: lazyVal,
+                createHomeSwiperWhenVisible('.js-swiper-sale', {
                     watchOverflow: watchOverflowVal,
                     centerInsufficientSlides: centerInsufficientSlidesVal,
                     threshold: 5,
@@ -1182,8 +1189,7 @@ DOMContentLoaded.addEventOrExecute(() => {
         {# /* // Home demo products slider */ #}
 
         ['featured', 'sale', 'new'].forEach(setting => {
-            createSwiper(`.js-swiper-featured-demo-${setting}`, {
-                lazy: true,
+            createHomeSwiperWhenVisible(`.js-swiper-featured-demo-${setting}`, {
                 loop: true,
                 watchOverflow: true,
                 centerInsufficientSlides: true,
@@ -1202,7 +1208,7 @@ DOMContentLoaded.addEventOrExecute(() => {
 
         {# /* // Testimonials slider */ #}
 
-        createSwiper('.js-swiper-testimonials', {
+        createHomeSwiperWhenVisible('.js-swiper-testimonials', {
             loop: true,
             loopedSlides: 6,
             loopAdditionalSlides: 6,
@@ -1428,7 +1434,7 @@ DOMContentLoaded.addEventOrExecute(() => {
 
         {# /* // Brands slider */ #}
 
-        createSwiper('.js-swiper-brands', {
+        createHomeSwiperWhenVisible('.js-swiper-brands', {
             lazy: true,
             {% if settings.brands | length > 4 %}
                 loop: true,
@@ -1889,7 +1895,7 @@ DOMContentLoaded.addEventOrExecute(() => {
                 disableOnInteraction: false,
                 pauseOnMouseEnter: true,
             };
-            createSwiper('.js-informative-banners', {
+            createHomeSwiperWhenVisible('.js-informative-banners', {
                 slidesPerView: 1,
                 speed: 500,
                 loop: true,
@@ -3276,6 +3282,12 @@ DOMContentLoaded.addEventOrExecute(() => {
                 if (window.yamunaShowCartToast) {
                     window.yamunaShowCartToast(toastQuantity);
                 }
+                {# Cenário 044: open minicart via navbar sacola trigger after successful add. #}
+                setTimeout(function() {
+                    if (window.yamunaAutoOpenCart) {
+                        window.yamunaAutoOpenCart();
+                    }
+                }, 50);
             },
             function() {
                 button.disabled = false;
@@ -3545,36 +3557,16 @@ DOMContentLoaded.addEventOrExecute(() => {
 
                     let shouldShowCrossSellingModal = html_notification_cross_selling != null;
 
-                    if(!notificationWithRelatedProducts){
-
-                        const cartOpenType = jQueryNuvem("#modal-cart").attr('data-cart-open-type');
-
-                        if((cartOpenType === 'show_cart') && !shouldShowCrossSellingModal){
-
-                            {# Open cart on add to cart #}
-
-                            modalOpen('#modal-cart', 'openFullScreenWithoutClick');
-
-                        }else{
-
-                            {# Show notification and hide it only after second added to cart #}
-
-                            setTimeout(function(){
-                                jQueryNuvem(".js-alert-added-to-cart").show().addClass("notification-visible").removeClass("notification-hidden");
-                            },500);
-
-                            if (!cookieService.get('first_product_added_successfully')) {
-                                cookieService.set('first_product_added_successfully', 1, 7 );
-                            } else{
-                                setTimeout(function(){
-                                    jQueryNuvem(".js-alert-added-to-cart").removeClass("notification-visible").addClass("notification-hidden");
-                                    setTimeout(function(){
-                                        jQueryNuvem('.js-cart-notification-item-img').attr('src', '');
-                                        jQueryNuvem(".js-alert-added-to-cart").hide();
-                                    },2000);
-                                },8000);
+                    {# Cenário 044: recommendations must not prevent the minicart from opening.
+                       Cross-selling remains the only modal that takes precedence. #}
+                    if(!shouldShowCrossSellingModal){
+                        setTimeout(function() {
+                            if (window.yamunaAutoOpenCart) {
+                                window.yamunaAutoOpenCart();
+                            } else if (!jQueryNuvem('#modal-cart').hasClass('modal-show')) {
+                                modalOpen('#modal-cart', 'openFullScreenWithoutClick');
                             }
-                        }
+                        }, 50);
                     }
 
                     {# Display cross-selling promotion modal #}

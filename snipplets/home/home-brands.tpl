@@ -11,7 +11,7 @@
 				                	{% if slide.link %}
 				                		<a href="{{ slide.link | setting_url }}" title="{{ 'Marca {1} de' | translate(loop.index) }} {{ store.name }}" aria-label="{{ 'Marca {1} de' | translate(loop.index) }} {{ store.name }}">
 				                	{% endif %}
-				                		<img src="{{ 'images/empty-placeholder.png' | static_url }}" data-src="{{ slide_image | settings_image_url('large') }}" class="lazyload brand-image" alt="{{ 'Marca {1} de' | translate(loop.index) }} {{ store.name }}">
+									<img src="{{ slide_image | settings_image_url('large') }}" class="brand-image" alt="{{ 'Marca {1} de' | translate(loop.index) }} {{ store.name }}">
 						            {% if slide.link %}
 						            	</a>
 						            {% endif %}

@@ -61,16 +61,40 @@
 
 									{% if use_yamuna_prod_hero %}
 										{# First + last slides stay eager so loop clones never stick on the GIF placeholder. #}
-										{% set apply_lazy_load = not loop.first and not loop.last %}
+										{% set apply_lazy_load = false %}
 									{% else %}
-										{% set apply_lazy_load = settings.home_order_position_0 != 'slider' or not loop.first %}
+										{% set apply_lazy_load = false %}
 									{% endif %}
 
 										{% if use_yamuna_prod_hero %}
 											{% if mobile %}
 												{% set slide_image = slide.mobile | static_url %}
+											{% if slide.mobile == 'images/yamuna/hero/mobile/01-kit-degustacao-mobile.jpg' %}{% set slide_image = 'images/yamuna/hero/mobile/01-kit-degustacao-mobile.webp' | static_url %}{% endif %}
+											{% if slide.mobile == 'images/yamuna/hero/mobile/06-leites-concentrados-mobile.jpg' %}{% set slide_image = 'images/yamuna/hero/mobile/06-leites-concentrados-mobile.webp' | static_url %}{% endif %}
+											{% if slide.mobile == 'images/yamuna/hero/mobile/07-cafes-especiais-mobile.jpg' %}{% set slide_image = 'images/yamuna/hero/mobile/07-cafes-especiais-mobile.webp' | static_url %}{% endif %}
+											{% if slide.mobile == 'images/yamuna/hero/mobile/08-sabonetes-vegetal-mobile.jpg' %}{% set slide_image = 'images/yamuna/hero/mobile/08-sabonetes-vegetal-mobile.webp' | static_url %}{% endif %}
+											{% if slide.mobile == 'images/yamuna/hero/mobile/09-manteiga-ghee-mobile.jpg' %}{% set slide_image = 'images/yamuna/hero/mobile/09-manteiga-ghee-mobile.webp' | static_url %}{% endif %}
+											{% if slide.mobile == 'images/yamuna/hero/mobile/02-chocolates-yamuna-mobile.jpg' %}{% set slide_image = 'images/yamuna/hero/mobile/02-chocolates-yamuna-mobile.webp' | static_url %}{% endif %}
+											{% if slide.mobile == 'images/yamuna/hero/mobile/05-casa-sustentavel-mobile.jpg' %}{% set slide_image = 'images/yamuna/hero/mobile/05-casa-sustentavel-mobile.webp' | static_url %}{% endif %}
+											{% if slide.mobile == 'images/yamuna/hero/mobile/03-tahines-mobile.jpg' %}{% set slide_image = 'images/yamuna/hero/mobile/03-tahines-mobile.webp' | static_url %}{% endif %}
+											{% if slide.mobile == 'images/yamuna/hero/mobile/04-temperos-e-massalas-mobile.jpg' %}{% set slide_image = 'images/yamuna/hero/mobile/04-temperos-e-massalas-mobile.webp' | static_url %}{% endif %}
+											{% if slide.mobile == 'images/yamuna/hero/mobile/11-golden-milk-blend-mobile.png' %}{% set slide_image = 'images/yamuna/hero/mobile/11-golden-milk-blend-mobile.webp' | static_url %}{% endif %}
+											{% if slide.mobile == 'images/yamuna/hero/mobile/12-creme-de-castanhas-mobile.png' %}{% set slide_image = 'images/yamuna/hero/mobile/12-creme-de-castanhas-mobile.webp' | static_url %}{% endif %}
+											{% if slide.mobile == 'images/yamuna/hero/mobile/10-leite-coco-po-mobile.jpg' %}{% set slide_image = 'images/yamuna/hero/mobile/10-leite-coco-po-mobile.webp' | static_url %}{% endif %}
 											{% else %}
 												{% set slide_image = slide.desktop | static_url %}
+											{% if slide.desktop == 'images/yamuna/hero/desktop/01-kit-degustacao-desktop.jpg' %}{% set slide_image = 'images/yamuna/hero/desktop/01-kit-degustacao-desktop.webp' | static_url %}{% endif %}
+											{% if slide.desktop == 'images/yamuna/hero/desktop/02-chocolates-yamuna-desktop.jpg' %}{% set slide_image = 'images/yamuna/hero/desktop/02-chocolates-yamuna-desktop.webp' | static_url %}{% endif %}
+											{% if slide.desktop == 'images/yamuna/hero/desktop/06-leites-concentrados-desktop.jpg' %}{% set slide_image = 'images/yamuna/hero/desktop/06-leites-concentrados-desktop.webp' | static_url %}{% endif %}
+											{% if slide.desktop == 'images/yamuna/hero/desktop/07-cafes-especiais-desktop.jpg' %}{% set slide_image = 'images/yamuna/hero/desktop/07-cafes-especiais-desktop.webp' | static_url %}{% endif %}
+											{% if slide.desktop == 'images/yamuna/hero/desktop/09-manteiga-ghee-desktop.jpg' %}{% set slide_image = 'images/yamuna/hero/desktop/09-manteiga-ghee-desktop.webp' | static_url %}{% endif %}
+											{% if slide.desktop == 'images/yamuna/hero/desktop/03-tahines-desktop.jpg' %}{% set slide_image = 'images/yamuna/hero/desktop/03-tahines-desktop.webp' | static_url %}{% endif %}
+											{% if slide.desktop == 'images/yamuna/hero/desktop/08-sabonetes-vegetal-desktop.jpg' %}{% set slide_image = 'images/yamuna/hero/desktop/08-sabonetes-vegetal-desktop.webp' | static_url %}{% endif %}
+											{% if slide.desktop == 'images/yamuna/hero/desktop/10-leite-coco-po-desktop.jpg' %}{% set slide_image = 'images/yamuna/hero/desktop/10-leite-coco-po-desktop.webp' | static_url %}{% endif %}
+											{% if slide.desktop == 'images/yamuna/hero/desktop/04-temperos-e-massalas-desktop.jpg' %}{% set slide_image = 'images/yamuna/hero/desktop/04-temperos-e-massalas-desktop.webp' | static_url %}{% endif %}
+											{% if slide.desktop == 'images/yamuna/hero/desktop/11-golden-milk-blend-desktop.jpg' %}{% set slide_image = 'images/yamuna/hero/desktop/11-golden-milk-blend-desktop.webp' | static_url %}{% endif %}
+											{% if slide.desktop == 'images/yamuna/hero/desktop/12-creme-de-castanhas-desktop.jpg' %}{% set slide_image = 'images/yamuna/hero/desktop/12-creme-de-castanhas-desktop.webp' | static_url %}{% endif %}
+											{% if slide.desktop == 'images/yamuna/hero/desktop/05-casa-sustentavel-desktop.png' %}{% set slide_image = 'images/yamuna/hero/desktop/05-casa-sustentavel-desktop.webp' | static_url %}{% endif %}
 											{% endif %}
 											<img
 												{% if not apply_lazy_load %}fetchpriority="high"{% endif %}

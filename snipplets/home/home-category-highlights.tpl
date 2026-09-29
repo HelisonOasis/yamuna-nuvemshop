@@ -12,7 +12,7 @@
         {% set highlight_url = attribute(settings, highlight ~ '_url') %}
         {% if highlight_show and highlight_image %}
           <a class="yamuna-category-highlight" href="{{ highlight_url ? highlight_url | setting_url : '#' }}"{% if highlight_title %} aria-label="{{ highlight_title }}"{% endif %}>
-            <img src="{{ (highlight ~ '.jpg') | static_url | settings_image_url('large') }}" alt="{{ highlight_title | default('Destaque Yamuna') }}" loading="lazy">
+            <img src="{{ (highlight ~ '.jpg') | static_url | settings_image_url('large') }}" alt="{{ highlight_title | default('Destaque Yamuna') }}">
             <span class="yamuna-category-highlight-caption">
               <strong>{{ highlight_title | default('Ver mais') }}</strong>
               <span>Ver mais <b>→</b></span>
