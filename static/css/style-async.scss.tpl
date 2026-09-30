@@ -37137,3 +37137,11 @@ body[class] #modal-cart .yamuna-minicart-totals-row.js-shipping-cost-table .yamu
   margin-left: auto !important;
   text-align: right !important;
 }
+
+/* 094 - Minicart: espacamento entre opcoes de frete via gap do container. */
+body[class] #modal-cart .js-shipping-calculator-response .list-unstyled,
+body[class] #modal-cart .js-shipping-calculator-response ul {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}

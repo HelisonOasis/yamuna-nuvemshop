@@ -10,8 +10,102 @@
 
 <header class="js-head-main head-main head-{{ settings.head_background }} {% if settings.head_fix %}head-fix{% endif %} transition-soft {{ logo_desktop_class }}" data-store="head">
 
-    {# Desktop navigation — Figma node 845:5824. The native controls below
-       remain available for tablet and mobile. #}
+    <style id="yamuna-header-logo-c083">
+      @media (min-width: 1024px) {
+        html body[class] .head-main .yamuna-header-desktop-logo,
+        html.yamuna-header-scrolled body[class] .head-main .yamuna-header-desktop-logo,
+        html body.template-home .head-main .yamuna-header-desktop-logo,
+        html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-desktop-logo {
+          position: absolute !important;
+          z-index: 5 !important;
+          top: 0 !important;
+          bottom: 0 !important;
+          height: 80px !important;
+          min-height: 80px !important;
+          max-height: 80px !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: flex-start !important;
+          padding: 0 !important;
+          margin: 0 !important;
+          overflow: visible !important;
+        }
+        html body[class] .head-main .yamuna-header-logo-link,
+        html.yamuna-header-scrolled body[class] .head-main .yamuna-header-logo-link,
+        html body.template-home .head-main .yamuna-header-logo-link,
+        html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-logo-link {
+          position: relative !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          width: 86px !important;
+          min-width: 86px !important;
+          max-width: 86px !important;
+          height: 80px !important;
+          min-height: 80px !important;
+          max-height: 80px !important;
+          padding: 0 !important;
+          margin: 0 !important;
+        }
+        html body[class] .head-main .yamuna-header-logo-image,
+        html.yamuna-header-scrolled body[class] .head-main .yamuna-header-logo-image,
+        html body.template-home .head-main .yamuna-header-logo-image,
+        html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-logo-image,
+        html body[class] .head-main .yamuna-header-logo-default,
+        html body[class] .head-main .yamuna-header-logo-scrolled,
+        html.yamuna-header-scrolled body[class] .head-main .yamuna-header-logo-default,
+        html.yamuna-header-scrolled body[class] .head-main .yamuna-header-logo-scrolled {
+          position: absolute !important;
+          top: 0 !important;
+          bottom: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          margin: auto !important;
+          width: 86px !important;
+          min-width: 0 !important;
+          max-width: 86px !important;
+          height: 60px !important;
+          max-height: 60px !important;
+          object-fit: contain !important;
+          object-position: center center !important;
+          transition: opacity 0.3s ease, transform 0.3s ease !important;
+          will-change: opacity, transform;
+        }
+        html body[class] .head-main .yamuna-header-logo-default,
+        html body[class] .head-main.compress .yamuna-header-logo-default,
+        html body.template-home .head-main .yamuna-header-logo-default {
+          opacity: 1 !important;
+          visibility: visible !important;
+          transform: scale(1) !important;
+          display: block !important;
+          pointer-events: auto !important;
+        }
+        html body[class] .head-main .yamuna-header-logo-scrolled,
+        html body[class] .head-main.compress .yamuna-header-logo-scrolled,
+        html body.template-home .head-main .yamuna-header-logo-scrolled {
+          opacity: 0 !important;
+          visibility: visible !important;
+          transform: scale(0.92) !important;
+          display: block !important;
+          pointer-events: none !important;
+        }
+        html.yamuna-header-scrolled body[class] .head-main .yamuna-header-logo-default,
+        html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-logo-default {
+          opacity: 0 !important;
+          visibility: visible !important;
+          transform: scale(0.92) !important;
+          pointer-events: none !important;
+        }
+        html.yamuna-header-scrolled body[class] .head-main .yamuna-header-logo-scrolled,
+        html.yamuna-header-scrolled body.template-home .head-main .yamuna-header-logo-scrolled {
+          opacity: 1 !important;
+          visibility: visible !important;
+          transform: scale(1) !important;
+          display: block !important;
+          pointer-events: auto !important;
+        }
+      }
+    </style>
     <div class="yamuna-header-desktop d-none">
         <div class="yamuna-header-desktop-logo">
             <a class="yamuna-header-logo-link" href="{{ store.url }}" aria-label="{{ store.name }}">
@@ -601,20 +695,32 @@
       }).observe(menu, { attributes: true, attributeFilter: ['class'] });
     })();
 
-    // Auto-open desktop cart dropdown on add to cart
+    // Cenário 044: auto-open minicart by firing the same navbar sacola trigger.
     window.yamunaAutoOpenCart = function() {
-      var header = document.querySelector('.head-main .yamuna-header-desktop');
-      if (header && !header.classList.contains('yamuna-cart-dropdown-open')) {
-        header.classList.add('yamuna-cart-dropdown-open');
-      }
       var cartModal = document.getElementById('modal-cart');
-      if (cartModal) {
+      if (cartModal && cartModal.classList.contains('modal-show')) {
+        return;
+      }
+
+      var trigger = document.querySelector('.yamuna-header-desktop .js-toggle-cart[data-toggle="#modal-cart"]')
+        || document.querySelector('.yamuna-header-mobile .js-toggle-cart[data-toggle="#modal-cart"]')
+        || document.querySelector('.js-toggle-cart[data-toggle="#modal-cart"]')
+        || document.querySelector('.js-modal-open[data-toggle="#modal-cart"]');
+
+      if (trigger) {
+        try {
+          trigger.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        } catch (err) {
+          trigger.click();
+        }
+        return;
+      }
+
+      if (typeof window.modalOpen === 'function') {
+        window.modalOpen('#modal-cart', 'openFullScreenWithoutClick');
+      } else if (cartModal) {
         cartModal.style.removeProperty('display');
         cartModal.classList.add('modal-show');
-      }
-      if (window.innerWidth >= 1024 && !document.querySelector('.js-modal.modal-show:not(#modal-cart)')) {
-        var overlay = document.querySelector('.js-modal-overlay[data-modal-id="#modal-cart"]');
-        if (overlay) overlay.style.display = 'none';
       }
     };
 

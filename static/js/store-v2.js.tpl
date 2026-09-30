@@ -3704,7 +3704,7 @@ DOMContentLoaded.addEventOrExecute(() => {
                 jQueryNuvem(".js-other-pickup-options, .js-show-other-pickup-options .js-shipping-see-less").show();
                 jQueryNuvem(".js-show-other-pickup-options .js-shipping-see-more").hide();
             } else {
-                jQueryNuvem(".js-other-shipping-options, .js-show-more-shipping-options .js-shipping-see-less").show();
+                jQueryNuvem(".js-other-shipping-options, .js-other-shipping-item, .js-show-more-shipping-options .js-shipping-see-less").show();
                 jQueryNuvem(".js-show-more-shipping-options .js-shipping-see-more").hide()
             }
         }
@@ -3852,7 +3852,7 @@ DOMContentLoaded.addEventOrExecute(() => {
             jQueryNuvem(".js-other-pickup-options").slideToggle(600);
             jQueryNuvem(".js-show-other-pickup-options .js-shipping-see-less, .js-show-other-pickup-options .js-shipping-see-more").toggle();
         }else{
-            jQueryNuvem(".js-other-shipping-options").slideToggle(600);
+            jQueryNuvem(".js-other-shipping-options, .js-other-shipping-item").slideToggle(600);
             jQueryNuvem(".js-show-more-shipping-options .js-shipping-see-less, .js-show-more-shipping-options .js-shipping-see-more").toggle();
         }
 	});

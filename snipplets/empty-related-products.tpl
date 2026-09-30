@@ -26,12 +26,12 @@
 				<div class="js-swiper-related-pagination swiper-pagination m-top"></div>
 			</div>
 			<button type="button" class="js-swiper-related-prev swiper-button-prev svg-circle svg-circle-big svg-icon-text{% if settings.icons_solid %} svg-solid{% endif %}" aria-label="Produto anterior">
-				<svg class="yamuna-product-arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+				<svg class="yamuna-product-arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"{% if template == '404' %} style="display:block!important;visibility:visible!important;width:24px!important;height:24px!important;opacity:1!important;"{% endif %}>
 					<polyline points="15 6 9 12 15 18" fill="none" stroke="currentColor" stroke-width="3.25" stroke-linecap="round" stroke-linejoin="round"/>
 				</svg>
 			</button>
 			<button type="button" class="js-swiper-related-next swiper-button-next svg-circle svg-circle-big svg-icon-text{% if settings.icons_solid %} svg-solid{% endif %}" aria-label="Próximo produto">
-				<svg class="yamuna-product-arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+				<svg class="yamuna-product-arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"{% if template == '404' %} style="display:block!important;visibility:visible!important;width:24px!important;height:24px!important;opacity:1!important;"{% endif %}>
 					<polyline points="9 6 15 12 9 18" fill="none" stroke="currentColor" stroke-width="3.25" stroke-linecap="round" stroke-linejoin="round"/>
 				</svg>
 			</button>

@@ -1889,6 +1889,21 @@
     display: none !important;
   }
 
+  /* 094 - opcoes de frete do minicart: espaco entre os itens via gap do ul (inline: o CSS async compilado da Nuvemshop nao atualiza sozinho). */
+  html body[class] #modal-cart .js-shipping-calculator-response ul.list-unstyled {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  html body[class] #modal-cart .js-shipping-calculator-response ul.list-unstyled > li.js-shipping-list-item {
+    float: none !important;
+    margin: 0 !important;
+  }
+  /* opcoes extras comecam escondidas (style inline) e o JS do tema mostra/esconde; sem isto o display:block !important do tema as mostraria sempre */
+  html body[class] #modal-cart .js-shipping-calculator-response li.js-other-shipping-item[style*="display: none"],
+  html body[class] #modal-cart .js-shipping-calculator-response li.js-other-shipping-item[style*="display:none"] {
+    display: none !important;
+  }
 </style>
 
 {# Production-like minicart body (yamuna.com.br): top 5% OFF bar, free-shipping
@@ -2389,6 +2404,113 @@
     var shippingCalcPending = false;
     var suppressShippingErrorsUntil = 0;
 
+    /* Cupom x frete: ao aplicar/remover cupom o minicart dispara varias mutacoes/recalculos
+       que apagavam CEP, cotacoes e frete escolhido. Guardamos um snapshot e seguramos o reset. */
+    var shippingHoldUntil = 0;
+    var shippingSnapshot = null;
+
+    function shippingHoldActive() {
+      return !!shippingSnapshot && Date.now() < shippingHoldUntil;
+    }
+
+    function holdMinicartShipping() {
+      var modal = document.getElementById('modal-cart');
+      var root = modal && modal.querySelector('#cart-shipping-container');
+      if (!root) return;
+      var resp = root.querySelector('.js-shipping-calculator-response');
+      if (!resp || !resp.innerHTML || !resp.innerHTML.trim() || !modal.classList.contains('yamuna-shipping-searched')) return;
+      var head = root.querySelector('.js-shipping-calculator-head');
+      var form = root.querySelector('.js-shipping-calculator-form');
+      var zipUi = root.querySelector('.js-shipping-calculator-with-zipcode');
+      var zipInput = root.querySelector('.js-shipping-input');
+      var zipCurrent = root.querySelector('.js-shipping-calculator-current-zip');
+      var checked = resp.querySelector('.js-shipping-method:checked');
+      var cost = modal.querySelector('#shipping-cost');
+      shippingSnapshot = {
+        html: resp.innerHTML,
+        respStyle: resp.getAttribute('style') || '',
+        headClass: head ? head.className : '',
+        formActive: !!(form && form.classList.contains('transition-up-active')),
+        zipUiActive: !!(zipUi && zipUi.classList.contains('transition-up-active')),
+        zip: zipInput ? zipInput.value : '',
+        zipCurrent: zipCurrent ? zipCurrent.textContent : '',
+        code: checked ? checked.getAttribute('data-code') : '',
+        costText: cost ? cost.textContent : ''
+      };
+      shippingHoldUntil = Date.now() + 5000;
+      [250, 700, 1400, 2600, 4200].forEach(function (ms) {
+        window.setTimeout(restoreMinicartShipping, ms);
+      });
+    }
+
+    function releaseMinicartShippingHold() {
+      shippingHoldUntil = 0;
+      shippingSnapshot = null;
+    }
+
+    function restoreMinicartShipping() {
+      if (!shippingHoldActive()) return;
+      var snap = shippingSnapshot;
+      var modal = document.getElementById('modal-cart');
+      var root = modal && modal.querySelector('#cart-shipping-container');
+      if (!root || !modal.querySelector('.js-cart-item')) return;
+      modal.classList.add('yamuna-shipping-searched');
+      var resp = root.querySelector('.js-shipping-calculator-response');
+      if (resp && (!resp.innerHTML || !resp.innerHTML.trim() || !resp.querySelector('.js-shipping-method'))) {
+        /* Evita que o livequery do tema some o frete de novo ao total ao reinserir a opcao marcada. */
+        var origAdd = window.LS && LS.addToTotal;
+        if (origAdd) {
+          LS.addToTotal = function () { return; };
+          window.setTimeout(function () { LS.addToTotal = origAdd; }, 800);
+        }
+        resp.innerHTML = snap.html;
+        if (snap.respStyle) resp.setAttribute('style', snap.respStyle);
+      }
+      if (resp) {
+        resp.style.setProperty('display', 'block', 'important');
+        if (snap.code) {
+          var radios = resp.querySelectorAll('.js-shipping-method');
+          for (var i = 0; i < radios.length; i++) {
+            var isSel = radios[i].getAttribute('data-code') === snap.code;
+            if (radios[i].checked !== isSel) radios[i].checked = isSel;
+            radios[i].classList.toggle('js-selected-shipping-method', isSel);
+          }
+        }
+      }
+      var head = root.querySelector('.js-shipping-calculator-head');
+      var form = root.querySelector('.js-shipping-calculator-form');
+      var zipUi = root.querySelector('.js-shipping-calculator-with-zipcode');
+      var zipInput = root.querySelector('.js-shipping-input');
+      var zipCurrent = root.querySelector('.js-shipping-calculator-current-zip');
+      if (head && snap.headClass && head.className !== snap.headClass) head.className = snap.headClass;
+      if (form) form.classList.toggle('transition-up-active', snap.formActive);
+      if (zipUi) zipUi.classList.toggle('transition-up-active', snap.zipUiActive);
+      if (zipInput && snap.zip && zipInput.value !== snap.zip) zipInput.value = snap.zip;
+      if (zipCurrent && snap.zipCurrent && zipCurrent.textContent !== snap.zipCurrent) zipCurrent.textContent = snap.zipCurrent;
+      var cost = modal.querySelector('#shipping-cost');
+      if (cost && snap.costText && snap.costText.trim()) {
+        if (cost.textContent !== snap.costText) cost.textContent = snap.costText;
+        cost.style.setProperty('display', 'inline', 'important');
+        var calc = modal.querySelector('.js-calculating-shipping-cost');
+        var empty = modal.querySelector('.js-shipping-cost-empty');
+        if (calc) calc.style.setProperty('display', 'none', 'important');
+        if (empty) empty.style.setProperty('display', 'none', 'important');
+      }
+    }
+
+    (function bindMinicartCouponShippingHold() {
+      var sel = '#modal-cart .yamuna-minicart-coupon-apply, #modal-cart .js-apply-coupon, #modal-cart .js-coupon-apply, #modal-cart .js-remove-coupon, #modal-cart .yamuna-minicart-coupon-remove';
+      document.addEventListener('click', function (e) {
+        if (e.target && e.target.closest && e.target.closest(sel)) holdMinicartShipping();
+      }, true);
+      document.addEventListener('submit', function (e) {
+        if (e.target && e.target.closest && e.target.closest('#modal-cart .js-coupon-form, #modal-cart .js-yamuna-minicart-coupon-form')) holdMinicartShipping();
+      }, true);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && e.target && e.target.closest && e.target.closest('#modal-cart .js-coupon-input, #modal-cart .yamuna-minicart-coupon-input')) holdMinicartShipping();
+      }, true);
+    })();
+
     function hideEl(el) {
       if (!el) return;
       el.style.setProperty('display', 'none', 'important');
@@ -2433,6 +2555,7 @@
 
     function resetMinicartShippingUi(force) {
       if (!force && !allowMinicartShippingReset) return;
+      if (shippingHoldActive()) { restoreMinicartShipping(); return; }
       var modal = document.querySelector('#modal-cart');
       var root = document.querySelector('#modal-cart #cart-shipping-container');
       if (!root) return;
@@ -2843,7 +2966,9 @@
         var modal = document.getElementById('modal-cart');
         if (!modal) return;
         modal.querySelectorAll('.cart-coupon-discount-label').forEach(function (el) {
-          el.textContent = 'Cupom:';
+          /* Unconditional writes re-trigger the childList observer every ~40ms and
+             starve the debounced free-shipping bar sync. */
+          if (el.textContent !== 'Cupom:') el.textContent = 'Cupom:';
         });
       }
       function refreshCouponTotals(payload) {
@@ -3076,7 +3201,7 @@
       var coupon = document.querySelector('#modal-cart .yamuna-minicart-coupon');
       if (!coupon) return;
       var label = coupon.querySelector('.yamuna-minicart-coupon-label-text, .js-coupon-toggle-label, [data-component="coupon.toggle"] span, .yamuna-minicart-coupon-toggle-label span');
-      if (label && label.childElementCount === 0) {
+      if (label && label.childElementCount === 0 && label.textContent !== 'Tem um cupom de desconto?') {
         label.textContent = 'Tem um cupom de desconto?';
       }
       var input = coupon.querySelector('input[type="text"], input.js-coupon-input, .yamuna-minicart-coupon-input');
@@ -3086,7 +3211,7 @@
       var btn = coupon.querySelector('.yamuna-minicart-coupon-apply, .js-coupon-apply, button[type="submit"]');
       if (btn) {
         var wording = btn.querySelector('span') || btn;
-        if (wording && wording.childElementCount === 0) {
+        if (wording && wording.childElementCount === 0 && wording.textContent !== 'APLICAR') {
           wording.textContent = 'APLICAR';
         }
       }

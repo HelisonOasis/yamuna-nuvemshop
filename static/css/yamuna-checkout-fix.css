@@ -1,5 +1,5 @@
 ﻿/* Yamuna checkout QA fixes ? load on /checkout/ only */
-@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap");
 
 /* 1) Product thumb must not overflow into the name cell */
 html body .summary-img-wrap,
@@ -17,6 +17,7 @@ td.summary-img-wrap {
   background: transparent !important;
   background-color: transparent !important;
 }
+
 html body .summary-img-wrap .summary-img,
 html body .summary-img-wrap .summary-img-thumb,
 html body td.summary-img-wrap .summary-img,
@@ -88,11 +89,23 @@ td.table-product-name,
   margin: 0 !important;
   text-indent: 0 !important;
   vertical-align: middle !important;
-  font-family: Raleway, sans-serif !important;
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  line-height: 1.35 !important;
-  max-height: calc(1.35em * 2) !important;
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+  max-width: none !important;
+  min-width: 80px !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+  margin: 0 !important;
+  text-indent: 0 !important;
+  vertical-align: middle !important;
+  max-height: none !important;
   color: #000 !important;
 }
 
@@ -133,6 +146,7 @@ html body #main-row #secondary-column .table-price span {
   font-size: 16px !important;
   font-weight: 700 !important;
   line-height: 1.35 !important;
+  color: #000000 !important;
 }
 
 /* 016 — summary labels + Total: Raleway 16px / bold 700 */
@@ -163,6 +177,7 @@ html body #main-row #secondary-column .table-footer .table-price {
   font-size: 16px !important;
   font-weight: 700 !important;
   line-height: 1.35 !important;
+  color: #000000 !important;
 }
 
 /*
@@ -271,13 +286,27 @@ td.table-price {
   white-space: nowrap !important;
 }
 
+.table-price:has(.product-discount-tag),
+.table-price:has(.table-price-discount-test-id),
+.table-price:has(.product-discount),
+.table-price:has(.table-price-discount),
+.table-price:has(.product-subtotal),
+td.table-price:has(.product-discount-tag),
+td.table-price:has(.product-discount),
+td.table-price:has(.product-subtotal) {
+  width: 130px !important;
+  max-width: 150px !important;
+  min-width: 110px !important;
+  white-space: normal !important;
+}
+
 /* 2) Reviews slot = same width as #main-row */
 #nube-sdk-slot-after_main_content {
   box-sizing: border-box !important;
   width: auto !important;
   max-width: none !important;
-  margin-left: -15px !important;
-  margin-right: -15px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
@@ -325,6 +354,13 @@ body {
     align-items: center !important;
     text-align: center !important;
   }
+}
+
+/* Pedido cancelado: o painel informativo mantém o mesmo fundo dos cards. */
+html body #main-column .panel.orderstatus .history-canceled-round,
+html body #main-column .panel.orderstatus .history-canceled-body {
+  background: #fff !important;
+  background-color: #fff !important;
 }
 
 /*
@@ -656,17 +692,17 @@ html body #main-row #secondary-column [data-testid="cart-details-desktop"] .summ
   float: none !important;
 }
 
-/* Título "Cupom de desconto" */
+/* Título "Cupom de desconto" — 048: 24px Raleway */
 html body #secondary-column .summary-coupon::before {
   content: 'Cupom de desconto' !important;
   display: block !important;
   margin: 0 0 12px !important;
-  padding: 0 0 0 24px !important;
+  padding: 0 0 0 28px !important;
   color: #000 !important;
   font-family: Raleway, sans-serif !important;
-  font-size: 16px !important;
+  font-size: 24px !important;
   font-weight: 700 !important;
-  line-height: 1.3 !important;
+  line-height: 1.25 !important;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23a31460' d='M21.41 11.58l-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9a2 2 0 0 0 2.82 0l7-7a2 2 0 0 0 0-2.84zM5.5 7A1.5 1.5 0 1 1 7 5.5 1.5 1.5 0 0 1 5.5 7z'/%3E%3C/svg%3E") !important;
   background-repeat: no-repeat !important;
   background-position: left center !important;
@@ -1230,6 +1266,7 @@ html body #main-column .panel #btnFinishCheckout.btn-primary::after {
   height: auto !important;
   overflow: visible !important;
   pointer-events: auto !important;
+  white-space: nowrap !important;
 }
 @media (min-width: 992px) {
   html body #btnFinishCheckout::after,
@@ -1268,8 +1305,8 @@ html body #btnFinishCheckout span {
 }
 
 /* Other step CTAs (Continuar): 80% centered */
-html body #main-column .btn-primary.btn-submit-step,
-html body #main-column button.btn-primary {
+html body #main-column .btn-primary.btn-submit-step:not(.hide):not([class*="hide"]):not([data-testid="btnSubmitZipCode"]),
+html body #main-column button.btn-primary:not(.hide):not([class*="hide"]):not([data-testid="btnSubmitZipCode"]) {
   float: none !important;
   width: 80% !important;
   max-width: 80% !important;
@@ -1279,6 +1316,7 @@ html body #main-column button.btn-primary {
   align-items: center !important;
   justify-content: center !important;
   box-sizing: border-box !important;
+  white-space: nowrap !important;
 }
 
 /* 018 ? hide platform breadcrumb; custom steps come from NubeSDK after_header */
@@ -1718,10 +1756,10 @@ body.yamuna-step-pagamento #breadcrumb ul.breadcrumb-timeline > li.breadcrumb-ti
 #nube-sdk-slot-after_main_content .yamuna-checkout-extras,
 .yamuna-checkout-extras {
   box-sizing: border-box !important;
-  width: 100% !important;
-  max-width: 100% !important;
+  width: calc(100% - 30px) !important;
+  max-width: calc(100% - 30px) !important;
   min-width: 0 !important;
-  margin: 16px 0 24px !important;
+  margin: 32px 15px 0 !important;
   padding: 0 !important;
 }
 .yamuna-checkout-extras .yamuna-cart-depositions {
@@ -1738,57 +1776,139 @@ body.yamuna-step-pagamento #breadcrumb ul.breadcrumb-timeline > li.breadcrumb-ti
   background: #fff !important;
 }
 @media (max-width: 767px) {
-  .yamuna-checkout-extras .yamuna-cart-depositions {
+  .yamuna-checkout-extras .yamuna-cart-depositions,
+  html:has(.success-order-id) .yamuna-checkout-extras .yamuna-cart-depositions,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .yamuna-cart-depositions {
+    padding: 16px !important;
     height: 360px !important;
     min-height: 360px !important;
     max-height: 360px !important;
+    margin: 0 !important;
+    position: relative !important;
   }
-  .yamuna-checkout-extras .yamuna-cart-depositions-body {
+  .yamuna-checkout-extras .yamuna-cart-depositions-body,
+  html:has(.success-order-id) .yamuna-checkout-extras .yamuna-cart-depositions-body,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .yamuna-cart-depositions-body {
     display: flex !important;
     flex-direction: column !important;
     flex: 1 1 auto !important;
     min-height: 0 !important;
+    position: relative !important;
   }
   .yamuna-checkout-extras .yamuna-cart-depositions-carousel,
-  .yamuna-checkout-extras .js-swiper-cart-dep {
+  .yamuna-checkout-extras .js-swiper-cart-dep,
+  html:has(.success-order-id) .yamuna-checkout-extras .yamuna-cart-depositions-carousel,
+  html:has(.success-order-id) .yamuna-checkout-extras .js-swiper-cart-dep,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .yamuna-cart-depositions-carousel,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .js-swiper-cart-dep {
     flex: 1 1 auto !important;
     min-height: 0 !important;
     height: 100% !important;
     width: 100% !important;
     overflow: hidden !important;
   }
-  .yamuna-checkout-extras .yamuna-cart-depositions-nav {
-    display: flex !important;
-    justify-content: center !important;
-    gap: 12px !important;
-    margin-top: 12px !important;
-    flex-shrink: 0 !important;
+  .yamuna-checkout-extras .yamuna-cart-depositions-nav,
+  html:has(.success-order-id) .yamuna-checkout-extras .yamuna-cart-depositions-nav,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .yamuna-cart-depositions-nav {
+    display: none !important;
   }
   .yamuna-checkout-extras .yamuna-cart-dep-prev,
-  .yamuna-checkout-extras .yamuna-cart-dep-next {
-    width: 32px !important;
-    height: 32px !important;
+  .yamuna-checkout-extras .yamuna-cart-dep-next,
+  html:has(.success-order-id) .yamuna-checkout-extras .yamuna-cart-dep-prev,
+  html:has(.success-order-id) .yamuna-checkout-extras .yamuna-cart-dep-next,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .yamuna-cart-dep-prev,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .yamuna-cart-dep-next {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
     border: 0 !important;
     border-radius: 50% !important;
-    background: #238482 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 18 9 12 15 6'/%3E%3C/svg%3E") center / 14px 14px no-repeat !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
     cursor: pointer !important;
+    pointer-events: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 10 !important;
   }
-  .yamuna-checkout-extras .yamuna-cart-dep-next {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E") !important;
+  .yamuna-checkout-extras .yamuna-cart-dep-prev,
+  html:has(.success-order-id) .yamuna-checkout-extras .yamuna-cart-dep-prev,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .yamuna-cart-dep-prev {
+    left: 4px !important;
+    right: auto !important;
+  }
+  .yamuna-checkout-extras .yamuna-cart-dep-next,
+  html:has(.success-order-id) .yamuna-checkout-extras .yamuna-cart-dep-next,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .yamuna-cart-dep-next {
+    right: 4px !important;
+    left: auto !important;
+  }
+  .yamuna-checkout-extras .yamuna-cart-dep-prev::before,
+  .yamuna-checkout-extras .yamuna-cart-dep-next::before,
+  html:has(.success-order-id) .yamuna-checkout-extras .yamuna-cart-dep-prev::before,
+  html:has(.success-order-id) .yamuna-checkout-extras .yamuna-cart-dep-next::before,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .yamuna-cart-dep-prev::before,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .yamuna-cart-dep-next::before {
+    display: block !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin: 0 !important;
+    border-top: 4px solid #238482 !important;
+    border-right: 4px solid #238482 !important;
+    background: none !important;
+    content: '' !important;
+  }
+  .yamuna-checkout-extras .yamuna-cart-dep-prev::before,
+  html:has(.success-order-id) .yamuna-checkout-extras .yamuna-cart-dep-prev::before,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .yamuna-cart-dep-prev::before {
+    margin-left: 0 !important;
+    transform: rotate(-135deg) !important;
+  }
+  .yamuna-checkout-extras .yamuna-cart-dep-next::before,
+  html:has(.success-order-id) .yamuna-checkout-extras .yamuna-cart-dep-next::before,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .yamuna-cart-dep-next::before {
+    margin-right: 0 !important;
+    transform: rotate(45deg) !important;
+  }
+  .yamuna-checkout-extras .yamuna-cart-dep-prev::after,
+  .yamuna-checkout-extras .yamuna-cart-dep-next::after,
+  html:has(.success-order-id) .yamuna-checkout-extras .yamuna-cart-dep-prev::after,
+  html:has(.success-order-id) .yamuna-checkout-extras .yamuna-cart-dep-next::after,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .yamuna-cart-dep-prev::after,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .yamuna-cart-dep-next::after {
+    display: none !important;
+    content: none !important;
+  }
+  .yamuna-checkout-extras .yamuna-cart-dep-prev.swiper-button-disabled,
+  .yamuna-checkout-extras .yamuna-cart-dep-next.swiper-button-disabled,
+  html:has(.success-order-id) .yamuna-checkout-extras .yamuna-cart-dep-prev.swiper-button-disabled,
+  html:has(.success-order-id) .yamuna-checkout-extras .yamuna-cart-dep-next.swiper-button-disabled,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .yamuna-cart-dep-prev.swiper-button-disabled,
+  html:has([test-id="order-id"]) .yamuna-checkout-extras .yamuna-cart-dep-next.swiper-button-disabled {
+    opacity: 0.35 !important;
+    cursor: default !important;
   }
 }
-#nube-sdk-slot-after_main_content #yamuna-cart-reviews {
-  box-sizing: border-box !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-  padding: 16px !important;
-}
+
 @media (max-width: 767px) {
   #nube-sdk-slot-after_main_content #yamuna-cart-reviews {
     height: 360px !important;
     min-height: 360px !important;
     max-height: 360px !important;
+  }
+  html:has(.success-order-id) #nube-sdk-slot-after_main_content #yamuna-cart-reviews,
+  html:has([test-id="order-id"]) #nube-sdk-slot-after_main_content #yamuna-cart-reviews {
+    height: 360px !important;
+    min-height: 360px !important;
+    max-height: 360px !important;
+    margin: 16px 0 32px !important;
   }
 }
 
@@ -1956,10 +2076,10 @@ html body #main-column input[id*="Document"] {
   background-color: #fff !important;
 }
 
-html body .panel,
-html body #main-column .panel,
-html body .panel.panel-with-header,
-html body #main-column .panel.panel-with-header,
+html body .panel:not(.saved-address-box-review-block):not([class*="saved-address-box"]),
+html body #main-column .panel:not(.saved-address-box-review-block):not([class*="saved-address-box"]),
+html body .panel.panel-with-header:not(.saved-address-box-review-block):not([class*="saved-address-box"]),
+html body #main-column .panel.panel-with-header:not(.saved-address-box-review-block):not([class*="saved-address-box"]),
 html body .panel-header,
 html body .panel-header-sticky,
 html body #main-column .panel-header,
@@ -1986,6 +2106,14 @@ html body #nube-sdk-slot-after_main_content #yamuna-cart-reviews {
 html body .table-discount-promotion td:first-child > div::before,
 html body .table-discount-promotion td:first-child::before {
   font-family: Roboto, Arial, sans-serif !important;
+  color: #a31460 !important;
+}
+
+html body .table-discount-promotion td.text-right,
+html body .table-discount-promotion td.text-right span,
+html body .table-discount-promotion .text-pre,
+html body .table-discount-promotion .text-pre span {
+  color: #a31460 !important;
 }
 
 /* Cards that keep #fff — ONLY the card itself, never wrappers (.summary / .box-container) */
@@ -2179,5 +2307,1621 @@ html body .yamuna-checkout-cta-row--finish #btnFinishCheckout {
   html body .yamuna-checkout-cta-row #btnFinishCheckout {
     width: 100% !important;
     flex: 0 0 auto !important;
+  }
+}
+
+/* =============================================================================
+ * Cenário 048 — tipografia + layout de produtos com desconto
+ * Títulos: 24px Raleway | Texto corrido: 16px Roboto
+ * ============================================================================= */
+
+/* 048a — títulos */
+html body .panel-header,
+html body .panel-header-sticky,
+html body h3.panel-header,
+html body #main-column .panel-header,
+html body #main-column h3.panel-header,
+html body #main-column h3.panel-header.panel-header-sticky,
+html body #main-column .panel.panel-with-header > .panel-header,
+html body #main-column .panel.panel-with-header > h3.panel-header,
+html body #main-column .panel.panel-with-header:has(iframe) > .panel-header,
+html body #main-column .panel.panel-with-header:has(iframe) > h3.panel-header,
+html body #main-column h1,
+html body #main-column h2,
+html body #main-column h3,
+html body #main-column .h3,
+html body #secondary-column .summary-coupon::before,
+html body #yamuna-coupon-card .yc-head,
+html body #yamuna-coupon-card .yc-head span,
+html body #yamuna-cart-reviews h2,
+html body #yamuna-cart-reviews h3,
+html body #nube-sdk-slot-after_main_content #yamuna-cart-reviews h2,
+html body #nube-sdk-slot-after_main_content #yamuna-cart-reviews h3 {
+  font-family: Raleway, sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
+  line-height: 1.25 !important;
+}
+
+@media (min-width: 768px) {
+  html body #main-column .panel.panel-with-header:has(iframe) > .panel-header,
+  html body #main-column .panel.panel-with-header:has(iframe) > h3.panel-header,
+  html body #main-column h3.panel-header {
+    font-size: 24px !important;
+    line-height: 1.25 !important;
+  }
+}
+
+/* 048b — texto corrido */
+html body #main-column,
+html body #secondary-column,
+html body .form-control,
+html body .form-control::placeholder,
+html body input.form-control,
+html body textarea.form-control,
+html body .input-label,
+html body .has-float-label label,
+html body .form-options-content,
+html body .checkbox-label,
+html body .custom-checkbox label,
+html body .form-group label,
+html body .shipping-option,
+html body .shipping-option *,
+html body .shipping-option-price,
+html body .shipping-option-name,
+html body .shipping-option-desc,
+html body .shipping-method-item,
+html body .shipping-method-item-desc,
+html body .shipping-method-item-name,
+html body .shipping-method-item-price,
+html body .address-summary,
+html body .address-summary *,
+html body .review-block,
+html body .review-block *:not(.btn-primary):not(h1):not(h2):not(h3):not(.panel-header),
+html body .review-block-detailed,
+html body .review-block-detailed-item,
+html body .review-block-detailed-item *:not(.btn-primary):not(h1):not(h2):not(h3),
+html body .help-block,
+html body .panel-body,
+html body .panel-body p,
+html body .box-container p,
+html body #main-column label,
+html body #main-column .custom-control-label,
+html body #main-column .btn-link,
+html body #main-column a.btn-link,
+html body #main-column .radio .label,
+html body #main-column .radio .label *,
+html body #main-column .payment-option .label,
+html body #main-column .accordion-section-header-label,
+html body #main-column .accordion-section-header-label *,
+html body .table-product-name,
+html body td.table-product-name,
+html body [data-testid="product-name-qty"],
+html body .summary .table-product-name,
+html body .yamuna-name-clamp,
+html body .table-price,
+html body td.table-price,
+html body .table-price span,
+html body td.table-price span,
+html body #secondary-column .table-price,
+html body #secondary-column .table-price span,
+html body #main-row #secondary-column .table-price,
+html body #main-row #secondary-column .table-price span,
+html body #yamuna-coupon-card .yc-input,
+html body #yamuna-coupon-card .yc-hint,
+html body #yamuna-coupon-card .yc-applied,
+html body #yamuna-coupon-card .yc-err {
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 16px !important;
+  line-height: 1.4 !important;
+}
+
+html body .table-product-name,
+html body td.table-product-name,
+html body [data-testid="product-name-qty"],
+html body .summary .table-product-name,
+html body .yamuna-name-clamp {
+  font-weight: 400 !important;
+  font-size: 16px !important;
+  max-height: none !important;
+}
+
+html body .table-price,
+html body td.table-price,
+html body .table-price span,
+html body td.table-price span,
+html body #secondary-column .table-price,
+html body #secondary-column .table-price span {
+  font-weight: 700 !important;
+}
+
+/* 048c — produtos com desconto: não esmagar preço em 88px nowrap */
+html body .table-price:has(.product-discount-tag),
+html body .table-price:has(.table-price-discount-test-id),
+html body .table-price:has(.product-discount),
+html body .table-price:has(.table-price-discount),
+html body .table-price:has(.product-subtotal),
+html body td.table-price:has(.product-discount-tag),
+html body td.table-price:has(.table-price-discount-test-id),
+html body td.table-price:has(.product-discount),
+html body td.table-price:has(.table-price-discount),
+html body td.table-price:has(.product-subtotal) {
+  width: 130px !important;
+  max-width: 150px !important;
+  min-width: 110px !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  vertical-align: middle !important;
+}
+
+html body .table-price .product-subtotal,
+html body .product-subtotal,
+html body td.table-price .product-subtotal {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+}
+
+html body .product-discount-tag,
+html body .table-price-discount-tag,
+html body .table-price-discount-test-id,
+html body .table-price-discount,
+html body .product-discount,
+html body .table-price .product-discount-tag,
+html body .table-price .table-price-discount-tag,
+html body .table-price .table-price-discount-test-id,
+html body .table-price .product-discount,
+html body [data-testid="product-discount-tag"],
+html body span.table-price-discount-tag {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+}
+
+html body .table-price .opacity-80,
+html body .table-price .opacity-80.m-none,
+html body .product-subtotal .opacity-80,
+html body .table-price s,
+html body .table-price del,
+html body .table-price .text-line-through,
+html body .product-subtotal s,
+html body .product-subtotal del {
+  display: block !important;
+  position: static !important;
+  float: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  white-space: nowrap !important;
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 1.2 !important;
+  text-decoration: line-through !important;
+  color: #757575 !important;
+  opacity: 1 !important;
+}
+
+html body .table-price .product-subtotal > span:last-child,
+html body .product-subtotal > span:not(.product-discount-tag):not(.table-price-discount-test-id):not(.product-discount):not(.table-price-discount):not(.opacity-80) {
+  display: block !important;
+  position: static !important;
+  white-space: nowrap !important;
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  color: #238482 !important;
+}
+
+/* =============================================================================
+ * Cenário 050 — pedido concluído (/checkout/v3/success/): tudo em Raleway
+ * Scoped by the order status panel, which only exists on the success page.
+ * :not(#yamuna-050-*) adds ID weight so this beats the Roboto rules above.
+ * ============================================================================= */
+html:has(#main-column .status-content) body,
+html:has(#main-column .status.panel) body,
+html:has(#main-column .status-content) body *:not(#yamuna-050-a):not(#yamuna-050-b):not(#yamuna-050-c),
+html:has(#main-column .status.panel) body *:not(#yamuna-050-a):not(#yamuna-050-b):not(#yamuna-050-c),
+html:has(#main-column .status-content) body *:not(#yamuna-050-a):not(#yamuna-050-b):not(#yamuna-050-c)::before,
+html:has(#main-column .status-content) body *:not(#yamuna-050-a):not(#yamuna-050-b):not(#yamuna-050-c)::after,
+html:has(#main-column .status.panel) body *:not(#yamuna-050-a):not(#yamuna-050-b):not(#yamuna-050-c)::before,
+html:has(#main-column .status.panel) body *:not(#yamuna-050-a):not(#yamuna-050-b):not(#yamuna-050-c)::after {
+  font-family: Raleway, sans-serif !important;
+}
+
+/* =============================================================================
+ * Cenário 067 - preço "de" (compare price) no resumo em 12px
+ * Three :not(#yamuna-067*) add ID weight to beat
+ * "#main-row #secondary-column .table-price span" (16px, 2 IDs).
+ * ============================================================================= */
+html body .table-price-compare:not(#yamuna-067a):not(#yamuna-067b):not(#yamuna-067c),
+html body .table-price-compare:not(#yamuna-067a):not(#yamuna-067b):not(#yamuna-067c) > span:not(.table-price-discount-tag):not(.product-discount-tag) {
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 1.2 !important;
+}
+
+/* Pedido concluído: "Fale conosco" button capped at 40px tall */
+html body #main-column .support a.btn-secondary {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  height: 40px !important;
+  max-height: 40px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: 1 !important;
+}
+
+/* =============================================================================
+ * Mobile order summary: list every item (no 215px inner scroll) and give the
+ * product name room on 320-390px screens.
+ * :not(#yamuna-sum*) adds ID weight to beat the "#main-row #secondary-column" rules.
+ * ============================================================================= */
+@media (max-width: 767px) {
+  html body #secondary-column:not(#yamuna-sum-a):not(#yamuna-sum-b) .summary-details > .table.table-scrollable {
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 12px 12px 8px !important;
+  }
+
+  html body #secondary-column:not(#yamuna-sum-a):not(#yamuna-sum-b) .summary-details > .table-subtotal {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  html body #secondary-column:not(#yamuna-sum-a):not(#yamuna-sum-b) td.summary-img-wrap {
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    padding: 0 8px 0 0 !important;
+  }
+
+  html body #secondary-column:not(#yamuna-sum-a):not(#yamuna-sum-b) td.summary-img-wrap .summary-img,
+  html body #secondary-column:not(#yamuna-sum-a):not(#yamuna-sum-b) td.summary-img-wrap .summary-img-thumb,
+  html body #secondary-column:not(#yamuna-sum-a):not(#yamuna-sum-b) td.summary-img-wrap img {
+    width: 40px !important;
+    max-width: 40px !important;
+    height: 40px !important;
+  }
+
+  html body #secondary-column:not(#yamuna-sum-a):not(#yamuna-sum-b) td.table-product-name {
+    min-width: 0 !important;
+    padding: 6px 6px 6px 0 !important;
+    overflow-wrap: break-word !important;
+  }
+
+  html body #secondary-column:not(#yamuna-sum-a):not(#yamuna-sum-b) td.table-price {
+    width: 88px !important;
+    min-width: 0 !important;
+    max-width: 88px !important;
+    padding: 6px 0 !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* =============================================================================
+ * Order summary product rows as flex: table cells can't be line-clamped, and the
+ * price has to sit on the card's right edge like subtotal/frete/total.
+ * Name: 2 lines on mobile, 1 line from 768px.
+ * :not(#yamuna-row*) adds ID weight to beat the mobile summary rules above.
+ * ============================================================================= */
+html body #secondary-column:not(#yamuna-row-a):not(#yamuna-row-b):not(#yamuna-row-c) .summary-details > .table.table-scrollable > tbody {
+  display: block !important;
+  width: 100% !important;
+}
+
+html body #secondary-column:not(#yamuna-row-a):not(#yamuna-row-b):not(#yamuna-row-c) .summary-details > .table.table-scrollable > tbody > tr {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+html body #secondary-column:not(#yamuna-row-a):not(#yamuna-row-b):not(#yamuna-row-c) .summary-details > .table.table-scrollable > tbody > tr + tr {
+  margin-top: 8px !important;
+}
+
+html body #secondary-column:not(#yamuna-row-a):not(#yamuna-row-b):not(#yamuna-row-c) .summary-details > .table.table-scrollable td.summary-img-wrap {
+  display: block !important;
+  flex: 0 0 auto !important;
+}
+
+/* Vertical padding stays 0: overflow:hidden would show a slice of the clamped line. */
+html body #secondary-column:not(#yamuna-row-a):not(#yamuna-row-b):not(#yamuna-row-c) .summary-details > .table.table-scrollable td.table-product-name {
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+}
+
+html body #secondary-column:not(#yamuna-row-a):not(#yamuna-row-b):not(#yamuna-row-c) .summary-details > .table.table-scrollable td.table-product-name .yamuna-name-clamp {
+  display: inline !important;
+}
+
+html body #secondary-column:not(#yamuna-row-a):not(#yamuna-row-b):not(#yamuna-row-c) .summary-details > .table.table-scrollable td.table-price {
+  display: block !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  margin-left: auto !important;
+  padding-right: 0 !important;
+  text-align: right !important;
+}
+
+@media (min-width: 768px) {
+  html body #secondary-column:not(#yamuna-row-a):not(#yamuna-row-b):not(#yamuna-row-c) .summary-details > .table.table-scrollable td.table-product-name {
+    -webkit-line-clamp: 1 !important;
+    line-clamp: 1 !important;
+  }
+}
+
+/* =============================================================================
+ * Checkout reviews (NubeSDK box) = same layout as /comprar .yamuna-cart-depositions
+ * The NubeSDK worker markup can't be changed from the theme, so the header icon,
+ * cards and mobile carousel are all CSS. Mobile arrows use ::scroll-button
+ * (Chromium); other browsers fall back to swipe with scroll-snap.
+ * ============================================================================= */
+#nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) {
+  position: relative !important;
+  gap: 0 !important;
+  padding: 20px 16px 16px !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+}
+
+#nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:first-child {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  margin: 0 0 16px !important;
+  padding: 0 0 12px !important;
+  border-bottom: 1px solid #ede8ed !important;
+}
+
+#nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:first-child::before {
+  content: "" !important;
+  flex: 0 0 24px !important;
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 50% !important;
+  background: #5fbbc6 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z'/%3E%3C/svg%3E") center / 14px 14px no-repeat !important;
+}
+
+#nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:first-child > h3.nube-text {
+  margin: 0 !important;
+  color: #a31460 !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+}
+
+#nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2) {
+  display: flex !important;
+  flex-flow: row nowrap !important;
+  align-items: stretch !important;
+  gap: 16px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+#nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2) > .nube-box {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 0 !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+  padding: 0 4px !important;
+}
+
+#nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2) > .nube-box > .nube-text:first-child {
+  margin: 0 !important;
+  color: #f4c744 !important;
+  font-family: Arial, sans-serif !important;
+  font-size: 13px !important;
+  letter-spacing: 1px !important;
+  line-height: 1 !important;
+}
+
+#nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2) > .nube-box > .nube-text:nth-child(2) {
+  margin: 0 !important;
+  color: #393747 !important;
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.45 !important;
+  text-align: left !important;
+}
+
+/* Resumo do pedido concluído: nome do produto em 14px. */
+html body #secondary-column:not(#yamuna-name-a):not(#yamuna-name-b) .summary-details > .table.table-scrollable td.table-product-name,
+html body #secondary-column:not(#yamuna-name-a):not(#yamuna-name-b) .summary-details > .table.table-scrollable td.table-product-name .yamuna-name-clamp {
+  font-size: 14px !important;
+}
+
+#nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2) > .nube-box > .nube-text:last-child {
+  margin: auto 0 0 !important;
+  color: #393747 !important;
+  font-family: Raleway, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+@media (max-width: 1024px) {
+  #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) {
+    width: auto !important;
+    margin-left: 15px !important;
+    margin-right: 15px !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2) {
+    flex-wrap: wrap !important;
+  }
+
+  #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2) > .nube-box {
+    flex: 0 0 calc(50% - 8px) !important;
+  }
+}
+
+@media (max-width: 767px) {
+  #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) {
+    padding: 16px !important;
+  }
+
+  #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:first-child {
+    margin-bottom: 12px !important;
+  }
+
+  #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2) {
+    gap: 0 !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x mandatory !important;
+    scroll-behavior: smooth !important;
+    overscroll-behavior-x: contain !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2)::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2) > .nube-box {
+    flex: 0 0 100% !important;
+    padding: 0 !important;
+    scroll-snap-align: start !important;
+    scroll-snap-stop: always !important;
+  }
+
+  #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2) > .nube-box > .nube-text:nth-child(2) {
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 12 !important;
+    line-clamp: 12 !important;
+    overflow: hidden !important;
+  }
+}
+
+@supports selector(::scroll-button(left)) {
+  @media (max-width: 767px) {
+    #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) {
+      padding-bottom: 60px !important;
+    }
+
+    #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2)::scroll-button(left),
+    #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2)::scroll-button(right) {
+      position: absolute;
+      bottom: 16px;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: #238482 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 18 9 12 15 6'/%3E%3C/svg%3E") center / 14px 14px no-repeat;
+      cursor: pointer;
+    }
+
+    #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2)::scroll-button(left) {
+      content: "" / "Depoimento anterior";
+      left: calc(50% - 38px);
+    }
+
+    #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2)::scroll-button(right) {
+      content: "" / "Pr\F3ximo depoimento";
+      left: calc(50% + 6px);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E");
+    }
+
+    #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2)::scroll-button(*):disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+  }
+}
+
+/* Cenário 073: regra final para a folha carregada depois do CSS nativo. */
+@media (max-width: 767px) {
+  html:has(#main-column .status-content) body .announcement.m-bottom > .announcement-message:not(#yamuna-dosis-a):not(#yamuna-dosis-b):not(#yamuna-dosis-c):not(#yamuna-dosis-d),
+  html:has(#main-column .status.panel) body .announcement.m-bottom > .announcement-message:not(#yamuna-dosis-a):not(#yamuna-dosis-b):not(#yamuna-dosis-c):not(#yamuna-dosis-d) {
+    font-family: "Dosis", sans-serif !important;
+  }
+
+  html:has(#main-column .status-content) body .announcement.m-bottom,
+  html:has(#main-column .status.panel) body .announcement.m-bottom {
+    margin-bottom: 0 !important;
+  }
+}
+
+/* =============================================================================
+ * Cenário 074: Aumentar fonte para 14px, fonte Raleway e cor para #0000 (#000000)
+ * Alvo: número do pedido (/checkout/v3/success/) "Pedido: #..."
+ * ============================================================================= */
+html body .order-id-number:not(#yamuna-074a):not(#yamuna-074b):not(#yamuna-074c),
+html body .order-id-number:not(#yamuna-074a):not(#yamuna-074b):not(#yamuna-074c) *,
+html body [test-id="order-id"]:not(#yamuna-074a):not(#yamuna-074b):not(#yamuna-074c),
+html body [test-id="order-id"]:not(#yamuna-074a):not(#yamuna-074b):not(#yamuna-074c) *,
+html body .success-order-id .order-id-number:not(#yamuna-074a):not(#yamuna-074b):not(#yamuna-074c),
+html body .Success-order-id .order-id-number:not(#yamuna-074a):not(#yamuna-074b):not(#yamuna-074c) {
+  font-family: "Raleway", sans-serif !important;
+  font-size: 14px !important;
+  color: #000 !important;
+  color: #000000 !important;
+}
+
+/* Cenário 081 — conteúdo de cada avaliação, em todas as etapas do checkout. */
+html body #nube-sdk-slot-after_main_content > .nube-box > .nube-box:nth-child(2) > .nube-box > p.nube-text:not(:first-child):not(:last-child) {
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.45 !important;
+}
+
+/* =============================================================================
+ * Cenário 078: Na tela de pedido concluído, o progresso deve ser Pagamento
+ * ============================================================================= */
+/* Breadcrumb nativo (#breadcrumb) */
+body.yamuna-step-pagamento #breadcrumb ul.breadcrumb-timeline > li.breadcrumb-timeline-line,
+html:has(.status-content) body #breadcrumb ul.breadcrumb-timeline > li.breadcrumb-timeline-line,
+html:has(.status.panel) body #breadcrumb ul.breadcrumb-timeline > li.breadcrumb-timeline-line,
+html:has(.success-order-id) body #breadcrumb ul.breadcrumb-timeline > li.breadcrumb-timeline-line,
+html:has([test-id="order-id"]) body #breadcrumb ul.breadcrumb-timeline > li.breadcrumb-timeline-line {
+  background-color: #a31460 !important;
+  background: #a31460 !important;
+}
+
+body.yamuna-step-pagamento #breadcrumb li:nth-child(3) .breadcrumb-timeline-item,
+body.yamuna-step-pagamento #breadcrumb li:nth-child(5) .breadcrumb-timeline-item,
+html:has(.status-content) body #breadcrumb li:nth-child(3) .breadcrumb-timeline-item,
+html:has(.status-content) body #breadcrumb li:nth-child(5) .breadcrumb-timeline-item,
+html:has(.status.panel) body #breadcrumb li:nth-child(3) .breadcrumb-timeline-item,
+html:has(.status.panel) body #breadcrumb li:nth-child(5) .breadcrumb-timeline-item,
+html:has(.success-order-id) body #breadcrumb li:nth-child(3) .breadcrumb-timeline-item,
+html:has(.success-order-id) body #breadcrumb li:nth-child(5) .breadcrumb-timeline-item,
+html:has([test-id="order-id"]) body #breadcrumb li:nth-child(3) .breadcrumb-timeline-item,
+html:has([test-id="order-id"]) body #breadcrumb li:nth-child(5) .breadcrumb-timeline-item {
+  color: #a31460 !important;
+}
+
+body.yamuna-step-pagamento #breadcrumb li:nth-child(3) .breadcrumb-timeline-item-icon svg path,
+body.yamuna-step-pagamento #breadcrumb li:nth-child(5) .breadcrumb-timeline-item-icon svg path,
+html:has(.status-content) body #breadcrumb li:nth-child(3) .breadcrumb-timeline-item-icon svg path,
+html:has(.status-content) body #breadcrumb li:nth-child(5) .breadcrumb-timeline-item-icon svg path,
+html:has(.status.panel) body #breadcrumb li:nth-child(3) .breadcrumb-timeline-item-icon svg path,
+html:has(.status.panel) body #breadcrumb li:nth-child(5) .breadcrumb-timeline-item-icon svg path,
+html:has(.success-order-id) body #breadcrumb li:nth-child(3) .breadcrumb-timeline-item-icon svg path,
+html:has(.success-order-id) body #breadcrumb li:nth-child(5) .breadcrumb-timeline-item-icon svg path,
+html:has([test-id="order-id"]) body #breadcrumb li:nth-child(3) .breadcrumb-timeline-item-icon svg path,
+html:has([test-id="order-id"]) body #breadcrumb li:nth-child(5) .breadcrumb-timeline-item-icon svg path {
+  fill: #a31460 !important;
+  stroke: #a31460 !important;
+}
+
+/* NubeSDK custom steps em #nube-sdk-slot-after_header */
+/* Linha 2 (entre Entrega e Pagamento) */
+body.yamuna-step-pagamento #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(4),
+html:has(.status-content) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(4),
+html:has(.status.panel) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(4),
+html:has(.success-order-id) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(4),
+html:has([test-id="order-id"]) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(4) {
+  background: #a31460 !important;
+  background-color: #a31460 !important;
+}
+
+/* Coluna 3 (Entrega) -> concluída: círculo branco com borda #a31460 */
+body.yamuna-step-pagamento #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(3) > .nube-box:first-child,
+html:has(.status-content) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(3) > .nube-box:first-child,
+html:has(.status.panel) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(3) > .nube-box:first-child,
+html:has(.success-order-id) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(3) > .nube-box:first-child,
+html:has([test-id="order-id"]) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(3) > .nube-box:first-child {
+  background: #ffffff !important;
+  border-color: #a31460 !important;
+}
+
+/* Ícone de Entrega: quando concluído, deve ser vinho #a31460 */
+body.yamuna-step-pagamento #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(3) img,
+html:has(.status-content) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(3) img,
+html:has(.status.panel) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(3) img,
+html:has(.success-order-id) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(3) img,
+html:has([test-id="order-id"]) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(3) img {
+  filter: brightness(0) saturate(100%) invert(14%) sepia(87%) saturate(3500%) hue-rotate(308deg) brightness(85%) contrast(97%) !important;
+}
+
+/* Coluna 5 (Pagamento) -> ativo (current): círculo preenchido #a31460 */
+body.yamuna-step-pagamento #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) > .nube-box:first-child,
+html:has(.status-content) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) > .nube-box:first-child,
+html:has(.status.panel) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) > .nube-box:first-child,
+html:has(.success-order-id) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) > .nube-box:first-child,
+html:has([test-id="order-id"]) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) > .nube-box:first-child {
+  background: #a31460 !important;
+  border-color: #a31460 !important;
+}
+
+/* Ícone de Pagamento: quando ativo em círculo #a31460, deve ser branco puro */
+body.yamuna-step-pagamento #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) img,
+html:has(.status-content) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) img,
+html:has(.status.panel) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) img,
+html:has(.success-order-id) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) img,
+html:has([test-id="order-id"]) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) img {
+  filter: brightness(0) invert(1) !important;
+}
+
+/* Texto de Pagamento: cor vinho #a31460 */
+body.yamuna-step-pagamento #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) .nube-text,
+body.yamuna-step-pagamento #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) [class*="nube-text"],
+html:has(.status-content) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) .nube-text,
+html:has(.status-content) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) [class*="nube-text"],
+html:has(.status.panel) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) .nube-text,
+html:has(.status.panel) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) [class*="nube-text"],
+html:has(.success-order-id) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) .nube-text,
+html:has(.success-order-id) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) [class*="nube-text"],
+html:has([test-id="order-id"]) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) .nube-text,
+html:has([test-id="order-id"]) body #nube-sdk-slot-after_header > .nube-box > .nube-box:nth-child(5) [class*="nube-text"] {
+  color: #a31460 !important;
+}
+
+/* Cenário 081 — card de avaliações com a mesma altura de /comprar. */
+html body #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) {
+  height: 364px !important;
+  min-height: 364px !important;
+  max-height: 364px !important;
+}
+
+/* Preço unitário dos produtos no resumo do pedido. */
+html body #main-row #secondary-column [data-testid="product-table"] tbody td.table-price,
+html body #main-row #secondary-column [data-testid="product-table"] tbody td.table-price span,
+html body #main-row #secondary-column .table.table-scrollable tbody td.table-price,
+html body #main-row #secondary-column .table.table-scrollable tbody td.table-price span {
+  font-size: 14px !important;
+}
+
+/* Checkout legado: o SDK ainda pode renderizar quatro depoimentos lado a lado.
+ * Este alvo identifica apenas o card cujo primeiro filho é o título das avaliações. */
+@media (max-width: 767px) {
+  html body #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) {
+    width: calc(100% - 30px) !important;
+    max-width: calc(100% - 30px) !important;
+    min-height: 364px !important;
+    margin: 32px 15px 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  html body #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2) {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  html body #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2) > .nube-box {
+    display: none !important;
+  }
+
+  html body #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) > .nube-box:nth-child(2) > .nube-box:first-child {
+    display: flex !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  html body #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) h3.nube-text {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding-bottom: 10px !important;
+    border-bottom: 1px solid #eeeeee !important;
+  }
+
+  html body #nube-sdk-slot-after_main_content > .nube-box:not(:last-child):has(> .nube-box:first-child > h3.nube-text) h3.nube-text::before {
+    content: "★" !important;
+    display: inline-block !important;
+    width: 20px !important;
+    height: 20px !important;
+    flex: 0 0 20px !important;
+    border-radius: 50% !important;
+    background: #5fbbc6 !important;
+    color: #ffffff !important;
+    font: 700 13px/20px Arial, sans-serif !important;
+    text-align: center !important;
+  }
+}
+
+/* Opções de pagamento: Cartão de crédito, Pix e Boleto bancário. */
+html body .radio.payment-option .accordion-section-header-label,
+html body .radio.payment-option .accordion-section-header-label .d-md-inline-block {
+  font-weight: 400 !important;
+}
+
+/* Resumo do pedido: destaque do nome e miniatura centralizada no mobile. */
+html body #secondary-column:not(#yamuna-product-name-a):not(#yamuna-product-name-b) .summary-details > .table.table-scrollable td.table-product-name,
+html body #secondary-column:not(#yamuna-product-name-a):not(#yamuna-product-name-b) .summary-details > .table.table-scrollable td.table-product-name .yamuna-name-clamp {
+  font-weight: 600 !important;
+}
+
+@media (max-width: 767px) {
+  html body #secondary-column:not(#yamuna-row-a):not(#yamuna-row-b):not(#yamuna-row-c):not(#yamuna-product-image-a) .summary-details > .table.table-scrollable td.summary-img-wrap {
+    display: flex !important;
+    align-items: center !important;
+    align-self: center !important;
+  }
+}
+
+/* =============================================================================
+ * CenÃ¡rio 079/080: EndereÃ§os e opÃ§Ãµes de frete â€” Roboto 14px, bg #fff, check verde
+ * ============================================================================= */
+
+/* ---- 1. Lista expandida de endereÃ§os (DomicÃ­lio de entrega) ---- */
+html body .list-picker *,
+html body .list-picker-content *,
+html body .panel-address-list *,
+html body .saved-addresses * {
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 14px !important;
+}
+
+html body .list-picker li,
+html body .panel-address-list .radio,
+html body .panel-address-list .radio-option {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-radius: 10px !important;
+  margin-bottom: 12px !important;
+  color: #212529 !important;
+}
+
+html body .list-picker li.active *,
+html body .panel-address-list .radio.active *,
+html body .panel-address-list .radio-option.active *,
+html body .saved-addresses .radio.active * {
+  color: #212529 !important;
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 14px !important;
+}
+
+html body .list-picker li.active,
+html body .panel-address-list .radio.active,
+html body .panel-address-list .radio-option.active {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 2px solid #a31460 !important;
+  border-radius: 10px !important;
+}
+
+html body .list-picker li.active .checked,
+html body .list-picker li.active svg.checked path,
+html body .list-picker li.active svg.checked circle,
+html body .panel-address-list .radio.active .checked,
+html body .panel-address-list .radio.active svg.checked path,
+html body .saved-addresses .radio.active .checked {
+  fill: #238482 !important;
+  color: #238482 !important;
+  stroke: #238482 !important;
+}
+
+/* ---- 2. Desativar sticky nos tÃ­tulos para NÃƒO descerem com o scroll ---- */
+html body #main-column .panel-header-sticky,
+html body #main-column .panel-header,
+html body .panel-header-sticky,
+html body h3.panel-header-sticky,
+html body h4.panel-header-sticky,
+html body [class*="panel-header-sticky"] {
+  position: static !important;
+  top: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* ---- 3. Wrapper externo (.panel.panel-with-header) do card de endereÃ§o consolidado ---- */
+html body .panel.panel-with-header:has(> .saved-address-box-review-block),
+html body #main-column .panel.panel-with-header:has(> .saved-address-box-review-block),
+html body #main-column .panel.panel-with-header:has(.saved-address-box-review-block),
+html body #main-column > .panel:has(.saved-address-box-review-block) {
+  padding: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* ---- 4. Box de endereÃ§o consolidado (saved-address-box-review-block) ---- */
+html body .saved-address-box-review-block,
+html body .panel.saved-address-box-review-block,
+html body #main-column .saved-address-box-review-block,
+html body #main-column .panel.saved-address-box-review-block,
+html body [class*="saved-address-box-review-block"] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.04) !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  padding: 16px 20px !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+}
+
+html body .saved-address-box-review-block .saved-address-box-review-block-content,
+html body #main-column .saved-address-box-review-block .saved-address-box-review-block-content {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 12px !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+html body .saved-address-box-review-block .saved-address-box-review-block-btn,
+html body #main-column .saved-address-box-review-block .saved-address-box-review-block-btn {
+  flex: 0 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  align-self: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+html body .saved-address-box-review-block .btn-link,
+html body .saved-address-box-review-block a {
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #a31460 !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 6px 12px !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+}
+
+/* ---- 5. Div da img2 / img4: Card de endereÃ§o selecionado (formless-address) Desktop e Mobile ---- */
+html body [data-testid="shipping_formless"],
+html body #main-column [data-testid="shipping_formless"],
+html body .form-group[data-testid="shipping_formless"],
+html body #main-column .form-group[data-testid="shipping_formless"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+  margin: 0 0 18px 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  height: auto !important;
+  min-height: unset !important;
+}
+
+html body .formless-address,
+html body #main-column .formless-address,
+html body .form-control.formless-address,
+html body #main-column .form-control.formless-address,
+html body [data-testid="shipping_formless"] .form-control,
+html body [data-testid="shipping_formless"] .formless-address {
+  height: auto !important;
+  min-height: unset !important;
+  max-height: none !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.04) !important;
+  padding: 16px 20px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+
+html body #main-column .formless-address .review-block.detailed-item,
+html body .formless-address .review-block.detailed-item {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  gap: 12px !important;
+}
+
+html body #main-column .formless-address .center-area,
+html body .formless-address .center-area {
+  flex: 1 1 auto !important;
+  padding: 0 12px !important;
+}
+
+html body #main-column .formless-address .content p,
+html body .formless-address .content p {
+  margin: 0 0 2px 0 !important;
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  color: #212529 !important;
+}
+
+html body #main-column .formless-address .user-detail-icon-area,
+html body .formless-address .user-detail-icon-area {
+  flex: 0 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+html body #main-column .formless-address .change-button-area,
+html body .formless-address .change-button-area {
+  flex: 0 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+html body #main-column .formless-address .change-button-area a,
+html body .formless-address .change-button-area a,
+html body #main-column .formless-address .change-button-area button,
+html body .formless-address .change-button-area button,
+html body #main-column .formless-address .btn-link,
+html body .formless-address .btn-link {
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #a31460 !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 4px 8px !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+/* ---- 6. OpÃ§Ãµes de frete ---- */
+html body .shipping-option,
+html body .radio.shipping-option,
+html body .radio-option.shipping-option {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-radius: 10px !important;
+  margin-bottom: 12px !important;
+}
+
+html body .shipping-option .label *,
+html body .shipping-option span,
+html body .shipping-option p,
+html body .radio.shipping-option .label *,
+html body .radio.shipping-option span,
+html body .radio.shipping-option p {
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 14px !important;
+}
+
+html body .shipping-option.active,
+html body .radio.shipping-option.active {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 2px solid #a31460 !important;
+  border-radius: 10px !important;
+}
+
+html body .shipping-option.active .selector::before,
+html body .radio.shipping-option.active .selector::before,
+html body .shipping-option input:checked + .selector::before,
+html body .radio.shipping-option input:checked + .selector::before {
+  background: #238482 !important;
+  background-color: #238482 !important;
+  border-color: #238482 !important;
+}
+
+/* ---- 7. REMOVER OS 2 BOTÃ•ES DO FLUXO DE CEP / NOVO ENDEREÃ‡O ---- */
+html body [data-testid="btnSubmitZipCode"],
+html body #main-column [data-testid="btnSubmitZipCode"],
+html body div[data-testid="btnSubmitZipCode"],
+html body .btn-submit-step[data-testid="btnSubmitZipCode"],
+html body #shipping-section [data-testid="btnSubmitZipCode"],
+html body .shipping-calculator [data-testid="btnSubmitZipCode"],
+html body .shipping-calculator ~ [data-testid="btnSubmitZipCode"],
+html body #main-column div.btn-submit-step[data-testid="btnSubmitZipCode"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  left: -9999px !important;
+}
+
+html body #main-column .hide,
+html body #main-column button.hide,
+html body #main-column .btn.hide,
+html body #main-column .btn-primary.hide,
+html body #main-column .btn-submit-step.hide,
+html body #main-column button.btn-primary.btn-submit-step.hide,
+html body #main-column button.hide.btn-primary.btn-submit-step,
+html body button[class*="hide"],
+html body .hide {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+}
+
+/* ---- 8. BotÃ£o "Buscar" CEP dentro do input ---- */
+.yamuna-cep-buscar-btn {
+  position: absolute !important;
+  right: 8px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  padding: 0 16px !important;
+  background: #a31460 !important;
+  background-color: #a31460 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 6px !important;
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  z-index: 10 !important;
+  box-shadow: none !important;
+}
+
+.yamuna-cep-buscar-btn:hover,
+.yamuna-cep-buscar-btn:focus {
+  background: #82104d !important;
+  background-color: #82104d !important;
+  outline: none !important;
+}
+
+/* =============================================================================
+ * INPUTS: EspaÃ§amento maior Desktop e Mobile + TÃ­tulos Flutuantes
+ * ============================================================================= */
+
+html body #main-column .form-group,
+html body #main-column .has-float-label,
+html body #main-column .form-group.has-float-label,
+html body #main-column [class*="col-"] > .has-float-label,
+html body #main-column [class*="col-"].form-group,
+html body #main-column .row > [class*="col-"] {
+  margin-bottom: 20px !important;
+  position: relative !important;
+}
+
+@media (max-width: 767px) {
+  html body #main-column .row > [class*="col-"],
+  html body #main-column .row > .form-group,
+  html body #main-column .form-group,
+  html body #main-column .has-float-label,
+  html body #main-column [class*="col-"].form-group {
+    margin-bottom: 18px !important;
+  }
+}
+
+html body #main-column .has-float-label input.form-control,
+html body #main-column .form-group input.form-control,
+html body #main-column input.form-control,
+html body #main-column input[type="text"],
+html body #main-column input[type="email"],
+html body #main-column input[type="tel"] {
+  height: 52px !important;
+  min-height: 52px !important;
+  padding: 22px 14px 6px 14px !important;
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 14px !important;
+  line-height: 22px !important;
+  border-radius: 8px !important;
+  box-sizing: border-box !important;
+  background-color: #ffffff !important;
+  border: 1px solid #ced4da !important;
+  color: #212529 !important;
+}
+
+html body #main-column .has-float-label input.form-control:focus,
+html body #main-column input.form-control:focus {
+  border-color: #a31460 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(163, 20, 96, 0.15) !important;
+}
+
+html body #main-column .has-float-label label,
+html body #main-column .has-float-label .input-label,
+html body #main-column .has-float-label > label,
+html body #main-column .has-float-label > .input-label,
+html body #main-column label.input-label {
+  position: absolute !important;
+  left: 14px !important;
+  top: 7px !important;
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  line-height: 14px !important;
+  color: #777777 !important;
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none !important;
+  z-index: 3 !important;
+  transition: all 0.15s ease-in-out !important;
+}
+
+html body #main-column .has-float-label:focus-within label,
+html body #main-column .has-float-label:focus-within .input-label,
+html body #main-column .has-float-label:focus-within > label,
+html body #main-column .has-float-label:focus-within > .input-label {
+  color: #a31460 !important;
+}
+
+html body #main-column .has-float-label input:placeholder-shown:not(:focus) ~ label,
+html body #main-column .has-float-label input:placeholder-shown:not(:focus) ~ .input-label {
+  top: 16px !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  font-weight: 400 !important;
+  color: #888888 !important;
+}
+
+/* =============================================================================
+ * Checkbox "Sem nÃºmero": 100% Centralizado Verticalmente (Desktop e Mobile - 14px)
+ * ============================================================================= */
+
+html body #main-column .form-group.col-md-5,
+html body #main-column .col-md-5,
+html body #main-column .col-sm-12.col-md-5,
+html body #main-column .form-group:has(.input-button),
+html body #main-column .form-group:has([name="shippingAddress.number"]) .has-float-label {
+  position: relative !important;
+  height: 52px !important;
+  min-height: 52px !important;
+}
+
+/* O input-button ocupa a altura total (52px) e centraliza via flex align-items: center */
+html body #main-column .input-button,
+html body .input-button {
+  position: absolute !important;
+  right: 14px !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  transform: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 5 !important;
+  max-width: 125px !important;
+  pointer-events: auto !important;
+}
+
+html body #main-column .input-button .form-group,
+html body .input-button .form-group {
+  margin: 0 !important;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+  padding: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+}
+
+html body #main-column .input-button label,
+html body #main-column .input-button .form-checkbox,
+html body #main-column .input-button .form-options-label {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+}
+
+html body #main-column .input-button .form-options-content {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100% !important;
+  line-height: 1 !important;
+}
+
+/* Esconde o input checkbox nativo para nÃ£o desalinhar o Ã­cone customizado */
+html body #main-column .input-button input[type="checkbox"],
+html body .input-button input[type="checkbox"] {
+  position: absolute !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Ãcone do checkbox alinhado ao centro */
+html body #main-column .input-button .form-options-icon {
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: middle !important;
+}
+
+/* Texto "Sem nÃºmero" alinhado e com fonte 14px */
+html body #main-column .input-button span.form-options-label,
+html body #main-column .input-button .form-options-label,
+html body #main-column label[for="shipping_isnumbercheckbox"],
+html body #main-column label[for="shipping_isnumbercheckbox"] * {
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  color: #555555 !important;
+  white-space: nowrap !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  vertical-align: middle !important;
+}
+
+html body #main-column input[name="shippingAddress.number"],
+html body #main-column #shippingAddress\\.number {
+  padding-right: 135px !important;
+}
+
+/* =============================================================================
+ * Img5: PreÃ§os dos produtos na tabela de resumo do pedido -> Cor #000
+ * ============================================================================= */
+
+html body #secondary-column .table-price,
+html body #secondary-column .table-price *,
+html body #secondary-column td.table-price,
+html body #secondary-column td.table-price *,
+html body #secondary-column .product-price,
+html body #secondary-column .table-price-total,
+html body #secondary-column .table-price-total *,
+html body #secondary-column .product-subtotal,
+html body #secondary-column .product-subtotal *,
+html body #secondary-column .table-scrollable td.table-price,
+html body #secondary-column .table-scrollable td.table-price * {
+  color: #000000 !important;
+}
+
+/* =============================================================================
+ * Cenario 085: mobile - botao Continuar com 264px de largura em 320px de tela
+ * (82.5vw = 264/320) e crescendo proporcionalmente nas demais larguras.
+ * ============================================================================= */
+@media (max-width: 767px) {
+  html body #main-column .btn-primary.btn-submit-step:not(.hide):not([class*="hide"]):not([data-testid="btnSubmitZipCode"]),
+  html body #main-column button.btn-primary.btn-submit-step:not(.hide):not([class*="hide"]):not([data-testid="btnSubmitZipCode"]) {
+    width: 82.5vw !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* =============================================================================
+ * Cenario 086: resumo do checkout - peso da fonte 600 nos rotulos
+ * "Subtotal", "Custo de frete" e "Total" (e "Desconto do cupom"), em todas as telas.
+ * Os valores (precos) continuam com o peso anterior.
+ * ============================================================================= */
+html body .table .table-subtotal td:first-child,
+html body .table .table-shipping td:first-child,
+html body .table .table-shipping-cost td:first-child,
+html body .table .table-discount td:first-child,
+html body .table .table-total td:first-child,
+html body .table-footer td:first-child,
+html body .summary table tfoot td:first-child,
+html body .summary-table tbody tr.table-subtotal td:first-child,
+html body .summary-table tbody tr.table-shipping-cost td:first-child,
+html body .summary-table tfoot td:first-child,
+html body [data-testid="cart-subtotal"] td:first-child,
+html body [data-testid="cart-shipping-cost"] td:first-child,
+html body #main-row #secondary-column .table-footer td:first-child,
+html body #main-row #secondary-column .table-subtotal td:first-child,
+html body #main-row #secondary-column .table-shipping-cost td:first-child,
+html body #main-row #secondary-column .table-discount td:first-child {
+  font-weight: 600 !important;
+}
+
+/* =============================================================================
+ * Cenario 087: mobile - Raleway 16px no botao FINALIZAR COMPRA e nos nomes das
+ * formas de pagamento (Cartao de credito, Pix, Boleto bancario).
+ * ============================================================================= */
+@media (max-width: 767px) {
+  html body #btnFinishCheckout::after,
+  html body #main-column #btnFinishCheckout::after,
+  html body #main-column .panel #btnFinishCheckout.btn-primary::after {
+    font-family: Raleway, sans-serif !important;
+    font-size: 16px !important;
+  }
+
+  html body #main-column .radio.payment-option .accordion-section-header-label,
+  html body #main-column .radio.payment-option .accordion-section-header-label .d-md-inline-block,
+  html body #main-column .radio.payment-option .accordion-section-header-label .payment-item-discount,
+  html body .radio.payment-option .accordion-section-header-label,
+  html body .radio.payment-option .accordion-section-header-label .d-md-inline-block {
+    font-family: Raleway, sans-serif !important;
+    font-size: 16px !important;
+  }
+}
+
+/* =============================================================================
+ * Cenario 093: rotulos flutuantes em TODOS os campos do checkout (inclui o
+ * formulario de cartao de credito do Nuvem Pago, que fica fora de #main-column).
+ * O input/select ganha 52px de altura e padding-top de 22px; o rotulo fica
+ * fixo no topo (11px) e, com o campo vazio, desce para dentro (14px) como
+ * placeholder. Assim o texto preenchido nunca encosta no rotulo.
+ * O cupom do resumo (#secondary-column) tem regras proprias e fica de fora.
+ * ============================================================================= */
+html body .has-float-label:not(#secondary-column *) {
+  position: relative !important;
+}
+
+html body .has-float-label:not(#secondary-column *) input.form-control,
+html body .has-float-label:not(#secondary-column *) input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+html body .has-float-label:not(#secondary-column *) select.form-control,
+html body .has-float-label:not(#secondary-column *) select {
+  height: 52px !important;
+  min-height: 52px !important;
+  padding: 22px 14px 6px 14px !important;
+  font-size: 14px !important;
+  line-height: 22px !important;
+  box-sizing: border-box !important;
+}
+
+html body .has-float-label:not(#secondary-column *) > label,
+html body .has-float-label:not(#secondary-column *) > .input-label,
+html body .has-float-label:not(#secondary-column *) > .select-label {
+  position: absolute !important;
+  left: 14px !important;
+  top: 7px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: Roboto, Arial, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  line-height: 14px !important;
+  color: #777777 !important;
+  background: transparent !important;
+  pointer-events: none !important;
+  z-index: 3 !important;
+  max-width: calc(100% - 28px) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body .has-float-label:not(#secondary-column *):focus-within > label,
+html body .has-float-label:not(#secondary-column *):focus-within > .input-label,
+html body .has-float-label:not(#secondary-column *):focus-within > .select-label {
+  color: #a31460 !important;
+}
+
+/* Campo vazio e sem foco: o rotulo desce e funciona como placeholder. */
+html body .has-float-label:not(#secondary-column *) input:placeholder-shown:not(:focus) ~ label,
+html body .has-float-label:not(#secondary-column *) input:placeholder-shown:not(:focus) ~ .input-label {
+  top: 16px !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  font-weight: 400 !important;
+  color: #888888 !important;
+}
+
+/* =============================================================================
+ * Cenario 094: fundo branco (#fff) em "Forma de pagamento" (painel + titulo) e em
+ * "Alterar forma de pagamento" (dentro do iframe de pagamento, onde o body era #f6f6f6).
+ * ============================================================================= */
+html body #main-column .panel.panel-with-header:has(iframe):not(#yamuna-pay-bg-a):not(#yamuna-pay-bg-b),
+html body #main-column .panel.panel-with-header:has(iframe):not(#yamuna-pay-bg-a):not(#yamuna-pay-bg-b) > .panel-header,
+html body #main-column .panel.panel-with-header:has(iframe):not(#yamuna-pay-bg-a):not(#yamuna-pay-bg-b) > h3.panel-header,
+html body #main-column .panel.panel-with-header:has(iframe):not(#yamuna-pay-bg-a):not(#yamuna-pay-bg-b) iframe {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+/* Dentro do iframe de pagamento */
+html:has(.change-payment-option, .payment-option, .checkout-method),
+html body:has(.change-payment-option, .payment-option, .checkout-method),
+html body:has(.change-payment-option, .payment-option, .checkout-method) #root,
+html body:has(.change-payment-option, .payment-option, .checkout-method) .change-payment-option,
+html body .change-payment-option {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+/* ==========================================================================
+ * Cenario 095: rodape do checkout (resumo/pagamento) igual ao da home e do
+ * step 1 no mobile: tudo centralizado, logo 96px (mesma da home), icones
+ * sociais com gap 20px, titulos 18px, itens com 6px de respiro, divisor sob
+ * a marca e barra de pagamento em coluna.
+ * ========================================================================== */
+@media (max-width: 767px) {
+  html body #nube-sdk-slot-after_main_content > .nube-box:last-child:not(:only-child) {
+    text-align: center !important;
+  }
+  html body #nube-sdk-slot-after_main_content > .nube-box:last-child:not(:only-child) > .nube-box {
+    padding: 39px 12px 0 !important;
+    align-items: center !important;
+  }
+  html body #nube-sdk-slot-after_main_content > .nube-box:last-child:not(:only-child) > .nube-box > .nube-box {
+    align-items: center !important;
+    text-align: center !important;
+    justify-content: center !important;
+    row-gap: 24px !important;
+    column-gap: 0 !important;
+    padding-bottom: 24px !important;
+  }
+  /* marca: logo + redes sociais */
+  html body #nube-sdk-slot-after_main_content > .nube-box:last-child:not(:only-child) > .nube-box > .nube-box:first-child > .nube-box:first-child {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    align-items: center !important;
+    text-align: center !important;
+    padding-bottom: 27px !important;
+    border-bottom: 1px solid #a31460 !important;
+  }
+  html body #nube-sdk-slot-after_main_content > .nube-box:last-child:not(:only-child) img[alt="Yamuna"] {
+    width: 96px !important;
+    max-width: 96px !important;
+    height: auto !important;
+    margin: 0 auto 20px !important;
+  }
+  html body #nube-sdk-slot-after_main_content > .nube-box:last-child:not(:only-child) > .nube-box > .nube-box:first-child > .nube-box:first-child > .nube-box {
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 20px !important;
+    width: 100% !important;
+  }
+  /* colunas de links */
+  html body #nube-sdk-slot-after_main_content > .nube-box:last-child:not(:only-child) > .nube-box > .nube-box:first-child > .nube-box:not(:first-child) {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+  html body #nube-sdk-slot-after_main_content > .nube-box:last-child:not(:only-child) > .nube-box > .nube-box:first-child > .nube-box:not(:first-child) > * {
+    text-align: center !important;
+    align-self: center !important;
+    width: 100% !important;
+  }
+  html body #nube-sdk-slot-after_main_content > .nube-box:last-child:not(:only-child) > .nube-box > .nube-box:first-child > .nube-box:not(:first-child) > [style*="text-transform: uppercase"] {
+    font-size: 18px !important;
+    margin: 0 0 12px !important;
+  }
+  html body #nube-sdk-slot-after_main_content > .nube-box:last-child:not(:only-child) > .nube-box > .nube-box:first-child > .nube-box:not(:first-child) > :not([style*="text-transform: uppercase"]) {
+    font-size: 16px !important;
+    margin: 0 0 6px !important;
+  }
+  /* barra de pagamento / seguranca */
+  html body #nube-sdk-slot-after_main_content > .nube-box:last-child:not(:only-child) > .nube-box > .nube-box:nth-child(2) {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 30px !important;
+    padding: 20px 0 25px !important;
+  }
+  html body #nube-sdk-slot-after_main_content > .nube-box:last-child:not(:only-child) > .nube-box > .nube-box:nth-child(2) > .nube-box {
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    text-align: center !important;
+    row-gap: 12px !important;
+  }
+  html body #nube-sdk-slot-after_main_content > .nube-box:last-child:not(:only-child) > .nube-box > .nube-box:nth-child(2) > .nube-box > .nube-box {
+    justify-content: center !important;
+  }
+  /* copyright */
+  html body #nube-sdk-slot-after_main_content > .nube-box:last-child:not(:only-child) > .nube-box > .nube-box:last-child {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    padding: 13px 0 20px !important;
+  }
+  html body #nube-sdk-slot-after_main_content > .nube-box:last-child:not(:only-child) > .nube-box > .nube-box:last-child > * {
+    text-align: center !important;
+  }
+}
+
+/* 097 - checkout: box de avaliacoes (NubeSDK) com 15px de cada lado no mobile.
+ * Vence as regras "#nube-sdk-slot-after_main_content ... { width:100% !important; margin-left/right:0 !important }". */
+@media (max-width: 767px) {
+  html body #nube-sdk-slot-after_main_content > .nube-box:not(:last-child),
+  html body #nube-sdk-slot-after_main_content > .nube-box:only-child,
+  html body #nube-sdk-slot-after_main_content .nube-box#yamuna-cart-reviews,
+  html body #nube-sdk-slot-after_main_content #yamuna-cart-reviews,
+  html body #nube-sdk-slot .nube-box:not(:last-child) {
+    box-sizing: border-box !important;
+    width: calc(100% - 30px) !important;
+    max-width: calc(100% - 30px) !important;
+    margin-left: 15px !important;
+    margin-right: 15px !important;
   }
 }

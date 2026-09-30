@@ -2706,6 +2706,12 @@ $(document).ready(function(){
                 if (window.yamunaShowCartToast) {
                     window.yamunaShowCartToast(toastQuantity);
                 }
+                {# Cenário 044: open minicart via navbar sacola trigger after successful add. #}
+                setTimeout(function() {
+                    if (window.yamunaAutoOpenCart) {
+                        window.yamunaAutoOpenCart();
+                    }
+                }, 50);
             },
             function() {
                 button.disabled = false;
@@ -2862,23 +2868,14 @@ $(document).ready(function(){
 
                     $productContainer.find(".js-added-to-cart-product-message").slideDown();
 
-                    {# Show notification and hide it only after second added to cart #}
-
-                    setTimeout(function(){
-                        $(".js-alert-added-to-cart").show().addClass("notification-visible").removeClass("notification-hidden");
-                    },500);
-
-                    if (!cookieService.get('first_product_added_successfully')) {
-                        cookieService.set('first_product_added_successfully', 1, 7 );
-                    } else{
-                        setTimeout(function(){
-                            $(".js-alert-added-to-cart").removeClass("notification-visible").addClass("notification-hidden");
-                            setTimeout(function(){
-                                $('.js-cart-notification-item-img').attr('src', '');
-                                $(".js-alert-added-to-cart").hide();
-                            },2000);
-                        },8000);
-                    }
+                    {# Cenário 044: open the minicart after a successful add. #}
+                    setTimeout(function() {
+                        if (window.yamunaAutoOpenCart) {
+                            window.yamunaAutoOpenCart();
+                        } else if (!$('#modal-cart').hasClass('modal-show')) {
+                            $('#modal-cart').detach().appendTo('body').show().addClass('modal-show');
+                        }
+                    }, 50);
 
 
                     {# Yamuna: never copy/save CEP into the minicart on add-to-cart. #}
@@ -3008,7 +3005,7 @@ $(document).ready(function(){
                 $(".js-other-pickup-options, .js-show-other-pickup-options .js-shipping-see-less").show();
                 $(".js-show-other-pickup-options .js-shipping-see-more").hide();
             } else {
-                $(".js-other-shipping-options, .js-show-more-shipping-options .js-shipping-see-less").show();
+                $(".js-other-shipping-options, .js-other-shipping-item, .js-show-more-shipping-options .js-shipping-see-less").show();
                 $(".js-show-more-shipping-options .js-shipping-see-more").hide()
             }
         }
@@ -3142,7 +3139,7 @@ $(document).ready(function(){
             $(".js-other-pickup-options").slideToggle(600);
             $(".js-show-other-pickup-options .js-shipping-see-less, .js-show-other-pickup-options .js-shipping-see-more").toggle();
         }else{
-            $(".js-other-shipping-options").slideToggle(600);
+            $(".js-other-shipping-options, .js-other-shipping-item").slideToggle(600);
             $(".js-show-more-shipping-options .js-shipping-see-less, .js-show-more-shipping-options .js-shipping-see-more").toggle();
         }
 	});

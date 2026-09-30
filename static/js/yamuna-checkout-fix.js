@@ -92,6 +92,7 @@
     }).observe(document.documentElement, { childList: true, subtree: true });
   }
 })();
+
 (function () {
   if (!/\/checkout\//i.test(location.pathname)) return;
 
@@ -312,10 +313,75 @@
     var body = document.body;
     if (!body) return;
     body.classList.remove('yamuna-step-entrega', 'yamuna-step-pagamento');
-    if (/\/checkout\/v3\/next\//i.test(path) || /\/payment/i.test(path)) {
+    if (
+      /\/checkout\/v3\/next\//i.test(path) ||
+      /\/payment/i.test(path) ||
+      /\/checkout\/v3\/success\//i.test(path) ||
+      /\/success/i.test(path) ||
+      document.querySelector('.status-content, .status.panel, .success-order-id, [test-id="order-id"]')
+    ) {
       body.classList.add('yamuna-step-pagamento');
     } else if (/\/checkout\//i.test(path)) {
       body.classList.add('yamuna-step-entrega');
+    }
+  }
+
+  /* Cenário 078: Na tela de pedido concluído, o progresso deve ser Pagamento */
+  function fixNubeStepsOnSuccess() {
+    var path = location.pathname || '';
+    var isSuccess =
+      /\/checkout\/v3\/success\//i.test(path) ||
+      /\/success/i.test(path) ||
+      document.querySelector('.status-content, .status.panel, .success-order-id, [test-id="order-id"]');
+    if (!isSuccess) return;
+
+    var container = document.querySelector('#nube-sdk-slot-after_header > .nube-box');
+    if (!container) return;
+
+    var kids = container.children;
+    if (kids.length < 5) return;
+
+    // Coluna 3 (Entrega) -> concluída (fundo branco, borda #a31460, ícone step-truck.svg)
+    var entregaCol = kids[2];
+    if (entregaCol) {
+      var c3 = entregaCol.firstElementChild;
+      if (c3) {
+        c3.style.setProperty('background', '#ffffff', 'important');
+        c3.style.setProperty('border-color', '#a31460', 'important');
+        var img3 = c3.querySelector('img');
+        if (img3 && img3.src.indexOf('truck-white') !== -1) {
+          img3.src = img3.src.replace('truck-white', 'truck');
+        }
+      }
+      var t3 = entregaCol.querySelector('.nube-text, [class*="nube-text"]');
+      if (t3) t3.style.setProperty('color', '#a31460', 'important');
+    }
+
+    // Linha 2 (entre Entrega e Pagamento) -> vira #a31460
+    var line2 = kids[3];
+    if (line2) {
+      line2.style.setProperty('background', '#a31460', 'important');
+      line2.style.setProperty('background-color', '#a31460', 'important');
+    }
+
+    // Coluna 5 (Pagamento) -> vira ativa/current (círculo preenchido #a31460, ícone branco, texto #a31460)
+    var pagCol = kids[4];
+    if (pagCol) {
+      var c5 = pagCol.firstElementChild;
+      if (c5) {
+        c5.style.setProperty('background', '#a31460', 'important');
+        c5.style.setProperty('border-color', '#a31460', 'important');
+        var img5 = c5.querySelector('img');
+        if (img5) {
+          if (img5.src.indexOf('card-muted') !== -1) {
+            img5.src = img5.src.replace('card-muted', 'card-white');
+          } else if (img5.src.indexOf('card.svg') !== -1) {
+            img5.src = img5.src.replace('card.svg', 'card-white.svg');
+          }
+        }
+      }
+      var t5 = pagCol.querySelector('.nube-text, [class*="nube-text"]');
+      if (t5) t5.style.setProperty('color', '#a31460', 'important');
     }
   }
 
@@ -449,7 +515,16 @@
 
   function getZipInput() {
     return document.querySelector(
-      '[name="shippingAddress.zipCode"], [name="shippingAddress.zipcode"], #shippingAddress\\.zipCode, #shippingAddress\\.zipcode, [data-testid="shippingAddress.zipCode"], [data-testid="shippingAddress_zipcode"]'
+      '#shipping-section input, ' +
+      '.shipping-calculator input, ' +
+      'input[name*="zip" i], ' +
+      'input[name*="cep" i], ' +
+      'input[id*="zip" i], ' +
+      'input[id*="cep" i], ' +
+      'input[data-testid*="zip" i], ' +
+      'input[placeholder*="CEP" i], ' +
+      '[name="shippingAddress.zipCode"], [name="shippingAddress.zipcode"], ' +
+      '#shippingAddress\\.zipCode, #shippingAddress\\.zipcode'
     );
   }
 
@@ -631,14 +706,169 @@
     return false;
   }
 
+  /* ——— Cenário 079: Botão "Buscar" dentro do campo de CEP ——— */
+  function ensureCepBuscarBtn() {
+    var zip = getZipInput();
+    if (!zip || !isVisible(zip)) return;
+
+    var group = zip.closest('.form-group') || zip.closest('.has-float-label') || zip.parentNode;
+    if (!group) return;
+
+    // Evita duplicação
+    if (group.querySelector('.yamuna-cep-buscar-btn')) return;
+
+    // Garante position:relative no container para o botão absoluto funcionar
+    if (window.getComputedStyle(group).position === 'static') {
+      group.style.position = 'relative';
+    }
+    zip.style.paddingRight = '90px';
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'yamuna-cep-buscar-btn';
+    btn.textContent = 'Buscar';
+    btn.setAttribute('aria-label', 'Buscar CEP');
+
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // 1. Clica o botão de envio oficial de CEP da Nuvemshop se existir
+      var officialSubmit = document.querySelector('[data-testid="btnSubmitZipCode"]');
+      if (officialSubmit) {
+        officialSubmit.click();
+      }
+
+      // 2. Dispara Enter no campo de CEP
+      zip.focus();
+      ['keydown', 'keypress', 'keyup'].forEach(function (evtType) {
+        zip.dispatchEvent(new KeyboardEvent(evtType, {
+          key: 'Enter', code: 'Enter', keyCode: 13, which: 13,
+          bubbles: true, cancelable: true
+        }));
+      });
+      zip.dispatchEvent(new Event('change', { bubbles: true }));
+      zip.dispatchEvent(new Event('input', { bubbles: true }));
+
+      // 3. Tenta submeter o formulário
+      var form = zip.closest('form');
+      if (form) {
+        var submitBtn = form.querySelector('button[type="submit"]:not(.hide)');
+        if (submitBtn) submitBtn.click();
+      }
+    });
+
+    group.appendChild(btn);
+  }
+
+  /* ——— Cenário 079: Remover os 2 botões indesejados no fluxo de CEP / novo endereço ——— */
+  function removeUnwantedShippingButtons() {
+    var btns = document.querySelectorAll(
+      '[data-testid="btnSubmitZipCode"], ' +
+      '#main-column button.hide, ' +
+      '#main-column .btn.hide, ' +
+      '#main-column .btn-submit-step.hide, ' +
+      '#main-column [class*="btnSubmitZipCode"], ' +
+      'button.hide.btn-submit-step'
+    );
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].style.setProperty('display', 'none', 'important');
+      btns[i].style.setProperty('visibility', 'hidden', 'important');
+      btns[i].setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  /* ——— Cenário 079: Esconder CTAs CONTINUAR quando form de novo endereço está aberto ——— */
+  function hideCTAWhenNewAddressOpen() {
+    removeUnwantedShippingButtons();
+
+    var zip = getZipInput();
+    var newAddrFormOpen = !!(zip && isVisible(zip));
+
+    // Esconde/mostra outros botões de checkout enquanto preenche CEP
+    var otherBtns = document.querySelectorAll(
+      '#yamuna-checkout-cta-row, ' +
+      '.yamuna-checkout-cta-row'
+    );
+
+    for (var i = 0; i < otherBtns.length; i++) {
+      var el = otherBtns[i];
+      if (newAddrFormOpen) {
+        el.setAttribute('data-yamuna-cta-hidden', '1');
+        el.style.display = 'none';
+      } else if (el.getAttribute('data-yamuna-cta-hidden')) {
+        el.removeAttribute('data-yamuna-cta-hidden');
+        el.style.removeProperty('display');
+      }
+    }
+  }
+
+  /* ——— Cenário 079: Desativar sticky nos headers e fixar "Sem número" dentro do input ——— */
+  function fixLayoutAndStickyHeaders() {
+    var stickyHeaders = document.querySelectorAll('.panel-header-sticky, [class*="panel-header-sticky"]');
+    for (var i = 0; i < stickyHeaders.length; i++) {
+      stickyHeaders[i].style.setProperty('position', 'static', 'important');
+      stickyHeaders[i].style.setProperty('top', 'auto', 'important');
+    }
+
+    var numInput = document.querySelector('[name="shippingAddress.number"]');
+    var inputBtn = document.querySelector('.input-button');
+    if (numInput && inputBtn) {
+      var wrap = numInput.closest('.has-float-label');
+      if (wrap && inputBtn.parentNode !== wrap) {
+        wrap.style.setProperty('position', 'relative', 'important');
+        wrap.appendChild(inputBtn);
+      }
+      inputBtn.style.setProperty('position', 'absolute', 'important');
+      inputBtn.style.setProperty('top', '0', 'important');
+      inputBtn.style.setProperty('bottom', '0', 'important');
+      inputBtn.style.setProperty('height', '100%', 'important');
+      inputBtn.style.setProperty('transform', 'none', 'important');
+      inputBtn.style.setProperty('right', '14px', 'important');
+      inputBtn.style.setProperty('display', 'flex', 'important');
+      inputBtn.style.setProperty('align-items', 'center', 'important');
+      inputBtn.style.setProperty('justify-content', 'center', 'important');
+      inputBtn.style.setProperty('margin', '0', 'important');
+      inputBtn.style.setProperty('padding', '0', 'important');
+
+      var innerGroup = inputBtn.querySelector('.form-group');
+      if (innerGroup) {
+        innerGroup.style.setProperty('margin', '0', 'important');
+        innerGroup.style.setProperty('padding', '0', 'important');
+        innerGroup.style.setProperty('height', '100%', 'important');
+        innerGroup.style.setProperty('display', 'flex', 'important');
+        innerGroup.style.setProperty('align-items', 'center', 'important');
+      }
+      var innerLabel = inputBtn.querySelector('label');
+      if (innerLabel) {
+        innerLabel.style.setProperty('margin', '0', 'important');
+        innerLabel.style.setProperty('padding', '0', 'important');
+        innerLabel.style.setProperty('height', '100%', 'important');
+        innerLabel.style.setProperty('display', 'flex', 'important');
+        innerLabel.style.setProperty('align-items', 'center', 'important');
+      }
+    }
+
+    var outerFormless = document.querySelector('[data-testid="shipping_formless"]');
+    if (outerFormless) {
+      outerFormless.style.setProperty('background', 'transparent', 'important');
+      outerFormless.style.setProperty('padding', '0', 'important');
+    }
+  }
+
   function run() {
     wrapProductNames(document);
     removeSummaryThumbWhiteBg(document);
     enableCarrinhoStep();
     markCheckoutStep();
+    fixNubeStepsOnSuccess();
     normalizeFinishButtonLabel();
     ensureContinueShoppingCta();
     normalizeCepEmptyErrors();
+    ensureCepBuscarBtn();
+    removeUnwantedShippingButtons();
+    hideCTAWhenNewAddressOpen();
+    fixLayoutAndStickyHeaders();
   }
 
   run();
@@ -650,9 +880,15 @@
       wrapProductNames(document);
       removeSummaryThumbWhiteBg(document);
       enableCarrinhoStep();
+      markCheckoutStep();
+      fixNubeStepsOnSuccess();
       normalizeFinishButtonLabel();
       ensureContinueShoppingCta();
       normalizeCepEmptyErrors();
+      ensureCepBuscarBtn();
+      removeUnwantedShippingButtons();
+      hideCTAWhenNewAddressOpen();
+      fixLayoutAndStickyHeaders();
     }, 40);
     for (var i = 0; i < mutations.length; i++) {
       var m = mutations[i];
@@ -836,6 +1072,15 @@
       var el = kids[i];
       if ((el.textContent || '').indexOf('O que estão dizendo') !== -1) return el;
     }
+    /* O SDK pode inserir a avaliação dentro de uma caixa intermediária. */
+    var descendants = slot.querySelectorAll('*');
+    for (var j = 0; j < descendants.length; j++) {
+      var candidate = descendants[j];
+      var candidateText = (candidate.textContent || '').toLowerCase();
+      if (candidateText.indexOf('o que est') === -1 || candidateText.indexOf('dizendo') === -1) continue;
+      while (candidate.parentElement && candidate.parentElement !== slot) candidate = candidate.parentElement;
+      if (candidate.parentElement === slot) return candidate;
+    }
     return null;
   }
 
@@ -882,6 +1127,17 @@
     setInterval(function () { show((idx + 1) % slides.length); }, 5500);
   }
 
+  function findActualNubeReviewsBox() {
+    var slot = document.getElementById('nube-sdk-slot-after_main_content');
+    if (!slot) return null;
+    var kids = slot.children;
+    for (var i = 0; i < kids.length; i++) {
+      var text = (kids[i].textContent || '').toLowerCase();
+      if (text.indexOf('yamuna') !== -1 && text.indexOf('raquel') !== -1) return kids[i];
+    }
+    return null;
+  }
+
   function mountCartDepositions(html) {
     if (document.getElementById('yamuna-checkout-extras')) return;
     var doc;
@@ -894,7 +1150,7 @@
     if (!dep) return;
 
     var slot = document.getElementById('nube-sdk-slot-after_main_content');
-    var nubeBox = findNubeReviewsBox();
+    var nubeBox = findActualNubeReviewsBox();
     var wrap = document.createElement('div');
     wrap.id = 'yamuna-checkout-extras';
     wrap.className = 'yamuna-checkout-extras';
@@ -924,18 +1180,98 @@
     }, 80);
   }
 
+  /* The checkout is isolated from the storefront theme, so importing the live
+   * /comprar DOM is unreliable. Render the same, self-contained markup here. */
+  function mountStaticCartDepositions() {
+    if (document.getElementById('yamuna-checkout-extras')) return true;
+
+    var slot = document.getElementById('nube-sdk-slot-after_main_content');
+    if (!slot) return false;
+
+    var reviews = [
+      ['Produtos de excelente qualidade! Vale muito a pena o investimento. Meu queridinho é o Golden Milk e também a Ghee. E que dizer desses cafés? Gente do céu... surreal de maravilhoso. Gosto de tudo e estou sempre comprando os meus queridos e experimentando novas opções. Obrigada, Yamuna, pelo carinho e amor de vocês em forma de nutrição com excelência.', 'Raquel Cassiano'],
+      ['Todos os produtos são de altíssima qualidade e deliciosos, nenhuma outra marca chega perto, especialmente o Ghee, ideal de coco e melhor de tamarindo. Se não bastasse isso, ainda prestam o melhor atendimento ao consumidor que já vi no Brasil! O cuidado e carinho com os clientes é sensacional!', 'Thiago P'],
+      ['Apaixonada pelos produtos da Yamuna! Tudo muito bem feito, com produtos de qualidade, as embalagens são lindas e quando eu abro a caixa eu sinto o carinho que eles colocaram em cada detalhe.', 'Kelly Cristina Amaral'],
+      ['Destaque para o cuidado na embalagem dos produtos, e agora é só saborear tudo perfeitamente preparado e oferecido com carinho, a energia e grande luz da Deusa Yamuna!', 'Bernadete Pinho']
+    ];
+    var stars = '<span class="yamuna-cart-deposition-stars" aria-label="5 de 5 estrelas">★★★★★</span>';
+    var slides = reviews.map(function (review) {
+      return '<article class="yamuna-cart-deposition-card">' + stars +
+        '<div class="yamuna-cart-deposition-content"><p>' + review[0] +
+        '</p><span class="yamuna-cart-deposition-author">' + review[1] +
+        '</span></div></article>';
+    }).join('');
+    var wrap = document.createElement('section');
+    wrap.id = 'yamuna-checkout-extras';
+    wrap.className = 'yamuna-checkout-extras';
+    wrap.innerHTML = '<section class="yamuna-cart-depositions" aria-label="Avaliações">' +
+      '<div class="yamuna-cart-depositions-header"><span class="yamuna-cart-depositions-icon-wrapper" aria-hidden="true">★</span>' +
+      '<h2 class="yamuna-cart-depositions-title">O que estão dizendo sobre a Yamuna</h2></div>' +
+      '<div class="yamuna-cart-depositions-body"><div class="yamuna-cart-depositions-carousel">' + slides +
+      '</div><div class="yamuna-cart-depositions-nav"><button type="button" class="yamuna-cart-dep-prev" aria-label="Depoimento anterior">‹</button>' +
+      '<button type="button" class="yamuna-cart-dep-next" aria-label="Próximo depoimento">›</button></div></div></section>';
+
+    var footer = slot.lastElementChild;
+    slot.insertBefore(wrap, footer || null);
+    var actualNube = findActualNubeReviewsBox();
+    if (actualNube) actualNube.style.display = 'none';
+
+    var cards = wrap.querySelectorAll('.yamuna-cart-deposition-card');
+    var index = 0;
+    function show(next) {
+      index = (next + cards.length) % cards.length;
+      var mobile = window.matchMedia('(max-width: 767px)').matches;
+      cards.forEach(function (card, i) { card.style.display = mobile && i !== index ? 'none' : 'flex'; });
+    }
+    var prev = wrap.querySelector('.yamuna-cart-dep-prev');
+    var next = wrap.querySelector('.yamuna-cart-dep-next');
+    if (prev) prev.onclick = function () { show(index - 1); };
+    if (next) next.onclick = function () { show(index + 1); };
+    show(0);
+    window.addEventListener('resize', function () { show(index); });
+    return true;
+  }
+
+  /* 097 - box de avaliacoes do NubeSDK: 15px laterais no mobile, forcados inline com !important
+   * (o CSS nativo do checkout zera margin-left/right e forca width:100% com !important). */
+  function applyReviewsSpacing() {
+    var slot = document.getElementById('nube-sdk-slot-after_main_content');
+    if (!slot) return;
+    var mobile = window.innerWidth <= 767;
+    var kids = slot.children;
+    for (var i = 0; i < kids.length; i++) {
+      var el = kids[i];
+      if (el.id === 'yamuna-checkout-extras' || el.getAttribute('data-yamuna-hidden-reviews') === '1') continue;
+      var txt = (el.textContent || '').toLowerCase();
+      if (txt.indexOf('dizendo sobre a yamuna') === -1) continue;
+      var want = mobile
+        ? { 'margin-left': '15px', 'margin-right': '15px', 'width': 'calc(100% - 30px)', 'max-width': 'calc(100% - 30px)', 'box-sizing': 'border-box' }
+        : null;
+      if (!want) continue;
+      for (var k in want) {
+        if (el.style.getPropertyValue(k) !== want[k] || el.style.getPropertyPriority(k) !== 'important') {
+          el.style.setProperty(k, want[k], 'important');
+        }
+      }
+    }
+  }
   function ensureCheckoutReviews() {
+    applyReviewsSpacing();
+    if (mountStaticCartDepositions()) return;
     if (document.getElementById('yamuna-checkout-extras')) {
       initLocalReviewCarousel(
         document.querySelector('#yamuna-checkout-extras .yamuna-cart-depositions')
       );
       return;
     }
-    /* New Nube paste already has single-card carousel */
+    /* Replace the NubeSDK carousel with the exact /comprar component. */
     var nube = document.getElementById('yamuna-cart-reviews');
-    if (nube && nube.querySelector('#yamuna-review-next')) return;
+    if (nube && nube.querySelector('#yamuna-review-next')) {
+      nube.style.display = 'none';
+      nube.setAttribute('data-yamuna-hidden-reviews', '1');
+    }
 
-    if (!findNubeReviewsBox() && !document.getElementById('nube-sdk-slot-after_main_content')) {
+    if (!findActualNubeReviewsBox() && !document.getElementById('nube-sdk-slot-after_main_content')) {
       return;
     }
 
@@ -966,17 +1302,25 @@
     setTimeout(ensureCheckoutReviews, 1200);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', scheduleReviews);
-  } else {
-    scheduleReviews();
-  }
-  if (window.MutationObserver) {
-    var revTimer = null;
-    new MutationObserver(function () {
-      clearTimeout(revTimer);
-      revTimer = setTimeout(ensureCheckoutReviews, 400);
-    }).observe(document.documentElement, { childList: true, subtree: true });
+  /* Also run on success/order confirmation page */
+  var path = location.pathname || '';
+  var isCheckout = /\/checkout\//i.test(path);
+  var isSuccess = /\/checkout\/v3\/success\//i.test(path) || /\/success/i.test(path) ||
+                  document.querySelector('.status-content, .status.panel, .success-order-id, [test-id="order-id"]');
+
+  if (isCheckout || isSuccess) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', scheduleReviews);
+    } else {
+      scheduleReviews();
+    }
+    if (window.MutationObserver) {
+      var revTimer = null;
+      new MutationObserver(function () {
+        clearTimeout(revTimer);
+        revTimer = setTimeout(ensureCheckoutReviews, 400);
+      }).observe(document.documentElement, { childList: true, subtree: true });
+    }
   }
 })();
 
@@ -1009,11 +1353,16 @@
       'background:#fff!important;border:1px solid rgba(0,0,0,.1)!important;border-radius:10px!important;',
       'box-shadow:0 1px 3px -1px rgba(0,0,0,.04)!important;font-family:Raleway,sans-serif!important;}',
       '#yamuna-coupon-card .yc-head{display:flex!important;align-items:center!important;gap:8px!important;',
-      'margin:0 0 12px!important;color:#000!important;font-size:16px!important;font-weight:700!important;line-height:1.3!important;}',
+      'margin:0 0 12px!important;color:#000!important;font-family:Raleway,sans-serif!important;',
+      'font-size:24px!important;font-weight:700!important;line-height:1.25!important;}',
+      '#yamuna-coupon-card .yc-head span{font:inherit!important;}',
+      '#yamuna-coupon-card .yc-input,#yamuna-coupon-card .yc-hint,#yamuna-coupon-card .yc-applied,#yamuna-coupon-card .yc-err{',
+      'font-family:Roboto,Arial,sans-serif!important;}',
+      '#yamuna-coupon-card .yc-input{font-size:16px!important;}',
       '#yamuna-coupon-card .yc-row{display:flex!important;align-items:stretch!important;gap:10px!important;width:100%!important;}',
       '#yamuna-coupon-card .yc-input{flex:1 1 auto!important;min-width:0!important;height:42px!important;',
       'padding:0 14px!important;border:1px solid #d0ccd4!important;border-radius:8px!important;',
-      'background:#fff!important;color:#000!important;font-size:14px!important;font-family:Raleway,sans-serif!important;',
+      'background:#fff!important;color:#000!important;font-size:16px!important;font-family:Roboto,Arial,sans-serif!important;',
       'box-sizing:border-box!important;outline:none!important;}',
       '#yamuna-coupon-card .yc-apply{flex:0 0 auto!important;min-width:110px!important;height:42px!important;',
       'padding:0 16px!important;border:0!important;border-radius:8px!important;background:#a31460!important;',

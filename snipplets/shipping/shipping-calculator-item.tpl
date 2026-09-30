@@ -10,7 +10,7 @@
     {% set checked_option = false %}
 {% endif %}
 
-<li class="js-shipping-list-item radio-button-item float-left w-100 yamuna-shipping-quote" data-store="shipping-calculator-item-{{ option.code }}">
+<li class="js-shipping-list-item radio-button-item float-left w-100 yamuna-shipping-quote{% if hidden_option %} js-other-shipping-item{% endif %}" data-store="shipping-calculator-item-{{ option.code }}"{% if hidden_option %} style="display: none;"{% endif %}>
     <label class="js-shipping-radio radio-button list-item" data-loop="shipping-radio-{{loop.index}}" data-shipping-type="{% if pickup %}pickup{% else %}delivery{% endif %}" data-component="shipping.option">
         <input
         id="{% if featured_option %}featured-{% endif %}shipping-{{loop.index}}" 

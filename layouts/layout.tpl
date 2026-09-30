@@ -6,7 +6,11 @@
         <link rel="dns-prefetch" href="{{ store_resource_hints }}" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        {% if template == 'home' %}
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Raleway:wght@400;500;600;700;800&family=Roboto:wght@400;500;600;700;800;900&display=swap" />
+        {% else %}
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Raleway:wght@400;500;600;700;800&family=Roboto:wght@400;500;600;700;800;900&display=swap" />
+        {% endif %}
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -51,7 +55,7 @@
            FOUC badly with media=print. Other templates keep async + critical FOUC cover. #}
 
         <link rel="preload" href="{{ 'css/style-async.scss.tpl' | static_url }}" as="style">
-        {% if template == 'category' or template == 'search' %}
+        {% if template == 'category' or template == 'search' or template == 'home' %}
         <link rel="stylesheet" href="{{ 'css/style-async.scss.tpl' | static_url }}">
         {% else %}
         <link rel="stylesheet" href="{{ 'css/style-async.scss.tpl' | static_url }}" media="print" onload="this.media='all'">
@@ -2145,6 +2149,7 @@
             });
         </script>
 
+        {% if template == 'category' or template == 'search' %}
         <script>
             ;(function () {
                 function isMobileSort() {
@@ -2319,6 +2324,7 @@
                 new MutationObserver(syncSortLabels).observe(document.documentElement, { childList: true, subtree: true });
             })();
         </script>
+        {% endif %}
 
         {# Google reCAPTCHA on register page #}
 
@@ -2430,8 +2436,8 @@
           html body[class*="template-account-"] .svg-icon-primary,
           html body[class*="template-account-"] a.btn-link-primary svg,
           html body[class*="template-account-"] a.btn-link-primary .icon-inline {
-            color: #a31460 !important;
-            fill: #a31460 !important;
+            color: #000000 !important;
+            fill: #000000 !important;
           }
           html body[class*="template-account-"] .yamuna-account-page a:not(.btn):not(.btn-primary):hover,
           html body[class*="template-account-"] .btn-link:hover,

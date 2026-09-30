@@ -123,6 +123,7 @@ $changed = @(
   'snipplets/newsletter.tpl',
   'snipplets/home/home-featured-grid.tpl',
   'snipplets/home/home-slider.tpl',
+  'snipplets/home/home-migration-popup.tpl',
   'snipplets/grid/item.tpl',
   'snipplets/banner-services/banner-services.tpl',
   'snipplets/banner-services/banner-services-item.tpl',

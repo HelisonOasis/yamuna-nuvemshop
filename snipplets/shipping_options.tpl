@@ -69,14 +69,11 @@
 
             {% if has_non_featured_shipping %}
 
-                <div class="js-other-shipping-options float-left w-100" style="display: none;">
+                {# Opcoes extras: li direto no ul, junto com as visiveis. Escondidas via .js-other-shipping-item (o JS do tema alterna a visibilidade). #}
 
-                    {# List only delivery non featured options #}
-
-                    {% for option in options_to_hide if option.shipping_type == 'ship' or option.shipping_type == 'delivery' or (option.method == 'table' and option.shipping_type == 'custom') %}
-                        {% include "snipplets/shipping/shipping-calculator-item.tpl" %}
-                    {% endfor %}
-                </div>
+                {% for option in options_to_hide if option.shipping_type == 'ship' or option.shipping_type == 'delivery' or (option.method == 'table' and option.shipping_type == 'custom') %}
+                    {% include "snipplets/shipping/shipping-calculator-item.tpl" with {'hidden_option': true} %}
+                {% endfor %}
 
                 <div class="js-toggle-more-shipping-options js-show-more-shipping-options d-inline-block w-100 my-3 text-center">
                     <a href="#" class="btn-link btn-link-primary font-small">

@@ -26,10 +26,6 @@
 
   function alreadyMounted() {
     if (document.getElementById(ROOT_ID) && document.getElementById(FOOTER_ID)) return true;
-    /* NubeSDK already renders reviews + footer â€” avoid duplicate */
-    if (document.getElementById('yamuna-cart-reviews') || document.getElementById('yamuna-018-steps')) {
-      return true;
-    }
     return false;
   }
 
@@ -162,3 +158,35 @@
     }).observe(document.documentElement, { childList: true, subtree: true });
   }
 })();
+
+/* Adicionar funcionalidade às setas de paginação */
+(function() {
+  function initPaginationArrows() {
+    var card = document.querySelector('#nube-sdk-slot-after_main_content > .nube-box > .nube-box > .nube-box');
+    if (!card) return;
+    
+    var prevBtn = card.querySelector('button:first-of-type');
+    var nextBtn = card.querySelector('button:last-of-type');
+    
+    card.addEventListener('click', function(e) {
+      var rect = card.getBoundingClientRect();
+      var x = e.clientX - rect.left;
+      
+      if (x < 50 && prevBtn) {
+        prevBtn.click();
+      } else if (x > rect.width - 50 && nextBtn) {
+        nextBtn.click();
+      }
+    });
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPaginationArrows);
+  } else {
+    initPaginationArrows();
+  }
+  
+  setTimeout(initPaginationArrows, 1000);
+  setTimeout(initPaginationArrows, 3000);
+})();
+

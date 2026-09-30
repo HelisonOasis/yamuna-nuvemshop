@@ -8,7 +8,7 @@
  */
 const YAMUNA_STATIC = "https://d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static/images/yamuna";
 const YAMUNA_CHECKOUT_FIX_BASE = "https://d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static";
-const YAMUNA_CHECKOUT_FIX_V = "82";
+const YAMUNA_CHECKOUT_FIX_V = "123";
 const PAYMENT_LOGOS = "https://d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment";
 const FOOTER_TEXT = "#f3f3f3";
 const ACCENT = "#a31460";
@@ -435,11 +435,11 @@ function detectCheckoutStep(payload) {
   try {
     const page = payload && payload.location && payload.location.page;
     const step = page && page.data && page.data.step;
-    if (step === "payment" || step === "next" || step === "pagamento") return "pagamento";
+    if (step === "payment" || step === "next" || step === "pagamento" || step === "success") return "pagamento";
   } catch (e) {}
   try {
     const path = String((payload && payload.location && payload.location.url) || "");
-    if (/\/checkout\/v3\/next\//i.test(path) || /\/payment/i.test(path)) return "pagamento";
+    if (/\/checkout\/v3\/next\//i.test(path) || /\/payment/i.test(path) || /\/checkout\/v3\/success\//i.test(path) || /\/success/i.test(path)) return "pagamento";
   } catch (e2) {}
   return "entrega";
 }
@@ -456,15 +456,15 @@ nube.on("location:updated", (payload) => {
 
 const REVIEWS = [
   {
-    text: "Produtos de excelente qualidade! Vale muito a pena o investimento. Meu queridinho é o Golden Milk e também a Ghee. E que dizer desses cafés? Gente do céu... surreal de maravilhoso.",
+    text: "Produtos de excelente qualidade! Vale muito a pena o investimento. Meu queridinho é o Golden Milk e também a Ghee. E que dizer desses cafés? Gente do céu... surreal de maravilhoso. Gosto de tudo e estou sempre comprando os meus queridos e experimentando novas opções. Obrigada, Yamuna, pelo carinho e amor de vocês em forma de nutrição com excelência.",
     author: "Raquel Cassiano",
   },
   {
-    text: "Todos os produtos são de altíssima qualidade e deliciosos, nenhuma outra marca chega perto, especialmente o Ghee. O cuidado e carinho com os clientes é sensacional!",
+    text: "Todos os produtos são de altíssima qualidade e deliciosos, nenhuma outra marca chega perto, especialmente o Ghee, ideal de coco e melhor de tamarindo. Se não bastasse isso, ainda prestam o melhor atendimento ao consumidor que já vi no Brasil! Tive um problema com o melhor de tamarindo, entrei em contato e me enviaram um novo pote sem custo, mesmo o problema ocorrendo vários meses após a compra. O cuidado e carinho com os clientes é sensacional!",
     author: "Thiago P",
   },
   {
-    text: "Apaixonada pelos produtos da Yamuna! Tudo muito bem feito, com produtos de qualidade, as embalagens são lindas e quando eu abro a caixa eu sinto o carinho em cada detalhe.",
+    text: "Apaixonada pelos produtos da Yamuna! Tudo muito bem feito, com produtos de qualidade, as embalagens são lindas e quando eu abro a caixa eu sinto o carinho que eles colocaram em cada detalhe. Além de tudo isso, eles contribuem com a minha saúde com esses produtos tão especiais que a gente não encontra em qualquer lugar! Obrigada por existirem!",
     author: "Kelly Cristina Amaral",
   },
   {

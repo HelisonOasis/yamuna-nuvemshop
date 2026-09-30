@@ -1,7 +1,6 @@
 {{ component('nubesdk-slot', { type: "before_line_item", pick: item.id }) }}
 
 {% set is_gift = item.is_gift %}
-{% set discount_percentage = item.discount_percentage %}
 {% set hide_compare_price_subtotal = not item.compare_at_price_subtotal or item.is_subscription_item %}
 
 {% if cart_page %}
@@ -166,7 +165,6 @@
             <p class="yamuna-minicart-unit-por"><span class="yamuna-minicart-unit-por-label">Por</span> <span class="yamuna-minicart-unit-por-value" data-yamuna-unit-por>{{ buy_three_unit_price | money }}</span></p>
           </div>
           <div class="js-cart-item-subtotal-compare-price-container" data-line-item-id="{{ item.id }}"{% if hide_compare_price_subtotal %} style="display: none"{% endif %}>
-            <span class="text-accent font-small font-weight-bold mr-1">-{{ discount_percentage }}%</span>
             <span class="js-cart-item-subtotal-compare-price price-compare font-small opacity-50 mr-0" data-line-item-id="{{ item.id }}" data-component="subtotal_compare_price.value" data-component-value='{{ item.compare_at_price_subtotal | money }}'>{{ item.compare_at_price_subtotal | money }}</span>
           </div>
           <div class="js-cart-item-subtotal h6 {% if not hide_compare_price_subtotal %}mt-1{% endif %}{% if show_buy_three_unit %} is-hidden{% endif %}" data-line-item-id="{{ item.id }}" data-component="subtotal.value" data-component-value='{{ item.subtotal | money }}'>{{ item.subtotal | money }}</div>

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Injects yamuna-checkout-fix.css + .js on platform checkout pages.
  * Appends AFTER dart-checkout so our â‰¤1024 layout rules win.
  */
@@ -7,7 +7,7 @@
 
   var base =
     'https://d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static';
-  var v = '82';
+  var v = '140';
 
   function injectCss() {
     var existing = document.getElementById('yamuna-checkout-fix-css');
