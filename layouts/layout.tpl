@@ -55,7 +55,8 @@
            FOUC badly with media=print. Other templates keep async + critical FOUC cover. #}
 
         <link rel="preload" href="{{ 'css/style-async.scss.tpl' | static_url }}" as="style">
-        {% if template == 'category' or template == 'search' or template == 'home' %}
+        {# Every template except home loads style-async render-blocking (PDP header/title FOUC fix). #}
+        {% if template != 'home' %}
         <link rel="stylesheet" href="{{ 'css/style-async.scss.tpl' | static_url }}">
         {% else %}
         <link rel="stylesheet" href="{{ 'css/style-async.scss.tpl' | static_url }}" media="print" onload="this.media='all'">

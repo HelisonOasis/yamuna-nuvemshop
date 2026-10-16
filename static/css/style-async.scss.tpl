@@ -14691,7 +14691,7 @@ body.template-product .yamuna-pdp-rating-label:hover {
   }
 
   body.template-product .yamuna-video iframe,
-  body.template-product #product-description iframe,
+  body.template-product #product-description iframe:not([data-nube-iframe-id]),
   body.template-product #product-description-accordions iframe,
   body.template-product #product-description-accordions .infoToOpen iframe {
     position: absolute !important;
@@ -16840,7 +16840,7 @@ body.template-product #related-products {
   }
 
   body.template-product .yamuna-video iframe,
-  body.template-product #product-description iframe,
+  body.template-product #product-description iframe:not([data-nube-iframe-id]),
   body.template-product #product-description-accordions iframe,
   body.template-product #product-description-accordions .infoToOpen iframe {
     position: absolute !important;
