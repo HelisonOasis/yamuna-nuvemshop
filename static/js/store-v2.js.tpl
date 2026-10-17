@@ -954,6 +954,7 @@ DOMContentLoaded.addEventOrExecute(() => {
         var loopValue = true;
         var paginationClickableValue = true;
 
+        var yamunaHomeSliderDesktopInit = function () {
         createSwiper(
             '.js-home-slider', {
                 preloadImages: preloadImagesValue,
@@ -983,9 +984,12 @@ DOMContentLoaded.addEventOrExecute(() => {
             },
             function(swiperInstance) {
                 window.homeSwiper = swiperInstance;
+                yamunaStripHeroClonePriority('.js-home-slider');
             }
         );
+        };
 
+        var yamunaHomeSliderMobileInit = function () {
         createSwiper(
             '.js-home-slider-mobile', {
                 preloadImages: preloadImagesValue,
@@ -1005,8 +1009,37 @@ DOMContentLoaded.addEventOrExecute(() => {
             },
             function(swiperInstance) {
                 window.homeMobileSwiper = swiperInstance;
+                yamunaStripHeroClonePriority('.js-home-slider-mobile');
             }
         );
+        };
+
+        {# yamuna-perf: inicializa so o slider do breakpoint atual (o outro fica oculto e custava ~0,2-2s de CPU) #}
+        function yamunaStripHeroClonePriority(selector) {
+            var root = document.querySelector(selector);
+            if (!root) return;
+            var clones = root.querySelectorAll('.swiper-slide-duplicate img');
+            for (var i = 0; i < clones.length; i++) {
+                clones[i].removeAttribute('fetchpriority');
+                clones[i].setAttribute('loading', 'lazy');
+                clones[i].setAttribute('decoding', 'async');
+            }
+        }
+        var yamunaHomeSlidersDone = { d: false, m: false };
+        function yamunaInitHomeSliders(all) {
+            var isMobile = window.innerWidth <= 767;
+            var hasMobileSlider = !!document.querySelector('.js-home-slider-mobile');
+            var selector = (isMobile && hasMobileSlider) ? '.js-home-slider-mobile' : '.js-home-slider';
+            if (window.yamunaHydrateHero) window.yamunaHydrateHero(selector, !!all);
+            if (isMobile && hasMobileSlider) {
+                if (!yamunaHomeSlidersDone.m) { yamunaHomeSlidersDone.m = true; yamunaHomeSliderMobileInit(); }
+            } else if (!yamunaHomeSlidersDone.d) {
+                yamunaHomeSlidersDone.d = true;
+                yamunaHomeSliderDesktopInit();
+            }
+        }
+        yamunaInitHomeSliders(false);
+        window.addEventListener('resize', function () { yamunaInitHomeSliders(true); });
 
         {# /* // Banners slider */ #}
 
@@ -1085,8 +1118,7 @@ DOMContentLoaded.addEventOrExecute(() => {
                     watchSlideProgress: true,
                     watchSlidesVisibility: true,
                     slideVisibleClass: 'js-swiper-slide-visible',
-                    loop: true,
-                    loopAdditionalSlides: 3,
+                    rewind: true,
                     speed: 500,
                     navigation: {
                         nextEl: '.js-swiper-featured-next',
@@ -1121,8 +1153,7 @@ DOMContentLoaded.addEventOrExecute(() => {
                     watchSlideProgress: true,
                     watchSlidesVisibility: true,
                     slideVisibleClass: 'js-swiper-slide-visible',
-                    loop: true,
-                    loopAdditionalSlides: 3,
+                    rewind: true,
                     speed: 500,
                     navigation: {
                         nextEl: '.js-swiper-new-next',
@@ -1157,8 +1188,7 @@ DOMContentLoaded.addEventOrExecute(() => {
                     watchSlideProgress: true,
                     watchSlidesVisibility: true,
                     slideVisibleClass: 'js-swiper-slide-visible',
-                    loop: true,
-                    loopAdditionalSlides: 3,
+                    rewind: true,
                     speed: 500,
                     navigation: {
                         nextEl: '.js-swiper-sale-next',
@@ -1275,8 +1305,7 @@ DOMContentLoaded.addEventOrExecute(() => {
             createSwiper('.js-swiper-blog', {
                 watchOverflow: true,
                 grabCursor: true,
-                loop: true,
-                loopAdditionalSlides: 3,
+                rewind: true,
                 speed: 600,
                 centeredSlides: false,
                 slidesPerView: 1,
@@ -1318,6 +1347,27 @@ DOMContentLoaded.addEventOrExecute(() => {
             });
         }
 
+        var yamunaHomeBlogImages = {
+            '2402-yamuna-making-of-@angelomaragno-angl8214-1216x1824.jpg': '{{ 'images/yamuna/blog-home/2402-yamuna-making-of--angelomaragno-angl8214-1216x1824.webp' | static_url }}',
+            'cacau_mais_e_astecas_1.jpg': '{{ 'images/yamuna/blog-home/cacau_mais_e_astecas_1.webp' | static_url }}',
+            'chocolate_tpm.jpg': '{{ 'images/yamuna/blog-home/chocolate_tpm.webp' | static_url }}',
+            'curcumina-com-pimenta-preta-4-1216x1216.jpg': '{{ 'images/yamuna/blog-home/curcumina-com-pimenta-preta-4-1216x1216.webp' | static_url }}',
+            'endometriose.jpg': '{{ 'images/yamuna/blog-home/endometriose.webp' | static_url }}',
+            'entrega-yamuna-angl7445-1216x1824.jpg': '{{ 'images/yamuna/blog-home/entrega-yamuna-angl7445-1216x1824.webp' | static_url }}',
+            'fotos-conceito-de-produto-cacau_caju.low-1x1-700px-1.jpg': '{{ 'images/yamuna/blog-home/fotos-conceito-de-produto-cacau_caju.low-1x1-700px-1.webp' | static_url }}',
+            'ghee_2.jpg': '{{ 'images/yamuna/blog-home/ghee_2.webp' | static_url }}',
+            'massala-chai-2_(1).jpg': '{{ 'images/yamuna/blog-home/massala-chai-2_-1-.webp' | static_url }}',
+            'pre-treino-natural-yamuna-1.png': '{{ 'images/yamuna/blog-home/pre-treino-natural-yamuna-1.webp' | static_url }}',
+            'textura-_ghee-yamuna.jpg': '{{ 'images/yamuna/blog-home/textura-_ghee-yamuna.webp' | static_url }}'
+        };
+
+        function yamunaHomeBlogSrc(url) {
+            if (!url || url.indexOf('fbitsstatic.net') === -1) return url;
+            var file = url.split('?')[0].split('/').pop();
+            try { file = decodeURIComponent(file); } catch (e) {}
+            return yamunaHomeBlogImages[file] || url;
+        }
+
         function prepareYamunaHomeBlogCard(card) {
             var slide = card.cloneNode(true);
             slide.classList.remove('yamuna-blog-card--grid', 'yamuna-blog-card--featured');
@@ -1328,8 +1378,10 @@ DOMContentLoaded.addEventOrExecute(() => {
                     || (img.getAttribute('data-srcset') || '').split(' ')[0]
                     || '';
                 if (realSrc && realSrc.indexOf('data:image') !== 0) {
-                    img.setAttribute('src', realSrc);
+                    img.setAttribute('src', yamunaHomeBlogSrc(realSrc));
                 }
+                img.removeAttribute('srcset');
+                img.removeAttribute('data-srcset');
                 img.classList.remove('lazyload', 'lazyloading');
                 img.classList.add('lazyloaded');
                 img.style.opacity = '1';
@@ -4034,17 +4086,67 @@ DOMContentLoaded.addEventOrExecute(() => {
                 return digits.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
             }
 
+            function isValidBirth(value) {
+                var match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(value);
+                if (!match) { return false; }
+                var day = parseInt(match[1], 10);
+                var month = parseInt(match[2], 10);
+                var year = parseInt(match[3], 10);
+                var date = new Date(year, month - 1, day);
+                if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) { return false; }
+                var today = new Date();
+                today.setHours(0, 0, 0, 0);
+                return year >= 1900 && date <= today;
+            }
+
+            function birthMessage(value) {
+                if (!value) { return 'Informe a data de nascimento.'; }
+                return 'Informe uma data válida no formato dd/mm/aaaa.';
+            }
+
+            function phoneMessage(value) {
+                if (!value) { return 'Informe o telefone.'; }
+                return 'Informe um telefone válido com DDD.';
+            }
+
+            function syncSignupRequired(show) {
+                if (birth) {
+                    birth.setCustomValidity(isValidBirth(birth.value) ? '' : birthMessage(birth.value.trim()));
+                }
+                if (phone) {
+                    var digits = phone.value.replace(/\D/g, '');
+                    phone.setCustomValidity((digits.length === 10 || digits.length === 11) ? '' : phoneMessage(phone.value.trim()));
+                }
+                if (show && form) { form.reportValidity(); }
+            }
+
             var cpf = document.querySelector('.js-yamuna-cpf');
             var birth = document.querySelector('.js-yamuna-birthdate');
             var phone = document.querySelector('.js-yamuna-phone');
+            var form = document.getElementById('login-form');
             if (cpf) {
                 cpf.addEventListener('input', function () { cpf.value = maskCpf(cpf.value); });
             }
             if (birth) {
-                birth.addEventListener('input', function () { birth.value = maskDate(birth.value); });
+                birth.addEventListener('input', function () {
+                    birth.value = maskDate(birth.value);
+                    birth.setCustomValidity('');
+                });
             }
             if (phone) {
-                phone.addEventListener('input', function () { phone.value = maskPhone(phone.value); });
+                phone.addEventListener('input', function () {
+                    phone.value = maskPhone(phone.value);
+                    phone.setCustomValidity('');
+                });
+            }
+            if (form) {
+                form.addEventListener('submit', function (event) {
+                    syncSignupRequired(false);
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        form.reportValidity();
+                    }
+                });
             }
         })();
     {% endif %}

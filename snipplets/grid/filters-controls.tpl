@@ -56,8 +56,8 @@
             {% include "snipplets/grid/filters.tpl" with {mobile: true, yamuna_plp_modal: true} %}
             <div class="js-filters-overlay filters-overlay" style="display: none;">
                 <div class="filters-updating-message">
-                    <h3 class="js-applying-filter" style="display: none;">{{ 'Aplicando filtro...' | translate }}</h3>
-                    <h3 class="js-removing-filter" style="display: none;">{{ 'Borrando filtro...' | translate }}</h3>
+                    <div class="js-applying-filter yamuna-hx-msg" style="display: none;">{{ 'Aplicando filtro...' | translate }}</div>
+                    <div class="js-removing-filter yamuna-hx-msg" style="display: none;">{{ 'Borrando filtro...' | translate }}</div>
                 </div>
             </div>
         {% endblock %}

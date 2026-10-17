@@ -7,7 +7,7 @@
 
   var base =
     'https://d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static';
-  var v = '140';
+  var v = '143';
 
   function injectCss() {
     var existing = document.getElementById('yamuna-checkout-fix-css');

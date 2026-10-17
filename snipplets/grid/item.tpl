@@ -69,9 +69,9 @@
 
         {# Cart reco: skip img-absolute-centered — theme translateX(-50%) clips/shifts jars when left:0 is forced #}
         {% if is_cart_reco_spot %}
-            {% set image_classes = 'js-item-image lazyautosizes ' ~ (not image_priority_high and not is_home_featured_priority ? 'lazyload') ~ ' fade-in img-absolute' %}
+            {% set image_classes = 'js-item-image lazyautosizes ' ~ (not image_priority_high and not is_home_product_spot ? 'lazyload') ~ ' fade-in img-absolute' %}
         {% else %}
-            {% set image_classes = 'js-item-image lazyautosizes ' ~ (not image_priority_high and not is_home_featured_priority ? 'lazyload') ~ ' fade-in img-absolute img-absolute-centered' %}
+            {% set image_classes = 'js-item-image lazyautosizes ' ~ (not image_priority_high and not is_home_product_spot ? 'lazyload') ~ ' fade-in img-absolute img-absolute-centered' %}
         {% endif %}
             
 {% set data_expand = is_home_product_spot ? '600' : (show_image_slider ? '50' : '-10') %}
@@ -116,8 +116,8 @@
 
         {{ component(
             'product-item-image', {
-                image_lazy: not is_cart_reco_spot and not is_home_featured_priority,
-                image_lazy_js: not is_cart_reco_spot and not is_home_featured_priority,
+                image_lazy: not is_cart_reco_spot and not is_home_product_spot,
+                image_lazy_js: not is_cart_reco_spot and not is_home_product_spot,
                 image_data_expand: data_expand,
                 image_secondary_data_sizes: 'auto',
                 secondary_image: show_secondary_image,
@@ -153,12 +153,13 @@
 
         {% set product_can_show_installments = product.show_installments and product.display_price and product.get_max_installments.installment > 1 and settings.product_installments and not is_subscription_only %}
 
+        {% set yamuna_item_name_tag = (template == 'category') ? 'h3' : 'div' %}
         <div class="item-description {% if reduced_item %}py-3{% else %}py-4{% endif %}{% if settings.theme_rounded %} px-3{% else %} px-1{% endif %}" data-store="product-item-info-{{ product.id }}"{% if is_yamuna_spot_card %} style="border-bottom:0 !important;"{% endif %}>
             <a href="{{ product_url_with_selected_variant }}" title="{{ product.name }}" aria-label="{{ product.name }}" class="item-link">
 
                 {{ component('nubesdk-slot', { type: "before_product_grid_item_name" }) }}
 
-                <div class="js-item-name item-name {% if reduced_item %}mb-2{% else %}mb-3{% endif %}" data-store="product-item-name-{{ product.id }}"{% if is_yamuna_spot_card and not is_cart_reco_spot %} style="display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"{% elseif is_cart_reco_spot %} style="display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:1; overflow:hidden; text-overflow:ellipsis; white-space:normal;"{% endif %}>{{ product.name }}</div>
+                <{{ yamuna_item_name_tag }} class="js-item-name item-name {% if reduced_item %}mb-2{% else %}mb-3{% endif %}" data-store="product-item-name-{{ product.id }}"{% if is_yamuna_spot_card and not is_cart_reco_spot %} style="display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"{% elseif is_cart_reco_spot %} style="display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:1; overflow:hidden; text-overflow:ellipsis; white-space:normal;"{% endif %}>{{ product.name }}</{{ yamuna_item_name_tag }}>
 
                 {{ component('nubesdk-slot', { type: "after_product_grid_item_name" }) }}
 

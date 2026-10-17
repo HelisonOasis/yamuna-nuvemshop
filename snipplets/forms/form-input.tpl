@@ -68,6 +68,7 @@
             {% if input_value %}value="{{ input_value }}"{% endif %}
             {% if input_min %}min="{{ input_min }}"{% endif %}
             {% if input_placeholder %}placeholder="{{ input_placeholder }}"{% endif %}
+            {% if input_pattern %}pattern="{{ input_pattern }}"{% endif %}
             {% if input_data_attr %}data-{{ input_data_attr }}="{{ input_data_val }}"{% endif %}
             {% if input_aria_label %}aria-label="{{ input_aria_label }}"{% endif %}
             {% if input_required %}required{% endif %}

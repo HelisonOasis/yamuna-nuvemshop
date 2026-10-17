@@ -19,6 +19,10 @@
 {% set has_auto_height_slider = not settings.slider_viewport_height %}
 {% set use_smaller_thumbs = (has_auto_height_slider and not has_mobile_slider) or has_mobile_slider %}
 
+{% if not mobile and use_yamuna_prod_hero %}
+	<link rel="preload" as="image" href="{{ 'images/yamuna/hero/mobile/01-kit-degustacao-mobile.webp' | static_url }}" media="(max-width: 767px)" />
+	<link rel="preload" as="image" href="{{ 'images/yamuna/hero/desktop/01-kit-degustacao-desktop.webp' | static_url }}" media="(min-width: 768px)" />
+{% endif %}
 {% if not mobile %}
 	<style>
 		.js-home-main-slider-container .js-swiper-home-pagination .swiper-pagination-bullet,
@@ -60,7 +64,7 @@
 									<div class="slider-slide{% if has_auto_height_slider %} position-relative h-auto{% endif %}">
 
 									{% if use_yamuna_prod_hero %}
-										{# First + last slides stay eager so loop clones never stick on the GIF placeholder. #}
+										{# Src is applied by the inline script for the visible breakpoint only, before Swiper clones the slides. #}
 										{% set apply_lazy_load = false %}
 									{% else %}
 										{% set apply_lazy_load = false %}
@@ -97,10 +101,17 @@
 											{% if slide.desktop == 'images/yamuna/hero/desktop/05-casa-sustentavel-desktop.png' %}{% set slide_image = 'images/yamuna/hero/desktop/05-casa-sustentavel-desktop.webp' | static_url %}{% endif %}
 											{% endif %}
 											<img
-														{% if not apply_lazy_load and loop.first %}fetchpriority="high"{% endif %}
-												src="{% if apply_lazy_load %}data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=={% else %}{{ slide_image }}{% endif %}"
-												{% if apply_lazy_load %}data-src="{{ slide_image }}"{% endif %}
-												class="slider-image {% if apply_lazy_load %}swiper-lazy fade-in{% endif %}{% if has_auto_height_slider %} d-block{% endif %}"
+												data-hero-src="{{ slide_image }}"
+												{% if loop.first %}
+													data-hero-eager="1"
+													data-hero-loaded="1"
+													fetchpriority="high"
+													src="{{ slide_image }}"
+												{% else %}
+													{% if loop.index == 2 %}data-hero-next="1"{% endif %}
+													src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+												{% endif %}
+												class="slider-image{% if has_auto_height_slider %} d-block{% endif %}"
 												alt="{{ slide.title|default('Carrusel'|translate) }} {{ loop.index }}"
 											/>
 										{% else %}
@@ -169,4 +180,42 @@
 	</div>
 {% if not mobile %}
 </div>
+{% endif %}
+{% if mobile and use_yamuna_prod_hero %}
+<script>
+	(function () {
+		window.yamunaHydrateHero = function (selector, all) {
+			var root = document.querySelector(selector);
+			if (!root) return;
+			if (all && root.getAttribute('data-hero-all') === '1') return;
+			if (!all && root.getAttribute('data-hero-ready') === '1') return;
+			var imgs = root.querySelectorAll('img.slider-image[data-hero-src]');
+			for (var i = 0; i < imgs.length; i++) {
+				var img = imgs[i];
+				var url = img.getAttribute('data-hero-src');
+				var priority = img.getAttribute('data-hero-eager') === '1' || img.getAttribute('data-hero-next') === '1';
+				if (!url || img.getAttribute('data-hero-loaded') === '1') continue;
+				if (!all && !priority) continue;
+				if (img.getAttribute('data-hero-eager') === '1') {
+					img.setAttribute('fetchpriority', 'high');
+				} else if (!priority) {
+					img.setAttribute('loading', 'lazy');
+					img.setAttribute('decoding', 'async');
+				} else {
+					img.setAttribute('decoding', 'async');
+				}
+				img.setAttribute('src', url);
+				img.setAttribute('data-hero-loaded', '1');
+			}
+			if (all) root.setAttribute('data-hero-all', '1');
+			else root.setAttribute('data-hero-ready', '1');
+		};
+		var isMobile = window.matchMedia('(max-width: 767px)').matches;
+		var heroSelector = isMobile ? '.js-home-slider-mobile' : '.js-home-slider';
+		window.yamunaHydrateHero(heroSelector);
+		window.addEventListener('load', function () {
+			setTimeout(function () { window.yamunaHydrateHero(heroSelector, true); }, 1500);
+		});
+	})();
+</script>
 {% endif %}

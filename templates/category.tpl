@@ -49,6 +49,30 @@
 		</div>
 	</div>
 </section>
+{% if products %}
+<script type="application/ld+json">
+{
+	"@context": "https://schema.org",
+	"@type": "CollectionPage",
+	"name": {{ category.name | json_encode | raw }},
+	"url": {{ category.url | json_encode | raw }},
+	"mainEntity": {
+		"@type": "ItemList",
+		"numberOfItems": {{ products | length }},
+		"itemListElement": [
+			{% for product in products %}
+			{
+				"@type": "ListItem",
+				"position": {{ loop.index }},
+				"url": {{ product.url | json_encode | raw }},
+				"name": {{ product.name | json_encode | raw }}
+			}{% if not loop.last %},{% endif %}
+			{% endfor %}
+		]
+	}
+}
+</script>
+{% endif %}
 {% elseif show_help %}
 	{# Category Placeholder #}
 	{% include 'snipplets/defaults/show_help_category.tpl' %}

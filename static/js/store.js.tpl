@@ -851,7 +851,7 @@ $(document).ready(function(){
 
         {% if has_featured_products_slider or has_new_products_slider or has_sale_products_slider %}
 
-            var lazyVal = true;
+            var lazyVal = false;
             var watchOverflowVal = true;
             var centerInsufficientSlidesVal = true;
             var slidesPerViewDesktopVal = 3;
@@ -1110,6 +1110,27 @@ $(document).ready(function(){
             });
         }
 
+        var yamunaHomeBlogImages = {
+            '2402-yamuna-making-of-@angelomaragno-angl8214-1216x1824.jpg': '{{ 'images/yamuna/blog-home/2402-yamuna-making-of--angelomaragno-angl8214-1216x1824.webp' | static_url }}',
+            'cacau_mais_e_astecas_1.jpg': '{{ 'images/yamuna/blog-home/cacau_mais_e_astecas_1.webp' | static_url }}',
+            'chocolate_tpm.jpg': '{{ 'images/yamuna/blog-home/chocolate_tpm.webp' | static_url }}',
+            'curcumina-com-pimenta-preta-4-1216x1216.jpg': '{{ 'images/yamuna/blog-home/curcumina-com-pimenta-preta-4-1216x1216.webp' | static_url }}',
+            'endometriose.jpg': '{{ 'images/yamuna/blog-home/endometriose.webp' | static_url }}',
+            'entrega-yamuna-angl7445-1216x1824.jpg': '{{ 'images/yamuna/blog-home/entrega-yamuna-angl7445-1216x1824.webp' | static_url }}',
+            'fotos-conceito-de-produto-cacau_caju.low-1x1-700px-1.jpg': '{{ 'images/yamuna/blog-home/fotos-conceito-de-produto-cacau_caju.low-1x1-700px-1.webp' | static_url }}',
+            'ghee_2.jpg': '{{ 'images/yamuna/blog-home/ghee_2.webp' | static_url }}',
+            'massala-chai-2_(1).jpg': '{{ 'images/yamuna/blog-home/massala-chai-2_-1-.webp' | static_url }}',
+            'pre-treino-natural-yamuna-1.png': '{{ 'images/yamuna/blog-home/pre-treino-natural-yamuna-1.webp' | static_url }}',
+            'textura-_ghee-yamuna.jpg': '{{ 'images/yamuna/blog-home/textura-_ghee-yamuna.webp' | static_url }}'
+        };
+
+        function yamunaHomeBlogSrc(url) {
+            if (!url || url.indexOf('fbitsstatic.net') === -1) return url;
+            var file = url.split('?')[0].split('/').pop();
+            try { file = decodeURIComponent(file); } catch (e) {}
+            return yamunaHomeBlogImages[file] || url;
+        }
+
         function prepareYamunaHomeBlogCard(card) {
             var slide = card.cloneNode(true);
             slide.classList.remove('yamuna-blog-card--grid', 'yamuna-blog-card--featured');
@@ -1120,8 +1141,10 @@ $(document).ready(function(){
                     || (img.getAttribute('data-srcset') || '').split(' ')[0]
                     || '';
                 if (realSrc && realSrc.indexOf('data:image') !== 0) {
-                    img.setAttribute('src', realSrc);
+                    img.setAttribute('src', yamunaHomeBlogSrc(realSrc));
                 }
+                img.removeAttribute('srcset');
+                img.removeAttribute('data-srcset');
                 img.classList.remove('lazyload', 'lazyloading');
                 img.classList.add('lazyloaded');
                 img.style.opacity = '1';

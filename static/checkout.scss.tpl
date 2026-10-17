@@ -1,7 +1,7 @@
 {% if store.allows_checkout_styling %}
 
 @import url("https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap");
-@import url("https://d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static/css/yamuna-checkout-fix.css?v=140");
+@import url("https://d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static/css/yamuna-checkout-fix.css?v=144");
 
 {#/*============================================================================
 checkout.scss.tpl
@@ -2822,6 +2822,59 @@ html body #main-column .pix-info-data > .pix-info-list > li > button.m-top-half.
 }
 
 {# /*============================================================================
+  # Pedido concluido (Pix): frase pos-pedido sem fundo, 24px desktop / 20px mobile, cor #A31460;
+  # titulo da secao de pagamento 20px desktop / 18px mobile; fundo #FFFFFF na secao.
+==============================================================================*/ #}
+html:has(#main-column .status.panel) body .announcement:not(#yamuna-101a):not(#yamuna-101b),
+html:has(#main-column .status-content) body .announcement:not(#yamuna-101a):not(#yamuna-101b),
+html:has(#main-column .status.panel) body .announcement.m-bottom:not(#yamuna-101a):not(#yamuna-101b),
+html:has(#main-column .status-content) body .announcement.m-bottom:not(#yamuna-101a):not(#yamuna-101b),
+html:has(#main-column .status.panel) body .announcement-bg:not(#yamuna-101a):not(#yamuna-101b),
+html:has(#main-column .status-content) body .announcement-bg:not(#yamuna-101a):not(#yamuna-101b),
+html:has(#main-column .status.panel) body .announcement-message:not(#yamuna-101a):not(#yamuna-101b),
+html:has(#main-column .status-content) body .announcement-message:not(#yamuna-101a):not(#yamuna-101b) {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+html:has(#main-column .status.panel) body .announcement .announcement-message:not(#yamuna-101a):not(#yamuna-101b),
+html:has(#main-column .status-content) body .announcement .announcement-message:not(#yamuna-101a):not(#yamuna-101b),
+html:has(#main-column .status.panel) body .announcement.m-bottom > .announcement-message:not(#yamuna-101a):not(#yamuna-101b):not(#yamuna-dosis-a):not(#yamuna-dosis-b):not(#yamuna-dosis-c):not(#yamuna-dosis-d),
+html:has(#main-column .status-content) body .announcement.m-bottom > .announcement-message:not(#yamuna-101a):not(#yamuna-101b):not(#yamuna-dosis-a):not(#yamuna-dosis-b):not(#yamuna-dosis-c):not(#yamuna-dosis-d) {
+  color: #A31460 !important;
+  font-size: 24px !important;
+}
+
+html body #main-column .status.panel:not(#yamuna-101a):not(#yamuna-101b),
+html body #main-column .status.panel:not(#yamuna-101a):not(#yamuna-101b) .panel-body,
+html body #main-column .status.panel:not(#yamuna-101a):not(#yamuna-101b) div:not([class*="btn"]):not([class*="button"]):not([class*="qr"]),
+html body #main-column .status-content:not(#yamuna-101a):not(#yamuna-101b),
+html body #main-column .status-content:not(#yamuna-101a):not(#yamuna-101b) div:not([class*="btn"]):not([class*="button"]):not([class*="qr"]) {
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+}
+
+html body #main-column .status.panel:not(#yamuna-101a):not(#yamuna-101b) h3.heading-small,
+html body #main-column .status-content:not(#yamuna-101a):not(#yamuna-101b) h3.heading-small {
+  font-size: 20px !important;
+}
+
+@media (max-width: 767px) {
+  html:has(#main-column .status.panel) body .announcement .announcement-message:not(#yamuna-101a):not(#yamuna-101b),
+  html:has(#main-column .status-content) body .announcement .announcement-message:not(#yamuna-101a):not(#yamuna-101b),
+  html:has(#main-column .status.panel) body .announcement.m-bottom > .announcement-message:not(#yamuna-101a):not(#yamuna-101b):not(#yamuna-dosis-a):not(#yamuna-dosis-b):not(#yamuna-dosis-c):not(#yamuna-dosis-d),
+  html:has(#main-column .status-content) body .announcement.m-bottom > .announcement-message:not(#yamuna-101a):not(#yamuna-101b):not(#yamuna-dosis-a):not(#yamuna-dosis-b):not(#yamuna-dosis-c):not(#yamuna-dosis-d) {
+    font-size: 20px !important;
+  }
+
+  html body #main-column .status.panel:not(#yamuna-101a):not(#yamuna-101b) h3.heading-small,
+  html body #main-column .status-content:not(#yamuna-101a):not(#yamuna-101b) h3.heading-small {
+    font-size: 18px !important;
+  }
+}
+{# /*============================================================================
   # PIX copy button  COPIAR label font-size
   Mobile 425px: 12px / above: 16px (override checkout .btn-primary 14px)
 ==============================================================================*/ #}
@@ -4676,4 +4729,24 @@ html body #secondary-column .table-scrollable td.table-price * {
   color: #000000 !important;
 }
 
+/* Cenario 098 - fonte 18px (desktop e mobile, line-height 24px), mantendo cor/peso/familia:
+   - pedido concluido: h3.text-large-extra ("Como acompanhar a entrega", "Informacoes do pedido") e a linha de prazo "Chega entre ..." do box "Seu pedido" (.fulfillments-content > p.m-none, texto do metodo de envio ou h3.heading-small de .destination-eta);
+   - etapas do checkout: titulos de secao h3.panel-header ("Dados de contato", "Entrega", "Pagamento").
+   Os :not(#id) sobem a especificidade acima do cenario 048 (h3 = 24px) e do cenario 101 (heading-small = 20px no desktop). */
+html body #main-column h3.text-large-extra:not(#yamuna-098a):not(#yamuna-098b),
+html body #main-column .user-detail-content h3.text-large-extra:not(#yamuna-098a):not(#yamuna-098b),
+html body #main-column .fulfillments-content > p.m-none:not(#yamuna-098a):not(#yamuna-098b),
+html body #main-column .fulfillments-content > p.m-none > span:not(#yamuna-098a):not(#yamuna-098b),
+html body #main-column .fulfillments-content .destination-eta h3.heading-small:not(#yamuna-098a):not(#yamuna-098b):not(#yamuna-101a):not(#yamuna-101b),
+html body #main-column .status.panel .destination-eta h3.heading-small:not(#yamuna-098a):not(#yamuna-098b):not(#yamuna-101a):not(#yamuna-101b),
+html body #main-column .status-content .destination-eta h3.heading-small:not(#yamuna-098a):not(#yamuna-098b):not(#yamuna-101a):not(#yamuna-101b),
+html body #main-column .fulfillments-content h3.heading-small:not(#yamuna-098a):not(#yamuna-098b):not(#yamuna-101a):not(#yamuna-101b),
+html body #main-column h3.panel-header:not(#yamuna-098a):not(#yamuna-098b),
+html body #main-column h3.panel-header.panel-header-sticky:not(#yamuna-098a):not(#yamuna-098b),
+html body #main-column .panel.panel-with-header > h3.panel-header:not(#yamuna-098a):not(#yamuna-098b),
+html body #main-column .panel.panel-with-header:has(iframe) > h3.panel-header:not(#yamuna-098a):not(#yamuna-098b),
+html body h3.panel-header:not(#yamuna-098a):not(#yamuna-098b) {
+  font-size: 18px !important;
+  line-height: 24px !important;
+}
 {% endif %}

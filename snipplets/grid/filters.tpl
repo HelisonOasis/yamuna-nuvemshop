@@ -33,7 +33,7 @@
         <div id="filters" class="visible-when-content-ready" data-store="filters-nav">
 
             {% if not mobile %}
-                <h3 class="title-section mb-2 d-none d-md-block">{{ "Filtrar por" | translate }}</h3>
+                <div class="title-section mb-2 d-none d-md-block yamuna-hx-h3">{{ "Filtrar por" | translate }}</div>
             {% endif %}
 
             {# Filters list #}

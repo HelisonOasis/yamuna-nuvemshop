@@ -92,7 +92,7 @@
     </script>
 
     <section class="yamuna-mobile-menu-products">
-        <h2>PRODUTOS</h2>
+        <div class="yamuna-hx-h2">PRODUTOS</div>
         <ul>
             <li><a href="{{ '/degustacao' | setting_url }}"><img src="{{ 'images/yamuna/menu-m/degustacao.png' | static_url }}" alt="" width="16" height="16" />DEGUSTAÇÃO</a></li>
             <li><a href="{{ '/kits-presentes' | setting_url }}"><img src="{{ 'images/yamuna/menu-m/kits-e-presentes.png' | static_url }}" alt="" width="16" height="16" />KITS E PRESENTES</a></li>

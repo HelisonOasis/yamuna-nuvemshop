@@ -100,7 +100,7 @@
 
 					<div class="col-md mb-4">
 						{% if settings.footer_about_title %}
-							<h4 class="h3">{{ settings.footer_about_title }}</h4>
+							<div class="h3 yamuna-hx-h4">{{ settings.footer_about_title }}</div>
 						{% endif %}
 						{% if settings.footer_about_description %}
 							<p>{{ settings.footer_about_description }}</p>
@@ -111,7 +111,7 @@
 
 				{# Foot Nav #}
 				<div class="col yamuna-footer-menu yamuna-footer-menu-primary">
-					<h4 class="h3">Vendas</h4>
+					<div class="h3 yamuna-hx-h4">Vendas</div>
 					<ul class="footer-menu">
 						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.whatsapp }}" target="_blank" rel="noopener">Atendimento ao Cliente</a></li>
 						<li class="footer-menu-item"><a class="footer-menu-link" href="/revenda">Revenda e Lojistas</a></li>
@@ -123,14 +123,14 @@
 				{# Foot Nav Secondary #}
 				{% if has_footer_menu_secondary %}
 					<div class="col yamuna-footer-menu yamuna-footer-menu-secondary">
-						<h4 class="h3">Institucional</h4>
+						<div class="h3 yamuna-hx-h4">Institucional</div>
 						{% include "snipplets/navigation/navigation-foot-secondary.tpl" %}
 					</div>
 				{% endif %}
 
 				{# SAC #}
 				<div class="col yamuna-footer-menu yamuna-footer-menu-sac">
-					<h4 class="h3">SAC</h4>
+					<div class="h3 yamuna-hx-h4">SAC</div>
 					<ul class="footer-menu">
 						<li class="footer-menu-item"><a class="footer-menu-link" href="/entrega">Regras de frete grátis</a></li>
 						<li class="footer-menu-item"><a class="footer-menu-link" href="/TrocaseDevolucoes">Trocas e Reembolsos</a></li>
@@ -143,14 +143,14 @@
 				{% if has_footer_contact_info %}
 					<div class="col-md mb-4 yamuna-footer-contact">
 						{% if settings.footer_contact_title %}
-							<h4 class="h3">{{ settings.footer_contact_title }}</h4>
+							<div class="h3 yamuna-hx-h4">{{ settings.footer_contact_title }}</div>
 						{% endif %}
 						{% include "snipplets/contact-links.tpl" %}
 					</div>
 				{% endif %}
 
 				<div class="col yamuna-footer-account">
-					<h4 class="h3">{{ 'Minha conta' | translate }}</h4>
+					<div class="h3 yamuna-hx-h4">{{ 'Minha conta' | translate }}</div>
 					<ul class="footer-menu">
 						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.customer_home_url }}">{{ 'Meus pedidos' | translate }}</a></li>
 						<li class="footer-menu-item"><a class="footer-menu-link" href="{{ store.customer_home_url }}">{{ 'Minha conta' | translate }}</a></li>
@@ -176,7 +176,7 @@
 				 				{% if has_payment_logos %}
 				 					<div class="row mb-4">
 				 						<div class="col-md-4">
-							<h4 class="h3">Formas de pagamento</h4>
+							<div class="h3 yamuna-hx-h4">Formas de pagamento</div>
 					 					</div>
 					 					<div class="col-md-8">
 					 						{% include "snipplets/logos-icons.tpl" with {'payments': true} %}
@@ -186,7 +186,7 @@
 				 				{% if has_shipping_logos %}
 				 					<div class="row mb-4">
 					 					<div class="col-md-4">
-					 						<h4 class="h3">{{ "Medios de envío" | translate }}</h4>
+					 						<div class="h3 yamuna-hx-h4">{{ "Medios de envío" | translate }}</div>
 					 					</div>
 					 					<div class="col-md-8">
 					 						{% include "snipplets/logos-icons.tpl" with {'shipping': true} %}
@@ -199,7 +199,7 @@
 
 					<div class="col-md-3 yamuna-footer-security">
 						<div class="yamuna-footer-security-content">
-							<h4 class="h3">Segurança</h4>
+							<div class="h3 yamuna-hx-h4">Segurança</div>
 							<div class="yamuna-footer-security-logos">
 								<img class="yamuna-security-google" src="{{ 'images/yamuna/security-google.svg' | static_url }}" alt="Google Safe Browsing" />
 								<img class="yamuna-security-site" src="{{ 'images/yamuna/security-site.svg' | static_url }}" alt="Site seguro" />

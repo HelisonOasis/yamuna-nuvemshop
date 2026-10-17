@@ -331,6 +331,12 @@
         (function() {
             var clearanceLocked = false;
             var transitionTimers = [];
+            var rootVarCache = {};
+            function setRootVar(name, value) {
+                if (rootVarCache[name] === value) return;
+                rootVarCache[name] = value;
+                document.documentElement.style.setProperty(name, value);
+            }
 
             function parseBoxValue(value, basis) {
                 if (value == null || value === '' || value === 'auto') return NaN;
@@ -343,7 +349,7 @@
             function syncDesktopPanels(options) {
                 options = options || {};
                 if (!window.matchMedia('(min-width: 1024px)').matches) {
-                    document.documentElement.style.setProperty('--yamuna-header-clearance', '80px');
+                    setRootVar('--yamuna-header-clearance', '80px');
                     clearanceLocked = false;
                     return;
                 }
@@ -373,23 +379,23 @@
                 }
                 capsuleBottom = Math.max(capsuleBottom, headerRect.bottom);
 
-                document.documentElement.style.setProperty('--yamuna-desktop-panel-left', capsuleLeft + 'px');
-                document.documentElement.style.setProperty('--yamuna-desktop-panel-width', capsuleWidth + 'px');
-                document.documentElement.style.setProperty('--yamuna-desktop-panel-top', capsuleBottom + 'px');
-                document.documentElement.style.setProperty('--yamuna-menu-left', capsuleLeft + 'px');
-                document.documentElement.style.setProperty('--yamuna-menu-width', capsuleWidth + 'px');
-                document.documentElement.style.setProperty('--yamuna-menu-top', capsuleBottom + 'px');
+                setRootVar('--yamuna-desktop-panel-left', capsuleLeft + 'px');
+                setRootVar('--yamuna-desktop-panel-width', capsuleWidth + 'px');
+                setRootVar('--yamuna-desktop-panel-top', capsuleBottom + 'px');
+                setRootVar('--yamuna-menu-left', capsuleLeft + 'px');
+                setRootVar('--yamuna-menu-width', capsuleWidth + 'px');
+                setRootVar('--yamuna-menu-top', capsuleBottom + 'px');
                 // Panels start at viewport top; overlap pads content under the capsule (no buraco).
-                document.documentElement.style.setProperty('--yamuna-panel-top', '0px');
-                document.documentElement.style.setProperty('--yamuna-panel-overlap', Math.max(0, capsuleBottom) + 'px');
-                document.documentElement.style.setProperty('--yamuna-header-top', headerRect.top + 'px');
-                document.documentElement.style.setProperty('--yamuna-header-right', Math.max(0, window.innerWidth - headerRect.right) + 'px');
-                document.documentElement.style.setProperty('--yamuna-header-height', Math.max(0, headerRect.height) + 'px');
+                setRootVar('--yamuna-panel-top', '0px');
+                setRootVar('--yamuna-panel-overlap', Math.max(0, capsuleBottom) + 'px');
+                setRootVar('--yamuna-header-top', headerRect.top + 'px');
+                setRootVar('--yamuna-header-right', Math.max(0, window.innerWidth - headerRect.right) + 'px');
+                setRootVar('--yamuna-header-height', Math.max(0, headerRect.height) + 'px');
 
                 if (!clearanceLocked || options.forceClearance) {
                     var clearance = Math.max(110, Math.round(capsuleBottom));
                     clearance = Math.min(clearance, 160);
-                    document.documentElement.style.setProperty('--yamuna-header-clearance', clearance + 'px');
+                    setRootVar('--yamuna-header-clearance', clearance + 'px');
                     if (!options.skipLock) clearanceLocked = true;
                 }
             }
@@ -399,7 +405,7 @@
                 transitionTimers = [];
                 syncDesktopPanels({ forceClearance: true, skipLock: true });
                 clearanceLocked = false;
-                [16, 50, 100, 200, 350, 550, 750].forEach(function(ms) {
+                [16, 80, 160, 260, 360].forEach(function(ms) {
                     transitionTimers.push(window.setTimeout(function() {
                         syncDesktopPanels({ forceClearance: true });
                     }, ms));
@@ -410,7 +416,6 @@
             function onScrollOrClassChange() {
                 var scrolled = document.documentElement.classList.contains('yamuna-header-scrolled')
                     || !!(document.querySelector('.head-main.compress'));
-                syncDesktopPanels();
                 if (lastScrolled === null) {
                     lastScrolled = scrolled;
                     return;
@@ -585,16 +590,23 @@
 
 <script>
   (function() {
-    function onScroll() {
+    var headerScrollTicking = false;
+    var headerIsScrolled = document.documentElement.classList.contains('yamuna-header-scrolled');
+    function applyHeaderScroll() {
+      headerScrollTicking = false;
       var top = window.pageYOffset || document.documentElement.scrollTop || 0;
-      if (top > 40) {
-        document.documentElement.classList.add('yamuna-header-scrolled');
-      } else {
-        document.documentElement.classList.remove('yamuna-header-scrolled');
-      }
+      var next = top > 40;
+      if (next === headerIsScrolled) return;
+      headerIsScrolled = next;
+      document.documentElement.classList.toggle('yamuna-header-scrolled', next);
+    }
+    function onScroll() {
+      if (headerScrollTicking) return;
+      headerScrollTicking = true;
+      window.requestAnimationFrame(applyHeaderScroll);
     }
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    headerIsScrolled = null; applyHeaderScroll();
 
     {# 113 — open Produtos mega-menu only while the trigger is hovered/focused. #}
     (function() {
@@ -932,3 +944,4 @@
         <div class="js-cross-selling-modal-body" style="display: none"></div>
     {% endblock %}
 {% endembed %}
+{% include 'snipplets/yamuna-forgot-popup.tpl' %}

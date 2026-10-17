@@ -7,7 +7,7 @@
 			<img src="{{ 'images/yamuna/logo-yamuna-branco.png' | static_url }}" alt="Yamuna" />
 		</div>
 		<div class="yamuna-migration-popup__content">
-			<h2 id="yamuna-migration-title" class="yamuna-migration-popup__title">Nosso site mudou pra <span>melhor</span>. Ao final da compra atualize seu cadastro.</h2>
+			<h2 id="yamuna-migration-title" class="yamuna-migration-popup__title"><strong>Nosso site mudou para melhor</strong>. Se você já é <strong>cliente</strong> atualize seu cadastro e crie nova senha.</h2>
 		</div>
 	</div>
 </div>
@@ -113,10 +113,10 @@
 	color: #4a1d3a;
 	font-family: 'Raleway', sans-serif;
 	font-size: 31px;
-	font-weight: 700;
+	font-weight: 500;
 	line-height: 1.35;
 }
-.yamuna-migration-popup__title span { color: #c50b6a; }
+.yamuna-migration-popup__title strong { font-weight: 700; }
 html.yamuna-migration-open #modal-cart,
 html.yamuna-migration-open .js-modal.modal-right {
 	pointer-events: none !important;
@@ -135,7 +135,7 @@ html.yamuna-migration-open .js-modal.modal-right {
 	var root = document.getElementById('yamuna-migration-popup');
 	if (!root) return;
 
-	var SEEN_KEY = 'yamuna_migration_popup_seen';
+	var SEEN_KEY = 'yamuna_migration_popup_seen_v2';
 
 	function hasSeen() {
 		try { if (window.localStorage && localStorage.getItem(SEEN_KEY) === '1') return true; } catch (e) {}

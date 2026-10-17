@@ -2,22 +2,79 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="{% for language in languages %}{% if language.active %}{{ language.lang }}{% endif %}{% endfor %}">
     <head>
+        <script>
+            (function () {
+                var blocked = /googletagmanager\.com|google-analytics\.com|googleadservices\.com|doubleclick\.net|connect\.facebook\.net|analytics\.tiktok\.com|tiktok\.com\/i18n/i;
+                var queue = [];
+                var released = false;
+                function remember(src) {
+                    if (!src || queue.indexOf(src) !== -1) return;
+                    queue.push(src);
+                }
+                function stall(node) {
+                    if (released || !node || node.tagName !== 'SCRIPT') return false;
+                    var src = node.src || node.getAttribute('src') || '';
+                    if (!blocked.test(src)) return false;
+                    remember(src);
+                    node.type = 'text/plain';
+                    node.removeAttribute('src');
+                    if (node.parentNode) node.parentNode.removeChild(node);
+                    return true;
+                }
+                var origInsert = Node.prototype.insertBefore;
+                Node.prototype.insertBefore = function (node, ref) {
+                    if (stall(node)) return node;
+                    return origInsert.call(this, node, ref);
+                };
+                var origAppend = Node.prototype.appendChild;
+                Node.prototype.appendChild = function (node) {
+                    if (stall(node)) return node;
+                    return origAppend.call(this, node);
+                };
+                var obs = new MutationObserver(function (list) {
+                    if (released) return;
+                    list.forEach(function (m) {
+                        m.addedNodes.forEach(stall);
+                    });
+                });
+                obs.observe(document.documentElement, { childList: true, subtree: true });
+                function release() {
+                    if (released) return;
+                    released = true;
+                    obs.disconnect();
+                    queue.forEach(function (src) {
+                        var s = document.createElement('script');
+                        s.src = src;
+                        s.async = true;
+                        document.body.appendChild(s);
+                    });
+                }
+                window.addEventListener('load', function () { setTimeout(release, 8000); });
+            })();
+        </script>
+        {% if template == 'home' %}
+        <link rel="preload" as="image" href="{{ 'images/yamuna/hero/mobile/01-kit-degustacao-mobile.webp' | static_url }}" media="(max-width: 767px)" fetchpriority="high" />
+        <link rel="preload" as="image" href="{{ 'images/yamuna/hero/desktop/01-kit-degustacao-desktop.webp' | static_url }}" media="(min-width: 768px)" fetchpriority="high" />
+        {% endif %}
         <link rel="preconnect" href="{{ store_resource_hints }}" />
         <link rel="dns-prefetch" href="{{ store_resource_hints }}" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        {# One font request. Montserrat stays because the mobile menu and PDP benefits use it.
+           It used to load again via component('fonts') as a render-blocking @import inside the critical CSS. #}
         {% if template == 'home' %}
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Raleway:wght@400;500;600;700;800&family=Roboto:wght@400;500;600;700;800;900&display=swap" />
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;700&family=Raleway:wght@400;500;600;700;800&family=Roboto:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;700&family=Raleway:wght@400;500;600;700;800&family=Roboto:wght@400;500;600;700;800;900&display=swap" /></noscript>
         {% else %}
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Raleway:wght@400;500;600;700;800&family=Roboto:wght@400;500;600;700;800;900&display=swap" />
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Raleway:wght@400;500;600;700;800&family=Roboto:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Raleway:wght@400;500;600;700;800&family=Roboto:wght@400;500;600;700;800;900&display=swap" /></noscript>
         {% endif %}
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>{{ page_title }}</title>
+        <title>{% if template == 'home' %}Yamuna Artesanal | Compre produtos naturais direto do produtor{% else %}{{ page_title }}{% endif %}</title>
         <link rel="icon" type="image/png" href="{{ 'images/yamuna/favicon.png' | static_url }}" />
         <meta name="description" content="{{ page_description }}" />
-        <link rel="preload" as="style" href="{{ [settings.font_headings, settings.font_rest] | google_fonts_url('400,700') }}" />
         <link rel="preload" href="{{ 'css/style-colors.scss.tpl' | static_url }}" as="style" />
 
         {# Preload LCP home, category and product page elements #}
@@ -34,15 +91,6 @@
 
         <style>
 
-            {# Font families #}
-
-            {{ component(
-                'fonts',{
-                    font_weights: '400,700',
-                    font_settings: 'settings.font_headings, settings.font_rest'
-                })
-            }}
-
             {% include "static/css/style-critical.tpl" %}
         </style>
 
@@ -50,12 +98,12 @@
 
         {{ 'css/style-colors.scss.tpl' | static_url | static_inline }}
 
-        {# Load async styling not mandatory for first meaningfull paint.
-           Category/search: load sync — grid/cards/CTAs are above-the-fold and
-           FOUC badly with media=print. Other templates keep async + critical FOUC cover. #}
+        {# Category/search stay sync: the product grid is the first screen and flashes
+           without it. Home keeps the hero in critical CSS and loads the rest after paint. #}
 
         <link rel="preload" href="{{ 'css/style-async.scss.tpl' | static_url }}" as="style">
-        {# Every template except home loads style-async render-blocking (PDP header/title FOUC fix). #}
+        {# Every template except home loads style-async render-blocking: on PDP/pages the header
+           and title row come from it, so media=print caused a ~1s unstyled first paint. #}
         {% if template != 'home' %}
         <link rel="stylesheet" href="{{ 'css/style-async.scss.tpl' | static_url }}">
         {% else %}
@@ -234,8 +282,128 @@
 
         {# Loads custom CSS added from Advanced Settings on the admin´s theme customization screen #}
 
+        {# Admin CSS, minus the checkout stylesheet. That file was imported on every
+           page (v=6, ~163 KB) and only contains checkout rules. #}
+        {% set yamuna_storefront_css = settings.css_code | replace('@import url("https://d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static/css/yamuna-checkout-fix.css?v=6");', '') | replace("@import url('https://d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static/css/yamuna-checkout-fix.css?v=6');", '') | trim %}
+        {% if yamuna_storefront_css %}
         <style>
-            {{ settings.css_code | raw }}
+            {{ yamuna_storefront_css | raw }}
+        </style>
+        {% endif %}
+
+        {# Hero card paints with the critical CSS, before style-async arrives. #}
+        <style id="yamuna-home-hero-card">
+          @media (min-width: 768px) {
+            body.template-home .js-home-main-slider-container .slide-container .slider-slide {
+              position: relative !important;
+            }
+            body.template-home .yamuna-home-hero-overlay {
+              position: absolute;
+              bottom: 61px;
+              left: 0;
+              z-index: 4;
+              display: flex;
+              width: 439px;
+              height: 248px;
+              padding: 36px 24px 0 96px;
+              flex-direction: column;
+              justify-content: flex-start;
+              color: #4a1d3a;
+              background: #fff;
+              border-radius: 0 40px 40px 0;
+              box-sizing: border-box;
+            }
+            body.template-home .yamuna-home-hero-overlay-title {
+              margin: 0 0 10px;
+              color: #a31460;
+              font-family: 'Dosis', sans-serif;
+              font-size: 28px;
+              font-weight: 700;
+              line-height: 1.1;
+            }
+            body.template-home .yamuna-home-hero-overlay-description {
+              margin: 0 0 18px;
+              font-family: 'Dosis', sans-serif;
+              font-size: 20px;
+              font-weight: 500;
+              line-height: 1.4;
+            }
+            body.template-home .yamuna-home-hero-overlay-button {
+              display: inline-flex;
+              width: 235px;
+              min-width: 235px;
+              min-height: 52px;
+              padding: 0;
+              align-items: center;
+              justify-content: center;
+              color: #fff;
+              border-radius: 999px;
+              background: #238482;
+              font-family: 'Roboto', sans-serif;
+              font-size: 18px;
+              font-weight: 500;
+              line-height: normal;
+              text-decoration: none;
+              text-transform: uppercase;
+            }
+          }
+          @media (max-width: 767px) {
+            body.template-home .js-home-slider-mobile .yamuna-home-hero-overlay {
+              position: absolute;
+              right: auto;
+              bottom: 40px;
+              left: 0;
+              z-index: 4;
+              display: flex;
+              width: min(282px, calc(100% - 16px));
+              max-width: min(282px, calc(100% - 16px));
+              height: auto;
+              min-height: 170px;
+              padding: 16px;
+              flex-direction: column;
+              justify-content: flex-start;
+              align-items: flex-start;
+              color: #4a1d3a;
+              border-radius: 0 24px 24px 0;
+              background: #fff;
+              box-sizing: border-box;
+            }
+            body.template-home .yamuna-home-hero-overlay-title {
+              margin: 0 0 4px;
+              color: #a31460;
+              font-family: 'Raleway', sans-serif;
+              font-size: 20px;
+              font-weight: 800;
+              line-height: 1.2;
+              text-align: left;
+            }
+            body.template-home .yamuna-home-hero-overlay-description {
+              margin: 0 0 12px;
+              color: #4a1d3a;
+              font-family: 'Dosis', sans-serif;
+              font-size: 18px;
+              font-weight: 500;
+              line-height: 1.3;
+              text-align: left;
+            }
+            body.template-home .yamuna-home-hero-overlay-button {
+              display: inline-flex;
+              width: auto;
+              min-height: 38px;
+              height: 38px;
+              padding: 8px 32px;
+              align-items: center;
+              justify-content: center;
+              color: #fff;
+              border-radius: 24px;
+              background: #238482;
+              font-family: 'Raleway', sans-serif;
+              font-size: 14px;
+              font-weight: 700;
+              line-height: 1;
+              text-transform: uppercase;
+            }
+          }
         </style>
 
         {# 043 - hero arrows: vertically centered, pinned to banner edges #}
@@ -1712,6 +1880,33 @@
 
         {% if template == 'cart' or yamuna_account_auth %}
             {% snipplet "header/header-cart.tpl" %}
+            {% if yamuna_account_auth %}
+            <style>
+              body.yamuna-account-auth .yamuna-cart-checkout-header {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                box-sizing: border-box !important;
+                width: 100% !important;
+                margin: 0 auto !important;
+                padding: 40px 40px 24px !important;
+                background: #f6f6f6 !important;
+                text-align: center !important;
+              }
+              body.yamuna-account-auth .yamuna-cart-checkout-logo-link {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                margin: 0 auto !important;
+              }
+              body.yamuna-account-auth .yamuna-cart-checkout-logo {
+                display: block !important;
+                width: 138px !important;
+                height: auto !important;
+                max-width: 160px !important;
+              }
+            </style>
+            {% endif %}
         {% else %}
             {% snipplet "header/header.tpl" %}
             {# Physical space for fixed header so content never sits underneath it. #}
@@ -2995,5 +3190,31 @@
 
         {% include "snipplets/yamuna-wishlist.tpl" %}
 
+        {% if template == 'home' %}
+        <script>
+        /* yamuna-home-no-lazy: a home carrega todas as imagens de uma vez (desktop e mobile), sem lazy load no scroll. */
+        (function () {
+          function loadAll() {
+            var imgs = document.querySelectorAll('img');
+            Array.prototype.forEach.call(imgs, function (img) {
+              if (img.getAttribute('loading') === 'lazy') img.setAttribute('loading', 'eager');
+              var ds = img.getAttribute('data-src');
+              var dss = img.getAttribute('data-srcset');
+              if (dss) { img.setAttribute('srcset', dss); img.removeAttribute('data-srcset'); }
+              if (ds) { img.setAttribute('src', ds); img.removeAttribute('data-src'); }
+              if (ds || dss) {
+                img.classList.remove('lazyload');
+                img.classList.add('lazyloaded');
+              }
+            });
+          }
+          /* roda uma vez, quando o navegador esta ocioso, em vez de varrer todas as imgs 3 vezes */
+          var done = false;
+          function once() { if (done) return; done = true; loadAll(); }
+          function schedule() { if (window.requestIdleCallback) requestIdleCallback(once, { timeout: 1500 }); else setTimeout(once, 300); }
+          if (document.readyState === 'complete') schedule(); else window.addEventListener('load', schedule);
+        })();
+        </script>
+        {% endif %}
     </body>
 </html>

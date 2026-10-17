@@ -12,7 +12,7 @@
 <section class="section-products-related position-relative mb-3 yamuna-pdp-related yamuna-empty-related" data-store="empty-related-products">
 	<div class="container px-0">
 		<div class="text-center px-3">
-			<h2 class="h1">VOCÊ PODE GOSTAR</h2>
+			<div class="h1">VOCÊ PODE GOSTAR</div>
 		</div>
 		<div class="products-section-container products-slider swiper-container-horizontal p-relative">
 			<div class="js-swiper-related swiper-container p-md-1">

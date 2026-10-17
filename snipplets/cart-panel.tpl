@@ -241,11 +241,11 @@
     }
 
     body #modal-cart:not(:has(.js-cart-item)) .yamuna-empty-cart-link-super::before {
-      background-image: url('{{ 'images/yamuna/cart-empty-superfoods.png' | static_url }}') !important;
+      background-image: url('{{ 'images/yamuna/cart-empty-superfoods.webp' | static_url }}') !important;
     }
 
     body #modal-cart:not(:has(.js-cart-item)) .yamuna-empty-cart-link-cosmetics::before {
-      background-image: url('{{ 'images/yamuna/cart-empty-cosmetics.png' | static_url }}') !important;
+      background-image: url('{{ 'images/yamuna/cart-empty-cosmetics.webp' | static_url }}') !important;
     }
 
     body #modal-cart:not(:has(.js-cart-item)) .yamuna-empty-cart-link span {
@@ -1446,7 +1446,13 @@
       flex-shrink: 0 !important;
       flex-direction: column !important;
       max-height: none !important;
-      overflow: visible !important;
+      overflow: visible !important;      /* 097 - mobile: rodape em fluxo (nao absoluto) para a area rolavel terminar acima dele e o cupom poder ser alcancado. */
+      position: relative !important;
+      top: auto !important;
+      right: auto !important;
+      bottom: auto !important;
+      left: auto !important;
+      height: auto !important;
     }
 
     /* Mobile Figma: qty | ASSINAR | trash on one row */
@@ -1904,6 +1910,34 @@
   html body[class] #modal-cart .js-shipping-calculator-response li.js-other-shipping-item[style*="display:none"] {
     display: none !important;
   }
+  /* Nota abaixo da barra de frete gratis do minicart. Raleway ja e carregada em layouts/layout.tpl.
+     Fica oculta por padrao e so aparece quando a barra esta ativa (carrinho preenchido). */
+  html body[class] #modal-cart .yamuna-cart-shipping-note {
+    display: none !important;
+    box-sizing: border-box !important;
+    width: calc(100% - 24px) !important;
+    margin: 0 12px 8px !important;
+    padding: 0 8px !important;
+    flex: 0 0 auto !important;
+    color: #000 !important;
+    font-family: Raleway, Arial, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    line-height: 16px !important;
+    text-align: center !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    white-space: normal !important;
+  }
+
+  html body[class] #modal-cart:has(.js-cart-item) .yamuna-cart-shipping-promo.is-active + .yamuna-cart-shipping-note,
+  html body[class] #modal-cart .yamuna-cart-shipping-promo.is-active + .yamuna-cart-shipping-note {
+    display: block !important;
+  }
+
+  html body[class] #modal-cart:not(:has(.js-cart-item)) .yamuna-cart-shipping-note {
+    display: none !important;
+  }
 </style>
 
 {# Production-like minicart body (yamuna.com.br): top 5% OFF bar, free-shipping
@@ -1955,6 +1989,8 @@
   <span class="yamuna-cart-promo-text yamuna-cart-promo-text-onfill js-yamuna-fs-text" aria-hidden="true">{{ yamuna_fs_label }}</span>
   <i class="yamuna-cart-promo-bar" aria-hidden="true"><span class="yamuna-cart-promo-progress js-yamuna-fs-fill" style="width: {{ yamuna_fs_pct }}%;"></span></i>
 </div>
+{# Nota legal do frete gratis: IRMAO da barra (fora de .js-yamuna-fs-text, que o JS reescreve). Visibilidade segue a barra via CSS (.is-active + .yamuna-cart-shipping-note). #}
+<p class="yamuna-cart-shipping-note js-yamuna-fs-note">*exclusivo para região Sul, Sudeste e Centro-oeste</p>
 
 <div class="yamuna-minicart-scroll js-visible-on-cart-filled" {% if cart.items_count == 0 %}style="display:none;"{% endif %}>
   <div class="js-ajax-cart-list cart-row" style="position:relative; z-index:1;">

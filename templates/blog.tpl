@@ -369,6 +369,256 @@
 					display: none !important;
 				}
 			}
+			/* Search field + suggestions. These rules are missing from the published async CSS, so the input stayed a native box and the results ran together. */
+			body.template-blog .yamuna-blog-search-row {
+				display: flex !important;
+				flex-wrap: nowrap !important;
+				align-items: center !important;
+				gap: 28px !important;
+				width: 100% !important;
+				margin: 0 0 36px !important;
+			}
+			body.template-blog .yamuna-blog-search-label {
+				flex: 0 0 auto !important;
+				margin: 0 !important;
+				color: #a31460 !important;
+				font-family: Roboto, sans-serif !important;
+				font-size: 22px !important;
+				font-weight: 700 !important;
+				letter-spacing: 0.02em !important;
+				line-height: 1.1 !important;
+				text-transform: uppercase !important;
+				white-space: nowrap !important;
+			}
+			body.template-blog .yamuna-blog-search {
+				position: relative !important;
+				flex: 1 1 auto !important;
+				width: auto !important;
+				max-width: none !important;
+				min-width: 0 !important;
+			}
+			body.template-blog .yamuna-blog-search-field {
+				display: flex !important;
+				position: relative !important;
+				align-items: center !important;
+				width: 100% !important;
+				height: 42px !important;
+				min-height: 42px !important;
+				margin: 0 !important;
+				padding: 0 4px 0 16px !important;
+				border: 1px solid #a31460 !important;
+				border-radius: 999px !important;
+				background: #fff !important;
+				box-sizing: border-box !important;
+			}
+			body.template-blog .yamuna-blog-search.is-suggest-open .yamuna-blog-search-field {
+				border-radius: 28px 28px 0 0 !important;
+			}
+			body.template-blog .yamuna-blog-search-float {
+				position: absolute !important;
+				top: -10px !important;
+				left: 22px !important;
+				z-index: 1 !important;
+				padding: 0 8px !important;
+				color: #a31460 !important;
+				background: #fff !important;
+				font-family: Poppins, Raleway, sans-serif !important;
+				font-size: 13px !important;
+				font-weight: 600 !important;
+				line-height: 1.2 !important;
+			}
+			body.template-blog .yamuna-blog-search input,
+			body.template-blog .yamuna-blog-search input[type="search"] {
+				flex: 1 1 auto !important;
+				width: 100% !important;
+				max-width: none !important;
+				height: 40px !important;
+				min-height: 0 !important;
+				margin: 0 !important;
+				padding: 0 8px 0 4px !important;
+				border: 0 !important;
+				border-radius: 0 !important;
+				box-shadow: none !important;
+				color: #333 !important;
+				background: transparent !important;
+				font-family: Poppins, Raleway, sans-serif !important;
+				font-size: 15px !important;
+				outline: none !important;
+				appearance: none !important;
+				-webkit-appearance: none !important;
+			}
+			body.template-blog .yamuna-blog-search input::-webkit-search-decoration,
+			body.template-blog .yamuna-blog-search input::-webkit-search-cancel-button,
+			body.template-blog .yamuna-blog-search input::-webkit-search-results-button {
+				-webkit-appearance: none !important;
+				appearance: none !important;
+				display: none !important;
+			}
+			body.template-blog .yamuna-blog-search-submit {
+				display: flex !important;
+				flex: 0 0 auto !important;
+				align-items: center !important;
+				justify-content: center !important;
+				width: 40px !important;
+				height: 40px !important;
+				margin: 0 !important;
+				padding: 0 !important;
+				border: 0 !important;
+				background: transparent !important;
+				cursor: pointer !important;
+			}
+			body.template-blog .yamuna-blog-search-submit img {
+				display: block !important;
+				width: 20px !important;
+				height: 20px !important;
+			}
+			body.template-blog .yamuna-blog-search-suggest {
+				position: absolute !important;
+				top: 100% !important;
+				left: 0 !important;
+				z-index: 40 !important;
+				display: none !important;
+				width: 100% !important;
+				max-height: 320px !important;
+				overflow: auto !important;
+				margin: 0 !important;
+				padding: 0 !important;
+				border: 1px solid #a31460 !important;
+				border-top: 0 !important;
+				border-radius: 0 0 28px 28px !important;
+				background: #fff !important;
+				box-shadow: 0 12px 20px rgba(74, 29, 58, 0.14) !important;
+				box-sizing: border-box !important;
+			}
+			body.template-blog .yamuna-blog-search-suggest.is-open { display: block !important; }
+			body.template-blog .yamuna-blog-search-suggest a,
+			body.template-blog .yamuna-blog-search-suggest .yamuna-blog-search-pending {
+				display: flex !important;
+				align-items: center !important;
+				justify-content: space-between !important;
+				gap: 16px !important;
+				padding: 14px 18px !important;
+				border-bottom: 1px solid #f0edf0 !important;
+				color: #4a1d3a !important;
+				font-family: Roboto, sans-serif !important;
+				font-size: 15px !important;
+				font-weight: 500 !important;
+				line-height: 1.3 !important;
+				text-decoration: none !important;
+				white-space: normal !important;
+			}
+			body.template-blog .yamuna-blog-search-suggest a::after {
+				content: '' !important;
+				flex: 0 0 auto !important;
+				width: 8px !important;
+				height: 8px !important;
+				margin-left: 8px !important;
+				border-right: 2px solid #a31460 !important;
+				border-top: 2px solid #a31460 !important;
+				transform: rotate(45deg) !important;
+			}
+			body.template-blog .yamuna-blog-search-suggest a:last-child,
+			body.template-blog .yamuna-blog-search-suggest .yamuna-blog-search-pending:last-child {
+				border-bottom: 0 !important;
+				border-radius: 0 0 27px 27px !important;
+			}
+			body.template-blog .yamuna-blog-search-suggest a:hover,
+			body.template-blog .yamuna-blog-search-suggest a:focus {
+				background: #fdf5f9 !important;
+				color: #a31460 !important;
+			}
+			body.template-blog .yamuna-blog-search-suggest .yamuna-blog-search-pending {
+				color: #8a6a7c !important;
+				font-weight: 500 !important;
+			}
+			body.template-blog .yamuna-blog-search-suggest .yamuna-blog-search-pending::after { content: none !important; }
+			@media (max-width: 767px) {
+				body.template-blog .yamuna-blog-search-row {
+					flex-direction: column !important;
+					align-items: stretch !important;
+					gap: 14px !important;
+					margin-bottom: 24px !important;
+				}
+				body.template-blog .yamuna-blog-search-label {
+					font-size: clamp(14px, 4.2vw, 18px) !important;
+				}
+				body.template-blog .yamuna-blog-search {
+					width: 100% !important;
+					max-width: none !important;
+					flex-basis: auto !important;
+				}
+			}
+			body.template-blog .yamuna-blog-cats-title {
+				margin: 0 0 16px !important;
+				color: #4a1d3a !important;
+				font-family: Roboto, sans-serif !important;
+				font-size: 28px !important;
+				font-weight: 800 !important;
+				letter-spacing: 0.02em !important;
+				line-height: 1.15 !important;
+			}
+			body.template-blog .yamuna-blog-cats button,
+			body.template-blog .yamuna-blog-cats button.js-yamuna-blog-cat {
+				display: flex !important;
+				align-items: center !important;
+				justify-content: center !important;
+				width: 100% !important;
+				min-height: 44px !important;
+				margin: 0 !important;
+				padding: 0 16px !important;
+				border: 1px solid #d1d5db !important;
+				border-radius: 999px !important;
+				color: #4a1d3a !important;
+				background: #fff !important;
+				font-family: Roboto, sans-serif !important;
+				font-size: 14px !important;
+				font-weight: 600 !important;
+				letter-spacing: 0.04em !important;
+				text-transform: uppercase !important;
+				cursor: pointer !important;
+				box-sizing: border-box !important;
+			}
+			body.template-blog .yamuna-blog-cats button:hover,
+			body.template-blog .yamuna-blog-cats button.is-active {
+				border-color: #a31460 !important;
+				color: #a31460 !important;
+				background: #fff !important;
+			}
+			@media (min-width: 768px) {
+				body.template-blog .yamuna-blog-layout {
+					display: grid !important;
+					grid-template-columns: 240px minmax(0, 1fr) !important;
+					gap: 28px !important;
+					align-items: start !important;
+				}
+				body.template-blog .yamuna-blog-cats {
+					display: flex !important;
+					flex-direction: column !important;
+					gap: 12px !important;
+					margin: 0 0 16px !important;
+				}
+				body.template-blog .yamuna-blog-shop-btn {
+					display: inline-flex !important;
+					align-items: center !important;
+					justify-content: center !important;
+					width: 100% !important;
+					min-height: 48px !important;
+					margin-top: 4px !important;
+					padding: 10px 16px !important;
+					border-radius: 999px !important;
+					background: #238482 !important;
+					color: #fff !important;
+					font-family: Roboto, sans-serif !important;
+					font-size: 14px !important;
+					font-weight: 600 !important;
+					letter-spacing: 0.04em !important;
+					text-align: center !important;
+					text-decoration: none !important;
+					text-transform: uppercase !important;
+					box-sizing: border-box !important;
+				}
+			}
+			.js-yamuna-blog-card.is-search-hidden { display: none !important; }
 		</style>
 
 		<h1 class="yamuna-blog-page-title">Aprenda</h1>
@@ -478,18 +728,44 @@
       return true;
     }
 
-    /* Cenário 019: filter grid on search (Enter / lupa) + category. */
+    /* Filter the visible grid and pull matches from later blog pages into the results. */
     function applyFilter() {
       if (!grid) return;
+      grid.querySelectorAll('[data-yamuna-search-extra]').forEach(function (node) {
+        node.parentNode && node.parentNode.removeChild(node);
+      });
       var q = fold(search && search.value ? search.value : '');
+      var present = {};
       var visible = 0;
       grid.querySelectorAll('.js-yamuna-blog-card').forEach(function (card) {
+        var url = cardUrl(card);
+        if (url) present[url] = true;
         var text = fold(card.textContent || '');
         var show = cardMatchesCat(card, activeCat) && (!q || text.indexOf(q) !== -1);
         card.hidden = !show;
         card.classList.toggle('is-search-hidden', !show);
         if (show) visible += 1;
       });
+      if (q) {
+        catalogList.forEach(function (post) {
+          if (present[post.url]) return;
+          if (post.text.indexOf(q) === -1) return;
+          if (!cardMatchesCat({ textContent: post.raw }, activeCat)) return;
+          var holder = document.createElement('div');
+          holder.innerHTML = post.html;
+          var node = holder.firstElementChild;
+          if (!node) return;
+          node.setAttribute('data-yamuna-search-extra', '1');
+          node.hidden = false;
+          node.classList.remove('is-search-hidden');
+          node.querySelectorAll('img[data-src]').forEach(function (img) {
+            img.setAttribute('src', img.getAttribute('data-src'));
+          });
+          grid.appendChild(node);
+          present[post.url] = true;
+          visible += 1;
+        });
+      }
       if (empty) {
         empty.hidden = visible !== 0;
         empty.classList.toggle('is-visible', visible === 0);
@@ -503,18 +779,79 @@
       dropdown.innerHTML = '';
     }
 
-    function getSuggestionPosts() {
-      var posts = [];
-      if (!grid) return posts;
-      grid.querySelectorAll('.js-yamuna-blog-card').forEach(function (card) {
-        if (card.hidden) return;
-        var title = card.querySelector('.yamuna-blog-card-title, .item-name');
-        var link = card.querySelector('a[href]');
-        if (title && link) {
-          posts.push({ title: normalize(title.textContent), url: link.href });
+    var catalogByUrl = {};
+    var catalogList = [];
+    var catalogDone = false;
+
+    function absUrl(href) {
+      try { return new URL(href, window.location.origin).href.split('#')[0]; } catch (err) { return href || ''; }
+    }
+
+    function rememberCard(card) {
+      if (!card) return;
+      var link = card.querySelector('a[href*="/blog/posts/"]') || card.querySelector('a[href]');
+      var titleEl = card.querySelector('.yamuna-blog-card-title, .item-name');
+      if (!link || !titleEl) return;
+      var url = absUrl(link.getAttribute('href') || link.href);
+      if (!url || catalogByUrl[url]) return;
+      var title = normalize(titleEl.textContent);
+      var raw = card.textContent || '';
+      var post = {
+        title: title,
+        url: url,
+        text: fold(title + ' ' + raw + ' ' + url),
+        raw: title + ' ' + raw,
+        html: card.outerHTML
+      };
+      catalogByUrl[url] = post;
+      catalogList.push(post);
+    }
+
+    function harvestHtml(html) {
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var before = catalogList.length;
+      doc.querySelectorAll('.yamuna-blog-grid .js-yamuna-blog-card').forEach(rememberCard);
+      return {
+        grew: catalogList.length > before,
+        hasNext: !!doc.querySelector('.js-yamuna-blog-next')
+      };
+    }
+
+    function cardUrl(card) {
+      var link = card.querySelector('a[href*="/blog/posts/"]') || card.querySelector('a[href]');
+      return link ? absUrl(link.getAttribute('href') || link.href) : '';
+    }
+
+    function loadCatalog() {
+      if (grid) grid.querySelectorAll('.js-yamuna-blog-card').forEach(rememberCard);
+      var page = 2;
+      function step() {
+        if (page > 40) {
+          catalogDone = true;
+          applyFilter();
+          updateDropdown();
+          return;
         }
-      });
-      return posts;
+        fetch(window.location.pathname + '?page=' + page, { credentials: 'same-origin' })
+          .then(function (res) { return res.text(); })
+          .then(function (html) {
+            var result = harvestHtml(html);
+            if (!result.hasNext || !result.grew) {
+              catalogDone = true;
+              applyFilter();
+              updateDropdown();
+              return;
+            }
+            page += 1;
+            step();
+          })
+          .catch(function () {
+            catalogDone = true;
+            applyFilter();
+            updateDropdown();
+          });
+      }
+      step();
     }
 
     function updateDropdown() {
@@ -525,9 +862,9 @@
         return;
       }
 
-      var matches = getSuggestionPosts().filter(function (post) {
-        return fold(post.title).indexOf(query) !== -1;
-      }).slice(0, 5);
+      var matches = catalogList.filter(function (post) {
+        return post.text.indexOf(query) !== -1 && cardMatchesCat({ textContent: post.raw }, activeCat);
+      }).slice(0, 6);
 
       dropdown.innerHTML = '';
       matches.forEach(function (post) {
@@ -536,8 +873,15 @@
         link.textContent = post.title;
         dropdown.appendChild(link);
       });
-      dropdown.classList.toggle('is-open', matches.length > 0);
-      form.classList.toggle('is-suggest-open', matches.length > 0);
+      if (!catalogDone && matches.length < 6) {
+        var pending = document.createElement('div');
+        pending.className = 'yamuna-blog-search-pending';
+        pending.textContent = 'Buscando nos demais posts...';
+        dropdown.appendChild(pending);
+      }
+      var open = matches.length > 0 || !catalogDone;
+      dropdown.classList.toggle('is-open', open);
+      form.classList.toggle('is-suggest-open', open);
     }
 
     if (search) {
@@ -609,6 +953,8 @@
       });
     })();
 
+    loadCatalog();
+
     var sentinel = document.querySelector('.js-yamuna-blog-infinite-sentinel');
     var statusEl = document.querySelector('.js-yamuna-blog-infinite-status');
     var nextLink = document.querySelector('.js-yamuna-blog-next');
@@ -629,8 +975,18 @@
         .then(function (html) {
           var doc = new DOMParser().parseFromString(html, 'text/html');
           var newCards = doc.querySelectorAll('.yamuna-blog-grid .js-yamuna-blog-card');
+          var seen = {};
+          grid.querySelectorAll('.js-yamuna-blog-card').forEach(function (existing) {
+            var existingUrl = cardUrl(existing);
+            if (existingUrl) seen[existingUrl] = true;
+          });
           newCards.forEach(function (card) {
-            grid.appendChild(document.importNode(card, true));
+            var url = cardUrl(card);
+            if (url && seen[url]) return;
+            var node = document.importNode(card, true);
+            rememberCard(node);
+            grid.appendChild(node);
+            if (url) seen[url] = true;
           });
           applyFilter();
           var newNext = doc.querySelector('.js-yamuna-blog-next');

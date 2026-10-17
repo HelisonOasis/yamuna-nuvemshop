@@ -25,7 +25,7 @@
 
 				{% endif %}
 			<div class="{% if template == 'product' %}yamuna-pdp-title-row{% else %}page-header-title{% endif %}">
-				<h1 class="{% if template == 'product' %}js-product-name{% else %}text-center{% endif %} h2 h1-md {% if template == 'contact' %} text-md-left{% endif %}{% if settings.theme_rounded and template != 'product' %} text-primary{% endif %}" {% if template == "product" %}data-store="product-name-{{ product.id }}"{% endif %}>{% block page_header_text %}{% endblock %}</h1>
+				{% set yamuna_header_title_tag = (template == 'category') ? 'div' : 'h1' %}<{{ yamuna_header_title_tag }} class="{% if template == 'product' %}js-product-name{% else %}text-center{% endif %} h2 h1-md {% if template == 'contact' %} text-md-left{% endif %}{% if settings.theme_rounded and template != 'product' %} text-primary{% endif %}" {% if template == "product" %}data-store="product-name-{{ product.id }}"{% endif %}>{% block page_header_text %}{% endblock %}</{{ yamuna_header_title_tag }}>
 				{% if template == 'product' %}
 					{% set yamuna_wishlist_image = product.featured_image | product_image_url('large') %}
 					{% set yamuna_wishlist_installments = product.get_max_installments %}

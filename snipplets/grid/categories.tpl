@@ -19,7 +19,7 @@
                 {% if mobile %}
                     <div class="mb-3 mt-4 h5">{{ "Categorías" | translate }}</div>
                 {% else %}
-                    <h3 class="title-section mb-4">{{ category.id!=0 ? category.name :("Categorías" | translate) }}</h3>
+                    <div class="title-section mb-4 yamuna-hx-h3">{{ category.id!=0 ? category.name :("Categorías" | translate) }}</div>
                 {% endif %}
                 <ul class="list-unstyled"> 
                     {% for category in filter_categories %}

@@ -3,9 +3,31 @@
     /* Cenario 130: 2 colunas como prod
        Esq: Email, CPF, Nome, Nascimento | Dir: Gênero, Senha, Confirma, Telefone
        Slots NubeSDK vazios nao podem ocupar celulas do grid. */
+    .yamuna-signup-page {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      box-sizing: border-box !important;
+      width: min(900px, 100%) !important;
+      max-width: 900px !important;
+      margin: 0 auto !important;
+      padding: 0 16px !important;
+    }
+    .yamuna-signup-page > .yamuna-login-heading {
+      width: 100% !important;
+      max-width: 900px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      text-align: center !important;
+    }
     .yamuna-signup-page .yamuna-signup-card {
       max-width: 900px !important;
       width: 100% !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+    .yamuna-signup-page .yamuna-signup-type {
+      margin-bottom: 20px !important;
     }
     form.yamuna-login-form.yamuna-signup-form,
     .yamuna-signup-page form.yamuna-signup-form,
@@ -85,11 +107,65 @@
     .yamuna-signup-page .yamuna-signup-form .clear-both {
       display: none !important;
     }
-    /* Center password reveal icon inside the 42px input (not the padded form-group). */
+    /* Floating labels sit inside the field and rise when it is focused or filled. */
+    .yamuna-signup-page .yamuna-signup-form .form-group {
+      position: relative !important;
+    }
+    .yamuna-signup-page .yamuna-signup-form .form-label {
+      position: absolute !important;
+      left: 14px !important;
+      top: 50% !important;
+      z-index: 2 !important;
+      max-width: calc(100% - 36px) !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      color: #4a1d3a !important;
+      background: transparent !important;
+      font-size: 14px !important;
+      font-weight: 400 !important;
+      line-height: 1 !important;
+      white-space: nowrap !important;
+      text-overflow: ellipsis !important;
+      pointer-events: none !important;
+      transform: translateY(-50%) !important;
+      transition: top .15s ease, transform .15s ease, font-size .15s ease !important;
+    }
+    .yamuna-signup-page .yamuna-signup-form .form-group:focus-within .form-label,
+    .yamuna-signup-page .yamuna-signup-form .form-group.is-filled .form-label,
+    .yamuna-signup-page .yamuna-signup-form .form-group:has(input:-webkit-autofill) .form-label {
+      top: 8px !important;
+      font-size: 11px !important;
+      transform: none !important;
+    }
+    .yamuna-signup-page .yamuna-signup-form .form-control {
+      height: 52px !important;
+      padding: 20px 14px 6px !important;
+      line-height: 1.2 !important;
+    }
+    .yamuna-signup-page .yamuna-signup-form .js-password-input {
+      padding-right: 44px !important;
+    }
+    .yamuna-signup-page .yamuna-signup-form .form-control::placeholder {
+      color: transparent !important;
+    }
+    .yamuna-signup-page .yamuna-signup-form .form-group:focus-within .form-control::placeholder {
+      color: #8d8490 !important;
+    }
+    .yamuna-signup-page .yamuna-signup-form .yamuna-signup-cell--gender select {
+      color: transparent !important;
+    }
+    .yamuna-signup-page .yamuna-signup-form .yamuna-signup-cell--gender:focus-within select,
+    .yamuna-signup-page .yamuna-signup-form .yamuna-signup-cell--gender.is-filled select {
+      color: #4a1d3a !important;
+    }
+    .yamuna-signup-page .yamuna-signup-form .yamuna-signup-cell--gender select option {
+      color: #4a1d3a !important;
+    }
     .yamuna-signup-page .yamuna-signup-form .form-toggle-eye,
     .yamuna-signup-page .yamuna-login-form .form-toggle-eye {
-      top: auto !important;
-      bottom: 7px !important;
+      top: 50% !important;
+      bottom: auto !important;
       right: 8px !important;
       width: 28px !important;
       height: 28px !important;
@@ -99,7 +175,7 @@
       align-items: center !important;
       justify-content: center !important;
       line-height: 0 !important;
-      transform: none !important;
+      transform: translateY(-50%) !important;
     }
     @media (max-width: 767px) {
       form.yamuna-login-form.yamuna-signup-form,
@@ -260,11 +336,11 @@
             {% endembed %}
 
             <div class="form-group yamuna-signup-cell yamuna-signup-cell--birth">
-              <label class="form-label" for="yamuna-birthdate">Data de nascimento</label>
-              <input type="text" id="yamuna-birthdate" class="form-control yamuna-login-input js-yamuna-birthdate" placeholder="dd/mm/aaaa" inputmode="numeric" maxlength="10" autocomplete="bday" required>
+              <label class="form-label" for="yamuna-birthdate">Data de nascimento*</label>
+              <input type="text" id="yamuna-birthdate" class="form-control yamuna-login-input js-yamuna-birthdate" placeholder="dd/mm/aaaa" inputmode="numeric" maxlength="10" autocomplete="bday" pattern="\d{2}/\d{2}/\d{4}" required>
             </div>
 
-            {% embed "snipplets/forms/form-input.tpl" with{type_tel: true, input_for: 'phone', input_value: result.phone, input_name: 'phone', input_id: 'phone', input_custom_class: 'yamuna-login-input js-yamuna-phone', input_label_text: 'Telefone Principal' | translate, input_placeholder: '(00) 00000-0000' | translate, input_required: true, input_group_custom_class: 'yamuna-signup-cell yamuna-signup-cell--phone' } %}
+            {% embed "snipplets/forms/form-input.tpl" with{type_tel: true, input_for: 'phone', input_value: result.phone, input_name: 'phone', input_id: 'phone', input_custom_class: 'yamuna-login-input js-yamuna-phone', input_label_text: 'Telefone Principal*' | translate, input_placeholder: '(00) 00000-0000' | translate, input_pattern: '\\(\\d{2}\\) \\d{4,5}-\\d{4}', input_required: true, input_group_custom_class: 'yamuna-signup-cell yamuna-signup-cell--phone' } %}
             {% endembed %}
 
             {{ component('nubesdk-slot', { type: "after_register_form_fields" }) }}
@@ -283,3 +359,21 @@
     {{ component('nubesdk-slot', { type: "after_register_form" }) }}
   </div>
 </section>
+<script>
+(function () {
+  var groups = document.querySelectorAll('.yamuna-signup-form .form-group');
+  function sync(group) {
+    var field = group.querySelector('input, select, textarea');
+    if (!field) { return; }
+    group.classList.toggle('is-filled', !!(field.value && String(field.value).trim()));
+  }
+  groups.forEach(function (group) {
+    var field = group.querySelector('input, select, textarea');
+    if (!field) { return; }
+    sync(group);
+    field.addEventListener('input', function () { sync(group); });
+    field.addEventListener('change', function () { sync(group); });
+  });
+  window.setTimeout(function () { groups.forEach(sync); }, 400);
+})();
+</script>

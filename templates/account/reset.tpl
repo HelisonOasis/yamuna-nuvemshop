@@ -1,8 +1,8 @@
 <section class="yamuna-login-page" data-store="account-reset-page">
-  <h1 class="yamuna-login-heading">Mudar minha senha</h1>
+  <h1 class="yamuna-login-heading">Mudar a senha</h1>
 
   <div class="yamuna-login-card">
-    <p class="yamuna-login-intro">Vamos te enviar um e-mail para poder alterar sua senha.</p>
+    <p class="yamuna-login-intro">Nosso site mudou para melhor. Se voc&ecirc; comprou em nosso site antes de 23/09/26, <a href="{{ store.customer_register_url }}" class="yamuna-login-register-link">clique aqui</a>, registre-se novamente e crie sua nova senha.</p>
 
     {% if success %}
       <div class="alert alert-success">{{ 'Pronto! Enviamos um e-mail para {1}' | translate(email) }}</div>

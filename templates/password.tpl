@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{{ page_title }}</title>
         <meta name="description" content="{{ page_description }}" />
-        <link rel="preload" as="style" href="{{ [settings.font_headings, settings.font_rest] | google_fonts_url('400,700') }}" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;700&family=Montserrat:wght@400;700&family=Raleway:wght@400;700&family=Roboto:wght@400;700&display=swap" />
         <link rel="preload" href="{{ 'css/style-colors.scss.tpl' | static_url }}" as="style" />
 
         {{ component('social-meta') }}
@@ -23,15 +23,6 @@
 
         <style>
         
-            {# Font families #}
-
-            {{ component(
-                'fonts',{
-                    font_weights: '400,700',
-                    font_settings: 'settings.font_headings, settings.font_rest'
-                })
-            }}
-
             {% include "static/css/style-critical.tpl" %}
         </style>
 
@@ -45,9 +36,12 @@
 
         {# Loads custom CSS added from Advanced Settings on the admin´s theme customization screen #}
 
+        {% set yamuna_storefront_css = settings.css_code | replace('@import url("https://d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static/css/yamuna-checkout-fix.css?v=6");', '') | replace("@import url('https://d2az8otjr0j19j.cloudfront.net/templates/007/941/075/twig/static/css/yamuna-checkout-fix.css?v=6');", '') | trim %}
+        {% if yamuna_storefront_css %}
         <style>
-            {{ settings.css_code | raw }}
+            {{ yamuna_storefront_css | raw }}
         </style>
+        {% endif %}
 
         {#/*============================================================================
             #Javascript: Needed before HTML loads

@@ -107,3 +107,26 @@
         {% endif %}
     </div>
 </div>
+
+{# Cenario 096: cards da home no mobile ficavam cinza/demoravam. As fotos saiam com loading="lazy" e sem sizes (o navegador baixava a versao grande). Carrega na hora e limita o tamanho pedido. #}
+<script>
+/* yamuna-home-cards-eager */
+(function () {
+  function tune() {
+    var imgs = document.querySelectorAll('.yamuna-home-products .js-item-image');
+    Array.prototype.forEach.call(imgs, function (img, i) {
+      var isSecondary = img.classList.contains('item-image-secondary') || img.classList.contains('js-product-item-secondary-image-private');
+      img.setAttribute('sizes', '(max-width: 767px) 90vw, 420px');
+      if (isSecondary) return;
+      img.setAttribute('loading', 'eager');
+      img.setAttribute('decoding', 'async');
+      if (i < 4) img.setAttribute('fetchpriority', 'high');
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tune);
+  } else {
+    tune();
+  }
+})();
+</script>

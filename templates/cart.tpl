@@ -756,8 +756,8 @@
     display: block !important;
   }
 
-  /* 096 - /comprar/ (etapa 1): box de avaliacoes igual ao validado no checkout (alinhado ao fundo, tamanho fixo, setas redondas embaixo) e setas no padrao da home. */
-  @media (max-width: 1023px) {
+  /* 096 - /comprar/ (etapa 1): box de avaliacoes igual ao checkout em TODOS os tamanhos (1 avaliacao por vez) (alinhado ao fundo, tamanho fixo, setas redondas embaixo) e setas no padrao da home. */
+  @media all {
     html body.template-cart .yamuna-checkout-extras section.yamuna-cart-depositions {
       box-sizing: border-box !important;
       width: 100% !important;
@@ -766,7 +766,7 @@
       margin: 24px 0 32px !important;
     }
   }
-  @media (max-width: 767px) {
+  @media all {
     html body.template-cart .yamuna-checkout-extras section.yamuna-cart-depositions {
       display: flex !important;
       flex-direction: column !important;

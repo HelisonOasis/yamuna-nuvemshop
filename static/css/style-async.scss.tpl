@@ -7607,7 +7607,8 @@ footer.yamuna-footer .yamuna-footer-oasis-logo {
     border-bottom: 3px solid #f2f0f3;
   }
 
-  body #nav-hamburger .yamuna-mobile-menu h2 {
+  body #nav-hamburger .yamuna-mobile-menu h2,
+  body #nav-hamburger .yamuna-mobile-menu .yamuna-hx-h2 {
     margin: 0 0 18px;
     color: #363544;
     font-size: 18px;
@@ -7944,7 +7945,8 @@ footer.yamuna-footer .yamuna-footer-oasis-logo {
     border-bottom: 2px solid #c0bbc3 !important;
   }
 
-  body #nav-hamburger .yamuna-mobile-menu h2 {
+  body #nav-hamburger .yamuna-mobile-menu h2,
+  body #nav-hamburger .yamuna-mobile-menu .yamuna-hx-h2 {
     height: auto;
     margin: 0 0 11px;
     color: #393747;
@@ -9122,8 +9124,8 @@ footer.yamuna-footer .yamuna-footer-oasis-logo {
 
   body #modal-cart .yamuna-empty-cart-link::before { position: absolute; inset: 0; background-position: center; background-size: cover; filter: grayscale(1); content: ''; }
   body #modal-cart .yamuna-empty-cart-link::after { position: absolute; inset: 0; background: rgba(74, 29, 58, .12); content: ''; }
-  body #modal-cart .yamuna-empty-cart-link-super::before { background-image: url('{{ 'images/yamuna/cart-empty-superfoods.png' | static_url }}'); }
-  body #modal-cart .yamuna-empty-cart-link-cosmetics::before { background-image: url('{{ 'images/yamuna/cart-empty-cosmetics.png' | static_url }}'); }
+  body #modal-cart .yamuna-empty-cart-link-super::before { background-image: url('{{ 'images/yamuna/cart-empty-superfoods.webp' | static_url }}'); }
+  body #modal-cart .yamuna-empty-cart-link-cosmetics::before { background-image: url('{{ 'images/yamuna/cart-empty-cosmetics.webp' | static_url }}'); }
 
   body #modal-cart .yamuna-empty-cart-link span {
     position: relative;
@@ -21220,11 +21222,11 @@ body[class] #modal-cart .yamuna-empty-cart-link::after {
 }
 
 body[class] #modal-cart .yamuna-empty-cart-link-super::before {
-  background-image: url('{{ 'images/yamuna/cart-empty-superfoods.png' | static_url }}') !important;
+  background-image: url('{{ 'images/yamuna/cart-empty-superfoods.webp' | static_url }}') !important;
 }
 
 body[class] #modal-cart .yamuna-empty-cart-link-cosmetics::before {
-  background-image: url('{{ 'images/yamuna/cart-empty-cosmetics.png' | static_url }}') !important;
+  background-image: url('{{ 'images/yamuna/cart-empty-cosmetics.webp' | static_url }}') !important;
 }
 
 body[class] #modal-cart .yamuna-empty-cart-link span {
@@ -30783,7 +30785,7 @@ body.template-search .yamuna-pdp-related.yamuna-empty-related .item-image .img-a
   -ms-transform: none !important;
 }
 
-{% if template == 'account.login' or template == 'account.register' or template == 'account.reset' or template == 'account.newpass' %}
+/* auth pages: scoped by .yamuna-* classes */
 /* Login / register / reset: visual language of yamuna.com.br/login/authenticate. */
 html:has(body.yamuna-account-auth),
 body.yamuna-account-auth {
@@ -31595,7 +31597,7 @@ body.yamuna-account-auth .yamuna-cart-checkout-footer-bottom p {
     max-width: none;
   }
 }
-{% endif %}
+/* end auth block (template if removed: static CSS compiles once, so the if dropped it) */
 
 {#/*============================================================================
   #Physical header spacer - reserves document-flow space for the fixed header
@@ -31630,7 +31632,7 @@ body.template-home .yamuna-header-spacer {
   }
 }
 
-{% if template == 'account.login' or template == 'account.register' or template == 'account.reset' or template == 'account.newpass' or template == 'account.info' or template == 'account.addresses' or template == 'account.address' or template == 'account.orders' or template == 'account.order' %}
+/* account pages: scoped by .yamuna-account-* / account classes */
 {#/*============================================================================
   #Account pages (info / addresses / orders) - Yamuna visual language
 ==============================================================================*/#}
@@ -32451,7 +32453,7 @@ body.template-account-orders .yamuna-account-page .row {
 }
 
 /* yamuna-nav-end-align v20260921104855 */
-{% endif %}
+/* end account block (template if removed: static CSS compiles once) */
 
 /* Desktop account quick-login dropdown (matches yamuna.com.br navbar). */
 body .head-main .yamuna-header-desktop-utilities,
@@ -37144,4 +37146,119 @@ body[class] #modal-cart .js-shipping-calculator-response ul {
   display: flex !important;
   flex-direction: column !important;
   gap: 10px !important;
+}
+
+/* 097 - Performance da home: header e cards. Transicoes mais curtas e sem filter; imagens dos cards sempre visiveis. */
+@media (min-width: 1024px) {
+  body.template-home .head-main,
+  body.template-home .head-main.head-fix {
+    transition: padding .18s ease !important;
+    will-change: padding;
+  }
+  body.template-home .head-main .yamuna-header-desktop,
+  body.template-home .head-main .yamuna-header-desktop::before {
+    transition-duration: .18s !important;
+  }
+  body .head-main .yamuna-header-desktop-logo,
+  body.template-home .head-main .yamuna-header-desktop-logo {
+    transition-duration: .18s !important;
+  }
+  body .head-main .yamuna-header-desktop-logo::before,
+  body.template-home .head-main .yamuna-header-desktop-logo::before {
+    transition: width .18s ease, height .18s ease !important;
+  }
+  body.template-home .head-main .yamuna-header-desktop-nav,
+  body.template-home .head-main .yamuna-header-desktop-utilities {
+    transition-duration: .18s !important;
+  }
+}
+[data-store^="home-products-"] .yamuna-home-products .swiper-slide img.fade-in,
+[data-store^="home-products-"] .yamuna-home-products .swiper-slide img.lazyload,
+[data-store^="home-products-"] .yamuna-home-products .swiper-slide img.lazyloading {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+/* 098 - performance da home: placeholders em loop infinito e secoes fora da dobra */
+body.template-home .placeholder-fade { display: none !important; animation: none !important; }
+body.template-home .js-home-sections-container > section[data-store="home-banner-categories"],
+body.template-home .js-home-sections-container > section[data-store="home-banner-promotional"],
+body.template-home .js-home-sections-container > section[data-store="home-instagram-placeholder"],
+body.template-home .js-home-sections-container > section[data-store="home-newsletter"] {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+/* 099 - SEO: tags de titulo trocadas por div/h3 mantendo o visual identico */
+.yamuna-hx-h2 { font-size: 28px; font-weight: 700; margin: 0 0 .83em; }
+.yamuna-hx-h3 { font-size: 20px; font-weight: 700; }
+.yamuna-hx-msg { margin: 0 0 24px; }
+
+/* Home cards: o LS da plataforma mostra (display:block) o primeiro .js-addtocart-placeholder do documento enquanto o carrinho esta bloqueado (add/remover item), gerando um bloco fantasma "COMPRAR" abaixo dos botoes. Os botoes da Home tem fluxo proprio; o placeholder fica sempre oculto. */
+.yamuna-home-spot-buy-one ~ .js-addtocart-placeholder,
+.yamuna-home-spot-buy-three ~ .js-addtocart-placeholder {
+  display: none !important;
+}
+
+/* ==========================================================================
+   Cenario 001: breadcrumb do produto sempre em 1 linha (links iniciais com "...")
+   + cursor pointer nos icones de favoritos
+   ========================================================================== */
+body.template-product .breadcrumbs,
+body.template-product .yamuna-pdp-summary .breadcrumbs {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  min-width: 0;
+  max-width: 100% !important;
+}
+
+body.template-product .breadcrumbs .crumb,
+body.template-product .yamuna-pdp-summary .breadcrumbs .crumb {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.template-product .breadcrumbs .crumb:not(.active),
+body.template-product .yamuna-pdp-summary .breadcrumbs .crumb:not(.active) {
+  flex: 0 1 auto;
+  min-width: 2.2em;
+  max-width: 150px;
+}
+
+body.template-product .breadcrumbs .crumb.active,
+body.template-product .yamuna-pdp-summary .breadcrumbs .crumb.active {
+  flex: 1 1 auto;
+  min-width: 4em;
+  max-width: none;
+}
+
+body.template-product .breadcrumbs .divider,
+body.template-product .yamuna-pdp-summary .breadcrumbs .divider {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 767px) {
+  body.template-product .breadcrumbs .crumb:not(.active),
+  body.template-product .yamuna-pdp-summary .breadcrumbs .crumb:not(.active) {
+    max-width: 90px;
+  }
+}
+
+.yamuna-pdp-favorite,
+.yamuna-pdp-favorite *,
+.wishlist-add,
+.wishlist-add *,
+[data-yamuna-wishlist-toggle],
+[data-yamuna-wishlist-toggle] *,
+.yamuna-favoritos-heart,
+.yamuna-favoritos-heart *,
+.js-yamuna-favoritos-remove,
+.js-yamuna-favoritos-remove *,
+.yamuna-header-favorites,
+.yamuna-header-favorites * {
+  cursor: pointer !important;
 }
