@@ -2331,6 +2331,14 @@
       return HARD_MIN_CENTS;
     }
 
+    /* perf 2026-10-16: the promo observer and the loading observer used to re-trigger each other
+       (~8 cycles/s with items in the cart). After any of our own synchronous UI passes, discard the
+       queued records on both so only platform/AJAX changes wake them up. */
+    function yamunaDropSelfMutations() {
+      if (window.yamunaPromoObserver) window.yamunaPromoObserver.takeRecords();
+      if (window.yamunaMinicartLoadingObserver) window.yamunaMinicartLoadingObserver.takeRecords();
+    }
+
     /* perf 2026-10-16: write class/style only when it actually changes (each write is a mutation). */
     function yamunaSetClass(el, cls, on) {
       if (el && el.classList.contains(cls) !== !!on) el.classList.toggle(cls, !!on);
@@ -2445,9 +2453,10 @@
         promoTimer = setTimeout(function () {
           promoTimer = null;
           try { refreshMinicartPromoUi(); }
-          finally { promoObserver.takeRecords(); }
+          finally { yamunaDropSelfMutations(); }
         }, 50);
       });
+      window.yamunaPromoObserver = promoObserver;
       promoObserver.observe(promoObserverRoot, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['data-priceraw', 'class', 'style'] });
     }
 
@@ -2738,7 +2747,10 @@
 
     function scheduleEnsureMinicartCepVisible() {
       [0, 50, 150, 350, 700, 1200, 2200].forEach(function (ms) {
-        window.setTimeout(ensureMinicartCepVisible, ms);
+        window.setTimeout(function () {
+          try { ensureMinicartCepVisible(); }
+          finally { yamunaDropSelfMutations(); }
+        }, ms);
       });
     }
 
@@ -2886,8 +2898,8 @@
         window.yamunaMinicartLoadingTimer = window.setTimeout(function () {
           try { yamunaMinicartLoadingSettle(); }
           finally {
-            /* perf 2026-10-16: drop the mutations produced by our own cleanup so they do not re-arm this observer. */
-            if (window.yamunaMinicartLoadingObserver) window.yamunaMinicartLoadingObserver.takeRecords();
+            /* perf 2026-10-16: drop the mutations produced by our own cleanup so they do not re-arm the observers. */
+            yamunaDropSelfMutations();
           }
         }, 120);
       });
