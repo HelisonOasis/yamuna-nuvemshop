@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="{% for language in languages %}{% if language.active %}{{ language.lang }}{% endif %}{% endfor %}">
     <head>
         {# perf 2026-10-16: marketing tags (GTM, Meta, TikTok, Ads) are still held during page load,
-           but are now released ONE AT A TIME in idle slots starting ~1.5s after load (instead of all
+           but are now released ONE AT A TIME in idle slots starting ~5s after load (instead of all
            together 8s after load, which froze add-to-cart for 2-4s). Release pauses while the
            customer is tapping. The native GA4/Ads gtag.js (G-M5QWC3JK5V / AW-869241755) is no longer
            held, so it is fetched once and page_view is not lost. Node.prototype is restored after release. #}
@@ -77,7 +77,7 @@
                     queue.sort(function (a, b) { return weight(a) - weight(b); });
                     next();
                 }
-                window.addEventListener('load', function () { setTimeout(release, 1500); });
+                window.addEventListener('load', function () { setTimeout(release, 5000); });
             })();
         </script>
         {% if template == 'home' %}
