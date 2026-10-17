@@ -3274,6 +3274,125 @@ DOMContentLoaded.addEventOrExecute(() => {
         };
     }
 
+    {# perf 2026-10-16: add-to-cart feedback. Busy state on the tapped element (button and
+       the selected PDP price card, e.g. "Leve 3"), double-submit guard, 15s timeout and a
+       visible error with "Tentar novamente". Does not change prices or promotions. #}
+    if (!window.yamunaAtcUi) {
+        window.yamunaAtcUi = (function () {
+            var BUSY = 'yamuna-atc-busy';
+            var styleDone = false;
+            function ensureStyle() {
+                if (styleDone) return;
+                styleDone = true;
+                var css = '.' + BUSY + '{cursor:progress!important;opacity:.75}'
+                    + '.' + BUSY + '::after{content:"";position:absolute;top:50%;right:10px;width:16px;height:16px;margin-top:-8px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:yamuna-atc-spin .7s linear infinite;pointer-events:none;box-sizing:border-box}'
+                    + '@keyframes yamuna-atc-spin{to{transform:rotate(360deg)}' + '}'
+                    + '.yamuna-atc-error{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:2147483000;max-width:calc(100% - 32px);width:420px;background:#4a1d3a;color:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 6px 24px rgba(0,0,0,.25);font-size:14px;line-height:1.35;display:flex;align-items:center;gap:10px}'
+                    + '.yamuna-atc-error[hidden]{display:none}'
+                    + '.yamuna-atc-error-msg{flex:1}'
+                    + '.yamuna-atc-error button{background:#fff;color:#4a1d3a;border:0;border-radius:8px;padding:8px 10px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap}'
+                    + '.yamuna-atc-error .yamuna-atc-error-close{background:transparent;color:#fff;padding:4px 6px;font-size:18px;line-height:1}';
+                var st = document.createElement('style');
+                st.id = 'yamuna-atc-style';
+                st.appendChild(document.createTextNode(css));
+                document.head.appendChild(st);
+            }
+            function setBusy(el, on) {
+                if (!el) return;
+                if (on) {
+                    if (window.getComputedStyle(el).position === 'static') {
+                        el.style.position = 'relative';
+                        el.setAttribute('data-yamuna-atc-pos', '1');
+                    }
+                    el.classList.add(BUSY);
+                    el.setAttribute('aria-busy', 'true');
+                } else {
+                    el.classList.remove(BUSY);
+                    el.removeAttribute('aria-busy');
+                    if (el.getAttribute('data-yamuna-atc-pos')) {
+                        el.style.removeProperty('position');
+                        el.removeAttribute('data-yamuna-atc-pos');
+                    }
+                }
+            }
+            var box = null;
+            var retryFn = null;
+            function hideError() {
+                if (box) box.hidden = true;
+                retryFn = null;
+            }
+            function showError(msg, retry) {
+                ensureStyle();
+                if (!box) {
+                    box = document.createElement('div');
+                    box.className = 'yamuna-atc-error';
+                    box.setAttribute('role', 'alert');
+                    box.innerHTML = '<span class="yamuna-atc-error-msg"></span>'
+                        + '<button type="button" class="yamuna-atc-error-retry">Tentar novamente</button>'
+                        + '<button type="button" class="yamuna-atc-error-close" aria-label="Fechar">&times;</button>';
+                    box.querySelector('.yamuna-atc-error-retry').addEventListener('click', function () {
+                        var fn = retryFn;
+                        hideError();
+                        if (fn) fn();
+                    });
+                    box.querySelector('.yamuna-atc-error-close').addEventListener('click', hideError);
+                    document.body.appendChild(box);
+                }
+                box.querySelector('.yamuna-atc-error-msg').textContent = msg;
+                box.querySelector('.yamuna-atc-error-retry').hidden = !retry;
+                retryFn = retry || null;
+                box.hidden = false;
+            }
+            function begin(button, form) {
+                ensureStyle();
+                hideError();
+                var targets = [button];
+                if (form && form.id === 'product_form') {
+                    var card = document.querySelector('.yamuna-pdp-price-card.is-selected');
+                    if (card && card !== button) targets.push(card);
+                }
+                form && form.setAttribute('data-yamuna-atc-busy', '1');
+                targets.forEach(function (el) { setBusy(el, true); });
+                var finished = false;
+                function finish() {
+                    if (finished) return false;
+                    finished = true;
+                    clearTimeout(guard);
+                    form && form.removeAttribute('data-yamuna-atc-busy');
+                    targets.forEach(function (el) { setBusy(el, false); });
+                    return true;
+                }
+                function retry() {
+                    if (button && document.body.contains(button) && !button.disabled) button.click();
+                }
+                var guard = setTimeout(function () {
+                    if (!finish()) return;
+                    if (button) button.disabled = false;
+                    showError('O carrinho está demorando para responder. Confira sua sacola ou tente novamente.', retry);
+                }, 15000);
+                return {
+                    success: function () { finish(); hideError(); },
+                    fail: function () {
+                        finish();
+                        showError('Não foi possível adicionar o produto ao carrinho.', retry);
+                    }
+                };
+            }
+            function isBusy(form) {
+                return !!(form && form.getAttribute('data-yamuna-atc-busy'));
+            }
+            {# Let the browser paint the busy state before the heavy add-to-cart work (INP). #}
+            function afterPaint(fn) {
+                if (window.requestAnimationFrame) {
+                    requestAnimationFrame(function () { setTimeout(fn, 0); });
+                } else {
+                    setTimeout(fn, 0);
+                }
+            }
+            return { begin: begin, isBusy: isBusy, afterPaint: afterPaint, showError: showError, hideError: hideError };
+        })();
+    }
+
     {# Capture-phase AJAX add-to-cart for home spots AND PDP CTA.
        Mirrors home behavior and blocks native submit to /comprar/. #}
     document.addEventListener('click', function(event) {
@@ -3302,6 +3421,9 @@ DOMContentLoaded.addEventOrExecute(() => {
         if (!form) {
             return;
         }
+        if (window.yamunaAtcUi && yamunaAtcUi.isBusy(form)) {
+            return;
+        }
 
         var spotQuantityInput = form.querySelector('.js-home-spot-add-quantity, .js-pdp-spot-add-quantity');
         if (spotQuantityInput && button.getAttribute('data-quantity')) {
@@ -3317,7 +3439,9 @@ DOMContentLoaded.addEventOrExecute(() => {
         var originalLabel = button.tagName === 'INPUT' ? button.value : (button.textContent || '').trim();
         var originalHtml = button.tagName === 'INPUT' ? '' : button.innerHTML;
         button.disabled = true;
+        var atcUi = window.yamunaAtcUi ? yamunaAtcUi.begin(button, form) : null;
 
+        (window.yamunaAtcUi ? yamunaAtcUi.afterPaint : function (fn) { fn(); })(function () {
         LS.addToCartEnhanced(
             jQueryNuvem(form),
             originalLabel || '{{ "Comprar" | translate }}',
@@ -3325,6 +3449,7 @@ DOMContentLoaded.addEventOrExecute(() => {
             '{{ "¡Uy! No tenemos más stock de este producto para agregarlo al carrito." | translate }}',
             {{ store.editable_ajax_cart_enabled ? 'true' : 'false' }},
             function() {
+                if (atcUi) atcUi.success();
                 button.disabled = false;
                 if (button.tagName === 'INPUT' && originalLabel) {
                     button.value = originalLabel;
@@ -3348,8 +3473,10 @@ DOMContentLoaded.addEventOrExecute(() => {
                 } else if (originalHtml) {
                     button.innerHTML = originalHtml;
                 }
+                if (atcUi) atcUi.fail();
             }
         );
+        });
     }, true);
 
     jQueryNuvem(document).on("click", ".js-addtocart:not(.js-addtocart-placeholder)", function (e) {
@@ -3662,6 +3789,12 @@ DOMContentLoaded.addEventOrExecute(() => {
                     {# Restore real button visibility in case of error #}
 
                     restore_button_initial_state();
+                    {# perf 2026-10-16: visible error instead of a silent failure #}
+                    if (window.yamunaAtcUi) {
+                        yamunaAtcUi.showError('Não foi possível adicionar o produto ao carrinho.', function () {
+                            if ($clickedAddButton[0] && !$clickedAddButton[0].disabled) $clickedAddButton[0].click();
+                        });
+                    }
                 }
                 $prod_form = jQueryNuvem(this).closest("form");
                 LS.addToCartEnhanced(

@@ -13,7 +13,41 @@
                 <div id="product-description" style="display: none;" class="mt-4 mt-md-1" data-store="product-description-{{ product.id }}">
                     {% include 'snipplets/product/product-description-blocks.tpl' with { product_description_blocks_view: 'main' } %}
 
-                    {{ component('nubesdk-slot', { type: "after_product_description" }) }}
+                    {# perf 2026-10-16: the reviews app (Lily / meuarquivodigital) mounts a full Next.js iframe
+                       in this slot. The slot is now inserted only when it gets near the viewport, so the
+                       iframe no longer competes with the "Comprar"/"Leve 3" tap. NubeSDK mounts slots added later. #}
+                    <div id="yamuna-reviews-slot-anchor">
+                        <template id="yamuna-reviews-slot-tpl">
+                            {{ component('nubesdk-slot', { type: "after_product_description" }) }}
+                        </template>
+                    </div>
+                    <script>
+                    (function () {
+                        var anchor = document.getElementById('yamuna-reviews-slot-anchor');
+                        var tpl = document.getElementById('yamuna-reviews-slot-tpl');
+                        if (!anchor || !tpl) return;
+                        var mounted = false;
+                        function mount() {
+                            if (mounted) return;
+                            mounted = true;
+                            if (tpl.content) {
+                                anchor.appendChild(tpl.content.cloneNode(true));
+                            } else {
+                                anchor.insertAdjacentHTML('beforeend', tpl.innerHTML);
+                            }
+                        }
+                        if (!('IntersectionObserver' in window) || !tpl.content) { mount(); return; }
+                        var io = new IntersectionObserver(function (entries) {
+                            for (var i = 0; i < entries.length; i++) {
+                                if (entries[i].isIntersecting) { io.disconnect(); mount(); return; }
+                            }
+                        }, { rootMargin: '600px 0px' });
+                        io.observe(anchor);
+                        document.addEventListener('click', function (e) {
+                            if (e.target.closest && e.target.closest('a[href*="#review"], a[href*="#avalia"], .js-yamuna-go-reviews')) mount();
+                        }, true);
+                    })();
+                    </script>
                 </div>
             </div>
         </div>

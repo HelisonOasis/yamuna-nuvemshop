@@ -2,11 +2,17 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="{% for language in languages %}{% if language.active %}{{ language.lang }}{% endif %}{% endfor %}">
     <head>
+        {# perf 2026-10-16: marketing tags (GTM, Meta, TikTok, Ads) are still held during page load,
+           but are now released ONE AT A TIME in idle slots starting ~1.5s after load (instead of all
+           together 8s after load, which froze add-to-cart for 2-4s). Release pauses while the
+           customer is tapping. The native GA4/Ads gtag.js (G-M5QWC3JK5V / AW-869241755) is no longer
+           held, so it is fetched once and page_view is not lost. Node.prototype is restored after release. #}
         <script>
             (function () {
-                var blocked = /googletagmanager\.com|google-analytics\.com|googleadservices\.com|doubleclick\.net|connect\.facebook\.net|analytics\.tiktok\.com|tiktok\.com\/i18n/i;
+                var blocked = /googletagmanager\.com\/gtm\.js|google-analytics\.com|googleadservices\.com|doubleclick\.net|connect\.facebook\.net|analytics\.tiktok\.com|tiktok\.com\/i18n/i;
                 var queue = [];
                 var released = false;
+                var lastInput = 0;
                 function remember(src) {
                     if (!src || queue.indexOf(src) !== -1) return;
                     queue.push(src);
@@ -22,15 +28,17 @@
                     return true;
                 }
                 var origInsert = Node.prototype.insertBefore;
-                Node.prototype.insertBefore = function (node, ref) {
+                var patchedInsert = function (node, ref) {
                     if (stall(node)) return node;
                     return origInsert.call(this, node, ref);
                 };
                 var origAppend = Node.prototype.appendChild;
-                Node.prototype.appendChild = function (node) {
+                var patchedAppend = function (node) {
                     if (stall(node)) return node;
                     return origAppend.call(this, node);
                 };
+                Node.prototype.insertBefore = patchedInsert;
+                Node.prototype.appendChild = patchedAppend;
                 var obs = new MutationObserver(function (list) {
                     if (released) return;
                     list.forEach(function (m) {
@@ -38,18 +46,38 @@
                     });
                 });
                 obs.observe(document.documentElement, { childList: true, subtree: true });
+                ['pointerdown', 'keydown', 'touchstart'].forEach(function (type) {
+                    window.addEventListener(type, function () { lastInput = Date.now(); }, { capture: true, passive: true });
+                });
+                function idle(fn, timeout) {
+                    if (window.requestIdleCallback) window.requestIdleCallback(fn, { timeout: timeout });
+                    else setTimeout(fn, 200);
+                }
+                {# GTM last: it pulls Hotjar, cartstack and other heavy tags. #}
+                function weight(src) { return /googletagmanager\.com\/gtm\.js/i.test(src) ? 1 : 0; }
+                function next() {
+                    if (!queue.length) return;
+                    if (Date.now() - lastInput < 1500) { setTimeout(next, 1500); return; }
+                    idle(function () {
+                        if (Date.now() - lastInput < 1500) { setTimeout(next, 1500); return; }
+                        var src = queue.shift();
+                        var s = document.createElement('script');
+                        s.src = src;
+                        s.async = true;
+                        origAppend.call(document.body || document.head, s);
+                        setTimeout(next, 700);
+                    }, 4000);
+                }
                 function release() {
                     if (released) return;
                     released = true;
                     obs.disconnect();
-                    queue.forEach(function (src) {
-                        var s = document.createElement('script');
-                        s.src = src;
-                        s.async = true;
-                        document.body.appendChild(s);
-                    });
+                    if (Node.prototype.insertBefore === patchedInsert) Node.prototype.insertBefore = origInsert;
+                    if (Node.prototype.appendChild === patchedAppend) Node.prototype.appendChild = origAppend;
+                    queue.sort(function (a, b) { return weight(a) - weight(b); });
+                    next();
                 }
-                window.addEventListener('load', function () { setTimeout(release, 8000); });
+                window.addEventListener('load', function () { setTimeout(release, 1500); });
             })();
         </script>
         {% if template == 'home' %}

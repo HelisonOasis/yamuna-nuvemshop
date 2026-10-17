@@ -1446,7 +1446,8 @@
       flex-shrink: 0 !important;
       flex-direction: column !important;
       max-height: none !important;
-      overflow: visible !important;      /* 097 - mobile: rodape em fluxo (nao absoluto) para a area rolavel terminar acima dele e o cupom poder ser alcancado. */
+      overflow: visible !important;
+      /* 097 - mobile: rodape em fluxo (nao absoluto) para a area rolavel terminar acima dele e o cupom poder ser alcancado. */
       position: relative !important;
       top: auto !important;
       right: auto !important;
@@ -2326,8 +2327,19 @@
     function getYamunaFreeShippingMinCents(fallback) {
       /* Always R$350. Platform min_price_raw is 350 (= R$3,50) and must be ignored. */
       var HARD_MIN_CENTS = 35000;
-      if (fallback) fallback.setAttribute('data-fs-min', String(HARD_MIN_CENTS));
+      if (fallback && fallback.getAttribute('data-fs-min') !== String(HARD_MIN_CENTS)) fallback.setAttribute('data-fs-min', String(HARD_MIN_CENTS));
       return HARD_MIN_CENTS;
+    }
+
+    /* perf 2026-10-16: write class/style only when it actually changes (each write is a mutation). */
+    function yamunaSetClass(el, cls, on) {
+      if (el && el.classList.contains(cls) !== !!on) el.classList.toggle(cls, !!on);
+    }
+    function yamunaSetStyle(el, prop, val, prio) {
+      if (!el) return;
+      if (el.style.getPropertyValue(prop) !== val || el.style.getPropertyPriority(prop) !== (prio || '')) {
+        el.style.setProperty(prop, val, prio || '');
+      }
     }
 
     function syncYamunaFreeShippingBar() {
@@ -2343,18 +2355,18 @@
       var platformWrap = document.querySelector('#modal-cart .yamuna-cart-free-shipping, #modal-cart .js-ship-free-rest');
       if (platformWrap) {
         var wrap = platformWrap.closest('.yamuna-cart-free-shipping') || platformWrap;
-        wrap.style.setProperty('display', 'none', 'important');
+        yamunaSetStyle(wrap, 'display', 'none', 'important');
       }
-      fallback.classList.toggle('is-active', cartHasItems);
+      yamunaSetClass(fallback, 'is-active', cartHasItems);
       if (!cartHasItems) {
-        fallback.classList.remove('is-unlocked');
-        fallback.style.setProperty('--yamuna-fs-pct', '0%');
-        fallback.style.setProperty('display', 'none', 'important');
+        yamunaSetClass(fallback, 'is-unlocked', false);
+        yamunaSetStyle(fallback, '--yamuna-fs-pct', '0%');
+        yamunaSetStyle(fallback, 'display', 'none', 'important');
         var emptyFill = fallback.querySelector('.js-yamuna-fs-fill');
-        if (emptyFill) emptyFill.style.width = '0%';
+        if (emptyFill && emptyFill.style.width !== '0%') emptyFill.style.width = '0%';
         return;
       }
-      fallback.style.removeProperty('display');
+      if (fallback.style.getPropertyValue('display')) fallback.style.removeProperty('display');
 
       var min = getYamunaFreeShippingMinCents(fallback);
       var subtotal = getYamunaCartSubtotalCents();
@@ -2362,13 +2374,9 @@
       var pct = min > 0 ? Math.min(100, Math.max(0, (subtotal / min) * 100)) : 0;
       var unlocked = subtotal > 0 && rest <= 0;
 
-      fallback.setAttribute('data-fs-subtotal', String(subtotal));
-      fallback.style.setProperty('--yamuna-fs-pct', pct.toFixed(2) + '%');
-      if (unlocked) {
-        fallback.classList.add('is-unlocked');
-      } else {
-        fallback.classList.remove('is-unlocked');
-      }
+      if (fallback.getAttribute('data-fs-subtotal') !== String(subtotal)) fallback.setAttribute('data-fs-subtotal', String(subtotal));
+      yamunaSetStyle(fallback, '--yamuna-fs-pct', pct.toFixed(2) + '%');
+      yamunaSetClass(fallback, 'is-unlocked', unlocked);
 
       var label = unlocked
         ? 'Frete grátis garantido!'
@@ -2377,7 +2385,7 @@
         if (textEl.textContent !== label) textEl.textContent = label;
       });
       var fillEl = fallback.querySelector('.js-yamuna-fs-fill');
-      if (fillEl) {
+      if (fillEl && fillEl.style.width !== pct.toFixed(2) + '%') {
         fillEl.style.width = pct.toFixed(2) + '%';
       }
     }
@@ -2428,11 +2436,19 @@
     refreshMinicartPromoUi();
     var promoObserverRoot = document.getElementById('modal-cart');
     if (promoObserverRoot && window.MutationObserver) {
+      /* perf 2026-10-16: our own class/style writes used to re-trigger this observer
+         every ~50ms forever (19 mutations/s with the cart closed). Records produced by
+         refreshMinicartPromoUi() are now discarded via takeRecords(). */
       var promoTimer = null;
-      new MutationObserver(function () {
+      var promoObserver = new MutationObserver(function () {
         if (promoTimer) clearTimeout(promoTimer);
-        promoTimer = setTimeout(refreshMinicartPromoUi, 50);
-      }).observe(promoObserverRoot, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['data-priceraw', 'class', 'style'] });
+        promoTimer = setTimeout(function () {
+          promoTimer = null;
+          try { refreshMinicartPromoUi(); }
+          finally { promoObserver.takeRecords(); }
+        }, 50);
+      });
+      promoObserver.observe(promoObserverRoot, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['data-priceraw', 'class', 'style'] });
     }
 
     /* Minicart CEP: always start as input+Buscar (prod), never "already searched". */
@@ -2651,41 +2667,51 @@
       }
     }
 
+    /* perf 2026-10-16: same end state as clearInlineDisplayNone + display/visibility/opacity
+       !important, but skips the writes (and the mutations) when already visible. */
+    function yamunaForceVisible(el) {
+      if (!el) return;
+      var st = el.style;
+      var already = st.getPropertyValue('display') === 'block' && st.getPropertyPriority('display') === 'important' &&
+        st.getPropertyValue('visibility') === 'visible' && st.getPropertyPriority('visibility') === 'important' &&
+        st.getPropertyValue('opacity') === '1' && st.getPropertyPriority('opacity') === 'important' &&
+        !st.getPropertyValue('height') && !st.getPropertyValue('overflow');
+      if (already) return;
+      clearInlineDisplayNone(el);
+      st.setProperty('display', 'block', 'important');
+      st.setProperty('visibility', 'visible', 'important');
+      st.setProperty('opacity', '1', 'important');
+    }
+
     function ensureMinicartCepVisible() {
       var modal = document.getElementById('modal-cart');
       if (!modal) return;
       var hasItems = !!modal.querySelector('.js-cart-item');
       if (!hasItems) return;
 
-      modal.classList.remove('yamuna-cart-is-emptying');
-      document.body.classList.remove('yamuna-cart-is-emptying');
+      yamunaSetClass(modal, 'yamuna-cart-is-emptying', false);
+      yamunaSetClass(document.body, 'yamuna-cart-is-emptying', false);
 
       var fulfill = modal.querySelector('.js-fulfillment-info, .yamuna-minicart-fulfillment');
       var ship = modal.querySelector('#cart-shipping-container');
       var calc = modal.querySelector('.js-shipping-calculator-container');
       [fulfill, ship, calc].forEach(function (el) {
         if (!el) return;
-        clearInlineDisplayNone(el);
-        el.style.setProperty('display', 'block', 'important');
-        el.style.setProperty('visibility', 'visible', 'important');
-        el.style.setProperty('opacity', '1', 'important');
+        yamunaForceVisible(el);
       });
 
       var head = modal.querySelector('#cart-shipping-container .js-shipping-calculator-head');
       var form = modal.querySelector('#cart-shipping-container .js-shipping-calculator-form');
       var zipUi = modal.querySelector('#cart-shipping-container .js-shipping-calculator-with-zipcode');
       if (head) {
-        head.classList.add('with-form');
-        head.classList.remove('with-zip');
-        head.classList.remove('with-error');
+        yamunaSetClass(head, 'with-form', true);
+        yamunaSetClass(head, 'with-zip', false);
+        yamunaSetClass(head, 'with-error', false);
       }
-      if (zipUi) zipUi.classList.remove('transition-up-active');
+      if (zipUi) yamunaSetClass(zipUi, 'transition-up-active', false);
       if (form) {
-        form.classList.add('transition-up-active');
-        clearInlineDisplayNone(form);
-        form.style.setProperty('display', 'block', 'important');
-        form.style.setProperty('visibility', 'visible', 'important');
-        form.style.setProperty('opacity', '1', 'important');
+        yamunaSetClass(form, 'transition-up-active', true);
+        yamunaForceVisible(form);
       }
 
       /* Reveal only shipping-related parents that may keep display:none from empty.
@@ -2858,6 +2884,14 @@
       window.yamunaMinicartLoadingObserver = new MutationObserver(function () {
         window.clearTimeout(window.yamunaMinicartLoadingTimer);
         window.yamunaMinicartLoadingTimer = window.setTimeout(function () {
+          try { yamunaMinicartLoadingSettle(); }
+          finally {
+            /* perf 2026-10-16: drop the mutations produced by our own cleanup so they do not re-arm this observer. */
+            if (window.yamunaMinicartLoadingObserver) window.yamunaMinicartLoadingObserver.takeRecords();
+          }
+        }, 120);
+      });
+      function yamunaMinicartLoadingSettle() {
           clearMinicartLoading({ skipShipping: true });
           clearDisabledMinicartControls();
           onShippingCalcSettled();
@@ -2874,8 +2908,7 @@
           }
           scheduleEnsureMinicartCepVisible();
           syncYamunaFreeShippingBar();
-        }, 120);
-      });
+      }
       window.yamunaMinicartLoadingObserver.observe(minicartModal, {
         childList: true,
         subtree: true,
