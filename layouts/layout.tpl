@@ -1984,6 +1984,11 @@
             #Javascript: Needed after HTML loads
         ==============================================================================*/#}
 
+        {# perf 2026-10-21: product card images rendered without lazysizes (home spots) had no sizes,
+           so the browser assumed 100vw and fetched the 1024px file for a ~180px card on mobile.
+           Give each one its real rendered width so srcset picks 240/320/480. No visual change. #}
+        <script>!function(){for(var e=document.querySelectorAll("img.js-item-image[srcset]:not([sizes])"),t=0;t<e.length;t++){var i=e[t].parentNode&&e[t].parentNode.offsetWidth;i>40&&e[t].setAttribute("sizes",i+"px")}}();</script>
+
         {# Javascript used in the store #}
 
         <script type="text/javascript">
