@@ -465,6 +465,15 @@
     }
   }
 
+  /* perf 2026-10-21: skip rendering of below-the-fold home sections until they near the viewport.
+     Same look after scroll; "auto" keeps the real height once rendered. */
+  body.template-home [data-store="home-products-new"],
+  body.template-home [data-store="home-products-sale"] { content-visibility: auto; contain-intrinsic-size: auto 640px; }
+  body.template-home [data-store="home-banner-categories"],
+  body.template-home [data-store="home-newsletter"] { content-visibility: auto; contain-intrinsic-size: auto 500px; }
+  body.template-home [data-store="home-blog"] { content-visibility: auto; contain-intrinsic-size: auto 690px; }
+  body.template-home [data-store="home-instagram-placeholder"] { content-visibility: auto; contain-intrinsic-size: auto 570px; }
+  body.template-home [data-store="home-testimonials"] { content-visibility: auto; contain-intrinsic-size: auto 450px; }
 </style>
 
 {% if show_component_help %}
