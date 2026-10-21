@@ -116,17 +116,18 @@
     var imgs = document.querySelectorAll('.yamuna-home-products .js-item-image');
     Array.prototype.forEach.call(imgs, function (img, i) {
       var isSecondary = img.classList.contains('item-image-secondary') || img.classList.contains('js-product-item-secondary-image-private');
-      img.setAttribute('sizes', '(max-width: 767px) 90vw, 420px');
+      /* perf 2026-10-21: the mobile card is ~77vw wide; 90vw made phones pick the 1024px file. 80vw picks 640px. */
+      img.setAttribute('sizes', '(max-width: 767px) 80vw, 420px');
       if (isSecondary) return;
       img.setAttribute('loading', 'eager');
       img.setAttribute('decoding', 'async');
-      if (i < 4) img.setAttribute('fetchpriority', 'high');
+      /* perf 2026-10-21: no fetchpriority=high here, it competed with the hero (LCP) for bandwidth. */
     });
   }
+  /* perf 2026-10-21: run right away too (the cards above are already parsed), so sizes is set before the browser picks a file. */
+  tune();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', tune);
-  } else {
-    tune();
   }
 })();
 </script>
