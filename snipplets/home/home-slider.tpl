@@ -102,11 +102,17 @@
 											{% endif %}
 											<img
 												data-hero-src="{{ slide_image }}"
-												{% if loop.first %}
+												{% if loop.first and mobile %}
 													data-hero-eager="1"
 													data-hero-loaded="1"
 													fetchpriority="high"
 													src="{{ slide_image }}"
+												{% elseif loop.first %}
+													{# perf 2026-10-21: desktop first slide gets its src from the inline script below only on desktop,
+													   so phones no longer download the hidden desktop hero. The preload with media in layout.tpl keeps it early on desktop. #}
+													data-hero-eager="1"
+													fetchpriority="high"
+													src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 												{% else %}
 													{% if loop.index == 2 %}data-hero-next="1"{% endif %}
 													src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
@@ -216,6 +222,9 @@
 		window.addEventListener('load', function () {
 			setTimeout(function () { window.yamunaHydrateHero(heroSelector, true); }, 1500);
 		});
+		var heroMq = window.matchMedia('(max-width: 767px)');
+		var onHeroMq = function () { window.yamunaHydrateHero(heroMq.matches ? '.js-home-slider-mobile' : '.js-home-slider', true); };
+		if (heroMq.addEventListener) heroMq.addEventListener('change', onHeroMq); else if (heroMq.addListener) heroMq.addListener(onHeroMq);
 	})();
 </script>
 {% endif %}

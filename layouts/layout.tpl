@@ -86,6 +86,8 @@
         {% endif %}
         <link rel="preconnect" href="{{ store_resource_hints }}" />
         <link rel="dns-prefetch" href="{{ store_resource_hints }}" />
+        {# perf 2026-10-21: theme static files (hero, logos) come from this CDN; open the connection early for the LCP. #}
+        <link rel="preconnect" href="https://d2az8otjr0j19j.cloudfront.net" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         {# One font request. Montserrat stays because the mobile menu and PDP benefits use it.

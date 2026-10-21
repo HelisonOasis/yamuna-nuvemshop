@@ -13,7 +13,10 @@
         {% set slider = settings.slider %}
     {% endif %}
 
-    {% if settings.home_order_position_0 == 'slider' and (has_main_slider or has_mobile_slider) %}
+    {# perf 2026-10-21: home uses the Yamuna static hero (home.tpl use_yamuna_prod_hero), preloaded in layout.tpl.
+       This admin-slider preload fetched an image that is never shown, competing with the LCP. #}
+    {% set yamuna_static_hero = true %}
+    {% if not yamuna_static_hero and settings.home_order_position_0 == 'slider' and (has_main_slider or has_mobile_slider) %}
         {% for slide in slider %}
             {% set slide_image = slide.image | static_url %}
             {% if loop.first %}
