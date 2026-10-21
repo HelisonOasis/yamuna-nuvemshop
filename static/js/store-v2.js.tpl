@@ -1358,11 +1358,12 @@ DOMContentLoaded.addEventOrExecute(() => {
             'ghee_2.jpg': '{{ 'images/yamuna/blog-home/ghee_2.webp' | static_url }}',
             'massala-chai-2_(1).jpg': '{{ 'images/yamuna/blog-home/massala-chai-2_-1-.webp' | static_url }}',
             'pre-treino-natural-yamuna-1.png': '{{ 'images/yamuna/blog-home/pre-treino-natural-yamuna-1.webp' | static_url }}',
+            '01a0b4aa-cdfa-7113-b884-4a26d080446f.jpg': '{{ 'images/yamuna/blog-home/01a0b4aa-cdfa-7113-b884-4a26d080446f.webp' | static_url }}',
             'textura-_ghee-yamuna.jpg': '{{ 'images/yamuna/blog-home/textura-_ghee-yamuna.webp' | static_url }}'
         };
 
         function yamunaHomeBlogSrc(url) {
-            if (!url || url.indexOf('fbitsstatic.net') === -1) return url;
+            if (!url || (url.indexOf('fbitsstatic.net') === -1 && url.indexOf('cdn-blog-backend.tiendanube.com') === -1)) return url;
             var file = url.split('?')[0].split('/').pop();
             try { file = decodeURIComponent(file); } catch (e) {}
             return yamunaHomeBlogImages[file] || url;
